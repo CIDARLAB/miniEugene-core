@@ -465,4 +465,80 @@ public class MiniEugene
 	public List<Symbol[]> getSolutions() {
 		return this.solutions;
 	}
+	
+	/**
+	 * executeScript/0
+	 */	
+	@Override
+	public void executeScript(String script, int N, int NR_OF_SOLUTIONS) 
+			throws EugeneException {
+
+		if(null == script || script.isEmpty()) {
+			throw new EugeneException("please provide some input!");
+		}
+
+		this.N = N;
+//		this.NR_OF_SOLUTIONS = NR_OF_SOLUTIONS;
+
+		this.stats = new MiniEugeneStatistics();		
+		this.solutions = null;
+
+		/*
+		 * we parse the received string line by line
+		 */
+		String[] lines = script.split(System.getProperty("line.separator"));
+
+		if(lines.length>0) {
+
+			/*
+			 * parsing
+			 */
+			Predicate[] predicates = this.parsePredicates(lines);
+
+
+			/*
+			 * solving
+			 */
+			try {
+				Symbol[] symbols = this.symbols.getSymbols();
+				if(null == symbols || symbols.length==0) {
+					throw new EugeneException("no solutions found!");
+				}
+
+				this.stats.add("Number of Parts", symbols.length);
+				this.stats.add("Possible Solutions", Math.pow(symbols.length, this.N) * Math.pow(2, this.N));
+				this.stats.add("Number of Rules", predicates.length);
+
+				/*
+				 * SOLUTION FINDING
+				 */
+				long T1 = System.nanoTime();
+				this.solutions = new JaCoPSolver(this.symbols).solve(this.N, symbols, predicates, NR_OF_SOLUTIONS);
+				long T2 = System.nanoTime();
+
+				if(null != solutions) {
+					this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, solutions.size());
+				} else {
+					this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, 0);
+				}					
+					
+
+				/*
+				 * next, we iterate over the predicates and check if there are any
+				 * SOME_REVERSE directionality predicates
+				 */
+				stats.add(EugeneConstants.SOLUTION_FINDING_TIME, (T2-T1)*Math.pow(10, -9));
+
+				if(null == solutions || solutions.size()==0) {
+					throw new EugeneException("no solutions found!");
+				}
+
+			} catch(Exception e) {
+				e.printStackTrace();
+				throw new EugeneException(e.getMessage());
+			}
+
+		}		
+	}
+
 }
