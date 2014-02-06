@@ -1,0 +1,28 @@
+package org.cidarlab.minieugene.dom.interaction;
+
+import org.cidarlab.minieugene.constants.RuleOperator;
+
+public class Interaction {
+
+	private String a;
+	private String type;
+	private String b;
+	
+	public Interaction(String a, String type, String b) {
+		this.a = a;
+		this.type = type;
+		this.b = b;
+	}
+	
+	public String toPigeon() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.a);
+		if(RuleOperator.REPRESSES.toString().equalsIgnoreCase(this.type)) {
+			sb.append(" rep ");
+		} else if(RuleOperator.INDUCES.toString().equalsIgnoreCase(this.type)) {
+			sb.append(" ind ");
+		}
+		sb.append(this.b);
+		return sb.toString();
+	}
+}
