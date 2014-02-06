@@ -22,6 +22,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -214,7 +215,7 @@ public class MiniEugene
 		
 		int idB = -1;
 		if(EugeneRules.isCountingRule(X)) {
-			
+
 			/*
 			 * b must be a decimal non-negative number
 			 */
@@ -308,9 +309,11 @@ public class MiniEugene
 
 		String[] tokens = null;
 		
-		// remove possible white spaces
 		for(int i=0; i<s.length; i++) {
+
+			// remove possible white spaces
 			s[i].trim();
+			
 			if(s[i] != null && !(s[i].isEmpty())) {
 				
 				if(null == tokens) {
@@ -369,6 +372,8 @@ public class MiniEugene
 		if(N < 1) {
 			throw new EugeneException("Invalid size of design!");
 		}
+		this.N = N;
+		
 
 		if(NR_OF_SOLUTIONS < -1) {
 			throw new EugeneException("Invalid number of required solutions!");
