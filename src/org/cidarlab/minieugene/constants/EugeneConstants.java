@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2012 Boston University.
+Copyright (c) 2014 Boston University.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -33,6 +33,4 @@ public class EugeneConstants {
 	public static final String NUMBER_OF_PARTS = "Number of Parts";
 	public static final String POSSIBLE_SOLUTIONS = "Possible Solutions";
 	public static final String NUMBER_OF_RULES = "Number of Rules";
-	
-	public static final String LOGICAL_NOT = "NOT";	
 }

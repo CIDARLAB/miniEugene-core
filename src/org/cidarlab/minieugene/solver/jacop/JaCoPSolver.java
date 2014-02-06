@@ -3,13 +3,13 @@ package org.cidarlab.minieugene.solver.jacop;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cidarlab.minieugene.Symbol;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.solver.Solver;
-import org.cidarlab.minieugene.symbol.Symbol;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.Alldifferent;

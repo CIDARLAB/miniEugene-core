@@ -3,8 +3,8 @@ package org.cidarlab.minieugene.examples;
 import java.util.Arrays;
 
 import org.cidarlab.minieugene.MiniEugene;
+import org.cidarlab.minieugene.Symbol;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.symbol.Symbol;
 
 public class Example01 {
 

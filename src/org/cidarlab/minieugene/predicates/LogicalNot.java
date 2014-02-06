@@ -26,7 +26,8 @@ public class LogicalNot
 	
 	@Override
 	public String getOperator() {
-		return EugeneConstants.LOGICAL_NOT;
+		return "NOT";
+//		return EugeneConstants.LOGICAL_NOT;
 	}
 	
 	@Override 

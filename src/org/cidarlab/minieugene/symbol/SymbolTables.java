@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.cidarlab.minieugene.dom.interaction.Interaction;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.Symbol;
+import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;

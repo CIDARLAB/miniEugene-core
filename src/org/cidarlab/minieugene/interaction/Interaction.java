@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.dom.interaction;
+package org.cidarlab.minieugene.interaction;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 
