@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package org.cidarlab.minieugene.test.rules;
+package org.cidarlab.minieugene;
 
 import java.util.ArrayList;
 import java.util.List;

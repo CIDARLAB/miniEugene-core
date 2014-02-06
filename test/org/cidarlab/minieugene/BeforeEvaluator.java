@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.test.rules;
+package org.cidarlab.minieugene;
 
 import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.constants.EugeneConstants;

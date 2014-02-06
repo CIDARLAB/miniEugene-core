@@ -466,11 +466,12 @@ public class MiniEugene
 		return this.solutions;
 	}
 	
-	/**
-	 * executeScript/0
-	 */	
-	@Override
-	public void executeScript(String script, int N, int NR_OF_SOLUTIONS) 
+
+	/*
+	 * @see org.cidarlab.minieugene.IMiniEugene#executeScript(java.lang.String, int, int)
+	 * ONLY FOR TESTING PURPOSE
+	 */
+	protected void executeScript(String script, int N, int NR_OF_SOLUTIONS) 
 			throws EugeneException {
 
 		if(null == script || script.isEmpty()) {

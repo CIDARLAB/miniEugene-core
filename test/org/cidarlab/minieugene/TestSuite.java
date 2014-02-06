@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.test.rules;
+package org.cidarlab.minieugene;
 
 import java.io.BufferedReader;
 import java.io.File;
