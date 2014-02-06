@@ -23,6 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package org.cidarlab.minieugene;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.builder.PredicateBuilder;
@@ -30,6 +31,7 @@ import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.direction.AllForward;
@@ -56,13 +58,15 @@ public class MiniEugene
 	
 	private MiniEugeneStatistics stats;		
 	private List<Symbol[]> solutions;
-
+	private Set<Interaction> interactions;
+	
 	public MiniEugene() {
 		this.symbols = new SymbolTables();
 		this.pb = new PredicateBuilder(this.symbols);
 		
 		this.stats = new MiniEugeneStatistics();
 		this.solutions = null;
+		this.interactions = null;
 	}
 	
 
@@ -386,6 +390,11 @@ public class MiniEugene
 			throw new EugeneException("no solutions found!");
 		}
 
+		/*
+		 * keep track of the interactions
+		 */
+		this.interactions = this.symbols.getInteractions();
+		
 		this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
 		this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, N) * Math.pow(2, N));
 		this.stats.add(EugeneConstants.NUMBER_OF_RULES, predicates.length);
@@ -466,9 +475,12 @@ public class MiniEugene
 		return this.solutions;
 	}
 	
-
+	@Override
+	public Set<Interaction> getInteractions() {
+		return this.interactions;
+	}
+	
 	/*
-	 * @see org.cidarlab.minieugene.IMiniEugene#executeScript(java.lang.String, int, int)
 	 * ONLY FOR TESTING PURPOSE
 	 */
 	protected void executeScript(String script, int N, int NR_OF_SOLUTIONS) 
