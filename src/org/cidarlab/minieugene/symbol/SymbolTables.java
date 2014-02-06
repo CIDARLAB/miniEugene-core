@@ -187,7 +187,7 @@ public class SymbolTables {
 	/*
 	 * methods to store information on regulatory interactions
 	 */
-	public void putInteraction(InteractionPredicate ip) {		
+	public void putInteraction(InteractionPredicate ip) {	
 		if(!this.interactions.contains(ip)) {
 			this.interactions.add(ip);
 		}		

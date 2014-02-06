@@ -54,11 +54,9 @@ public class MiniEugene
 	private PredicateBuilder pb;
 	
 	private int N;
-//	private int NR_OF_SOLUTIONS;
 	
 	private MiniEugeneStatistics stats;		
 	private List<Symbol[]> solutions;
-	private Set<Interaction> interactions;
 	
 	public MiniEugene() {
 		this.symbols = new SymbolTables();
@@ -66,7 +64,6 @@ public class MiniEugene
 		
 		this.stats = new MiniEugeneStatistics();
 		this.solutions = null;
-		this.interactions = null;
 	}
 	
 
@@ -378,6 +375,12 @@ public class MiniEugene
 		}
 
 		/*
+		 * at the beginning of every run, we clear the symbol tables 
+		 * that might contain symbols from earlier runs
+		 */
+		this.symbols.clear();
+
+		/*
 		 * parse the rules
 		 */
 		Predicate[] predicates = this.parsePredicates(rules);
@@ -389,11 +392,6 @@ public class MiniEugene
 		if(null == symbols || symbols.length==0) {
 			throw new EugeneException("no solutions found!");
 		}
-
-		/*
-		 * keep track of the interactions
-		 */
-		this.interactions = this.symbols.getInteractions();
 		
 		this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
 		this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, N) * Math.pow(2, N));
@@ -418,11 +416,6 @@ public class MiniEugene
 		} else {
 			this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, 0);
 		}
-
-		/*
-		 * clear the symbol tables
-		 */
-		this.symbols.clear();
 	}
 
 	/**
@@ -477,7 +470,7 @@ public class MiniEugene
 	
 	@Override
 	public Set<Interaction> getInteractions() {
-		return this.interactions;
+		return this.symbols.getInteractions();
 	}
 	
 	/*
@@ -490,6 +483,12 @@ public class MiniEugene
 			throw new EugeneException("please provide some input!");
 		}
 
+		/*
+		 * at the beginning of every run, we clear the symbol tables 
+		 * that might contain symbols from earlier runs
+		 */
+		this.symbols.clear();
+		
 		this.N = N;
 //		this.NR_OF_SOLUTIONS = NR_OF_SOLUTIONS;
 
