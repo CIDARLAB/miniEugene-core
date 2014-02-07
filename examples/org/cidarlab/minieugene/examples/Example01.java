@@ -60,6 +60,6 @@ public class Example01 {
 		if(null != me.getStatistics()) {
 			me.getStatistics().print();
 		}
-
+		
 	}
 }
