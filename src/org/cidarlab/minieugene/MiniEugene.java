@@ -398,6 +398,7 @@ public class MiniEugene
 			throw new EugeneException("no solutions found!");
 		}
 		
+		this.stats.add(EugeneConstants.SIZE_OF_DESIGN, this.N);
 		this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
 		this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, N) * Math.pow(2, N));
 		this.stats.add(EugeneConstants.NUMBER_OF_RULES, predicates.length);
@@ -409,6 +410,10 @@ public class MiniEugene
 			this.solutions = new JaCoPSolver(this.symbols).solve(N, symbols, predicates, NR_OF_SOLUTIONS);
 		
 			long T2 = System.nanoTime();
+			
+			if(null == this.solutions || this.solutions.isEmpty()) {
+				throw new EugeneException("no solutions found!");
+			}
 
 			this.stats.add(EugeneConstants.SOLUTION_FINDING_TIME, (T2-T1)*Math.pow(10, -9));
 			

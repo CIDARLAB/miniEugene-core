@@ -28,6 +28,7 @@ package org.cidarlab.minieugene.constants;
  */
 public class EugeneConstants {
 
+	public static final String SIZE_OF_DESIGN = "Size of Design";
 	public static final String NUMBER_OF_SOLUTIONS = "Number of Solutions";
 	public static final String SOLUTION_FINDING_TIME = "Solution Finding Time [sec]";
 	public static final String NUMBER_OF_PARTS = "Number of Parts";

@@ -25,7 +25,7 @@ public class Example01 {
 		 * STEP 2
 		 * 
 		 */
-		String[] rules = {"CONTAINS a", "CONTAINS b", "CONTAINS c"};
+		String[] rules = {"CONTAINS a", "CONTAINS b"};
 		
 		try {
 		
@@ -33,7 +33,7 @@ public class Example01 {
 			 * STEP 3: 
 			 * here we set N to 3
 			 */
-			me.solve(rules, 3);     
+			me.solve(rules, 1);     
 
 		} catch(EugeneException e) {
 			/*
