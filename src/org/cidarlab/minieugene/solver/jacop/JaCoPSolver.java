@@ -182,7 +182,6 @@ public class JaCoPSolver
 				new MostConstrainedDynamic<IntVar>(), 
 				new IndomainSimpleRandom<IntVar>());  
 
-        
         if(NR_OF_SOLUTIONS != (-1)) {
         	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
         } else {

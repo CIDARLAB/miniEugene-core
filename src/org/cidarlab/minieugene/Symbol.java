@@ -64,14 +64,22 @@ public class Symbol {
 		this.name = name;
 		this.forward = true;
 
-		this.id = this.name.hashCode();
+		this.id = 0;
+		char[] namechars = this.name.toCharArray();
+		for(int i=0; i<namechars.length; i++) {
+			this.id += namechars[i];
+		}
 	}
 	
 	public Symbol(String name, boolean forward) {
 		this.name = name;
 		this.forward = forward;
 		
-		this.id = this.name.hashCode();
+		this.id = 0;
+		char[] namechars = this.name.toCharArray();
+		for(int i=0; i<namechars.length; i++) {
+			this.id += namechars[i];
+		}
 	}
 	
 	/**

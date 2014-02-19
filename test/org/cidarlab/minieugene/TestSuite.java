@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 
 import org.cidarlab.minieugene.MiniEugene;
+import org.cidarlab.minieugene.util.SolutionExporter;
 
 
 public class TestSuite {
@@ -33,6 +34,15 @@ public class TestSuite {
 		//		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
 //		new TestSuite().test(new File("./examples/transcriptional-unit.eug"));
 
+		/*
+		 * naming of rule operands
+		 */
+//		new TestSuite().test(new File("./tests/operand-naming.eug"));
+		//new TestSuite().test(new File("./tests/bryan/ex1"));
+		//new TestSuite().test(new File("./tests/bryan/ex2"));
+		//new TestSuite().test(new File("./tests/bryan/ex3"));
+		new TestSuite().test(new File("./tests/bryan/ex4"));
+		
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
 	}
@@ -52,6 +62,12 @@ public class TestSuite {
 			long tProcessing = System.nanoTime() - t1;
 			
 			me.getStatistics().print();
+
+			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+			System.out.println(se.toPigeon());
+			se.toSBOL("./sbol/"+java.util.UUID.randomUUID().toString()+".sbol.xml");
+			System.out.println(se.toEugene());
+			
 			System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -59,6 +75,8 @@ public class TestSuite {
 		
 		//new Eugene(sFile);
 	}
+	
+	
 
 	private String readFile(File f) throws java.io.IOException {
 		StringBuffer fileData = new StringBuffer(1000);
