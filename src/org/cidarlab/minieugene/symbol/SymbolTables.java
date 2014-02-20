@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.cidarlab.minieugene.Symbol;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
@@ -56,7 +56,7 @@ public class SymbolTables {
 	 * g ... Gene
 	 * t ... Terminator
 	 */
-	private Map<Integer, Symbol> symbols;
+	private Map<Integer, Component> symbols;
 	private Set<Predicate> predicates;
 	private Set<InteractionPredicate> interactions;
 	
@@ -71,7 +71,7 @@ public class SymbolTables {
 		 * symbols
 		 * the predefined ones are: p, r, g, t
 		 */
-		this.symbols = new HashMap<Integer, Symbol>();
+		this.symbols = new HashMap<Integer, Component>();
 	
 		this.predicates = new HashSet<Predicate>();
 		
@@ -82,10 +82,10 @@ public class SymbolTables {
 	 * put a symbol into the symbol tables
 	 */
 	public int put(String s) {
-		return this.put(new Symbol(s));
+		return this.put(new Component(s));
 	}
 	
-	public int put(Symbol s) {
+	public int put(Component s) {
 		if(!containsId(s.getId())) {
 			symbols.put(s.getId(), s);
 		}
@@ -109,7 +109,7 @@ public class SymbolTables {
 		return b;
 	}
 	
-	public Symbol get(int i) {
+	public Component get(int i) {
 		return this.symbols.get(i);
 	}
 	
@@ -119,8 +119,8 @@ public class SymbolTables {
 		return ArrayUtils.toPrimitive(ids);
 	}
 	
-	public Symbol[] getSymbols() {
-		Symbol[] s = new Symbol[this.symbols.keySet().size()];
+	public Component[] getSymbols() {
+		Component[] s = new Component[this.symbols.keySet().size()];
 		return this.symbols.values().toArray(s);
 	}
 	
@@ -130,10 +130,10 @@ public class SymbolTables {
 		 * get b's id from the symbol
 		 */
 
-		if(this.symbols.containsValue(new Symbol(s))) {
+		if(this.symbols.containsValue(new Component(s))) {
 			if(this.contains(s)) {
 				for(Integer i : this.symbols.keySet()) {
-					Symbol symbol = this.symbols.get(i);
+					Component symbol = this.symbols.get(i);
 					if(symbol.getName().equalsIgnoreCase(s)) {
 						return i.intValue();
 					}
@@ -147,7 +147,7 @@ public class SymbolTables {
 		 * if the symbol does not exist, 
 		 * then add it to the symbol tables
 		 */
-		return this.put(new Symbol(s));
+		return this.put(new Component(s));
 	}
 	
 	public void print() {
@@ -198,13 +198,13 @@ public class SymbolTables {
 		Iterator<InteractionPredicate> it = this.interactions.iterator();
 		while(it.hasNext()) {
 			InteractionPredicate ip = it.next();
-			Symbol a = null;
+			Component a = null;
 			if(ip instanceof Represses) {
 				a = this.symbols.get(ip.getA());
 			} else if(ip instanceof Induces) {
-				a = new Symbol(((Induces)ip).getInducer());
+				a = new Component(((Induces)ip).getInducer());
 			}
-			Symbol b = this.symbols.get(ip.getB());
+			Component b = this.symbols.get(ip.getB());
 			inters.add(new Interaction(a.getName(), ip.getOperator(), b.getName()));
 		}
 		return inters;

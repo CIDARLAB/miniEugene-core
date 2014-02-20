@@ -65,8 +65,10 @@ public class TestSuite {
 
 			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 			System.out.println(se.toPigeon());
-			se.toSBOL("./sbol/"+java.util.UUID.randomUUID().toString()+".sbol.xml");
-			System.out.println(se.toEugene());
+			
+			String filename = java.util.UUID.randomUUID().toString();
+			se.toSBOL("./test-results/"+filename+".sbol.xml");
+			se.toEugene("./test-results/"+filename+".eug");
 			
 			System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		} catch(Exception e) {

@@ -3,7 +3,7 @@ package org.cidarlab.minieugene.solver.jacop;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cidarlab.minieugene.Symbol;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
@@ -44,7 +44,7 @@ public class JaCoPSolver
 		this.symbols = symbols;
 	}
 	
-	public List<Symbol[]> solve(int N, Symbol[] symbols, Predicate[] predicates, int NR_OF_SOLUTIONS)
+	public List<Component[]> solve(int N, Component[] symbols, Predicate[] predicates, int NR_OF_SOLUTIONS)
 			throws EugeneException {
 
 		this.N = N;
@@ -86,7 +86,7 @@ public class JaCoPSolver
     	return null;
 	}
     
-	private IntVar[][] model(Symbol[] symbols) 
+	private IntVar[][] model(Component[] symbols) 
 			throws EugeneException {
 		
 		IntVar[][] variables = new IntVar[3][N];
@@ -120,7 +120,7 @@ public class JaCoPSolver
 			
 			for(int j=0; j<symbols.length; j++) {						
 				variables[Variables.PART][i].addDom(symbols[j].getId(), symbols[j].getId());
-				variables[Variables.TYPE][i].addDom(symbols[j].getType(), symbols[j].getType());
+				variables[Variables.TYPE][i].addDom(symbols[j].getTypeId(), symbols[j].getTypeId());
 			
 				/*
 				 * we also impose constraints that part and type match
@@ -128,7 +128,7 @@ public class JaCoPSolver
 				 */
 				pc[j] = new And(
 								new XeqC(variables[Variables.PART][i], symbols[j].getId()),
-								new XeqC(variables[Variables.TYPE][i], symbols[j].getType()));
+								new XeqC(variables[Variables.TYPE][i], symbols[j].getTypeId()));
 			}
 			store.impose(new Or(pc));
 
@@ -210,25 +210,25 @@ public class JaCoPSolver
     }
 
 		
-	public List<Symbol[]> processSolutions(Domain[][] solutions) {
+	public List<Component[]> processSolutions(Domain[][] solutions) {
 		
-		List<Symbol[]> lst = new ArrayList<Symbol[]>();
+		List<Component[]> lst = new ArrayList<Component[]>();
 		for(int i=0; i<solutions.length && solutions[i]!=null; i++) {
 			
 			Domain[] solution = solutions[i];
 			
-			Symbol[] sol = new Symbol[this.N];
+			Component[] sol = new Component[this.N];
 
 			for(int j=0; j<this.N; j++) {
-				Symbol symbol = null;
+				Component symbol = null;
 				
 				/*
 				 * PART
 				 */
 				ValueEnumeration ve = solution[j].valueEnumeration();
 				while(ve.hasMoreElements()) {
-					Symbol old = this.symbols.get(ve.nextElement());
-					symbol = new Symbol(old.getName());
+					Component old = this.symbols.get(ve.nextElement());
+					symbol = new Component(old.getName());
 				}
 				
 				/*

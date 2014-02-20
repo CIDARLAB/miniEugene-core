@@ -26,7 +26,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import org.cidarlab.minieugene.Symbol;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
@@ -53,7 +53,7 @@ public class SBOLExporter {
 	 * - always we create an SBOL Collection (also if there is only 1 solution!)
 	 */
 
-	public SBOLDocument toSBOLDocument(List<Symbol[]> solutions) 
+	public SBOLDocument toSBOLDocument(List<Component[]> solutions) 
 			throws EugeneException {
 		
 		try {
@@ -70,7 +70,7 @@ public class SBOLExporter {
 					URI.create("http://www.cidarlab.org/miniEugene/designs/"+uuid));
 			
 			int i=1;
-			for(Symbol[] solution : solutions) {
+			for(Component[] solution : solutions) {
 				DnaComponent dc = toSBOL(solution, uuid, i);
 				col.getComponents().add(dc);
 				i++;
@@ -86,7 +86,7 @@ public class SBOLExporter {
 		}
 	}
 	
-	private DnaComponent toSBOL(Symbol[] solution, String uuid, int i) {
+	private DnaComponent toSBOL(Component[] solution, String uuid, int i) {
 		
 		DnaComponent dc = SBOLFactory.createDnaComponent();
 		dc.setDisplayId("solution_"+i);
@@ -95,7 +95,7 @@ public class SBOLExporter {
 				URI.create("http://www.cidarlab.org/miniEugene/designs/"+uuid+"/solution_"+i));
 		
 		int pos = 0;
-		for(Symbol symbol : solution) {
+		for(Component symbol : solution) {
 			
 			/*
 			 * the annotation for the sub-component

@@ -1,3 +1,4 @@
 org.cidarlab.minieugene
-org.cidarlab.minieugene.constants
-org.cidarlab.minieugene.stats
+org.cidarlab.minieugene.dom
+org.cidarlab.minieugene.examples
+org.cidarlab.minieugene.util

@@ -2,6 +2,8 @@ package org.cidarlab.minieugene;
 
 import java.util.Arrays;
 
+import org.cidarlab.minieugene.dom.Component;
+
 public class NotMoreThanTester {
 
 	private static final String NEWLINE = System.getProperty("line.separator");
@@ -13,7 +15,7 @@ public class NotMoreThanTester {
 			me.executeScript(script, -1, -1);
 			
 			if(null != me.getSolutions()) {
-				for(Symbol[] solution : me.getSolutions()) {
+				for(Component[] solution : me.getSolutions()) {
 					System.out.println(Arrays.toString(solution));
 				}
 			}

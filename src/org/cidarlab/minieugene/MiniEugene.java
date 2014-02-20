@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +30,7 @@ import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.LogicalNot;
@@ -57,8 +57,11 @@ public class MiniEugene
 	private int N;
 	
 	private MiniEugeneStatistics stats;		
-	private List<Symbol[]> solutions;
+	private List<Component[]> solutions;
 	
+	/** 
+	 * non-args constructor
+	 */
 	public MiniEugene() {
 		this.symbols = new SymbolTables();
 		this.pb = new PredicateBuilder(this.symbols);
@@ -393,7 +396,7 @@ public class MiniEugene
 		/*
 		 * solving the problem
 		 */
-		Symbol[] symbols = this.symbols.getSymbols();
+		Component[] symbols = this.symbols.getSymbols();
 		if(null == symbols || symbols.length==0) {
 			throw new EugeneException("no solutions found!");
 		}
@@ -474,7 +477,7 @@ public class MiniEugene
 	 * @return a List of Symbol arrays.        
 	 */	
 	@Override
-	public List<Symbol[]> getSolutions() {
+	public List<Component[]> getSolutions() {
 		return this.solutions;
 	}
 	
@@ -522,7 +525,7 @@ public class MiniEugene
 			 * solving
 			 */
 			try {
-				Symbol[] symbols = this.symbols.getSymbols();
+				Component[] symbols = this.symbols.getSymbols();
 				if(null == symbols || symbols.length==0) {
 					throw new EugeneException("no solutions found!");
 				}

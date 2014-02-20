@@ -1,7 +1,44 @@
+/*
+Copyright (c) 2014 Boston University.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL BOSTON UNIVERSITY BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+BOSTON UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+BOSTON UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND BOSTON UNIVERSITY HAS
+NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+ */
+
 package org.cidarlab.minieugene.examples;
 
 import org.cidarlab.minieugene.MiniEugene;
 
+/**
+ * In this example we demonstrate how to utilize miniEugene in order 
+ * to find a subset of all solutions. The user needs to provide the 
+ * number (>0) of desired solutions. 
+ * <p>
+ * In general, the utilization of miniEugene is divided into the following steps:<br/>
+ * 1. instantiate MiniEugene<br/>
+ * 2. specify an String array, each row containing a miniEugene rule<br/>
+ * 3. let miniEugene solve the rules (using MiniEugene's solve() method)<br/>
+ * 4. process the solutions (maybe by using the SolutionExporter)<br/>
+ *    and/or have a look into the statistics of the solving process<br/>
+ *
+ * @author Ernst Oberortner
+ *
+ */
 public class Example02 {
 
 	public static void main(String[] args) {

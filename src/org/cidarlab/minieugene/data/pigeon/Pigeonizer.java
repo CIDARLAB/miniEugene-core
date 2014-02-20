@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.cidarlab.minieugene.Symbol;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
 
@@ -23,7 +23,7 @@ public class Pigeonizer {
 		colors = new HashMap<String, Integer>();
 	}
 	
-	public URI pigeonize(Symbol[] solution) 
+	public URI pigeonize(Component[] solution) 
 			throws EugeneException {
 		
 		StringBuilder sb = new StringBuilder();
@@ -47,15 +47,15 @@ public class Pigeonizer {
 		return WeyekinPoster.getMyBirdsURL();		
 	}
 	
-	public URI pigeonize(List<Symbol[]> solutions, Set<Interaction> interactions) 
+	public URI pigeonize(List<Component[]> solutions, Set<Interaction> interactions) 
 			throws EugeneException {
 
 		StringBuilder sb = new StringBuilder();
 
 		for(int k=0; k<solutions.size(); k++) {
 			
-			Symbol[] solution = solutions.get(k);
-			for(Symbol symbol : solution) {
+			Component[] solution = solutions.get(k);
+			for(Component symbol : solution) {
 				sb.append(toPigeon(symbol)).append("\r\n");
 			}
 			
@@ -85,7 +85,7 @@ public class Pigeonizer {
 		return WeyekinPoster.getMyBirdsURL();		
 	}
 	
-	private String toPigeon(Symbol symbol) {
+	private String toPigeon(Component symbol) {
 
 		String s = symbol.getName();
 		StringBuilder sb = new StringBuilder();

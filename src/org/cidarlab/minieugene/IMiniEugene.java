@@ -25,6 +25,7 @@ package org.cidarlab.minieugene;
 import java.util.List;
 import java.util.Set;
 
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
 
@@ -42,6 +43,6 @@ public interface IMiniEugene {
 			throws EugeneException;
 	
 	public MiniEugeneStatistics getStatistics();
-	public List<Symbol[]> getSolutions();
+	public List<Component[]> getSolutions();
 	public Set<Interaction> getInteractions();
 }

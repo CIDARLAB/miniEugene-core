@@ -8,30 +8,51 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.cidarlab.minieugene.Symbol;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
 import org.cidarlab.minieugene.data.sbol.SBOLExporter;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
 import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLFactory;
 
+/**
+ * The SolutionExporter class provides methods to export 
+ * miniEugene solutions to Pigeon, SBOL, and Eugene Header files
+ * 
+ * @author Ernst Oberortner
+ *
+ */
 public class SolutionExporter {
 	
-	private List<Symbol[]> solutions;
+	private List<Component[]> solutions;
 	private Set<Interaction> interactions;
 	
 	private static final int NR_OF_PIGEON = 10;
 	private static final int NR_OF_SBOL = 1000;
 	private static final String NEWLINE = System.getProperty("line.separator");
 	
-	public SolutionExporter(List<Symbol[]> solutions, Set<Interaction> interactions) {
+	/**
+	 * The constructor takes two paramters: (1) a list of solutions and 
+	 * (2) a set of regulatory interactions. 
+	 * After executing the solve() method of miniEugene, the solutions 
+	 * and the set of interactions can be obtained by miniEugeneObj.getSolutions 
+	 * and miniEugeneObj.getInteractions respectively.
+	 * 
+	 * @param solutions  
+	 * @param interactions
+	 */
+	public SolutionExporter(List<Component[]> solutions, Set<Interaction> interactions) {
 		this.solutions = solutions;
 		this.interactions = interactions;
 	}
-	
-	/*
-	 * visualize (using pigeon) N solutions
+
+	/**
+	 * toPigeon visualizes a randomly selected subset of 
+	 * ten solutions using Pigeon (pigeoncad.org)
+	 * 
+	 * @return an URI referring to the generated Pigeon image
+	 * @throws EugeneException
 	 */
 	public URI toPigeon() 
 			throws EugeneException {
@@ -72,7 +93,18 @@ public class SolutionExporter {
 		return idx;
 	}
 	
-	public boolean toSBOL(String filename) 
+	/**
+	 * toSBOL takes as input the name of the SBOL file into 
+	 * which the solutions will be serialized following 
+	 * the SBOL standard. 
+	 * toSBOL utilizes the libSBOLj library 
+	 * (www.sbolstandard.org -> libSBOL -> Software) 
+	 *  
+	 * @param filename  ... the path+filename of the SBOL file
+	 * 
+	 * @throws EugeneException
+	 */
+	public void toSBOL(String filename) 
 			throws EugeneException {
 		
 		/*
@@ -88,9 +120,8 @@ public class SolutionExporter {
 				new File(filename));
 			SBOLFactory.write(doc, fos);
 		} catch(Exception e) {
-			return false;
+			throw new EugeneException(e.toString());
 		}
-		return true;
 	}
 	
 	private SBOLDocument sbolExport()  
@@ -117,7 +148,7 @@ public class SolutionExporter {
 		return SBOLFactory.createDocument();
 	}
 	
-	private List<Symbol[]> getRandomSolutions(int N) {
+	private List<Component[]> getRandomSolutions(int N) {
 		int[] idx = null;
 		if(N != -1 && N < this.solutions.size()) {
 			idx = generateRandomIndices(N, this.solutions.size());
@@ -128,20 +159,30 @@ public class SolutionExporter {
 			}
 		}
 		
-		List<Symbol[]> lst = new ArrayList<Symbol[]>(idx.length);
+		List<Component[]> lst = new ArrayList<Component[]>(idx.length);
 		for(int i=0; i<idx.length; i++) {
 			lst.add(this.solutions.get(idx[i]));
 		}
 		return lst;
 	}
 	
-	public String toEugene() {
+	 /**
+	  * the method toEugene takes as input the name of the Eugene script 
+	  * file into which the solutions will be serialized using 
+	  * the Eugene language's syntax.
+	  * 
+	  * @param filename ... the desired Eugene script file name
+	  *
+	  */
+	 public void toEugene(String filename) 
+	 		throws EugeneException {
+		 
 		StringBuilder sb = new StringBuilder();
 		if(null == this.solutions || this.solutions.isEmpty())
-			return sb.toString();
+			throw new EugeneException("There are no solutions!");
 	
 		int d = 1;
-		for(Symbol[] solution : this.solutions) {
+		for(Component[] solution : this.solutions) {
 			sb.append("Device d").append(d++).append("(");
 			for(int i=0; i<solution.length; i++) {
 				// Orientation
@@ -159,6 +200,13 @@ public class SolutionExporter {
 			sb.append(");").append(NEWLINE);
 		}
 		
-		return sb.toString();
+		/*
+		 * serialize the string to the file
+		 */
+		try {
+			FileUtil.writeToFile(sb.toString(), new File(filename));
+		} catch(Exception e) {
+			throw new EugeneException("Cannot serialize to "+filename+"!");
+		}
 	}
 }

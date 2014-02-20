@@ -55,6 +55,10 @@ public class FileUtil {
 		out.close();
 	}
 
+	public static boolean makeDirectory(String path) {
+		return new File(path).mkdirs();
+	}
+	
 	public static boolean deleteDirectory(File path) {
 		if (path.exists()) {
 			File[] files = path.listFiles();
