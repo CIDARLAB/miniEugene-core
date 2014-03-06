@@ -41,7 +41,10 @@ public class TestSuite {
 		//new TestSuite().test(new File("./tests/bryan/ex1"));
 		//new TestSuite().test(new File("./tests/bryan/ex2"));
 		//new TestSuite().test(new File("./tests/bryan/ex3"));
-		new TestSuite().test(new File("./tests/bryan/ex4"));
+//		new TestSuite().test(new File("./tests/bryan/ex4"));
+		
+		new TestSuite().test(new File("./designs/inverter"));
+		
 		
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");

@@ -63,22 +63,22 @@ public class Component {
 		this.name = name;
 		this.forward = true;
 
-		this.id = 0;
-		char[] namechars = this.name.toCharArray();
-		for(int i=0; i<namechars.length; i++) {
-			this.id += namechars[i];
-		}
+		this.id = hash(this.name);
 	}
 	
 	public Component(String name, boolean forward) {
 		this.name = name;
 		this.forward = forward;
 		
-		this.id = 0;
-		char[] namechars = this.name.toCharArray();
-		for(int i=0; i<namechars.length; i++) {
-			this.id += namechars[i];
+		this.id = hash(this.name);
+	}
+	
+	private int hash(String name) {
+		int hash = name.hashCode();
+		if(hash < 0) {
+			return hash * -1;
 		}
+		return hash;
 	}
 	
 	/**

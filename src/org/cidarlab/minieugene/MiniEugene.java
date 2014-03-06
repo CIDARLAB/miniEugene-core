@@ -397,6 +397,8 @@ public class MiniEugene
 		 * solving the problem
 		 */
 		Component[] symbols = this.symbols.getSymbols();
+
+		//System.out.println(symbols);
 		if(null == symbols || symbols.length==0) {
 			throw new EugeneException("no solutions found!");
 		}
@@ -440,7 +442,7 @@ public class MiniEugene
 	@Override
 	public void solve(String[] rules, int N) 
 			throws EugeneException {
-
+		
 		/*
 		 * we look for ALL solutions...
 		 * hence, we set N to -1 
@@ -526,6 +528,7 @@ public class MiniEugene
 			 */
 			try {
 				Component[] symbols = this.symbols.getSymbols();
+
 				if(null == symbols || symbols.length==0) {
 					throw new EugeneException("no solutions found!");
 				}
