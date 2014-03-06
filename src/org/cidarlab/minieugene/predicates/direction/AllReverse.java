@@ -23,7 +23,7 @@ import JaCoP.core.Store;
  * 
  */
 public class AllReverse 
-	extends DirectionalityPredicate {
+	extends OrientationPredicate {
 
 	public AllReverse(int a) {
 		super(a);

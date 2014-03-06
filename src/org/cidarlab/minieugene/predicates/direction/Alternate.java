@@ -3,7 +3,6 @@ package org.cidarlab.minieugene.predicates.direction;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.Constraint;
 import JaCoP.constraints.IfThen;
@@ -12,20 +11,16 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 /*
- * ALL_FORWARD
- * 
- * all elements must have a reverse direction
- * 
- * X := the set of all symbols (defined by the user)
- * a element_of X
- * a == -1 => forall X : direction(X) = '-'
- * a != -1 => forall a : direction(a) = '-'
+ * ALTERNATE
+ *
+ * i in {1, ..., N-1}
+ * for all i: orientation(i) != orientation(i+1)
  * 
  */
-public class AllForward 
+public class Alternate 
 	extends OrientationPredicate {
 
-	public AllForward(int a) {
+	public Alternate(int a) {
 		super(a);
 	}
 
@@ -46,14 +41,14 @@ public class AllForward
 				throws EugeneException {
 		if(this.getA() == -1) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				store.impose(new XeqC(variables[Variables.ORIENTATION][i], 1));
+				store.impose(new XeqC(variables[Variables.ORIENTATION][i], -1));
 			}
 		} else {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(
 						new IfThen(
 								new XeqC(variables[Variables.PART][i], this.getA()),
-								new XeqC(variables[Variables.ORIENTATION][i], 1)));
+								new XeqC(variables[Variables.ORIENTATION][i], -1)));
 			}
 		}
 		
@@ -66,14 +61,14 @@ public class AllForward
 			throws EugeneException {
 		if(this.getA() == -1) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				store.impose(new XeqC(variables[Variables.ORIENTATION][i], -1));
+				store.impose(new XeqC(variables[Variables.ORIENTATION][i], 1));
 			}
 		} else {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(
 						new IfThen(
 								new XeqC(variables[Variables.PART][i], this.getA()),
-								new XeqC(variables[Variables.ORIENTATION][i], -1)));
+								new XeqC(variables[Variables.ORIENTATION][i], 1)));
 			}
 		}
 		

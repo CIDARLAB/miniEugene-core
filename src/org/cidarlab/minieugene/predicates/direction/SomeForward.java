@@ -17,7 +17,7 @@ import JaCoP.core.Store;
  * exists a : direction(a) = '-'
  */
 public class SomeForward 
-	extends DirectionalityPredicate {
+	extends OrientationPredicate {
 
 	public SomeForward(int a) {
 		super(a);

@@ -64,8 +64,10 @@ public class AllBefore
 		 * 
 		 * contains(a) /\ contains (b) => 
 		 * 		for all a, b: position(a) < position(b)
+		 * otherwise => TRUE
 		 */
 
+		// a is FORWARD oriented
 		PrimitiveConstraint pc[] = new PrimitiveConstraint[N-1];
 		for(int i=1; i<N; i++) {
 			if(i > 0) {
@@ -95,6 +97,7 @@ public class AllBefore
 							new XneqC(variables[Variables.PART][i], b));
 			}							
 		}			
+
 		
 //		return null;
 		return new And(pc);

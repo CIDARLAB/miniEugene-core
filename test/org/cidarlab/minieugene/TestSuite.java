@@ -43,9 +43,10 @@ public class TestSuite {
 		//new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
 		
-		new TestSuite().test(new File("./designs/inverter"));
-		
-		
+//		new TestSuite().test(new File("./tests/then/then01"));
+
+		new TestSuite().test(new File("./tests/swati/test01"));
+
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
 	}
@@ -64,15 +65,17 @@ public class TestSuite {
 //			MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
 			long tProcessing = System.nanoTime() - t1;
 			
-			me.getStatistics().print();
+//			me.getStatistics().print();
 
 			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
-			System.out.println(se.toPigeon());
+			//System.out.println(se.toPigeon());
+
+//			String filename = java.util.UUID.randomUUID().toString();
+//			se.toSBOL("./test-results/"+filename+".sbol.xml");
+//			se.toEugene("./test-results/"+filename+".eug");
 			
-			String filename = java.util.UUID.randomUUID().toString();
-			se.toSBOL("./test-results/"+filename+".sbol.xml");
-			se.toEugene("./test-results/"+filename+".eug");
-			
+			se.toConsole();
+
 			System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		} catch(Exception e) {
 			e.printStackTrace();
