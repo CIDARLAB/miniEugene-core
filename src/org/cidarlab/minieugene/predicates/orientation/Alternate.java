@@ -47,7 +47,6 @@ public class Alternate
 		
 		int N = variables[Variables.ORIENTATION].length;
 		
-		System.out.println("imposing "+this.toString());
 		/*
 		 * 
 		 * IF orientation(i) == 1 THEN orientation(i+1) != 1 
@@ -80,7 +79,7 @@ public class Alternate
 	@Override
 	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		System.out.println("imposing NOT "+this.toString());
+//		System.out.println("imposing NOT "+this.toString());
 
 		return new Not((PrimitiveConstraint)this.toJaCoP(store, variables));
 	}
