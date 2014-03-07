@@ -62,6 +62,8 @@ public class TestSuite {
 		 */
 		new TestSuite().test(new File("./tests/alternate"));
 
+//		new TestSuite().test(new File("./tests/swati/test01"));
+
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
 	}
@@ -80,7 +82,7 @@ public class TestSuite {
 //			MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
 			long tProcessing = System.nanoTime() - t1;
 			
-			me.getStatistics().print();
+//			me.getStatistics().print();
 
 			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 //			System.out.println(se.toPigeon());

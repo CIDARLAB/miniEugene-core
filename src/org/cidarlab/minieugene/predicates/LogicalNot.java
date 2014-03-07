@@ -4,7 +4,6 @@ import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 import org.cidarlab.minieugene.predicates.orientation.OrientationPredicate;
-
 import JaCoP.constraints.Constraint;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.Not;
