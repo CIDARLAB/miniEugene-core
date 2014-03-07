@@ -43,9 +43,25 @@ public class TestSuite {
 		//new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
 		
-		new TestSuite().test(new File("./designs/inverter"));
-		
-		
+		/*
+		 * BEFORE
+		 */
+//		new TestSuite().test(new File("./tests/before/before01"));
+//		
+		/*
+		 * THEN
+		 */
+//		new TestSuite().test(new File("./tests/then/then01"));
+//		new TestSuite().test(new File("./tests/then/then02"));
+//		new TestSuite().test(new File("./tests/then/then03"));
+
+//		new TestSuite().test(new File("./tests/swati/test01"));
+
+		/*
+		 * ALTERNATE
+		 */
+		new TestSuite().test(new File("./tests/alternate"));
+
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
 	}
@@ -67,12 +83,14 @@ public class TestSuite {
 			me.getStatistics().print();
 
 			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
-			System.out.println(se.toPigeon());
+//			System.out.println(se.toPigeon());
+
+//			String filename = java.util.UUID.randomUUID().toString();
+//			se.toSBOL("./test-results/"+filename+".sbol.xml");
+//			se.toEugene("./test-results/"+filename+".eug");
 			
-			String filename = java.util.UUID.randomUUID().toString();
-			se.toSBOL("./test-results/"+filename+".sbol.xml");
-			se.toEugene("./test-results/"+filename+".eug");
-			
+			se.toConsole();
+
 			System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		} catch(Exception e) {
 			e.printStackTrace();

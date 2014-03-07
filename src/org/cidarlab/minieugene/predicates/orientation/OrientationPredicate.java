@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.predicates.direction;
+package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.Predicate;
@@ -7,12 +7,12 @@ import JaCoP.constraints.Constraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
-public abstract class DirectionalityPredicate 
+public abstract class OrientationPredicate 
 	implements Predicate {
 
 	private int a;
 	
-	public DirectionalityPredicate(int a) {
+	public OrientationPredicate(int a) {
 		this.a = a;
 	}
 	

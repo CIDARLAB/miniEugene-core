@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.predicates.direction;
+package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.exception.EugeneException;
@@ -16,10 +16,10 @@ import JaCoP.core.Store;
  * a element_of X
  * exists a : direction(a) = '-'
  */
-public class SomeForward 
-	extends DirectionalityPredicate {
+public class SomeReverse 
+	extends OrientationPredicate {
 
-	public SomeForward(int a) {
+	public SomeReverse(int a) {
 		super(a);
 	}
 

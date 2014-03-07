@@ -8,6 +8,7 @@ import org.cidarlab.minieugene.solver.jacop.Variables;
 import JaCoP.constraints.And;
 import JaCoP.constraints.Constraint;
 import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XneqC;
@@ -64,8 +65,10 @@ public class AllBefore
 		 * 
 		 * contains(a) /\ contains (b) => 
 		 * 		for all a, b: position(a) < position(b)
+		 * otherwise => TRUE
 		 */
 
+		// a is FORWARD oriented
 		PrimitiveConstraint pc[] = new PrimitiveConstraint[N-1];
 		for(int i=1; i<N; i++) {
 			if(i > 0) {
@@ -74,29 +77,43 @@ public class AllBefore
 					pcB[j] = new XneqC(variables[Variables.PART][j], b);
 				}
 				
-//				store.impose(
-//						new IfThen(
-//								new XeqC(variables[i], a),
-//								new And(pcB)));
 				pc[i-1] = new IfThen(
-							new XeqC(variables[Variables.PART][i], a),
+							new And(new XeqC(variables[Variables.ORIENTATION][i], 1),
+									new XeqC(variables[Variables.PART][i], a)),
 							new And(pcB));
 			} else {
-
-				//store.impose(
-				//		new XneqC(variables[i], b));
-//				store.impose(
-//						new IfThen(
-//								new XeqC(variables[Variables.PART][i], a),
-//								new XneqC(variables[Variables.PART][i], b)));
 				
 				pc[i] = new IfThen(
-							new XeqC(variables[Variables.PART][i], a),
+							new And(new XeqC(variables[Variables.ORIENTATION][i], 1),
+									new XeqC(variables[Variables.PART][i], a)),
 							new XneqC(variables[Variables.PART][i], b));
 			}							
 		}			
+
+		store.impose(new And(pc));
 		
-//		return null;
+		pc = new PrimitiveConstraint[N-1];
+		for(int i=1; i<N; i++) {
+			if(i > 0) {
+				PrimitiveConstraint[] pcB = new PrimitiveConstraint[i];
+				for(int j=0; j<i; j++) {
+					pcB[j] = new XeqC(variables[Variables.PART][j], b);
+				}
+				
+				pc[i-1] = new IfThen(
+							new And(new XeqC(variables[Variables.ORIENTATION][i], -1),
+									new XeqC(variables[Variables.PART][i], a)),
+							new Or(pcB));
+			} else {
+				
+				pc[i] = new IfThen(
+							new And(new XeqC(variables[Variables.ORIENTATION][i], -1),
+									new XeqC(variables[Variables.PART][i], a)),
+							new XneqC(variables[Variables.PART][i], b));
+			}							
+		}			
+
+		//		return null;
 		return new And(pc);
 	}
 	

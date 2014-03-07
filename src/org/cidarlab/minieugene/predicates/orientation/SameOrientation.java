@@ -1,37 +1,34 @@
-package org.cidarlab.minieugene.predicates.direction;
+package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.Constraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 /*
- * SOME_REVERSE a
+ * a SAME_ORIENTATION b
  * 
- * X := the set of all symbols (defined by the user)
- * a element_of X
- * exists a : direction(a) = '-'
  */
-public class SomeReverse 
-	extends DirectionalityPredicate {
+public class SameOrientation 
+	extends BinaryPredicate {
 
-	public SomeReverse(int a) {
-		super(a);
+	public SameOrientation(int a, int b) {
+		super(a, b);
 	}
 
 	@Override
 	public String getOperator() {
-		return RuleOperator.SOME_REVERSE.toString();
+		return RuleOperator.SAME_ORIENTATION.toString();
 	}
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.SOME_REVERSE);
+		StringBuilder sb = new StringBuilder();		
+		sb.append(RuleOperator.SAME_ORIENTATION);
 		return sb.toString();
 	}
 
@@ -42,13 +39,6 @@ public class SomeReverse
 		for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 			
 		}
-		return null;
-	}
-
-	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
-
 		return null;
 	}
 

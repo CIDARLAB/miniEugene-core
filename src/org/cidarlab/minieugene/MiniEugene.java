@@ -35,8 +35,9 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
-import org.cidarlab.minieugene.predicates.direction.AllForward;
-import org.cidarlab.minieugene.predicates.direction.AllReverse;
+import org.cidarlab.minieugene.predicates.orientation.AllForward;
+import org.cidarlab.minieugene.predicates.orientation.AllReverse;
+import org.cidarlab.minieugene.predicates.orientation.Alternate;
 import org.cidarlab.minieugene.solver.jacop.JaCoPSolver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -104,9 +105,10 @@ public class MiniEugene
 		case 1:
 			/*
 			 * PREDICATES w/o a rule operand
+			 * nullary predicate
 			 * e.g. ALL_REVERSE
 			 */
-			return createPredicate(tokens[0]);
+			return createNullaryPredicate(tokens[0]);
 		case 2:
 			/*
 			 * unary rule
@@ -134,9 +136,9 @@ public class MiniEugene
 		}
 	}
 	
-	private Predicate createPredicate(String s) 
+	private Predicate createNullaryPredicate(String s) 
 			throws EugeneException {
-		return this.pb.buildPredicate(s);
+		return this.pb.buildNullaryPredicate(s);
 	}
 	
 	private Predicate createUnaryPredicate(String p, String s) 
@@ -148,6 +150,8 @@ public class MiniEugene
 				return new LogicalNot(new AllReverse(-1));
 			} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(s)) {
 				return new LogicalNot(new AllForward(-1));
+			} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(s)) {
+				return new LogicalNot(new Alternate());
 			}
 
 			

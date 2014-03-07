@@ -209,4 +209,32 @@ public class SolutionExporter {
 			throw new EugeneException("Cannot serialize to "+filename+"!");
 		}
 	}
+
+	 /**
+	  * 
+	  */
+	 public void toConsole() {
+		 if(null != this.solutions) {
+			 StringBuilder sb = new StringBuilder();
+			 for(Component[] solution : this.solutions) {
+				 for(int i=0; i<solution.length; i++) {
+					 // Orientation
+					 if(!solution[i].isForward()) {
+						 sb.append("-");
+					 }
+					
+					 // name of the part
+					 sb.append(solution[i].getName());
+					 if(i < solution.length-1) {
+						 sb.append(", ");
+					 }
+					
+				 }
+				 sb.append(NEWLINE);
+			 }
+			 
+			 
+			 System.out.println(sb.toString());
+		 }
+	 }
 }

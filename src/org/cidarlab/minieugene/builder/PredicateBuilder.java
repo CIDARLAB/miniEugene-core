@@ -7,13 +7,14 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.Exactly;
 import org.cidarlab.minieugene.predicates.counting.MoreThan;
-import org.cidarlab.minieugene.predicates.direction.AllForward;
-import org.cidarlab.minieugene.predicates.direction.AllReverse;
-import org.cidarlab.minieugene.predicates.direction.SomeForward;
-import org.cidarlab.minieugene.predicates.direction.SomeReverse;
 import org.cidarlab.minieugene.predicates.interaction.Drives;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
+import org.cidarlab.minieugene.predicates.orientation.AllForward;
+import org.cidarlab.minieugene.predicates.orientation.AllReverse;
+import org.cidarlab.minieugene.predicates.orientation.Alternate;
+import org.cidarlab.minieugene.predicates.orientation.SomeForward;
+import org.cidarlab.minieugene.predicates.orientation.SomeReverse;
 import org.cidarlab.minieugene.predicates.pairing.Equals;
 import org.cidarlab.minieugene.predicates.pairing.Then;
 import org.cidarlab.minieugene.predicates.pairing.With;
@@ -34,12 +35,14 @@ public class PredicateBuilder {
 		this.symbols = symbols;
 	}
 	
-	public Predicate buildPredicate(String p) 
+	public Predicate buildNullaryPredicate(String p) 
 			throws EugeneException {
 		if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p)) {
 			return new AllReverse(-1);
 		} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(p)) {
 			return new AllForward(-1);
+		} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(p)) {
+			return new Alternate();
 		}
 		
 		throw new EugeneException("Invalid Rule!");
