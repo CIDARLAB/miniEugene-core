@@ -59,6 +59,7 @@ public class Component {
 	 */
 	private boolean forward;
 	
+	
 	public Component(String name) {
 		this.name = name;
 		this.forward = true;

@@ -1,9 +1,10 @@
 package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.Constraint;
 import JaCoP.constraints.IfThen;
@@ -12,9 +13,9 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 /*
- * ALL_FORWARD
+ * ALL_FORWARD (a)?
  * 
- * all elements must have a reverse direction
+ * all (a's) must have a reverse direction
  * 
  * X := the set of all symbols (defined by the user)
  * a element_of X
@@ -22,10 +23,11 @@ import JaCoP.core.Store;
  * a != -1 => forall a : direction(a) = '-'
  * 
  */
-public class AllForward 
-	extends OrientationPredicate {
+public class AllForward
+	extends UnaryPredicate
+	implements OrientationPredicate {
 
-	public AllForward(int a) {
+	public AllForward(Component a) {
 		super(a);
 	}
 
@@ -44,7 +46,7 @@ public class AllForward
 	@Override
 	public Constraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
-		if(this.getA() == -1) {
+		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(new XeqC(variables[Variables.ORIENTATION][i], 1));
 			}
@@ -52,7 +54,7 @@ public class AllForward
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(
 						new IfThen(
-								new XeqC(variables[Variables.PART][i], this.getA()),
+								new XeqC(variables[Variables.PART][i], this.getA().getId()),
 								new XeqC(variables[Variables.ORIENTATION][i], 1)));
 			}
 		}
@@ -64,7 +66,7 @@ public class AllForward
 	@Override
 	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		if(this.getA() == -1) {
+		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(new XeqC(variables[Variables.ORIENTATION][i], -1));
 			}
@@ -72,7 +74,7 @@ public class AllForward
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(
 						new IfThen(
-								new XeqC(variables[Variables.PART][i], this.getA()),
+								new XeqC(variables[Variables.PART][i], this.getA().getId()),
 								new XeqC(variables[Variables.ORIENTATION][i], -1)));
 			}
 		}

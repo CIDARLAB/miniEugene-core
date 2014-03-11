@@ -95,7 +95,7 @@ public class SymbolTables {
 	public void put(Predicate p) {
 		this.predicates.add(p);
 	}
-	
+		
 	public Set<Predicate> getPredicates() {
 		return this.predicates;
 	}

@@ -25,19 +25,15 @@ package org.cidarlab.minieugene;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.cidarlab.minieugene.builder.PredicateBuilder;
+import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.CommonTokenStream;
 import org.cidarlab.minieugene.constants.EugeneConstants;
-import org.cidarlab.minieugene.constants.EugeneRules;
-import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
-import org.cidarlab.minieugene.predicates.LogicalNot;
+import org.cidarlab.minieugene.parser.MiniEugeneLexer;
+import org.cidarlab.minieugene.parser.MiniEugeneParser;
 import org.cidarlab.minieugene.predicates.Predicate;
-import org.cidarlab.minieugene.predicates.orientation.AllForward;
-import org.cidarlab.minieugene.predicates.orientation.AllReverse;
-import org.cidarlab.minieugene.predicates.orientation.Alternate;
 import org.cidarlab.minieugene.solver.jacop.JaCoPSolver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -53,7 +49,7 @@ public class MiniEugene
 	 * reference to the symbol tables
 	 */
 	private SymbolTables symbols;
-	private PredicateBuilder pb;
+	//private PredicateBuilder pb;
 	
 	private int N;
 	
@@ -65,296 +61,119 @@ public class MiniEugene
 	 */
 	public MiniEugene() {
 		this.symbols = new SymbolTables();
-		this.pb = new PredicateBuilder(this.symbols);
+		//this.pb = new PredicateBuilder(this.symbols);
 		
 		this.stats = new MiniEugeneStatistics();
 		this.solutions = null;
 	}
 	
 
-	/*
-	 * N = ( <number> | '*' )
-	 */
-	private int parseN(String line) 
-			throws EugeneException {
+//	/*
+//	 * N = ( <number> | '*' )
+//	 */
+//	private int parseN(String line) 
+//			throws EugeneException {
+//
+//		String[] s = line.split("=");
+//		if(s.length != 2 || !("N".equalsIgnoreCase(s[0].trim()))) {
+//			throw new EugeneException("invalid N");
+//		}
+//		
+//		if(!"*".equalsIgnoreCase(s[1].trim())) {
+//			try {
+//				return Integer.valueOf(s[1].trim());			
+//			} catch(NumberFormatException nfe) {
+//				throw new EugeneException("invalid N");
+//			}
+//		}
+//		
+//		return -1;
+//	}
+//
+//	
+//	
+//	/*
+//	 * PARSING - RELATED METHODS
+//	 */
+//	private Predicate[] parsePredicates(String[] lines) 
+//			throws EugeneException {
+//		/*
+//		 * the first line needs to be the N line
+//		 */
+//		Predicate[] predicates = null;
+//		int i=0;
+//		try {
+//			
+//			/*
+//			 * if there was no N provided, then N
+//			 * MUST be specified in the first line
+//			 */
+//			if(this.N == -1) {
+//				this.N = parseN(lines[i++]);
+//			}
+//			
+//			for(; i<lines.length; i++) {
+//				lines[i] = lines[i].trim();
+//
+//				if (! (lines[i].startsWith("//") || lines[i].isEmpty())) {
+//					Predicate p = interpreteRule(parseRule(lines[i]));
+//					predicates = addPredicate(predicates, p);
+//				}
+//			}
+//			
+//		} catch(Exception e) {
+//			throw new EugeneException("line "+(i+1)+" => "+e.getMessage());
+//		}
+//
+//		return predicates;
+//	}
+//	
+//	private Predicate[] addPredicate(Predicate[] predicates, Predicate predicate) {
+//		if(predicates == null) {
+//			predicates = new Predicate[1];
+//			predicates[0] = predicate;
+//		} else {
+//			predicates = ArrayUtils.add(predicates, predicate);
+//		}
+//		
+//		return predicates;
+//	}
+//	
+//	/*
+//	 * (NOT)? <symbol> <predicate> <symbol>
+//	 * 
+//	 * <symbol>    := {p, r, g, t}
+//	 * <predicate> := {CONTAINS, NOTCONTAINS}
+//	 */
+//	private String[] parseRule(String line) 
+//			throws EugeneException {
+//		String[] s = line.split(" ");
+//
+//		String[] tokens = null;
+//		
+//		for(int i=0; i<s.length; i++) {
+//
+//			// remove possible white spaces
+//			s[i].trim();
+//			
+//			if(s[i] != null && !(s[i].isEmpty())) {
+//				
+//				if(null == tokens) {
+//					tokens = new String[1];
+//					tokens[0] = s[i];
+//				} else {
+//					tokens = ArrayUtils.add(tokens, s[i]);
+//				}
+//			}
+//		}
+//		
+//		if(null == tokens) {
+//			throw new EugeneException("Invalid Rule! "+line);
+//		}
+//		
+//		return tokens;
+//	}
 
-		String[] s = line.split("=");
-		if(s.length != 2 || !("N".equalsIgnoreCase(s[0].trim()))) {
-			throw new EugeneException("invalid N");
-		}
-		
-		if(!"*".equalsIgnoreCase(s[1].trim())) {
-			try {
-				return Integer.valueOf(s[1].trim());			
-			} catch(NumberFormatException nfe) {
-				throw new EugeneException("invalid N");
-			}
-		}
-		
-		return -1;
-	}
-
-	
-	/*
-	 * INTERPRETER - RELATED METHODS
-	 */
-	private Predicate interpreteRule(String[] tokens) 
-			throws EugeneException {
-		
-		switch(tokens.length) {
-		case 1:
-			/*
-			 * PREDICATES w/o a rule operand
-			 * nullary predicate
-			 * e.g. ALL_REVERSE
-			 */
-			return createNullaryPredicate(tokens[0]);
-		case 2:
-			/*
-			 * unary rule
-			 */
-			return createUnaryPredicate(tokens[0], tokens[1]);
-		case 3:
-			/*
-			 * binary rule
-			 * or
-			 * negated unary rule
-			 */
-			if("NOT".equalsIgnoreCase(tokens[0])) {
-				return new LogicalNot(createUnaryPredicate(tokens[1], tokens[2]));
-			}
-			return createBinaryPredicate(tokens[0], tokens[1], tokens[2]);
-		case 4:
-			/*
-			 * negated binary rule
-			 */
-			if("NOT".equalsIgnoreCase(tokens[0]) && !("NOT".equalsIgnoreCase(tokens[1]))) {
-				return new LogicalNot(createBinaryPredicate(tokens[1], tokens[2], tokens[3]));
-			}
-		default:
-			throw new EugeneException("Invalid Rule!");
-		}
-	}
-	
-	private Predicate createNullaryPredicate(String s) 
-			throws EugeneException {
-		return this.pb.buildNullaryPredicate(s);
-	}
-	
-	private Predicate createUnaryPredicate(String p, String s) 
-			throws EugeneException {
-
-		if("NOT".equalsIgnoreCase(p)) {
-			
-			if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new AllReverse(-1));
-			} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new AllForward(-1));
-			} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new Alternate());
-			}
-
-			
-		} else if(EugeneRules.isUnaryRule(p)) {
-			/*
-			 * get the id from the symbol
-			 */
-			int id = -1;
-			if(this.symbols.contains(s)) {
-				id = this.symbols.getId(s);
-			} else {
-				/*
-				 * if the symbol does not exist, 
-				 * then add it to the symbol tables
-				 */
-				id = this.symbols.put(s);
-			}
-
-			/*
-			 * build the predicate (by the predicate builder)
-			 * and store it in the symbol tables
-			 */
-			return this.pb.buildUnary(p, id);
-		}
-		
-		throw new EugeneException("Invalid rule!");		
-	}
-
-	
-	private Predicate createBinaryPredicate(String a, String X, String b) 
-			throws EugeneException {
-		
-		if("NOT".equalsIgnoreCase(a)) {
-			/*
-			 * negated unary rule
-			 * e.g. NOT CONTAINS a
-			 */
-			return this.pb.buildNegatedUnary(X, this.symbols.getId(b));
-		} else if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X) ||
-				RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
-				
-			if(!(a.startsWith("[") && a.endsWith("]") &&
-				 b.startsWith("[") && b.endsWith("]"))) {
-				throw new EugeneException("Invalid "+X+" rule!");
-			}
-			
-			
-			/*
-			 * next, we need to get the index out of the strings a and b
-			 */
-			a = a.substring(1, a.length()-1);
-			b = b.substring(1, b.length()-1);
-			
-			int idxA = this.toIndex(a);
-			int idxB = this.toIndex(b);
-			
-			return this.pb.buildBinary(idxA, X, idxB);
-			
-		} else if(EugeneRules.isInteractionRule(X)) {
-			
-			return this.pb.buildInteraction(a, X, b);
-		}
-		
-		/*
-		 * get a's id from the symbol
-		 */
-		int idA = this.symbols.getId(a);
-		
-		int idB = -1;
-		if(EugeneRules.isCountingRule(X)) {
-
-			/*
-			 * b must be a decimal non-negative number
-			 */
-			try {
-				idB = Integer.parseInt(b);
-			} catch(Exception e) {
-				throw new EugeneException("Invalid rule!");
-			}
-
-			/*
-			 * 	0 <= b <= N
-			 */
-			if(idB < 0 || idB > this.N) {
-				throw new EugeneException("Invalid rule!");
-			}
-			
-		} else if(EugeneRules.isPositionalRule(X) ||
-				EugeneRules.isPairingRule(X)) {
-			
-			idB = this.symbols.getId(b);
-
-		}
-
-		/*
-		 * build the predicate (by the predicate builder)
-		 * and store it in the symbol tables
-		 */
-		if( idB != (-1)) {
-			return this.pb.buildBinary(idA, X, idB);
-		}
-		
-		throw new EugeneException("Invalid rule!");
-	}
-	
-	/*
-	 * PARSING - RELATED METHODS
-	 */
-	private Predicate[] parsePredicates(String[] lines) 
-			throws EugeneException {
-		/*
-		 * the first line needs to be the N line
-		 */
-		Predicate[] predicates = null;
-		int i=0;
-		try {
-			
-			/*
-			 * if there was no N provided, then N
-			 * MUST be specified in the first line
-			 */
-			if(this.N == -1) {
-				this.N = parseN(lines[i++]);
-			}
-			
-			for(; i<lines.length; i++) {
-				lines[i] = lines[i].trim();
-
-				if (! (lines[i].startsWith("//") || lines[i].isEmpty())) {
-					Predicate p = interpreteRule(parseRule(lines[i]));
-					predicates = addPredicate(predicates, p);
-				}
-			}
-			
-		} catch(Exception e) {
-			throw new EugeneException("line "+(i+1)+" => "+e.getMessage());
-		}
-
-		return predicates;
-	}
-	
-	private Predicate[] addPredicate(Predicate[] predicates, Predicate predicate) {
-		if(predicates == null) {
-			predicates = new Predicate[1];
-			predicates[0] = predicate;
-		} else {
-			predicates = ArrayUtils.add(predicates, predicate);
-		}
-		
-		return predicates;
-	}
-	
-	/*
-	 * (NOT)? <symbol> <predicate> <symbol>
-	 * 
-	 * <symbol>    := {p, r, g, t}
-	 * <predicate> := {CONTAINS, NOTCONTAINS}
-	 */
-	private String[] parseRule(String line) 
-			throws EugeneException {
-		String[] s = line.split(" ");
-
-		String[] tokens = null;
-		
-		for(int i=0; i<s.length; i++) {
-
-			// remove possible white spaces
-			s[i].trim();
-			
-			if(s[i] != null && !(s[i].isEmpty())) {
-				
-				if(null == tokens) {
-					tokens = new String[1];
-					tokens[0] = s[i];
-				} else {
-					tokens = ArrayUtils.add(tokens, s[i]);
-				}
-			}
-		}
-		
-		if(null == tokens) {
-			throw new EugeneException("Invalid Rule! "+line);
-		}
-		
-		return tokens;
-	}
-
-	private int toIndex(String a) 
-			throws EugeneException {
-
-		int idx = -1;
-		try {
-			idx = Integer.parseInt(a);
-		} catch(NumberFormatException nfe) {
-			throw new EugeneException("Invalid index!");
-		}
-
-		if(idx < 0 || idx >= this.N) {
-			throw new EugeneException("Index "+idx+" is out of range!");
-		}
-		
-		return idx;
-	}
 
 	/**
 	 * solve/3 method finds NR_OF_SOLUTIONS rule-compliant designs of size N. 
@@ -393,50 +212,45 @@ public class MiniEugene
 		this.symbols.clear();
 
 		/*
-		 * parse the rules
+		 * first, we need to build the miniEugene script
+		 * based on the given information
 		 */
-		Predicate[] predicates = this.parsePredicates(rules);
-				
+		String script = this.buildScript(N, rules);
+		
 		/*
-		 * solving the problem
+		 * then, we parse the miniEugene script
 		 */
-		Component[] symbols = this.symbols.getSymbols();
-
-		//System.out.println(symbols);
-		if(null == symbols || symbols.length==0) {
-			throw new EugeneException("no solutions found!");
-		}
+		Predicate[] predicates = this.parse(script);
 		
-		this.stats.add(EugeneConstants.SIZE_OF_DESIGN, this.N);
-		this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
-		this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, N) * Math.pow(2, N));
-		this.stats.add(EugeneConstants.NUMBER_OF_RULES, predicates.length);
-				
-		try {
-			
-			long T1 = System.nanoTime();
-			
-			this.solutions = new JaCoPSolver(this.symbols).solve(N, symbols, predicates, NR_OF_SOLUTIONS);
-		
-			long T2 = System.nanoTime();
-			
-			if(null == this.solutions || this.solutions.isEmpty()) {
-				throw new EugeneException("no solutions found!");
-			}
-
-			this.stats.add(EugeneConstants.SOLUTION_FINDING_TIME, (T2-T1)*Math.pow(10, -9));
-			
-		} catch(Exception e) {
-			throw new EugeneException(e.getMessage());
-		}
-
-		if(null != solutions) {
-			this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, solutions.size());
-		} else {
-			this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, 0);
-		}
+		/*
+		 * and finally, we solve the problem
+		 */
+		this.solve(predicates, NR_OF_SOLUTIONS);
 	}
 
+	/**
+	 * 
+	 * @param N
+	 * @param rules
+	 * @return
+	 */
+	private String buildScript(int N, String[] rules) {
+		StringBuilder sb = new StringBuilder();
+
+		// N = number .
+		sb.append("N=").append(N).append(".");
+		
+		// rules
+		for(int i=0; i<rules.length; i++) {
+			sb.append(rules[i]);
+			if(!rules[i].endsWith(".")) {
+				sb.append(".");
+			}
+		}
+		
+		return sb.toString();
+	}
+	
 	/**
 	 * solve/3 method finds ALL rule-compliant designs of size N. 
 	 *
@@ -492,12 +306,132 @@ public class MiniEugene
 		return this.symbols.getInteractions();
 	}
 	
+	
+	/**
+	 * 
+	 */
+	public void solve(String script, int NR_OF_SOLUTIONS) 
+		throws EugeneException {
+		
+		try {
+			this.solve(script);
+		} catch(EugeneException ee) {
+			throw new EugeneException(ee.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void solve(String script) 
+			throws EugeneException {
+			
+		/*
+		 * first, we parse the script
+		 */
+		Predicate[] predicates = null;
+		try {
+			predicates = this.parse(script);
+			
+			if(predicates != null) {
+				for(int i=0; i<predicates.length; i++) {
+					System.out.println(predicates[i]);
+				}
+			} else {
+				System.out.println("NO PREDICATES!");
+			}
+		} catch(EugeneException e) {
+			throw new EugeneException(e.getMessage());
+		}
+			
+	}
+
+	/**
+	 * 
+	 * @param script
+	 * @return
+	 */
+	private Predicate[] parse(String script) 
+			throws EugeneException {
+		
+		// Lexer
+		MiniEugeneLexer lexer = new MiniEugeneLexer(
+				new ANTLRStringStream(script));
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		// Parser
+		MiniEugeneParser parser = new MiniEugeneParser(tokens);
+
+		// initialize the parser with the symboltables
+		parser.init(this.symbols);
+		
+		// PARSING
+		try {
+			parser.miniEugene();
+		} catch(Exception e) {
+			throw new EugeneException(e.getMessage());
+		}
+
+		// finally, we return the create
+		// Predicate objects
+		return parser.getPredicates();
+	}
+	
+	/**
+	 * 
+	 * @param predicates
+	 * @param NR_OF_SOLUTIONS
+	 */
+	private void solve(Predicate[] predicates, int NR_OF_SOLUTIONS) 
+			throws EugeneException {
+
+		try {
+			Component[] symbols = this.symbols.getSymbols();
+
+			if(null == symbols || symbols.length==0) {
+				throw new EugeneException("no solutions found!");
+			}
+
+			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
+			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, this.N) * Math.pow(2, this.N));
+			this.stats.add(EugeneConstants.NUMBER_OF_RULES, predicates.length);
+
+			/*
+			 * SOLUTION FINDING
+			 */
+			long T1 = System.nanoTime();
+			this.solutions = new JaCoPSolver(this.symbols).solve(this.N, symbols, predicates, NR_OF_SOLUTIONS);
+			long T2 = System.nanoTime();
+
+			if(null != solutions) {
+				this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, solutions.size());
+			} else {
+				this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, 0);
+			}					
+				
+
+			/*
+			 * next, we iterate over the predicates and check if there are any
+			 * SOME_REVERSE directionality predicates
+			 */
+			stats.add(EugeneConstants.SOLUTION_FINDING_TIME, (T2-T1)*Math.pow(10, -9));
+
+			if(null == solutions || solutions.size()==0) {
+				throw new EugeneException("no solutions found!");
+			}
+
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new EugeneException(e.getMessage());
+		}
+	}
+	
 	/*
 	 * ONLY FOR TESTING PURPOSE
 	 */
 	protected void executeScript(String script, int N, int NR_OF_SOLUTIONS) 
 			throws EugeneException {
-
+		
 		if(null == script || script.isEmpty()) {
 			throw new EugeneException("please provide some input!");
 		}
@@ -508,69 +442,17 @@ public class MiniEugene
 		 */
 		this.symbols.clear();
 		
-		this.N = N;
-//		this.NR_OF_SOLUTIONS = NR_OF_SOLUTIONS;
+		
+		try {
+			Predicate[] predicates = this.parse(script);
+			
+			this.solve(predicates, NR_OF_SOLUTIONS);
+		} catch(Exception e) {
+			throw new EugeneException(e.getMessage());
+		}
 
-		this.stats = new MiniEugeneStatistics();		
-		this.solutions = null;
-
-		/*
-		 * we parse the received string line by line
-		 */
-		String[] lines = script.split(System.getProperty("line.separator"));
-
-		if(lines.length>0) {
-
-			/*
-			 * parsing
-			 */
-			Predicate[] predicates = this.parsePredicates(lines);
-
-
-			/*
-			 * solving
-			 */
-			try {
-				Component[] symbols = this.symbols.getSymbols();
-
-				if(null == symbols || symbols.length==0) {
-					throw new EugeneException("no solutions found!");
-				}
-
-				this.stats.add("Number of Parts", symbols.length);
-				this.stats.add("Possible Solutions", Math.pow(symbols.length, this.N) * Math.pow(2, this.N));
-				this.stats.add("Number of Rules", predicates.length);
-
-				/*
-				 * SOLUTION FINDING
-				 */
-				long T1 = System.nanoTime();
-				this.solutions = new JaCoPSolver(this.symbols).solve(this.N, symbols, predicates, NR_OF_SOLUTIONS);
-				long T2 = System.nanoTime();
-
-				if(null != solutions) {
-					this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, solutions.size());
-				} else {
-					this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, 0);
-				}					
-					
-
-				/*
-				 * next, we iterate over the predicates and check if there are any
-				 * SOME_REVERSE directionality predicates
-				 */
-				stats.add(EugeneConstants.SOLUTION_FINDING_TIME, (T2-T1)*Math.pow(10, -9));
-
-				if(null == solutions || solutions.size()==0) {
-					throw new EugeneException("no solutions found!");
-				}
-
-			} catch(Exception e) {
-				e.printStackTrace();
-				throw new EugeneException(e.getMessage());
-			}
-
-		}		
 	}
+	
+	
 
 }

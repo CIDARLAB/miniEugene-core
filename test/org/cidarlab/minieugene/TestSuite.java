@@ -42,7 +42,12 @@ public class TestSuite {
 		//new TestSuite().test(new File("./tests/bryan/ex2"));
 		//new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
-		
+
+		/*
+		 * CALCULATE minN
+		 */
+//		new TestSuite().test(new File("./tests/counting/minN/minN01"));
+
 		/*
 		 * BEFORE
 		 */
@@ -82,7 +87,7 @@ public class TestSuite {
 //			MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
 			long tProcessing = System.nanoTime() - t1;
 			
-//			me.getStatistics().print();
+			me.getStatistics().print();
 
 			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 //			System.out.println(se.toPigeon());

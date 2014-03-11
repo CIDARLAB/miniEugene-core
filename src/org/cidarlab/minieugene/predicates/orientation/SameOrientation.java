@@ -1,6 +1,7 @@
 package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
@@ -14,9 +15,10 @@ import JaCoP.core.Store;
  * 
  */
 public class SameOrientation 
-	extends BinaryPredicate {
+	extends BinaryPredicate 
+	implements OrientationPredicate {
 
-	public SameOrientation(int a, int b) {
+	public SameOrientation(Component a, Component b) {
 		super(a, b);
 	}
 
@@ -39,6 +41,13 @@ public class SameOrientation
 		for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 			
 		}
+		return null;
+	}
+
+	@Override
+	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+			throws EugeneException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

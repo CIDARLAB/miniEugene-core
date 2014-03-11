@@ -1,7 +1,9 @@
 package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -22,10 +24,11 @@ import JaCoP.core.Store;
  * a != -1 => forall a : direction(a) = '-'
  * 
  */
-public class AllReverse 
-	extends OrientationPredicate {
+public class AllReverse
+	extends UnaryPredicate
+	implements OrientationPredicate {
 
-	public AllReverse(int a) {
+	public AllReverse(Component a) {
 		super(a);
 	}
 
@@ -44,7 +47,7 @@ public class AllReverse
 	@Override
 	public Constraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
-		if(this.getA() == -1) {
+		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(new XeqC(variables[Variables.ORIENTATION][i], -1));
 			}
@@ -52,7 +55,7 @@ public class AllReverse
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(
 						new IfThen(
-								new XeqC(variables[Variables.PART][i], this.getA()),
+								new XeqC(variables[Variables.PART][i], this.getA().getId()),
 								new XeqC(variables[Variables.ORIENTATION][i], -1)));
 			}
 		}
@@ -64,7 +67,7 @@ public class AllReverse
 	@Override
 	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		if(this.getA() == -1) {
+		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(new XeqC(variables[Variables.ORIENTATION][i], 1));
 			}
@@ -72,7 +75,7 @@ public class AllReverse
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				store.impose(
 						new IfThen(
-								new XeqC(variables[Variables.PART][i], this.getA()),
+								new XeqC(variables[Variables.PART][i], this.getA().getId()),
 								new XeqC(variables[Variables.ORIENTATION][i], 1)));
 			}
 		}

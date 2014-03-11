@@ -34,4 +34,9 @@ public class EugeneConstants {
 	public static final String NUMBER_OF_PARTS = "Number of Parts";
 	public static final String POSSIBLE_SOLUTIONS = "Possible Solutions";
 	public static final String NUMBER_OF_RULES = "Number of Rules";
+	
+	
+	// Logical Operators
+	public static final String NOT = "NOT";
+	public static final String OR = "\\/";
 }

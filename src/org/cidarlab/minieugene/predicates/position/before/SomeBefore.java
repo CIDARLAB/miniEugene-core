@@ -1,8 +1,10 @@
-package org.cidarlab.minieugene.predicates.positional.before;
+package org.cidarlab.minieugene.predicates.position.before;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -14,22 +16,16 @@ import JaCoP.constraints.XneqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
-/* A BEFORE B 
+/**
  * 
- * IF the long[] array, that the evaluate() method receives, CONTAINS A and B, THEN 
- *     A's first occurrence must be before B's first occurrence
- * ELSE
- *     A BEFORE B is true
- * END IF
- * 
- * Note:
- * rules like ``All A's must occur BEFORE all B's'' can be achieved 
- * by using Eugene's new ``FOR ALL'' operator...
+ * @author Ernst Oberortner
+ *
  */
 public class SomeBefore 
-	extends BinaryPredicate {
+	extends BinaryPredicate 
+	implements PositioningPredicate {
 	
-	public SomeBefore(int a, int b) {
+	public SomeBefore(Component a, Component b) {
 		super(a, b);
 	}
 	
@@ -54,8 +50,8 @@ public class SomeBefore
 	public Constraint toJaCoP(Store store, IntVar[][] variables) 
 			throws EugeneException {
 		
-		int a = (int)this.getA();
-		int b = (int)this.getB();
+		int a = (int)this.getA().getId();
+		int b = (int)this.getB().getId();
 		int N = variables[Variables.PART].length;
 
 		/*
@@ -77,6 +73,13 @@ public class SomeBefore
 		return new IfThen(
 					new XeqC(variables[Variables.PART][N-1], a),
 					new And(pcB));			
+	}
+
+	@Override
+	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+			throws EugeneException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 }

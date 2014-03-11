@@ -1,6 +1,7 @@
 package org.cidarlab.minieugene.predicates.interaction;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 
 import JaCoP.constraints.Constraint;
@@ -10,7 +11,7 @@ import JaCoP.core.Store;
 public class Represses 
 	extends InteractionPredicate {
 	
-	public Represses(int a, int b) {
+	public Represses(Component a, Component b) {
 		super(a, b);
 	}
 		
@@ -31,7 +32,15 @@ public class Represses
 	@Override
 	public Constraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
-		System.out.println(this.toString());
+//		System.out.println(this.toString());
+		return null;
+	}
+
+
+	@Override
+	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+			throws EugeneException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	

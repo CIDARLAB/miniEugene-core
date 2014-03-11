@@ -1,5 +1,6 @@
 package org.cidarlab.minieugene.predicates.interaction;
 
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 
 /*
@@ -9,7 +10,7 @@ import org.cidarlab.minieugene.predicates.BinaryPredicate;
 public abstract class InteractionPredicate 
 	extends BinaryPredicate {
 
-	public InteractionPredicate(int a, int b) {
+	public InteractionPredicate(Component a, Component b) {
 		super(a, b);
 	}
 

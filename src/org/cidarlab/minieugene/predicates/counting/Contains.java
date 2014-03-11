@@ -1,7 +1,9 @@
 package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.Constraint;
@@ -13,11 +15,12 @@ import JaCoP.core.Store;
  * ? CONTAINS B
  */
 		
-public class Contains 
-		extends CountingPredicate {
+public class Contains
+		extends UnaryPredicate
+		implements CountingPredicate {
 
-	public Contains(int a) {
-		super(a, 1);
+	public Contains(Component a) {
+		super(a);
 	}
 	
 	@Override
@@ -28,7 +31,7 @@ public class Contains
 		 * CONTAINS B
 		 */
 		IntVar counter = new IntVar(store, "CONTAINS_"+this.getA()+"-counter", 1, variables[Variables.PART].length); 
-		return new Count(variables[Variables.PART], counter, this.getA());
+		return new Count(variables[Variables.PART], counter, this.getA().getId());
 	}
 	
 	@Override
@@ -40,7 +43,7 @@ public class Contains
 		 */
 
 		IntVar counter = new IntVar(store,"NOTCONTAINS_"+this.getA()+"-counter", 0, 0); 
-		return new Count(variables[Variables.PART], counter, (int)this.getA());
+		return new Count(variables[Variables.PART], counter, (int)this.getA().getId());
 	}
 
 	@Override

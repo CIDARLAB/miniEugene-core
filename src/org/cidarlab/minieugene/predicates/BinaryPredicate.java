@@ -1,27 +1,54 @@
 package org.cidarlab.minieugene.predicates;
 
-/* 
- * Binary predicates have two rule operands (A and B)
+import org.cidarlab.minieugene.dom.Component;
+
+/**
+ * Binary predicates have two operands 
+ * left-hand-side (LHS) and right-hand-side (RHS) 
  * 
- * In Eugene, the following rules are binary rules:
+ * Examples of binary predicates are
  * AFTER, BEFORE, NEXTTO, MATCH, WITH, THEN
+ * 
+ * @author Ernst Oberortner
+ */
+/* 
  */
 public abstract class BinaryPredicate 
-	implements Predicate {
+	extends UnaryPredicate {
 	
-	protected int a;
-	protected int b;
+	private Component b;
+	private int num;
 	
-	public BinaryPredicate(int a, int b) {
-		this.a = a;
+	/**
+	 * 
+	 * @param lhs
+	 * @param rhs
+	 */
+	public BinaryPredicate(Component a, Component b) {
+		super(a);
 		this.b = b;
+		this.num = -1;
 	}
 	
-	public int getA() {
-		return this.a;
+	public BinaryPredicate(Component a, int num) {
+		super(a);
+		this.b = null;
+		this.num = num;
 	}
-	public int getB() {
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Component getB() {
 		return this.b;
+	}	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNum() {
+		return this.num;
 	}
-		
 }

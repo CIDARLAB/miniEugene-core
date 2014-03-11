@@ -12,10 +12,8 @@ import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
-import JaCoP.constraints.Alldifferent;
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.And;
-import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
@@ -29,7 +27,6 @@ import JaCoP.search.MostConstrainedDynamic;
 import JaCoP.search.Search;
 import JaCoP.search.SelectChoicePoint;
 import JaCoP.search.SimpleMatrixSelect;
-import JaCoP.search.SimpleSelect;
 
 
 public class JaCoPSolver 
@@ -38,6 +35,7 @@ public class JaCoPSolver
 	private Store store;
 	private SymbolTables symbols;
 	private int N;
+	
 	
 	public JaCoPSolver(SymbolTables symbols) {
 		this.store = new Store();
@@ -49,6 +47,8 @@ public class JaCoPSolver
 
 		this.N = N;
 		
+//		temporal_model(symbols);
+
     	/*
     	 * create the variables of the constraint solving problem
     	 * i.e. the parts
@@ -85,6 +85,140 @@ public class JaCoPSolver
     	} 
     	return null;
 	}
+	
+
+//	/*
+//	 * 
+//	 */
+//	private int calculateMinN(Component[] components, Predicate[] predicates) {
+//
+//		Store store = new Store();
+//		
+//		HashMap<Integer, Component> count = new HashMap<Integer, Component>();
+//
+//		// init the hashmap
+//		for(int i=0; i<components.length; i++) {
+//			count.put(components[i].getId(), components[i]);
+//		}
+//		
+//		int n = 0;
+//		for(int i=0; i<predicates.length; i++) {
+//			
+//			Predicate p = predicates[i];
+//			
+//			if(p instanceof CountingPredicate) {
+//				String name = count.get(((CountingPredicate) p).getA()).getName();
+//				
+//				IntVar var = (IntVar)store.findVariable(name);
+//				if(var == null) {
+//					var = new IntVar(store, name);
+//				}
+//				
+//				if(p instanceof Contains) {
+//					var.addDom(1, 1);
+//				} else if(p instanceof Exactly) {
+//					var.addDom(((Exactly)p).getN(), ((Exactly)p).getN());
+//				} else if(p instanceof MoreThan) {
+//					var.addDom(((MoreThan)p).getN() + 1, Integer.MAX_VALUE);
+//				} 
+//			} else if(p instanceof LogicalNot) {
+//				Predicate subP = ((LogicalNot)p).getPredicate();
+//				String name = count.get(((CountingPredicate) subP).getA()).getName();
+//				
+//				IntVar var = (IntVar)store.findVariable(name);
+//				if(var == null) {
+//					var = new IntVar(store, name);
+//				}
+//
+//				if(p instanceof Contains) {
+//					var.addDom(0, 0);
+//				} else if(subP instanceof Exactly) {
+//					var.addDom(0, Integer.MAX_VALUE);
+//					store.impose(new XneqC(var, ((Exactly)p).getN()));
+//				} else if(subP instanceof MoreThan) {
+//					var.addDom(0, ((MoreThan)p).getN());
+//				} 
+//				
+//			} else if(p instanceof AllAfter || p instanceof SomeAfter ||
+//					p instanceof AllBefore || p instanceof SomeBefore ||
+//					p instanceof AllNextTo || p instanceof SomeNextTo) {
+//				String nameA = count.get(((BinaryPredicate) p).getA()).getName();
+//				String nameB = count.get(((BinaryPredicate) p).getB()).getName();
+//				
+//				IntVar varA = (IntVar)store.findVariable(nameA);
+//				if(varA == null) {
+//					varA = new IntVar(store, nameA);
+//				}
+//
+//				IntVar varB = (IntVar)store.findVariable(nameB);
+//				if(varB == null) {
+//					varB = new IntVar(store, nameB);
+//				}
+//				
+//				varA.addDom(0, Integer.MAX_VALUE);
+//				varB.addDom(0, Integer.MAX_VALUE);
+//				
+//			} else if(p instanceof StartsWith || p instanceof EndsWith) {
+//				String nameA = count.get(((UnaryPredicate) p).getA()).getName();
+//				
+//				IntVar varA = (IntVar)store.findVariable(nameA);
+//				if(varA == null) {
+//					varA = new IntVar(store, nameA);
+//				}
+//
+//				varA.addDom(1, Integer.MAX_VALUE);
+//			} else if(p instanceof Then || p instanceof With) {
+//				String nameA = count.get(((BinaryPredicate) p).getA()).getName();
+//				String nameB = count.get(((BinaryPredicate) p).getB()).getName();
+//				
+//				IntVar varA = (IntVar)store.findVariable(nameA);
+//				if(varA == null) {
+//					varA = new IntVar(store, nameA);
+//				}
+//
+//				IntVar varB = (IntVar)store.findVariable(nameB);
+//				if(varB == null) {
+//					varB = new IntVar(store, nameB);
+//				}
+//				
+//				if(p instanceof Then) {
+//					varA.addDom(0, Integer.MAX_VALUE);
+//					varB.addDom(0, Integer.MAX_VALUE);
+//					store.impose(new IfThen(new XgtC(varA, 1), new XgtC(varA, 1)));
+//				} else if(p instanceof With) {
+//					varA.addDom(1, Integer.MAX_VALUE);
+//					varB.addDom(1, Integer.MAX_VALUE);
+//				}
+//				
+//			}
+//		}
+//		
+//		store.print();
+//
+//		return n;
+//	}
+	
+//    private IntVar[] temporal_model(Component[] components) {
+//    	
+//    	/*
+//    	 * every component gets the following variables
+//    	 * - start, end 
+//    	 * - 
+//    	 */
+//    	for(int i=0; i<components.length; i++) {
+//    		Component c = components[i];
+//    		
+//    		new IntVar(store, c.getName()+".count");
+//    		new IntVar(store, c.getName()+".start");
+//    		new IntVar(store, c.getName()+".end");
+//    		new IntVar(store, c.getName()+".orientation", -1, 1);
+//    		new IntVar(store, c.getName()+".position", 0, Integer.MAX_VALUE);
+//    		
+//    	}
+//    	
+//    	store.print();
+//    	return null;
+//    }
     
 	private IntVar[][] model(Component[] symbols) 
 			throws EugeneException {
@@ -94,6 +228,7 @@ public class JaCoPSolver
 				 * 0 ... Parts
 				 * 1 ... Types
 				 * 2 ... Orientation
+				 * 3 ... Position
 				 */
 		
 		/*

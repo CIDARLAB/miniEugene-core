@@ -1,8 +1,10 @@
-package org.cidarlab.minieugene.predicates.positional.nextto;
+package org.cidarlab.minieugene.predicates.position.nextto;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -20,9 +22,10 @@ import JaCoP.core.Store;
  * Definition:  
  */
 public class SomeNextTo 
-	extends BinaryPredicate {
+	extends BinaryPredicate 
+	implements PositioningPredicate {
 
-	public SomeNextTo(int a, int b) {
+	public SomeNextTo(Component a, Component b) {
 		super(a, b);
 	}
 
@@ -46,8 +49,8 @@ public class SomeNextTo
 	public Constraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
-		int a = (int)this.getA();
-		int b = (int)this.getB();
+		int a = (int)this.getA().getId();
+		int b = (int)this.getB().getId();
 		int N = variables[Variables.PART].length;
 		
 		int[] idxA = new int[N];
@@ -105,6 +108,13 @@ public class SomeNextTo
 		}
 
 		return new Or(pc);
+	}
+
+	@Override
+	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+			throws EugeneException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

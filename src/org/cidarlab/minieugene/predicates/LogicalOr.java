@@ -1,38 +1,25 @@
 package org.cidarlab.minieugene.predicates;
 
+import java.util.List;
+
+import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.exception.EugeneException;
 
 import JaCoP.constraints.Constraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
-
-public class LogicalNot 
+public class LogicalOr 
 	extends LogicalPredicate {
 
-	private Predicate predicate;
-	
-	/**
-	 * 
-	 * @param predicate
-	 */
-	public LogicalNot(Predicate predicate) {
-		super(LogicalOperator.NOT, predicate);
+	public LogicalOr(List<Predicate> predicates) {
+		super(LogicalOperator.OR, predicates);
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Predicate getPredicate() {
-		return this.predicate;
-	}
 	
-	@Override 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("NOT ").append(this.getPredicate()).append("");
-		return sb.toString();
+	@Override
+	public String getOperator() {
+		return EugeneConstants.OR;
 	}
 
 	@Override
@@ -48,5 +35,5 @@ public class LogicalNot
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

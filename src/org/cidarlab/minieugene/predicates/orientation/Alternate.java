@@ -1,7 +1,9 @@
 package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -16,28 +18,29 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 /*
- * ALTERNATE
+ * ALTERNATE a
  *
  * i in {1, ..., N-1}
  * for all i: orientation(i) != orientation(i+1)
  * 
  */
 public class Alternate 
-	extends OrientationPredicate {
+	extends UnaryPredicate 
+	implements OrientationPredicate {
 
-	public Alternate() {
-		super(-1);
+	public Alternate(Component rhs) {
+		super(rhs);
 	}
 
 	@Override
 	public String getOperator() {
-		return RuleOperator.ALTERNATE.toString();
+		return RuleOperator.ALL_REVERSE.toString();
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.ALTERNATE);
+		sb.append(RuleOperator.ALL_REVERSE);
 		return sb.toString();
 	}
 
@@ -75,13 +78,10 @@ public class Alternate
 		return new Or(new And(pcForward), new And(pcReverse));
 	}
 
-	
 	@Override
 	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-//		System.out.println("imposing NOT "+this.toString());
-
 		return new Not((PrimitiveConstraint)this.toJaCoP(store, variables));
 	}
-
+	
 }

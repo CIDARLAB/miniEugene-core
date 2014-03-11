@@ -1,9 +1,10 @@
 package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.Constraint;
 import JaCoP.core.IntVar;
@@ -16,10 +17,11 @@ import JaCoP.core.Store;
  * a element_of X
  * exists a : direction(a) = '-'
  */
-public class SomeForward 
-	extends OrientationPredicate {
+public class SomeForward
+	extends UnaryPredicate
+	implements OrientationPredicate {
 
-	public SomeForward(int a) {
+	public SomeForward(Component a) {
 		super(a);
 	}
 

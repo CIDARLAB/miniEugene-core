@@ -1,6 +1,7 @@
 package org.cidarlab.minieugene.builder;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
@@ -18,16 +19,20 @@ import org.cidarlab.minieugene.predicates.orientation.SomeReverse;
 import org.cidarlab.minieugene.predicates.pairing.Equals;
 import org.cidarlab.minieugene.predicates.pairing.Then;
 import org.cidarlab.minieugene.predicates.pairing.With;
-import org.cidarlab.minieugene.predicates.positional.StartsWith;
-import org.cidarlab.minieugene.predicates.positional.EndsWith;
-import org.cidarlab.minieugene.predicates.positional.after.AllAfter;
-import org.cidarlab.minieugene.predicates.positional.after.SomeAfter;
-import org.cidarlab.minieugene.predicates.positional.before.AllBefore;
-import org.cidarlab.minieugene.predicates.positional.before.SomeBefore;
-import org.cidarlab.minieugene.predicates.positional.nextto.AllNextTo;
-import org.cidarlab.minieugene.predicates.positional.nextto.SomeNextTo;
+import org.cidarlab.minieugene.predicates.position.EndsWith;
+import org.cidarlab.minieugene.predicates.position.StartsWith;
+import org.cidarlab.minieugene.predicates.position.after.AllAfter;
+import org.cidarlab.minieugene.predicates.position.after.SomeAfter;
+import org.cidarlab.minieugene.predicates.position.before.AllBefore;
+import org.cidarlab.minieugene.predicates.position.before.SomeBefore;
+import org.cidarlab.minieugene.predicates.position.nextto.AllNextTo;
+import org.cidarlab.minieugene.predicates.position.nextto.SomeNextTo;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
+/**
+ * 
+ * @author Ernst Oberortner
+ */
 public class PredicateBuilder {
 
 	private SymbolTables symbols;
@@ -35,50 +40,70 @@ public class PredicateBuilder {
 		this.symbols = symbols;
 	}
 	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 * @throws EugeneException
+	 */
 	public Predicate buildNullaryPredicate(String p) 
 			throws EugeneException {
 		if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p)) {
-			return new AllReverse(-1);
+			return new AllReverse(null);
 		} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(p)) {
-			return new AllForward(-1);
+			return new AllForward(null);
 		} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(p)) {
-			return new Alternate();
+			return new Alternate(null);
 		}
 		
 		throw new EugeneException("Invalid Rule!");
 
 	}
 	
-	public Predicate buildUnary(String p, int id) 
+	/**
+	 * 
+	 * @param p
+	 * @param c
+	 * @return
+	 * @throws EugeneException
+	 */
+	public Predicate buildUnary(String p, Component c) 
 			throws EugeneException {
 		
 		if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(p)) {
-			return new Contains(id);
+			return new Contains(c);
 		} else if(RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(p)) {
-			return new LogicalNot(new Contains(id));
+			return new LogicalNot(new Contains(c));
 		} else if(RuleOperator.STARTSWITH.toString().equalsIgnoreCase(p)) {
-			return new StartsWith(id);
+			return new StartsWith(c);
 		} else if(RuleOperator.ENDSWITH.toString().equalsIgnoreCase(p)) {
-			return new EndsWith(id);
+			return new EndsWith(c);
 		} else if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p) ||
 				RuleOperator.REVERSE.toString().equalsIgnoreCase(p)) {
-			return new AllReverse(id);
+			return new AllReverse(c);
 		} else if(RuleOperator.SOME_REVERSE.toString().equalsIgnoreCase(p)) {
-			return new SomeReverse(id);
+			return new SomeReverse(c);
 		} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(p) ||
 				RuleOperator.FORWARD.toString().equalsIgnoreCase(p)) {
-			return new AllForward(id);
+			return new AllForward(c);
 		} else if(RuleOperator.SOME_FORWARD.toString().equalsIgnoreCase(p)) {
-			return new SomeForward(id);
+			return new SomeForward(c);
 		}
 		
 		throw new EugeneException("Invalid Unary Rule!");
 	}
 
-	public Predicate buildNegatedUnary(String p, int id) 
+	/**
+	 * 
+	 * @param p
+	 * @param c
+	 * @return
+	 * @throws EugeneException
+	 */
+	public Predicate buildNegatedUnary(String p, Component c) 
 			throws EugeneException {
 		
-		Predicate predicate = this.buildUnary(p, id);
+		Predicate predicate = this.buildUnary(p, c);
 		if(null != predicate) {
 			return new LogicalNot(predicate);
 		}
@@ -86,49 +111,95 @@ public class PredicateBuilder {
 		throw new EugeneException("Invalid Negated Unary Rule!");
 	}
 	
-	public Predicate buildBinary(int idA, String X, int idB) 
+	/**
+	 * 
+	 * @param lhs
+	 * @param X
+	 * @param rhs
+	 * @return
+	 * @throws EugeneException
+	 */
+	public Predicate buildBinary(Component lhs, String X, Component rhs) 
 			throws EugeneException {
 
 		if(RuleOperator.ALL_BEFORE.toString().equalsIgnoreCase(X) || 
 				RuleOperator.BEFORE.toString().equalsIgnoreCase(X)) {
-			return new AllBefore(idA, idB);
+			return new AllBefore(lhs, rhs);
 		} else if(RuleOperator.SOME_BEFORE.toString().equalsIgnoreCase(X)) {
-			return new SomeBefore(idA, idB);
+			return new SomeBefore(lhs, rhs);
 		} else if(RuleOperator.ALL_AFTER.toString().equalsIgnoreCase(X) || 
 				RuleOperator.AFTER.toString().equalsIgnoreCase(X)) {
-			return new AllAfter(idA, idB);
+			return new AllAfter(lhs, rhs);
 		} else if(RuleOperator.SOME_AFTER.toString().equalsIgnoreCase(X)) {
-			return new SomeAfter(idA, idB);
+			return new SomeAfter(lhs, rhs);
 		} else if(RuleOperator.ALL_NEXTTO.toString().equalsIgnoreCase(X) || 
 				RuleOperator.NEXTTO.toString().equalsIgnoreCase(X)) {
-			return new AllNextTo(idA, idB);
+			return new AllNextTo(lhs, rhs);
 		} else if(RuleOperator.SOME_NEXTTO.toString().equalsIgnoreCase(X)) {
-			return new SomeNextTo(idA, idB);
+			return new SomeNextTo(lhs, rhs);
 		} else if(RuleOperator.WITH.toString().equalsIgnoreCase(X)) {
-			return new With(idA, idB);
+			return new With(lhs, rhs);
 		} else if(RuleOperator.NOTWITH.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new With(idA, idB));
+			return new LogicalNot(new With(lhs, rhs));
 		} else if(RuleOperator.THEN.toString().equalsIgnoreCase(X)) {
-			return new Then(idA, idB);
+			return new Then(lhs, rhs);
 		} else if(RuleOperator.NOTTHEN.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new Then(idA, idB));
-		} else if(RuleOperator.EXACTLY.toString().equalsIgnoreCase(X)) {
-			return new Exactly(idA, idB);
-		} else if(RuleOperator.NOTEXACTLY.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new Exactly(idA, idB));
-		} else if(RuleOperator.MORETHAN.toString().equalsIgnoreCase(X)) {
-			return new MoreThan(idA, idB);
-		} else if(RuleOperator.NOTMORETHAN.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new MoreThan(idA, idB));
-		} else if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
-			return new Equals(idA, idB);
-		} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new Equals(idA, idB));
+			return new LogicalNot(new Then(lhs, rhs));
 		}
 
 		throw new EugeneException("Invalid Binary Rule!");
 	}
 	
+	/**
+	 * 
+	 * @param lhs
+	 * @param p
+	 * @param num
+	 * @return
+	 * @throws EugeneException
+	 */
+	public Predicate buildBinary(Component lhs, String p, int num) 
+			throws EugeneException {
+		if(RuleOperator.EXACTLY.toString().equalsIgnoreCase(p)) {
+			return new Exactly(lhs, num);
+		} else if(RuleOperator.NOTEXACTLY.toString().equalsIgnoreCase(p)) {
+			return new LogicalNot(new Exactly(lhs, num));
+		} else if(RuleOperator.MORETHAN.toString().equalsIgnoreCase(p)) {
+			return new MoreThan(lhs, num);
+		} else if(RuleOperator.NOTMORETHAN.toString().equalsIgnoreCase(p)) {
+			return new LogicalNot(new MoreThan(lhs, num));
+		}
+		
+		throw new EugeneException("Invalid Binary Rule!");
+	}
+	
+	/**
+	 * 
+	 * @param i
+	 * @param p
+	 * @param j
+	 * @return
+	 * @throws EugeneException
+	 */
+	public Predicate buildBinary(int i, String p, int j) 
+			throws EugeneException {
+		if(RuleOperator.EQUALS.toString().equalsIgnoreCase(p)) {
+			return new Equals(i, j);
+		} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(p)) {
+			return new LogicalNot(new Equals(i, j));
+		}
+		
+		throw new EugeneException("Invalid Binary Rule!");
+	}
+	
+	/**
+	 * 
+	 * @param a
+	 * @param X
+	 * @param b
+	 * @return
+	 * @throws EugeneException
+	 */
 	public Predicate buildInteraction(String a, String X, String b)
 		throws EugeneException {
 		
@@ -162,19 +233,19 @@ public class PredicateBuilder {
 				
 				return new Induces(
 						a,
-						this.symbols.getId(b));
+						this.symbols.get(this.symbols.getId(b)));
 				
 			} else if(RuleOperator.REPRESSES.toString().equalsIgnoreCase(X)) {
 				
 				return new Represses(
-						this.symbols.getId(a),
-						this.symbols.getId(b));
+						this.symbols.get(this.symbols.getId(a)),
+						this.symbols.get(this.symbols.getId(b)));
 				
 			} else if(RuleOperator.DRIVES.toString().equalsIgnoreCase(X)) {
 				
 				return new Drives(
-						this.symbols.getId(a),
-						this.symbols.getId(b));
+						this.symbols.get(this.symbols.getId(a)),
+						this.symbols.get(this.symbols.getId(b)));
 				
 			}			
 		}
