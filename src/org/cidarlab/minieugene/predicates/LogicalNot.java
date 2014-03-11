@@ -10,8 +10,6 @@ import JaCoP.core.Store;
 public class LogicalNot 
 	extends LogicalPredicate {
 
-	private Predicate predicate;
-	
 	/**
 	 * 
 	 * @param predicate
@@ -20,18 +18,10 @@ public class LogicalNot
 		super(LogicalOperator.NOT, predicate);
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Predicate getPredicate() {
-		return this.predicate;
-	}
-	
 	@Override 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("NOT ").append(this.getPredicate()).append("");
+		sb.append("NOT ").append(this.getPredicates()).append("");
 		return sb.toString();
 	}
 
@@ -47,6 +37,11 @@ public class LogicalNot
 			throws EugeneException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getSize() {
+		return 1;
 	}
 	
 }

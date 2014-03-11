@@ -49,4 +49,6 @@ public abstract class LogicalPredicate
 	public String getOperator() {
 		return this.op.toString();
 	}
+	
+	public abstract int getSize();
 }

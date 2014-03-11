@@ -21,21 +21,22 @@ public class ParserTest {
 			throws IOException {
 		ParserTest pt = new ParserTest();
 		
-		pt.parse(FileUtil.readFile(new File("./tests/basic.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/contains.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/drives.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/interactions.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/not-morethan.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/not.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/operand-naming.eug")));
-		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex1")));
-		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex2")));
-		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex3")));
-		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex4")));
-		pt.parse(FileUtil.readFile(new File("./tests/swati/test01")));
-		pt.parse(FileUtil.readFile(new File("./tests/then/then01")));
-		pt.parse(FileUtil.readFile(new File("./tests/then/then02")));
-		pt.parse(FileUtil.readFile(new File("./tests/then/then03")));
+//		pt.parse(FileUtil.readFile(new File("./tests/basic.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/contains.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/drives.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/interactions.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/not-morethan.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/not.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/operand-naming.eug")));
+//		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex1")));
+//		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex2")));
+//		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex3")));
+//		pt.parse(FileUtil.readFile(new File("./tests/bryan/ex4")));
+//		pt.parse(FileUtil.readFile(new File("./tests/swati/test01")));
+//		pt.parse(FileUtil.readFile(new File("./tests/then/then01")));
+//		pt.parse(FileUtil.readFile(new File("./tests/then/then02")));
+//		pt.parse(FileUtil.readFile(new File("./tests/then/then03")));
+		pt.parse(FileUtil.readFile(new File("./tests/or")));
 	}
 	
 	/**

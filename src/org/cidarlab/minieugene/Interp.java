@@ -1,5 +1,7 @@
 package org.cidarlab.minieugene;
 
+import java.util.Arrays;
+
 import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
@@ -30,7 +32,7 @@ public class Interp {
 	
 	public Predicate interpreteRule(String[] tokens) 
 			throws EugeneException {
-		
+//		System.out.println("[interpreteRule] -> "+Arrays.toString(tokens));
 		switch(tokens.length) {
 		case 1:
 			/*
@@ -50,7 +52,7 @@ public class Interp {
 			 * or
 			 * negated unary rule
 			 */
-			if("NOT".equalsIgnoreCase(tokens[0])) {
+			if(LogicalOperator.NOT.toString().equalsIgnoreCase(tokens[0])) {
 				return new LogicalNot(createUnaryPredicate(tokens[1], tokens[2]));
 			}
 			return createBinaryPredicate(tokens[0], tokens[1], tokens[2]);
@@ -58,7 +60,8 @@ public class Interp {
 			/*
 			 * negated binary rule
 			 */
-			if("NOT".equalsIgnoreCase(tokens[0]) && !("NOT".equalsIgnoreCase(tokens[1]))) {
+			if(LogicalOperator.NOT.toString().equalsIgnoreCase(tokens[0]) && 
+					!(LogicalOperator.NOT.toString().equalsIgnoreCase(tokens[1]))) {
 				return new LogicalNot(createBinaryPredicate(tokens[1], tokens[2], tokens[3]));
 			}
 		default:
@@ -74,7 +77,7 @@ public class Interp {
 	private Predicate createUnaryPredicate(String p, String s) 
 			throws EugeneException {
 
-		if("NOT".equalsIgnoreCase(p)) {
+		if(LogicalOperator.NOT.toString().equalsIgnoreCase(p)) {
 			
 			// negated nullary constraint 
 			if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(s)) {
@@ -154,12 +157,13 @@ public class Interp {
 			int idxA = this.toIndex(a);
 			int idxB = this.toIndex(b);
 			
-			return this.pb.buildBinary(idxA, X, idxB);
+			return this.pb.buildIndexedBinary(idxA, X, idxB);
 			
 		} else if(EugeneRules.isInteractionRule(X)) {
 			
 			return this.pb.buildInteraction(a, X, b);
 		}
+		
 		
 		/*
 		 * get a's id from the symbol
@@ -185,6 +189,9 @@ public class Interp {
 				throw new EugeneException("Invalid rule!");
 			}
 			
+			// create the counting rule object
+			return this.pb.buildBinary(this.symbols.get(idA), X, idB);
+			
 		} else if(EugeneRules.isPositionalRule(X) ||
 				EugeneRules.isPairingRule(X)) {
 			
@@ -197,7 +204,7 @@ public class Interp {
 		 * and store it in the symbol tables
 		 */
 		if( idB != (-1)) {
-			return this.pb.buildBinary(idA, X, idB);
+			return this.pb.buildBinary(this.symbols.get(idA), X, this.symbols.get(idB));
 		}
 		
 		throw new EugeneException("Invalid rule!");
@@ -220,4 +227,5 @@ public class Interp {
 		return idx;
 	}
 
+	
 }

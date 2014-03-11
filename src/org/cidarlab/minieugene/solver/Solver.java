@@ -4,17 +4,20 @@ import java.util.List;
 
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.LogicalAnd;
 
 public interface Solver {
 	
-	/*
-	 * N          ... size of the design
-	 * ids        ... the domains of the variables
-	 * predicates ... the Eugene constraints
-	 * number     ... number of desired solutions
+	/**
+	 * 
+	 * @param N  ... size of the design
+	 * @param symbols ... the domains of the variables
+	 * @param and ... the Eugene constraints
+	 * @param number ... number of desired solutions
+	 * @return
+	 * @throws EugeneException
 	 */
-	public List<Component[]> solve(int N, Component[] symbols, Predicate[] predicates, int number)
+	public List<Component[]> solve(int N, Component[] symbols, LogicalAnd and, int number)
 			throws EugeneException;
 	
 }

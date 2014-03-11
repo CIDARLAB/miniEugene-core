@@ -33,7 +33,7 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.parser.MiniEugeneLexer;
 import org.cidarlab.minieugene.parser.MiniEugeneParser;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.LogicalAnd;
 import org.cidarlab.minieugene.solver.jacop.JaCoPSolver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -220,12 +220,12 @@ public class MiniEugene
 		/*
 		 * then, we parse the miniEugene script
 		 */
-		Predicate[] predicates = this.parse(script);
+		LogicalAnd and = this.parse(script);
 		
 		/*
 		 * and finally, we solve the problem
 		 */
-		this.solve(predicates, NR_OF_SOLUTIONS);
+		this.solve(and, NR_OF_SOLUTIONS);
 	}
 
 	/**
@@ -329,17 +329,10 @@ public class MiniEugene
 		/*
 		 * first, we parse the script
 		 */
-		Predicate[] predicates = null;
 		try {
-			predicates = this.parse(script);
+			LogicalAnd la = this.parse(script);
 			
-			if(predicates != null) {
-				for(int i=0; i<predicates.length; i++) {
-					System.out.println(predicates[i]);
-				}
-			} else {
-				System.out.println("NO PREDICATES!");
-			}
+			System.out.println(la);
 		} catch(EugeneException e) {
 			throw new EugeneException(e.getMessage());
 		}
@@ -351,7 +344,7 @@ public class MiniEugene
 	 * @param script
 	 * @return
 	 */
-	private Predicate[] parse(String script) 
+	private LogicalAnd parse(String script) 
 			throws EugeneException {
 		
 		// Lexer
@@ -374,7 +367,7 @@ public class MiniEugene
 
 		// finally, we return the create
 		// Predicate objects
-		return parser.getPredicates();
+		return parser.getPredicate();
 	}
 	
 	/**
@@ -382,7 +375,7 @@ public class MiniEugene
 	 * @param predicates
 	 * @param NR_OF_SOLUTIONS
 	 */
-	private void solve(Predicate[] predicates, int NR_OF_SOLUTIONS) 
+	private void solve(LogicalAnd la, int NR_OF_SOLUTIONS) 
 			throws EugeneException {
 
 		try {
@@ -394,13 +387,13 @@ public class MiniEugene
 
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
 			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, this.N) * Math.pow(2, this.N));
-			this.stats.add(EugeneConstants.NUMBER_OF_RULES, predicates.length);
+			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getSize());
 
 			/*
 			 * SOLUTION FINDING
 			 */
 			long T1 = System.nanoTime();
-			this.solutions = new JaCoPSolver(this.symbols).solve(this.N, symbols, predicates, NR_OF_SOLUTIONS);
+			this.solutions = new JaCoPSolver(this.symbols).solve(this.N, symbols, la, NR_OF_SOLUTIONS);
 			long T2 = System.nanoTime();
 
 			if(null != solutions) {
@@ -444,9 +437,9 @@ public class MiniEugene
 		
 		
 		try {
-			Predicate[] predicates = this.parse(script);
+			LogicalAnd la = this.parse(script);
 			
-			this.solve(predicates, NR_OF_SOLUTIONS);
+			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(Exception e) {
 			throw new EugeneException(e.getMessage());
 		}

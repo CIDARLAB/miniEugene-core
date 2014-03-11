@@ -181,7 +181,7 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws EugeneException
 	 */
-	public Predicate buildBinary(int i, String p, int j) 
+	public Predicate buildIndexedBinary(int i, String p, int j) 
 			throws EugeneException {
 		if(RuleOperator.EQUALS.toString().equalsIgnoreCase(p)) {
 			return new Equals(i, j);

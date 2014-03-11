@@ -53,22 +53,22 @@ public class EugeneRules {
 					RuleOperator.SOME_FORWARD.toString()}));
 
 	public static boolean isUnaryRule(String s) {
-		return setUnaryRules.contains(s);
+		return setUnaryRules.contains(s.toUpperCase());
 	}
 
 	public static boolean isPositionalRule(String s) {
-		return setPositionalRules.contains(s);
+		return setPositionalRules.contains(s.toUpperCase());
 	}
 
 	public static boolean isCountingRule(String s) {
-		return setCountingRules.contains(s);
+		return setCountingRules.contains(s.toUpperCase());
 	}
 
 	public static boolean isPairingRule(String s) {
-		return setPairingRules.contains(s);
+		return setPairingRules.contains(s.toUpperCase());
 	}
 	
 	public static boolean isInteractionRule(String s) {
-		return setInteractionRules.contains(s);
+		return setInteractionRules.contains(s.toUpperCase());
 	}
 }

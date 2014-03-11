@@ -53,7 +53,7 @@ package org.cidarlab.minieugene.parser;
 
 import org.cidarlab.minieugene.Interp;
 import org.cidarlab.minieugene.symbol.*;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.*;
 import org.cidarlab.minieugene.exception.EugeneException;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -77,22 +77,18 @@ public int getN() {
 }
 
 // PREDICATES
-private Predicate[] predicates = null;
+
+private LogicalAnd la = new LogicalAnd();
+
 private void addPredicate(Predicate p) {
-
-    if(predicates == null) {
-        predicates = new Predicate[1];
-        predicates[0] = p;
-    } else {
-        predicates = ArrayUtils.add(predicates, p);
-    }
-  
+    this.la.getPredicates().add(p);  
 }
 
 
-public Predicate[] getPredicates() {
-    return this.predicates;
+public LogicalAnd getPredicate() {
+    return this.la;
 }
+
 
 // for tokenization
 String[] tokens = null;
@@ -110,7 +106,14 @@ private void addToken(String token) {
  	
 miniEugene 
 	throws EugeneException
-	:	(size)? (or_constraint '.' |composite_constraint)+
+	:	(size)? (c=or_constraint {
+if($c.lst.size() == 1) {
+    // ``store'' the predicate
+    this.addPredicate($c.lst.get(0));   
+} else {
+    this.addPredicate(new LogicalOr($c.lst));   
+}	
+	}'.' |composite_constraint)+
 	;
 
 size 	
@@ -132,11 +135,16 @@ composite_constraint_block
 	;	
 	
 or_constraint 
-        returns [Predicate p]
+        returns [List<Predicate> lst]
 	throws EugeneException
-	:	c=constraint (('OR'|'\/'|'or') or_constraint)? {
-$p = $c.p;	
-	}
+@init{
+$lst = new ArrayList<Predicate>();
+}	
+	:	c=constraint {
+$lst.add($c.p);
+	}	(('OR'|'\\/'|'or') o=or_constraint {
+$lst.addAll($o.lst);
+	})?
 	;
 	
 constraint
@@ -157,11 +165,6 @@ $p = this.interp.interpreteRule(this.tokens);
 
 // reset the global token array
 this.tokens = null;
-
-if(null != p) {
-    // ``store'' the predicate
-    this.addPredicate(p);
-}
 	}
 	;
 	catch[EugeneException e] {

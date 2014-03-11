@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.LogicalAnd;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
@@ -42,7 +43,7 @@ public class JaCoPSolver
 		this.symbols = symbols;
 	}
 	
-	public List<Component[]> solve(int N, Component[] symbols, Predicate[] predicates, int NR_OF_SOLUTIONS)
+	public List<Component[]> solve(int N, Component[] symbols, LogicalAnd and, int NR_OF_SOLUTIONS)
 			throws EugeneException {
 
 		this.N = N;
@@ -58,8 +59,8 @@ public class JaCoPSolver
     	/*
     	 * map the Eugene rules onto JaCoP constraints
     	 */
-    	if(null != predicates) {
-    		this.imposeConstraints(variables, predicates);
+    	if(null != and) {
+    		this.imposeConstraints(variables, and);
     	}
     	
     	/*
@@ -278,18 +279,18 @@ public class JaCoPSolver
 		return variables;
 	}
 
-	public void imposeConstraints(IntVar[][] variables, Predicate[] predicates) 
+	public void imposeConstraints(IntVar[][] variables, LogicalAnd and) 
 			throws EugeneException {
 		/*
 		 * per default, all parts have a FORWARD orientation
 		 */
-		for(int i=0; i<predicates.length; i++) {
+		for(Predicate predicate : and.getPredicates()) {
 			try {
-				if(predicates[i] instanceof Represses ||
-						predicates[i] instanceof Induces) {
-					this.symbols.putInteraction((InteractionPredicate)predicates[i]);
+				if(predicate instanceof Represses ||
+						predicate instanceof Induces) {
+					this.symbols.putInteraction((InteractionPredicate)predicate);
 				} else {
-					Constraint constraint = predicates[i].toJaCoP(this.store, variables);
+					Constraint constraint = predicate.toJaCoP(this.store, variables);
 					if(constraint != null) {
 						if(constraint instanceof And) {
 							for(PrimitiveConstraint pc : ((And)constraint).listOfC) {
@@ -303,7 +304,7 @@ public class JaCoPSolver
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
-				throw new EugeneException("I cannot impose "+predicates[i]);
+				throw new EugeneException("I cannot impose "+predicate);
 			}
 		}
 	}
