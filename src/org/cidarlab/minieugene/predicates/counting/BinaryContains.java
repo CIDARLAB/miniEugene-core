@@ -3,7 +3,7 @@ package org.cidarlab.minieugene.predicates.counting;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.predicates.UnaryPredicate;
+import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.Count;
@@ -15,19 +15,21 @@ import JaCoP.core.Store;
 
 /**
  * 
- * unary contains 
+ * binary contains 
+ * for rule-compliant composing components
  * 
- * CONTAINS a
+ * a CONTAINS b
  * 		
  * @author Ernst Oberortner
  *
  */
-public class Contains
-		extends UnaryPredicate
+public class BinaryContains
+		extends BinaryPredicate
 		implements CountingPredicate {
 
-	public Contains(Component a) {
-		super(a);
+	// unary contains
+	public BinaryContains(Component a, Component b) {
+		super(a, b);
 	}
 	
 	@Override

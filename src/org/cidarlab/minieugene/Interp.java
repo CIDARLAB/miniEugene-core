@@ -174,11 +174,32 @@ public class Interp {
 		if(EugeneRules.isCountingRule(X)) {
 
 			/*
-			 * b must be a decimal non-negative number
+			 * b can be a decimal non-negative number
 			 */
 			try {
 				idB = Integer.parseInt(b);
 			} catch(Exception e) {
+				
+				/*
+				 * if b is not a number, then
+				 * it can be a binary CONTAINS rule
+				 */
+				if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X)) {
+					/*
+					 * get the id from the symbol
+					 */
+					if(this.symbols.contains(b)) {
+						idB = this.symbols.getId(b);
+					} else {
+						/*
+						 * if the symbol does not exist, 
+						 * then add it to the symbol tables
+						 */
+						idB = this.symbols.put(b);
+					}
+
+					return this.pb.buildBinary(this.symbols.get(idA), X, this.symbols.get(idB));
+				}
 				throw new EugeneException("Invalid rule!");
 			}
 

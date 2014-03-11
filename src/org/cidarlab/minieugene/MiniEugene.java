@@ -438,6 +438,7 @@ public class MiniEugene
 			
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new EugeneException(e.getMessage());
 		}
 

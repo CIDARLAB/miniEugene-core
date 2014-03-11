@@ -5,6 +5,7 @@ import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.counting.BinaryContains;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.Exactly;
 import org.cidarlab.minieugene.predicates.counting.MoreThan;
@@ -145,6 +146,8 @@ public class PredicateBuilder {
 			return new Then(lhs, rhs);
 		} else if(RuleOperator.NOTTHEN.toString().equalsIgnoreCase(X)) {
 			return new LogicalNot(new Then(lhs, rhs));
+		} else if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X)) {
+			return new BinaryContains(lhs, rhs);
 		}
 
 		throw new EugeneException("Invalid Binary Rule!");
