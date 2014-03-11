@@ -6,8 +6,10 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Count;
+import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XeqC;
+import JaCoP.constraints.XneqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -35,30 +37,36 @@ public class Exactly
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
 		// a EXACTLY N
-		IntVar count = new IntVar(store, this.getA()+"_EXACTLY_"+this.getNum()+"-counter", this.getNum(), this.getNum()); 
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter");
+		if(null == count) {
+			count = new IntVar(store, 
+					this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter", 
+					this.getNum(), 
+					this.getNum());
+		}
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
 		
-		return null;
+		return new XeqC(count, this.getNum());
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		/*
-		 * NOT a EXACTLY N
-		 */
-
-		IntVar count1 = new IntVar(store, this.getA()+"_NOT-EXACTLY_"+this.getNum()+"-counter1", 0, this.getNum()-1); 
-		store.impose(new Count(variables[Variables.PART], count1, (int)this.getA().getId()));
+		// a NOT EXACTLY N
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter");
+		if(null == count) {
+			count = new IntVar(store, 
+					this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter", 
+					0, 
+					Integer.MAX_VALUE);
+		}
+		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
 		
-		IntVar count2 = new IntVar(store, this.getA()+"_NOT-EXACTLY_"+this.getNum()+"-counter2", this.getNum()+1, variables.length); 
-		store.impose(new Count(variables[Variables.PART], count2, (int)this.getA().getId()));
-		
-		return null;
+		return new XneqC(count, this.getNum());
 	}
 
 }

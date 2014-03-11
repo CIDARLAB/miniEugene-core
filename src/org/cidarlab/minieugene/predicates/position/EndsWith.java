@@ -6,7 +6,7 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XneqC;
 import JaCoP.core.IntVar;
@@ -38,14 +38,14 @@ public class EndsWith
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 		int N = variables[Variables.PART].length;
 		return new XeqC(variables[Variables.PART][N-1], this.getA().getId());
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		int N = variables[Variables.PART].length;
 		return new XneqC(variables[Variables.PART][N-1], this.getA().getId());

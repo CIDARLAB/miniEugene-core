@@ -43,7 +43,7 @@ public class Drives
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 		
 //		System.out.println("[Drives.toJaCoP] -> "+this.toString());
@@ -157,7 +157,7 @@ public class Drives
 
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		
 		// we just negate the toJaCoP primitive constraint

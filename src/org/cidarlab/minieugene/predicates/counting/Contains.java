@@ -6,8 +6,10 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Count;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XgtC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -24,29 +26,6 @@ public class Contains
 	}
 	
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
-		
-		/*
-		 * CONTAINS B
-		 */
-		IntVar counter = new IntVar(store, "CONTAINS_"+this.getA()+"-counter", 1, variables[Variables.PART].length); 
-		return new Count(variables[Variables.PART], counter, this.getA().getId());
-	}
-	
-	@Override
-	public Constraint toJaCoPNot(
-			Store store, IntVar[][] variables) 
-				throws EugeneException {
-		/*
-		 * NOT CONTAINS B
-		 */
-
-		IntVar counter = new IntVar(store,"NOTCONTAINS_"+this.getA()+"-counter", 0, 0); 
-		return new Count(variables[Variables.PART], counter, (int)this.getA().getId());
-	}
-
-	@Override
 	public String getOperator() {
 		return RuleOperator.CONTAINS.toString();
 	}
@@ -57,4 +36,33 @@ public class Contains
 		sb.append(this.getOperator()).append(" ").append(this.getA());
 		return sb.toString();
 	}
+	
+	@Override
+	public PrimitiveConstraint toJaCoP(
+			Store store, IntVar[][] variables) 
+				throws EugeneException {
+		
+		/*
+		 * CONTAINS a
+		 */
+		IntVar counterA = (IntVar)store.findVariable("CONTAINS_"+this.getA().getName()+"-counter");
+		if(null == counterA) {
+			counterA = new IntVar(store, "CONTAINS_"+this.getA().getName()+"-counter", 0, variables[Variables.PART].length);
+		}
+		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
+		
+		return new XgtC(counterA, 0);
+		
+	}
+	
+	@Override
+	public PrimitiveConstraint toJaCoPNot(
+			Store store, IntVar[][] variables) 
+				throws EugeneException {
+		/*
+		 * NOT CONTAINS a
+		 */
+		return new Not(this.toJaCoP(store, variables));
+	}
+
 }

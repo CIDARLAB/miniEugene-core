@@ -7,7 +7,7 @@ import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
 import org.cidarlab.minieugene.predicates.position.before.SomeBefore;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -44,13 +44,13 @@ public class SomeAfter
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 			throws EugeneException {
 		return this.before.toJaCoP(store, variables);
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		return this.before.toJaCoPNot(store, variables);
 	}

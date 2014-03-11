@@ -3,6 +3,7 @@ package org.cidarlab.minieugene.predicates;
 import org.cidarlab.minieugene.exception.EugeneException;
 
 import JaCoP.constraints.Constraint;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -25,7 +26,7 @@ public abstract class Predicate {
 	 * @return
 	 * @throws EugeneException
 	 */
-	public abstract Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public abstract PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 		throws EugeneException;
 	
 	/**
@@ -35,7 +36,7 @@ public abstract class Predicate {
 	 * @return
 	 * @throws EugeneException
 	 */
-	public abstract Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public abstract PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException;
 	
 }

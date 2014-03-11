@@ -51,8 +51,6 @@ public class MiniEugene
 	private SymbolTables symbols;
 	//private PredicateBuilder pb;
 	
-	private int N;
-	
 	private MiniEugeneStatistics stats;		
 	private List<Component[]> solutions;
 	
@@ -198,7 +196,6 @@ public class MiniEugene
 		if(N < 1) {
 			throw new EugeneException("Invalid size of design!");
 		}
-		this.N = N;
 		
 
 		if(NR_OF_SOLUTIONS < -1) {
@@ -386,14 +383,14 @@ public class MiniEugene
 			}
 
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
-			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, this.N) * Math.pow(2, this.N));
+			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, la.getN()) * Math.pow(2, la.getN()));
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getSize());
 
 			/*
 			 * SOLUTION FINDING
 			 */
 			long T1 = System.nanoTime();
-			this.solutions = new JaCoPSolver(this.symbols).solve(this.N, symbols, la, NR_OF_SOLUTIONS);
+			this.solutions = new JaCoPSolver(this.symbols).solve(symbols, la, NR_OF_SOLUTIONS);
 			long T2 = System.nanoTime();
 
 			if(null != solutions) {

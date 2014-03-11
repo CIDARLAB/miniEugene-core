@@ -3,22 +3,32 @@ package org.cidarlab.minieugene.predicates;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.exception.EugeneException;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 public class LogicalAnd 
 	extends LogicalPredicate {
 
+	private int N;
+	
 	public LogicalAnd() {
 		super(LogicalOperator.AND, new ArrayList<Predicate>());
+		this.setN(-1);
 	}
 	
 	public LogicalAnd(List<Predicate> predicates) {
 		super(LogicalOperator.AND, predicates);
+		this.setN(-1);
+	}
+	
+	public void setN(int N) {
+		this.N = N;
+	}
+	public int getN() {
+		return this.N;		
 	}
 	
 	
@@ -59,14 +69,14 @@ public class LogicalAnd
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
+		System.out.println("[toJaCop] -> "+this.toString());
 		return null;
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		// TODO Auto-generated method stub
 		return null;

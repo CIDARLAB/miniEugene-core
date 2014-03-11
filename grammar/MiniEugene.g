@@ -72,20 +72,16 @@ public void init(SymbolTables symbols) {
 
 // N
 private int N;
-public int getN() {
-    return this.N;
-}
 
 // PREDICATES
-
 private LogicalAnd la = new LogicalAnd();
 
 private void addPredicate(Predicate p) {
     this.la.getPredicates().add(p);  
 }
 
-
 public LogicalAnd getPredicate() {
+    this.la.setN(this.N);
     return this.la;
 }
 
@@ -207,6 +203,7 @@ operator:
 	|	('REPRESSES'|'represses')
 	|	('INDUCES'|'induces')
 	|	('DRIVES'|'drives')
+	|	('ALTERNATE'|'alternate')
 	;	
 		
 operand	:	ID 

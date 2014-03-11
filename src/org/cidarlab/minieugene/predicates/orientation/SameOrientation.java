@@ -6,7 +6,7 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -35,7 +35,7 @@ public class SameOrientation
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
 		for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
@@ -45,7 +45,7 @@ public class SameOrientation
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		// TODO Auto-generated method stub
 		return null;

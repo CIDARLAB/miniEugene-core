@@ -69,6 +69,12 @@ public class TestSuite {
 
 //		new TestSuite().test(new File("./tests/swati/test01"));
 
+		
+		/*
+		 * LOGICAL OR
+		 */
+		new TestSuite().test(new File("./tests/or/or01"));
+
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
 	}

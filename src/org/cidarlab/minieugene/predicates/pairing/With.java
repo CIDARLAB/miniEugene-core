@@ -10,6 +10,7 @@ import JaCoP.constraints.And;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Count;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XgtC;
 import JaCoP.constraints.XltC;
 import JaCoP.core.IntVar;
@@ -44,19 +45,19 @@ public class With
 
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
 		/*
 		 * CONTAINS a /\ CONTAINS b
 		 */
 
-		IntVar aCounter = (IntVar)store.findVariable("CONTAINS_"+this.getA()+"-counter");
+		IntVar aCounter = (IntVar)store.findVariable("CONTAINS_"+this.getA().getName()+"-counter");
 		if(aCounter == null) {
 			aCounter = new IntVar(store, "CONTAINS_"+this.getA()+"-counter", 1, variables[Variables.PART].length);
 		}
 		
-		IntVar bCounter = (IntVar)store.findVariable("CONTAINS_"+this.getB()+"-counter");
+		IntVar bCounter = (IntVar)store.findVariable("CONTAINS_"+this.getB().getName()+"-counter");
 		if(bCounter == null) {
 			bCounter = new IntVar(store, "CONTAINS_"+this.getB()+"-counter", 1, variables[Variables.PART].length);
 		}
@@ -70,7 +71,7 @@ public class With
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		
 		/*
@@ -79,12 +80,12 @@ public class With
 		
 		IntVar aCounter = (IntVar)store.findVariable("CONTAINS_"+this.getA()+"-counter");
 		if(aCounter == null) {
-			aCounter = new IntVar(store, "CONTAINS_"+this.getA()+"-counter", 1, variables[Variables.PART].length);
+			aCounter = new IntVar(store, "CONTAINS_"+this.getA().getName()+"-counter", 0, variables[Variables.PART].length);
 		}
 		
 		IntVar bCounter = (IntVar)store.findVariable("CONTAINS_"+this.getB()+"-counter");
 		if(bCounter == null) {
-			bCounter = new IntVar(store, "CONTAINS_"+this.getB()+"-counter", 1, variables[Variables.PART].length);
+			bCounter = new IntVar(store, "CONTAINS_"+this.getB().getName()+"-counter", 0, variables[Variables.PART].length);
 		}
 
 		store.impose(new Count(variables[Variables.PART], aCounter, this.getA().getId()));

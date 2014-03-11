@@ -5,9 +5,12 @@ import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-import org.cidarlab.minieugene.symbol.SymbolTables;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.Or;
+import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XeqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -39,20 +42,30 @@ public class SomeReverse
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
-		for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-			
+		PrimitiveConstraint[] pc = new PrimitiveConstraint[variables[Variables.ORIENTATION].length];
+		if(this.getA() == null) {
+			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
+				pc[i] = new XeqC(variables[Variables.ORIENTATION][i], -1);
+			}
+		} else {
+			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
+				pc[i] = new IfThen(
+							new XeqC(variables[Variables.PART][i], this.getA().getId()),
+							new XeqC(variables[Variables.ORIENTATION][i], -1));
+			}
 		}
-		return null;
+		
+		return new Or(pc);
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 
-		return null;
+		return new Not(this.toJaCoP(store, variables));
 	}
 
 }

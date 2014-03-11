@@ -6,8 +6,10 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Count;
+import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XgtC;
+import JaCoP.constraints.XlteqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -37,31 +39,38 @@ public class MoreThan
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 		
 		// a MORETHAN N
-		IntVar count = new IntVar(store, 
-				this.getA().getId()+"_MORETHAN_"+this.getNum()+"-counter", 
-				this.getNum()+1, 
-				variables.length); 
-		
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter");
+		if(null == count) {
+			count = new IntVar(store, 
+					this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter", 
+					this.getNum(), 
+					Integer.MAX_VALUE);
+		}
+
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
 		
-		return null;
+		return new XgtC(count, this.getNum());
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
-		// a NOTMORETHAN N
-		IntVar count = new IntVar(store, 
-				this.getA().getId()+"_NOTMORETHAN_"+this.getNum()+"-counter", 
-				0, 
-				this.getNum()); 
+		// a MORETHAN N
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter");
+		if(null == count) {
+			count = new IntVar(store, 
+					this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter", 
+					0, 
+					this.getNum());
+		}
+
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
 		
-		return null;
+		return new XlteqC(count, this.getNum());
 	}
 }

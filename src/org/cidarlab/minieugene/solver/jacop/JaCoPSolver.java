@@ -1,6 +1,7 @@
 package org.cidarlab.minieugene.solver.jacop;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.cidarlab.minieugene.dom.Component;
@@ -43,12 +44,10 @@ public class JaCoPSolver
 		this.symbols = symbols;
 	}
 	
-	public List<Component[]> solve(int N, Component[] symbols, LogicalAnd and, int NR_OF_SOLUTIONS)
+	public List<Component[]> solve(Component[] symbols, LogicalAnd and, int NR_OF_SOLUTIONS)
 			throws EugeneException {
 
-		this.N = N;
-		
-//		temporal_model(symbols);
+		this.N = and.getN();
 
     	/*
     	 * create the variables of the constraint solving problem
@@ -223,13 +222,12 @@ public class JaCoPSolver
     
 	private IntVar[][] model(Component[] symbols) 
 			throws EugeneException {
-		
+
 		IntVar[][] variables = new IntVar[3][N];
 				/*
 				 * 0 ... Parts
 				 * 1 ... Types
 				 * 2 ... Orientation
-				 * 3 ... Position
 				 */
 		
 		/*
@@ -274,23 +272,25 @@ public class JaCoPSolver
 				 * -1 ... reverse
 				 *  1 ... forward
 				 */			
+
 		}
-		
+
 		return variables;
 	}
 
 	public void imposeConstraints(IntVar[][] variables, LogicalAnd and) 
 			throws EugeneException {
+				
 		/*
 		 * per default, all parts have a FORWARD orientation
 		 */
 		for(Predicate predicate : and.getPredicates()) {
+
 			try {
-				if(predicate instanceof Represses ||
-						predicate instanceof Induces) {
+				if(predicate instanceof Represses || predicate instanceof Induces) {
 					this.symbols.putInteraction((InteractionPredicate)predicate);
 				} else {
-					Constraint constraint = predicate.toJaCoP(this.store, variables);
+					PrimitiveConstraint constraint = predicate.toJaCoP(this.store, variables);
 					if(constraint != null) {
 						if(constraint instanceof And) {
 							for(PrimitiveConstraint pc : ((And)constraint).listOfC) {

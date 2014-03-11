@@ -6,6 +6,8 @@ import java.util.List;
 import org.cidarlab.minieugene.exception.EugeneException;
 
 import JaCoP.constraints.Constraint;
+import JaCoP.constraints.Or;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -39,17 +41,28 @@ public class LogicalOr
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		int i = 0;
+		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getPredicates().size()];
+		for(Predicate predicate : this.getPredicates()) {
+			pc[i++] = predicate.toJaCoP(store, variables);
+		}
+		
+		return new Or(pc);
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
-		return null;
+		int i = 0;
+		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getPredicates().size()];
+		for(Predicate predicate : this.getPredicates()) {
+			pc[i++] = predicate.toJaCoPNot(store, variables);
+		}
+		
+		return new Or(pc);
 	}
 
 	@Override

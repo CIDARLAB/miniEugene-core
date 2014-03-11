@@ -3,6 +3,8 @@ package org.cidarlab.minieugene.predicates;
 import org.cidarlab.minieugene.exception.EugeneException;
 
 import JaCoP.constraints.Constraint;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -26,14 +28,13 @@ public class LogicalNot
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getPredicates().get(0).toJaCoPNot(store, variables);
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		// TODO Auto-generated method stub
 		return null;

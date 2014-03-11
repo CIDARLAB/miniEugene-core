@@ -10,14 +10,13 @@ public interface Solver {
 	
 	/**
 	 * 
-	 * @param N  ... size of the design
-	 * @param symbols ... the domains of the variables
-	 * @param and ... the Eugene constraints
-	 * @param number ... number of desired solutions
+	 * @param symbols   ... all components bound by constraints
+	 * @param and       ... the conjunction of miniEugene constraints
+	 * @param solutions ... the number of desired solutions
 	 * @return
 	 * @throws EugeneException
 	 */
-	public List<Component[]> solve(int N, Component[] symbols, LogicalAnd and, int number)
+	public List<Component[]> solve(Component[] components, LogicalAnd and, int solutions)
 			throws EugeneException;
 	
 }

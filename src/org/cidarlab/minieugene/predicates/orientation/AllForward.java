@@ -6,8 +6,10 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.And;
 import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
@@ -44,42 +46,29 @@ public class AllForward
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
+		PrimitiveConstraint[] pc = new PrimitiveConstraint[variables[Variables.ORIENTATION].length];
 		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				store.impose(new XeqC(variables[Variables.ORIENTATION][i], 1));
+				pc[i] = new XeqC(variables[Variables.ORIENTATION][i], 1);
 			}
 		} else {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				store.impose(
-						new IfThen(
-								new XeqC(variables[Variables.PART][i], this.getA().getId()),
-								new XeqC(variables[Variables.ORIENTATION][i], 1)));
+				pc[i] = new IfThen(
+							new XeqC(variables[Variables.PART][i], this.getA().getId()),
+							new XeqC(variables[Variables.ORIENTATION][i], 1));
 			}
 		}
 		
-		return null;
+		return new And(pc);
 	}
 
 	
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		if(this.getA() == null) {
-			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				store.impose(new XeqC(variables[Variables.ORIENTATION][i], -1));
-			}
-		} else {
-			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				store.impose(
-						new IfThen(
-								new XeqC(variables[Variables.PART][i], this.getA().getId()),
-								new XeqC(variables[Variables.ORIENTATION][i], -1)));
-			}
-		}
-		
-		return null;
+		return new Not(this.toJaCoP(store, variables));
 	}
 
 }

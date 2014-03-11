@@ -8,8 +8,8 @@ import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
@@ -44,7 +44,7 @@ public class AllNextTo
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables) 
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 		int a = (int)this.getA().getId();
 		int b = (int)this.getB().getId();
@@ -112,10 +112,9 @@ public class AllNextTo
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
-		return null;
+		return new Not(this.toJaCoP(store, variables));
 	}
 	
 }

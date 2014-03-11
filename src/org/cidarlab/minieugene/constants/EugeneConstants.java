@@ -33,5 +33,5 @@ public class EugeneConstants {
 	public static final String SOLUTION_FINDING_TIME = "Solution Finding Time [sec]";
 	public static final String NUMBER_OF_PARTS = "Number of Parts";
 	public static final String POSSIBLE_SOLUTIONS = "Possible Solutions";
-	public static final String NUMBER_OF_RULES = "Number of Rules";
+	public static final String NUMBER_OF_RULES = "Number of Constraints";
 }

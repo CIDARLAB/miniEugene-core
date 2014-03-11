@@ -3,8 +3,12 @@ package org.cidarlab.minieugene.predicates.pairing;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Constraint;
+import JaCoP.constraints.And;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XeqY;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -32,18 +36,17 @@ public class Equals
 	}
 
 	@Override
-	public Constraint toJaCoP(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws EugeneException {
-		System.out.println("imposing "+i+" EQUALS "+j);
-		// TODO Auto-generated method stub
-		return null;
+		return new And(
+				new XeqY(variables[Variables.PART][i], variables[Variables.PART][j]),
+				new XeqY(variables[Variables.ORIENTATION][i], variables[Variables.ORIENTATION][j]));
 	}
 
 	@Override
-	public Constraint toJaCoPNot(Store store, IntVar[][] variables)
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
-		return null;
+		return new Not(this.toJaCoP(store, variables));
 	}
 
 }
