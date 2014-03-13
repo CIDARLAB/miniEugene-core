@@ -40,7 +40,9 @@ public class BinaryContains
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getOperator()).append(" ").append(this.getA());
+		sb.append(this.getA().getName()).append(" ")
+			.append(this.getOperator()).append(" ")
+			.append(this.getB().getName());
 		return sb.toString();
 	}
 	

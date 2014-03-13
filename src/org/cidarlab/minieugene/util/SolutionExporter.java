@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
 import org.cidarlab.minieugene.data.sbol.SBOLExporter;
 import org.cidarlab.minieugene.dom.Component;
@@ -25,7 +26,10 @@ import org.sbolstandard.core.SBOLFactory;
  */
 public class SolutionExporter {
 	
+	// solutions
 	private List<Component[]> solutions;
+	
+	// interactions
 	private Set<Interaction> interactions;
 	
 	private static final int NR_OF_PIGEON = 10;
@@ -237,4 +241,6 @@ public class SolutionExporter {
 			 System.out.println(sb.toString());
 		 }
 	 }
+	 
+	 	 
 }

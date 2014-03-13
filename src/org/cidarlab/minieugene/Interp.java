@@ -1,7 +1,5 @@
 package org.cidarlab.minieugene;
 
-import java.util.Arrays;
-
 import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
@@ -184,7 +182,8 @@ public class Interp {
 				 * if b is not a number, then
 				 * it can be a binary CONTAINS rule
 				 */
-				if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X)) {
+				if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X) ||
+						RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X)) {
 					/*
 					 * get the id from the symbol
 					 */

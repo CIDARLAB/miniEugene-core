@@ -37,6 +37,7 @@ import org.cidarlab.minieugene.symbol.SymbolTables;
 public class PredicateBuilder {
 
 	private SymbolTables symbols;
+	
 	public PredicateBuilder(SymbolTables symbols) {
 		this.symbols = symbols;
 	}
@@ -148,6 +149,8 @@ public class PredicateBuilder {
 			return new LogicalNot(new Then(lhs, rhs));
 		} else if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X)) {
 			return new BinaryContains(lhs, rhs);
+		} else if(RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X)) {
+			return new LogicalNot(new BinaryContains(lhs, rhs));
 		}
 
 		throw new EugeneException("Invalid Binary Rule!");

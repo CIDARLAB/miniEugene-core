@@ -22,9 +22,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
@@ -79,4 +81,11 @@ public interface IMiniEugene {
 	public MiniEugeneStatistics getStatistics();
 	public List<Component[]> getSolutions();
 	public Set<Interaction> getInteractions();
+
+	/**
+	 * 
+	 * @return the Abstract Composition Tree (ACT)
+	 */
+	public URI visualizeACT()
+			throws EugeneException;
 }

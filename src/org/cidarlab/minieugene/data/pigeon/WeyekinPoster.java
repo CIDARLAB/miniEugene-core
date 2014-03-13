@@ -44,7 +44,7 @@ public class WeyekinPoster {
     private static String mPigeonText = "| foo \n | bar";
     private static String mPigeonBackgroundColorHexString="";
     
-    public static void postMyVision() {
+    public static URI postMyVision() {
         DefaultHttpClient httpclient = new DefaultHttpClient();
 //        HttpPost httpPost = new HttpPost("http://128.197.164.27/graphviz/graphviz.php");
         HttpPost httpPost = new HttpPost("http://cidar1.bu.edu:5801/graphviz/graphviz.php");
@@ -110,8 +110,9 @@ public class WeyekinPoster {
         }
         
         if (!mGraphVizString.isEmpty()) {
-            parseGraphVizResponse();
+            return parseGraphVizResponse();
         }
+        return null;
     }
     
     public static URI getMyBirdsURL() {
@@ -288,23 +289,23 @@ public class WeyekinPoster {
         }
     }
     
-    private static void parseGraphVizResponse() {
+    private static URI parseGraphVizResponse() {
         String[] split = mGraphVizString.split("\n");
         for (String s : split) {
             if (s.contains(mGraphVizImageIdentifier)) {
                 try {
                     String path = mGraphVizPath + s.substring(s.indexOf("img src =")+9, s.indexOf("alt =")-1);
-                    mGraphVizURI = new URI(path);
-                    launchPage(mGraphVizURI);
+                    return new URI(path);
                 } catch (URISyntaxException ex) {
                     Logger.getLogger(WeyekinPoster.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                return;
+                return null;
             }
         }
+        return null;
     }
 
-    private static void launchPage(URI pURI) {
+    public static void launchPage(URI pURI) {
         try {
             java.awt.Desktop.getDesktop().browse(pURI);
         } catch (IOException ex) {

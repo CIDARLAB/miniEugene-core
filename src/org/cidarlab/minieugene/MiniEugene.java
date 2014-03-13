@@ -22,12 +22,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.constants.EugeneConstants;
+import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
@@ -65,114 +68,6 @@ public class MiniEugene
 		this.solutions = null;
 	}
 	
-
-//	/*
-//	 * N = ( <number> | '*' )
-//	 */
-//	private int parseN(String line) 
-//			throws EugeneException {
-//
-//		String[] s = line.split("=");
-//		if(s.length != 2 || !("N".equalsIgnoreCase(s[0].trim()))) {
-//			throw new EugeneException("invalid N");
-//		}
-//		
-//		if(!"*".equalsIgnoreCase(s[1].trim())) {
-//			try {
-//				return Integer.valueOf(s[1].trim());			
-//			} catch(NumberFormatException nfe) {
-//				throw new EugeneException("invalid N");
-//			}
-//		}
-//		
-//		return -1;
-//	}
-//
-//	
-//	
-//	/*
-//	 * PARSING - RELATED METHODS
-//	 */
-//	private Predicate[] parsePredicates(String[] lines) 
-//			throws EugeneException {
-//		/*
-//		 * the first line needs to be the N line
-//		 */
-//		Predicate[] predicates = null;
-//		int i=0;
-//		try {
-//			
-//			/*
-//			 * if there was no N provided, then N
-//			 * MUST be specified in the first line
-//			 */
-//			if(this.N == -1) {
-//				this.N = parseN(lines[i++]);
-//			}
-//			
-//			for(; i<lines.length; i++) {
-//				lines[i] = lines[i].trim();
-//
-//				if (! (lines[i].startsWith("//") || lines[i].isEmpty())) {
-//					Predicate p = interpreteRule(parseRule(lines[i]));
-//					predicates = addPredicate(predicates, p);
-//				}
-//			}
-//			
-//		} catch(Exception e) {
-//			throw new EugeneException("line "+(i+1)+" => "+e.getMessage());
-//		}
-//
-//		return predicates;
-//	}
-//	
-//	private Predicate[] addPredicate(Predicate[] predicates, Predicate predicate) {
-//		if(predicates == null) {
-//			predicates = new Predicate[1];
-//			predicates[0] = predicate;
-//		} else {
-//			predicates = ArrayUtils.add(predicates, predicate);
-//		}
-//		
-//		return predicates;
-//	}
-//	
-//	/*
-//	 * (NOT)? <symbol> <predicate> <symbol>
-//	 * 
-//	 * <symbol>    := {p, r, g, t}
-//	 * <predicate> := {CONTAINS, NOTCONTAINS}
-//	 */
-//	private String[] parseRule(String line) 
-//			throws EugeneException {
-//		String[] s = line.split(" ");
-//
-//		String[] tokens = null;
-//		
-//		for(int i=0; i<s.length; i++) {
-//
-//			// remove possible white spaces
-//			s[i].trim();
-//			
-//			if(s[i] != null && !(s[i].isEmpty())) {
-//				
-//				if(null == tokens) {
-//					tokens = new String[1];
-//					tokens[0] = s[i];
-//				} else {
-//					tokens = ArrayUtils.add(tokens, s[i]);
-//				}
-//			}
-//		}
-//		
-//		if(null == tokens) {
-//			throw new EugeneException("Invalid Rule! "+line);
-//		}
-//		
-//		return tokens;
-//	}
-
-
 	/**
 	 * solve/3 method finds NR_OF_SOLUTIONS rule-compliant designs of size N. 
 	 * 
@@ -310,11 +205,21 @@ public class MiniEugene
 	public void solve(String script, int NR_OF_SOLUTIONS) 
 		throws EugeneException {
 		
+		/*
+		 * at the beginning of every run, we clear the symbol tables 
+		 * that might contain symbols from earlier runs
+		 */
+		this.symbols.clear();
+
 		try {
 			this.solve(script);
 		} catch(EugeneException ee) {
 			throw new EugeneException(ee.getMessage());
 		}
+		
+		/*
+		 * TODO: pick NR_OF_SOLUTIONS solutions randomly
+		 */
 	}
 	
 	/**
@@ -324,12 +229,17 @@ public class MiniEugene
 			throws EugeneException {
 			
 		/*
+		 * at the beginning of every run, we clear the symbol tables 
+		 * that might contain symbols from earlier runs
+		 */
+		this.symbols.clear();
+
+		/*
 		 * first, we parse the script
 		 */
 		try {
 			LogicalAnd la = this.parse(script);
-			
-			System.out.println(la);
+			this.solve(la, -1);
 		} catch(EugeneException e) {
 			throw new EugeneException(e.getMessage());
 		}
@@ -383,7 +293,8 @@ public class MiniEugene
 			}
 
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
-			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, Math.pow(symbols.length, la.getN()) * Math.pow(2, la.getN()));
+			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, 
+					Math.pow(symbols.length, la.getN()) * Math.pow(2, la.getN()));
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getSize());
 
 			/*
@@ -431,19 +342,28 @@ public class MiniEugene
 		 * that might contain symbols from earlier runs
 		 */
 		this.symbols.clear();
-		
-		
+				
 		try {
-			LogicalAnd la = this.parse(script);
-			
+			LogicalAnd la = this.parse(script);			
+			this.symbols.getACT().constructACT(la.getPredicates());
+//			URI gv = this.symbols.getACT().toGraphViz();
+//			System.out.println(gv);
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new EugeneException(e.getMessage());
 		}
 
 	}
-	
+
+	@Override
+	public URI visualizeACT() 
+			throws EugeneException {
+		String gv = (this.symbols.getACT()).toGraphViz();
+//		System.out.println(gv);
+		WeyekinPoster.setDotText(gv);
+		return WeyekinPoster.postMyVision();
+	}
 	
 
 }

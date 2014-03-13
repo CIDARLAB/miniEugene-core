@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.net.URI;
 
 import org.cidarlab.minieugene.MiniEugene;
+import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
 
@@ -60,9 +62,6 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/then/then02"));
 //		new TestSuite().test(new File("./tests/then/then03"));
 
-//		new TestSuite().test(new File("./tests/swati/test01"));
-		new TestSuite().test(new File("./tests/swati/inverter"));
-
 		/*
 		 * ALTERNATE
 		 */
@@ -75,40 +74,81 @@ public class TestSuite {
 		 * LOGICAL OR
 		 */
 //		new TestSuite().test(new File("./tests/or/or01"));
+		
+		/*
+		 * ACT
+		 */
+//		new TestSuite().test(new File("./tests/act/cyclic"));
+//		new TestSuite().test(new File("./tests/act/cyclic02"));
+//		new TestSuite().test(new File("./tests/act/cyclic03"));
+//		new TestSuite().test(new File("./tests/act/cyclic04"));
+//		new TestSuite().test(new File("./tests/act/cyclic05"));
+//		new TestSuite().test(new File("./tests/act/cyclic06"));
+//
+//		new TestSuite().test(new File("./tests/act/acyclic"));
+//		new TestSuite().test(new File("./tests/act/acyclic02"));
+//		new TestSuite().test(new File("./tests/act/acyclic03"));
+//		new TestSuite().test(new File("./tests/act/acyclic04"));
 
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
+		
+		/*
+		 * REAL DESIGNS
+		 */
+		
+		// INVERTERS
+//		new TestSuite().test(new File("./tests/swati/test01"));
+//		new TestSuite().test(new File("./tests/swati/inverter"));
+
+		// BROAD CISTRONS
+//		new TestSuite().test(new File("./designs/broad/pathway"));
 	}
 
 	public void test(File f) {
+		
+		MiniEugene me = new MiniEugene();				
+		long t1 = -1;
+		long tProcessing = -1;
 		try {
 			/*
 			 * read the file
 			 */
 			String script = this.readFile(f);
-			long t1 = System.nanoTime();
+			t1 = System.nanoTime();
 			
-			MiniEugene me = new MiniEugene();				
+			/*
+			 * execute the script
+			 */
 			me.executeScript(script, -1, -1);
 
-//			MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
-			long tProcessing = System.nanoTime() - t1;
-			
-			me.getStatistics().print();
+			tProcessing = System.nanoTime() - t1;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
-			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+//		MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
+			
+		me.getStatistics().print();
+
+		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+		try {
+			// visualize the ACT
+			URI act = me.visualizeACT();
+			WeyekinPoster.launchPage(act);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 //			System.out.println(se.toPigeon());
 
 //			String filename = java.util.UUID.randomUUID().toString();
 //			se.toSBOL("./test-results/"+filename+".sbol.xml");
 //			se.toEugene("./test-results/"+filename+".eug");
 			
-			se.toConsole();
+			//se.toConsole();
 
-			System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		
 		//new Eugene(sFile);
 	}

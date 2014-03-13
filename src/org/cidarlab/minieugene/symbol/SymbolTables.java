@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.Predicate;
@@ -61,6 +62,11 @@ public class SymbolTables {
 	private Set<InteractionPredicate> interactions;
 	
 	/*
+	 * the Abstract Composition Tree
+	 */
+	private ACT act;
+	
+	/*
 	 * N ... the length of the device
 	 *       -1 ... random length
 	 *       >0 ... length 
@@ -76,6 +82,11 @@ public class SymbolTables {
 		this.predicates = new HashSet<Predicate>();
 		
 		this.interactions = new HashSet<InteractionPredicate>();
+		
+		/*
+		 * Abstract Composition Tree
+		 */
+		this.act = new ACT();
 	}
 	
 	/* 
@@ -208,6 +219,15 @@ public class SymbolTables {
 			inters.add(new Interaction(a.getName(), ip.getOperator(), b.getName()));
 		}
 		return inters;
+	}
+	
+
+	/**
+	 * 
+	 * @return the Abstract Composition Tree
+	 */
+	public ACT getACT() {
+		return this.act;
 	}
 	
 	/*

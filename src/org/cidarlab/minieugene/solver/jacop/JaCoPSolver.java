@@ -1,13 +1,18 @@
 package org.cidarlab.minieugene.solver.jacop;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
+import org.cidarlab.minieugene.predicates.LogicalOr;
+import org.cidarlab.minieugene.predicates.LogicalPredicate;
 import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.counting.BinaryContains;
+import org.cidarlab.minieugene.predicates.counting.Contains;
+import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
@@ -15,7 +20,6 @@ import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.And;
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
@@ -44,16 +48,19 @@ public class JaCoPSolver
 		this.symbols = symbols;
 	}
 	
-	public List<Component[]> solve(Component[] symbols, LogicalAnd and, int NR_OF_SOLUTIONS)
+	public List<Component[]> solve(Component[] components, LogicalAnd and, int NR_OF_SOLUTIONS)
 			throws EugeneException {
 
 		this.N = and.getN();
 
+		// first, build the abstract syntax tree
+//		buildAST(and);
+		
     	/*
     	 * create the variables of the constraint solving problem
     	 * i.e. the parts
     	 */
-    	IntVar[][] variables = this.model(symbols);
+    	IntVar[][] variables = this.model(components);
 
     	/*
     	 * map the Eugene rules onto JaCoP constraints
