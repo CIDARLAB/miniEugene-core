@@ -126,7 +126,7 @@ public class MiniEugene
 	 * @param rules
 	 * @return
 	 */
-	private String buildScript(int N, String[] rules) {
+	public String buildScript(int N, String[] rules) {
 		StringBuilder sb = new StringBuilder();
 
 		// N = number .
@@ -205,12 +205,6 @@ public class MiniEugene
 	public void solve(String script, int NR_OF_SOLUTIONS) 
 		throws EugeneException {
 		
-		/*
-		 * at the beginning of every run, we clear the symbol tables 
-		 * that might contain symbols from earlier runs
-		 */
-		this.symbols.clear();
-
 		try {
 			this.solve(script);
 		} catch(EugeneException ee) {
@@ -298,6 +292,11 @@ public class MiniEugene
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getSize());
 
 			/*
+			 * ACT
+			 */
+			this.symbols.getACT().constructACT(la.getPredicates());
+			
+			/*
 			 * SOLUTION FINDING
 			 */
 			long T1 = System.nanoTime();
@@ -315,7 +314,8 @@ public class MiniEugene
 			 * next, we iterate over the predicates and check if there are any
 			 * SOME_REVERSE directionality predicates
 			 */
-			stats.add(EugeneConstants.SOLUTION_FINDING_TIME, (T2-T1)*Math.pow(10, -9));
+			stats.add(EugeneConstants.SOLUTION_FINDING_TIME, 
+					(T2-T1)*Math.pow(10, -9));
 
 			if(null == solutions || solutions.size()==0) {
 				throw new EugeneException("no solutions found!");
@@ -345,12 +345,8 @@ public class MiniEugene
 				
 		try {
 			LogicalAnd la = this.parse(script);			
-			this.symbols.getACT().constructACT(la.getPredicates());
-//			URI gv = this.symbols.getACT().toGraphViz();
-//			System.out.println(gv);
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(Exception e) {
-//			e.printStackTrace();
 			throw new EugeneException(e.getMessage());
 		}
 
@@ -360,7 +356,6 @@ public class MiniEugene
 	public URI visualizeACT() 
 			throws EugeneException {
 		String gv = (this.symbols.getACT()).toGraphViz();
-//		System.out.println(gv);
 		WeyekinPoster.setDotText(gv);
 		return WeyekinPoster.postMyVision();
 	}

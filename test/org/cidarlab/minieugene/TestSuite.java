@@ -85,7 +85,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/act/cyclic05"));
 //		new TestSuite().test(new File("./tests/act/cyclic06"));
 //
-//		new TestSuite().test(new File("./tests/act/acyclic"));
+		new TestSuite().test(new File("./tests/act/acyclic"));
 //		new TestSuite().test(new File("./tests/act/acyclic02"));
 //		new TestSuite().test(new File("./tests/act/acyclic03"));
 //		new TestSuite().test(new File("./tests/act/acyclic04"));
