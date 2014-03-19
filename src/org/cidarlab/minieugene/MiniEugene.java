@@ -245,7 +245,7 @@ public class MiniEugene
 	 * @param script
 	 * @return
 	 */
-	private LogicalAnd parse(String script) 
+	public LogicalAnd parse(String script) 
 			throws EugeneException {
 		
 		// Lexer
