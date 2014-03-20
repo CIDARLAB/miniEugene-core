@@ -115,7 +115,7 @@ public class Interp {
 	
 	private Predicate createBinaryPredicate(String a, String X, String b) 
 			throws EugeneException {
-		
+	
 		if(LogicalOperator.NOT.toString().equalsIgnoreCase(a)) {
 			/*
 			 * negated unary rule

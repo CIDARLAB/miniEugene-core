@@ -6,6 +6,7 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
+import JaCoP.constraints.And;
 import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
@@ -31,13 +32,16 @@ public class SomeForward
 
 	@Override
 	public String getOperator() {
-		return RuleOperator.SOME_REVERSE.toString();
+		return RuleOperator.SOME_FORWARD.toString();
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.SOME_REVERSE);
+		sb.append(this.getOperator());
+		if(null != this.getA()) {
+			sb.append(" ").append(this.getA().getName());
+		}
 		return sb.toString();
 	}
 
@@ -47,7 +51,9 @@ public class SomeForward
 
 		/*
 		 * SOME_FORWARD a ...
-		 * the number of a components that are forward oriented must be greater or equal to 1
+		 * 
+		 * IF contains(a) THEN
+		 *    exists(a) : forward(a) == TRUE
 		 */
 		
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[variables[Variables.ORIENTATION].length];
@@ -57,7 +63,7 @@ public class SomeForward
 			}
 		} else {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				pc[i] = new IfThen(
+				pc[i] = new And(
 							new XeqC(variables[Variables.PART][i], this.getA().getId()),
 							new XeqC(variables[Variables.ORIENTATION][i], 1));
 			}

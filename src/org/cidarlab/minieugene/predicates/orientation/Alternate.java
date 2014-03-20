@@ -8,7 +8,6 @@ import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
 import JaCoP.constraints.IfThen;
-import JaCoP.constraints.IfThenElse;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
@@ -54,7 +53,8 @@ public class Alternate
 				throws EugeneException {
 		
 		if(null != this.getA()) {
-			return alternate(store, variables, this.getA());
+			throw new UnsupportedOperationException("The constraint 'ALTERNATE a' is not fully supported yet!");
+			//TODO: return alternate(store, variables, this.getA());
 		} else {
 			return alternate(store, variables);
 		}

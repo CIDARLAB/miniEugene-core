@@ -68,9 +68,19 @@ public class TestSuite {
 		 * ORIENTATION RULES
 		 */
 		
+		// SOME_FORWARD
+//		new TestSuite().test(new File("./tests/orientation/forward/some01"));
+		new TestSuite().test(new File("./tests/orientation/forward/some02"));
+//		new TestSuite().test(new File("./tests/orientation/forward/some03"));
+		
+		// SOME_REVERSE
+//		new TestSuite().test(new File("./tests/orientation/reverse/some01"));
+//		new TestSuite().test(new File("./tests/orientation/reverse/some02"));
+//		new TestSuite().test(new File("./tests/orientation/reverse/some03"));
+
 		// ALTERNATE 
 //		new TestSuite().test(new File("./tests/orientation/alternate/alternate01"));
-		new TestSuite().test(new File("./tests/orientation/alternate/alternate02"));
+//		new TestSuite().test(new File("./tests/orientation/alternate/alternate02"));
 		
 		// SAME_ORIENTATION
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same01"));
@@ -78,6 +88,9 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same03"));
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same04"));
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same05"));
+		//TODO
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/some_same01"));
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/some_same02"));
 
 		/*
 		 * LOGICAL OR

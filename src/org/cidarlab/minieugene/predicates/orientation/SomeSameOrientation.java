@@ -4,8 +4,10 @@ import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.solver.jacop.Variables;
 
+import JaCoP.constraints.And;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
@@ -24,7 +26,7 @@ public class SomeSameOrientation
 
 	@Override
 	public String getOperator() {
-		return RuleOperator.SAME_ORIENTATION.toString();
+		return RuleOperator.SOME_SAME_ORIENTATION.toString();
 	}
 	
 	@Override
@@ -42,24 +44,31 @@ public class SomeSameOrientation
 
 		System.out.println("IMPOSING "+this.toString());
 		
-		// a SAME_ORIENTATION b <=>
-		//     ALL_FORWARD a /\ ALL_FORWARD b  \/
-		//     ALL_REVERSE a /\ ALL_REVERSE b
+		// the number of forward oriented a's and the number of forward oriented b's
+		// MUST be >= 1
+		// OR
+		// the number of reverse oriented a's and the number of reverse oriented b's
+		// MUST be >= 1
+		SomeForward sfa = new SomeForward(this.getA());
+		SomeForward sfb = new SomeForward(this.getB());
 		
-		new AllForward(this.getA());
-		new AllReverse(this.getB());
+		SomeReverse sra = new SomeReverse(this.getA());
+		SomeReverse srb = new SomeReverse(this.getB());
 		
-		for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-			
-		}
-		return null;
+		// a SOME_SAME_ORIENTATION b <=>
+		//     SOME_FORWARD a /\ SOME_FORWARD b  \/
+		//     SOME_REVERSE a /\ SOME_REVERSE b
+		
+		return new And(
+				new And(sfa.toJaCoP(store, variables), sfb.toJaCoP(store, variables)),
+				new And(sra.toJaCoP(store, variables), srb.toJaCoP(store, variables)));
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return new Not(this.toJaCoP(store, variables));
 	}
 
 }

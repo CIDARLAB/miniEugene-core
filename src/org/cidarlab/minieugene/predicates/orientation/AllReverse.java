@@ -41,7 +41,10 @@ public class AllReverse
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.ALL_REVERSE);
+		sb.append(this.getOperator());
+		if(null != this.getA()) {
+			sb.append(" ").append(this.getA().getName());
+		}
 		return sb.toString();
 	}
 

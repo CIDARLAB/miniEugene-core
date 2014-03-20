@@ -18,6 +18,7 @@ import org.cidarlab.minieugene.predicates.orientation.Alternate;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
 import org.cidarlab.minieugene.predicates.orientation.SomeForward;
 import org.cidarlab.minieugene.predicates.orientation.SomeReverse;
+import org.cidarlab.minieugene.predicates.orientation.SomeSameOrientation;
 import org.cidarlab.minieugene.predicates.pairing.Equals;
 import org.cidarlab.minieugene.predicates.pairing.Then;
 import org.cidarlab.minieugene.predicates.pairing.With;
@@ -53,8 +54,12 @@ public class PredicateBuilder {
 			throws EugeneException {
 		if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p)) {
 			return new AllReverse(null);
+		} else if(RuleOperator.SOME_REVERSE.toString().equalsIgnoreCase(p)) {
+			return new SomeReverse(null);
 		} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(p)) {
 			return new AllForward(null);
+		} else if(RuleOperator.SOME_FORWARD.toString().equalsIgnoreCase(p)) {
+			return new SomeForward(null);
 		} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(p)) {
 			return new Alternate(null);
 		}
@@ -154,8 +159,11 @@ public class PredicateBuilder {
 			return new BinaryContains(lhs, rhs);
 		} else if(RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X)) {
 			return new LogicalNot(new BinaryContains(lhs, rhs));
-		} else if(RuleOperator.SAME_ORIENTATION.toString().equalsIgnoreCase(X)) {
+		} else if(RuleOperator.SAME_ORIENTATION.toString().equalsIgnoreCase(X) ||
+				RuleOperator.ALL_SAME_ORIENTATION.toString().equalsIgnoreCase(X)) {
 			return new AllSameOrientation(lhs, rhs);
+		} else if(RuleOperator.SOME_SAME_ORIENTATION.toString().equalsIgnoreCase(X)) {
+			return new SomeSameOrientation(lhs, rhs);
 		}
 
 		throw new EugeneException("Invalid Binary Rule!");

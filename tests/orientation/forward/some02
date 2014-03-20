@@ -1,0 +1,7 @@
+N=3.
+contains a.
+contains b.
+
+// IF a appears twice, THEN
+// at least one a must be forward oriented
+some_forward a.

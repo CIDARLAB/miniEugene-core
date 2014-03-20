@@ -26,7 +26,7 @@ public class AllSameOrientation
 
 	@Override
 	public String getOperator() {
-		return RuleOperator.SAME_ORIENTATION.toString();
+		return RuleOperator.ALL_SAME_ORIENTATION.toString();
 	}
 	
 	@Override
@@ -60,6 +60,7 @@ public class AllSameOrientation
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
+		
 		return new Not(this.toJaCoP(store, variables));
 	}
 
