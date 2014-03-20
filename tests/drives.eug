@@ -1,0 +1,14 @@
+N=4.
+
+ALL_FORWARD.
+
+CONTAINS p.
+CONTAINS r.
+CONTAINS c.
+CONTAINS t.
+
+
+r BEFORE c.
+r NEXTTO c.
+
+p DRIVES c.

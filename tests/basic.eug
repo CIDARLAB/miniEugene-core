@@ -1,0 +1,4 @@
+N   =    5.
+// this is a test
+CONTAINS p.
+NOTCONTAINS d.

@@ -1,0 +1,7 @@
+N=5.
+CONTAINS a-a_a.       
+CONTAINS b-b_b.
+CONTAINS c-c_c.
+CONTAINS d-d_d.
+CONTAINS e-e_e.
+ALL_FORWARD.

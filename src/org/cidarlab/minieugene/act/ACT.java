@@ -2,9 +2,11 @@ package org.cidarlab.minieugene.act;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.ACTException;
@@ -14,6 +16,14 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
+
+import JaCoP.constraints.regular.Regular;
+import JaCoP.core.IntVar;
+import JaCoP.core.IntervalDomain;
+import JaCoP.core.Store;
+import JaCoP.util.fsm.FSM;
+import JaCoP.util.fsm.FSMState;
+import JaCoP.util.fsm.FSMTransition;
 
 public class ACT {
 
@@ -72,8 +82,16 @@ public class ACT {
 		
 	}
 	
+	private List<Component> roots;
+	
+	public List<Component> getRoots() {
+		return this.roots;
+	}
+	
 	private void buildTree(List<CountingPredicate> lst) 
 			throws EugeneException {
+		
+		this.roots = new ArrayList<Component>();
 		
 		/*
 		 * first, we build the DG
@@ -89,17 +107,27 @@ public class ACT {
 					childs = this.dg.get(bc.getA());
 					childs.add(bc.getB());
 				} else {
-					childs.add(bc.getB());				
+					childs.add(bc.getB());	
+					roots.add(bc.getA());
 				}
 				
 				this.dg.put(bc.getA(), childs);
+				
 				if(!this.dg.containsKey(bc.getB())) {
 					this.dg.put(bc.getB(), new ArrayList<Component>());
+				}
+
+				// B will not be a root anymore
+				if(roots.contains(bc.getB())) {
+					roots.remove(bc.getB());
 				}
 			} else if(cp instanceof Contains) {
 				Contains c = (Contains)cp;
 				if(!this.dg.containsKey(c.getA())) {
 					this.dg.put(c.getA(), new ArrayList<Component>());
+					roots.add(c.getA());
+				} else if(this.roots.contains(c.getA())) {
+					this.roots.remove(c.getA());
 				}
 			}
 		}
@@ -107,9 +135,9 @@ public class ACT {
 
 	}
 	
-	public void sortTree() 
+	public List<Component> sortTree() 
 			throws ACTException {
-		TSort.tSort(this.dg);
+		return TSort.tSort(this.dg);
 	}
 	
 	public void printTree() {
@@ -120,6 +148,14 @@ public class ACT {
 			}
 			System.out.println("}");
 		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<Component, ArrayList<Component>> getACT() {
+		return this.dg;
 	}
 	
 	/**
@@ -167,5 +203,6 @@ public class ACT {
 
 		return sb.toString();
 	}
+	
 	
 }

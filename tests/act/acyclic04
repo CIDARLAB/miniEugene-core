@@ -1,0 +1,19 @@
+N=5.
+contains a.
+contains x.
+contains c.
+
+a contains b.
+b contains x.
+b notcontains c.
+a contains c.
+
+c contains d \/ c contains e.
+
+//c contains b.
+
+d contains y.
+e contains y.
+
+// cycle
+//y contains a.

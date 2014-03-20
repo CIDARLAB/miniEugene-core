@@ -62,14 +62,18 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/then/then02"));
 //		new TestSuite().test(new File("./tests/then/then03"));
 
-		/*
-		 * ALTERNATE
-		 */
-//		new TestSuite().test(new File("./tests/alternate"));
-
 //		new TestSuite().test(new File("./tests/swati/test01"));
 
+		/*
+		 * ORIENTATION RULES
+		 */
 		
+		// ALTERNATE 
+		new TestSuite().test(new File("./tests/orientation/alternate/alternate01"));
+		
+		// SAME_ORIENTATION
+		new TestSuite().test(new File("./tests/orientation/same_orientation/same01"));
+
 		/*
 		 * LOGICAL OR
 		 */
@@ -85,10 +89,15 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/act/cyclic05"));
 //		new TestSuite().test(new File("./tests/act/cyclic06"));
 //
-		new TestSuite().test(new File("./tests/act/acyclic"));
+//		new TestSuite().test(new File("./tests/act/acyclic"));
 //		new TestSuite().test(new File("./tests/act/acyclic02"));
 //		new TestSuite().test(new File("./tests/act/acyclic03"));
 //		new TestSuite().test(new File("./tests/act/acyclic04"));
+
+//		new TestSuite().test(new File("./tests/act/fsm"));
+//		new TestSuite().test(new File("./tests/act/fsm02"));
+
+//		new TestSuite().test(new File("./tests/swati/inverter"));
 
 		/*** TESTS ***/
 //		new TestSuite().testAll("./tests");
@@ -135,7 +144,7 @@ public class TestSuite {
 		try {
 			// visualize the ACT
 			URI act = me.visualizeACT();
-			WeyekinPoster.launchPage(act);
+			//WeyekinPoster.launchPage(act);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -146,7 +155,7 @@ public class TestSuite {
 //			se.toSBOL("./test-results/"+filename+".sbol.xml");
 //			se.toEugene("./test-results/"+filename+".eug");
 			
-			//se.toConsole();
+		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

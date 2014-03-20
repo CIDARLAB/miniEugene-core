@@ -1,0 +1,13 @@
+N=5.
+contains x.
+contains y.
+contains z.
+x contains x.
+x contains y.
+x contains z.
+y contains x.
+y contains y.
+y contains z.
+z contains x.
+z contains y.
+z contains z.

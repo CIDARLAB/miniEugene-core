@@ -37,6 +37,7 @@ import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.parser.MiniEugeneLexer;
 import org.cidarlab.minieugene.parser.MiniEugeneParser;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
+import org.cidarlab.minieugene.solver.jacop.FSMSolver;
 import org.cidarlab.minieugene.solver.jacop.JaCoPSolver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -355,9 +356,20 @@ public class MiniEugene
 	@Override
 	public URI visualizeACT() 
 			throws EugeneException {
-		String gv = (this.symbols.getACT()).toGraphViz();
-		WeyekinPoster.setDotText(gv);
-		return WeyekinPoster.postMyVision();
+		/*
+		 * for FSM testing...
+		 */
+		ACT act = this.symbols.getACT();
+		if(null != act) {
+			
+//			FSMSolver fsm = new FSMSolver(this.symbols, act);
+//			fsm.solve();
+			
+			String gv = act.toGraphViz();
+			WeyekinPoster.setDotText(gv);
+			return WeyekinPoster.postMyVision();
+		}
+		return null;
 	}
 	
 
