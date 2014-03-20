@@ -14,6 +14,16 @@ public class EugeneRules {
 			Arrays.asList(new String[] { 
 					 "CONTAINS", "NOTCONTAINS", "NOTMORETHAN", "MORETHAN", "EXACTLY", "NOTEXACTLY"}));
 	
+	
+	/*
+	 * Orientation Rules ...
+	 */
+	private static final Set<String> setOrientationRules = new HashSet<String>(
+			Arrays.asList(new String[] { 
+					 RuleOperator.SAME_ORIENTATION.toString(),
+					 RuleOperator.ALL_SAME_ORIENTATION.toString(),
+					 RuleOperator.SOME_SAME_ORIENTATION.toString()
+					 }));
 	/*
 	 * Interaction Rules ... 
 	 * for regulatory interactions
@@ -50,7 +60,8 @@ public class EugeneRules {
 					RuleOperator.SOME_REVERSE.toString(),
 					RuleOperator.ALL_FORWARD.toString(),
 					RuleOperator.FORWARD.toString(), 
-					RuleOperator.SOME_FORWARD.toString()}));
+					RuleOperator.SOME_FORWARD.toString(),
+					RuleOperator.ALTERNATE.toString()}));
 
 	public static boolean isUnaryRule(String s) {
 		return setUnaryRules.contains(s.toUpperCase());
@@ -60,6 +71,9 @@ public class EugeneRules {
 		return setPositionalRules.contains(s.toUpperCase());
 	}
 
+	public static boolean isOrientationRule(String s) {
+		return setOrientationRules.contains(s.toUpperCase());
+	}
 	public static boolean isCountingRule(String s) {
 		return setCountingRules.contains(s.toUpperCase());
 	}

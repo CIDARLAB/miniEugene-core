@@ -200,6 +200,8 @@ operator:
 	|	('ALL_REVERSE'|'all_reverse')
 	|	('SOME_REVERSE'|'some_reverse')
 	|	('SAME_ORIENTATION'|'same_orientation')
+	|	('ALL_SAME_ORIENTATION'|'all_same_orientation')
+	|	('SOME_SAME_ORIENTATION'|'some_same_orientation')
 	|	('REPRESSES'|'represses')
 	|	('INDUCES'|'induces')
 	|	('DRIVES'|'drives')

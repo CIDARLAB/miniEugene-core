@@ -45,6 +45,12 @@ public class SomeReverse
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
+		/*
+		 * SOME_REVERSE a ...
+		 * CONTAINS a =>
+		 * the number of a components that are reverse oriented must be greater or equal to 1
+		 */
+
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[variables[Variables.ORIENTATION].length];
 		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {

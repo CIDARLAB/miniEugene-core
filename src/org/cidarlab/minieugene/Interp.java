@@ -30,7 +30,7 @@ public class Interp {
 	
 	public Predicate interpreteRule(String[] tokens) 
 			throws EugeneException {
-//		System.out.println("[interpreteRule] -> "+Arrays.toString(tokens));
+
 		switch(tokens.length) {
 		case 1:
 			/*
@@ -212,8 +212,8 @@ public class Interp {
 			// create the counting rule object
 			return this.pb.buildBinary(this.symbols.get(idA), X, idB);
 			
-		} else if(EugeneRules.isPositionalRule(X) ||
-				EugeneRules.isPairingRule(X)) {
+		} else if(EugeneRules.isPositionalRule(X) || EugeneRules.isPairingRule(X) || 
+				EugeneRules.isOrientationRule(X)) {
 			
 			idB = this.symbols.getId(b);
 

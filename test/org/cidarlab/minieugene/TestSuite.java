@@ -70,9 +70,14 @@ public class TestSuite {
 		
 		// ALTERNATE 
 //		new TestSuite().test(new File("./tests/orientation/alternate/alternate01"));
+		new TestSuite().test(new File("./tests/orientation/alternate/alternate02"));
 		
 		// SAME_ORIENTATION
-		new TestSuite().test(new File("./tests/orientation/same_orientation/same01"));
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/same01"));
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/same02"));
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/same03"));
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/same04"));
+//		new TestSuite().test(new File("./tests/orientation/same_orientation/same05"));
 
 		/*
 		 * LOGICAL OR

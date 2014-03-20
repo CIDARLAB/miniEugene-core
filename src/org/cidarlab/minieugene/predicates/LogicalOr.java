@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.cidarlab.minieugene.exception.EugeneException;
 
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;

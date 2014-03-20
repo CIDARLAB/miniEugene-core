@@ -14,11 +14,11 @@ import JaCoP.core.Store;
  * a SAME_ORIENTATION b
  * 
  */
-public class SameOrientation 
+public class SomeSameOrientation 
 	extends BinaryPredicate 
 	implements OrientationPredicate {
 
-	public SameOrientation(Component a, Component b) {
+	public SomeSameOrientation(Component a, Component b) {
 		super(a, b);
 	}
 
@@ -30,7 +30,9 @@ public class SameOrientation
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();		
-		sb.append(RuleOperator.SAME_ORIENTATION);
+		sb.append(this.getA().getName()).append(" ")
+			.append(this.getOperator()).append(" ")
+			.append(this.getB().getName());
 		return sb.toString();
 	}
 
@@ -38,6 +40,15 @@ public class SameOrientation
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
+		System.out.println("IMPOSING "+this.toString());
+		
+		// a SAME_ORIENTATION b <=>
+		//     ALL_FORWARD a /\ ALL_FORWARD b  \/
+		//     ALL_REVERSE a /\ ALL_REVERSE b
+		
+		new AllForward(this.getA());
+		new AllReverse(this.getB());
+		
 		for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 			
 		}
