@@ -70,7 +70,7 @@ public class TestSuite {
 		
 		// SOME_FORWARD
 //		new TestSuite().test(new File("./tests/orientation/forward/some01"));
-		new TestSuite().test(new File("./tests/orientation/forward/some02"));
+//		new TestSuite().test(new File("./tests/orientation/forward/some02"));
 //		new TestSuite().test(new File("./tests/orientation/forward/some03"));
 		
 		// SOME_REVERSE
@@ -127,6 +127,12 @@ public class TestSuite {
 		// INVERTERS
 //		new TestSuite().test(new File("./tests/swati/test01"));
 //		new TestSuite().test(new File("./tests/swati/inverter"));
+
+		
+		// Inverter example of the web site
+		new TestSuite().test(new File("./designs/web-site/inverter"));
+		new TestSuite().test(new File("./designs/web-site/toggle-switch"));
+		new TestSuite().test(new File("./designs/web-site/nor"));
 
 		// BROAD CISTRONS
 //		new TestSuite().test(new File("./designs/broad/pathway"));

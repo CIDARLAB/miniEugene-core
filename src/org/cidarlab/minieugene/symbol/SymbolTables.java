@@ -211,12 +211,15 @@ public class SymbolTables {
 			InteractionPredicate ip = it.next();
 			Component a = null;
 			if(ip instanceof Represses) {
-				a = this.symbols.get(ip.getA());
+				a = ip.getA();
 			} else if(ip instanceof Induces) {
 				a = new Component(((Induces)ip).getInducer());
 			}
-			Component b = this.symbols.get(ip.getB());
-			inters.add(new Interaction(a.getName(), ip.getOperator(), b.getName()));
+
+			Component b = ip.getB();
+			
+			inters.add(
+					new Interaction(a.getName(), ip.getOperator(), b.getName()));
 		}
 		return inters;
 	}
