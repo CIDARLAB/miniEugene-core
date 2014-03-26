@@ -34,9 +34,9 @@ public class TestSuite {
 		 */
 		
 		// SAME_COUNT
-		new TestSuite().test(new File("./tests/counting/same_count01"));
-		new TestSuite().test(new File("./tests/counting/same_count02"));
-		new TestSuite().test(new File("./tests/counting/same_count03"));
+//		new TestSuite().test(new File("./tests/counting/same_count01"));
+//		new TestSuite().test(new File("./tests/counting/same_count02"));
+//		new TestSuite().test(new File("./tests/counting/same_count03"));
 
 		/*
 		 * CALCULATE minN
@@ -61,8 +61,9 @@ public class TestSuite {
 		/*
 		 * POSITIONING
 		 */
-//		new TestSuite().test(new File("./tests/before/some_before01"));
-//		new TestSuite().test(new File("./tests/before/some_before02"));
+		new TestSuite().test(new File("./tests/before/some_before01"));
+		new TestSuite().test(new File("./tests/before/some_before02"));
+		new TestSuite().test(new File("./tests/before/some_before03"));
 
 		/*
 		 * ORIENTATION RULES

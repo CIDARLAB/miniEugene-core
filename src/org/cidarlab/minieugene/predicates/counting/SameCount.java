@@ -78,8 +78,6 @@ public class SameCount
 			Store store, IntVar[][] variables) 
 				throws EugeneException {
 		
-		System.out.println("imposing NOT "+this.toString());
-		
 		/*
 		 * NOT a SAME_COUNT b
 		 */

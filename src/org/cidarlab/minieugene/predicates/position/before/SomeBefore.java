@@ -82,10 +82,12 @@ public class SomeBefore
 						new Or(pcB));
 		}			
 
-		return new And(
-				new Or(pc),
-				// a cannot appear at the last position
-				new XneqC(variables[Variables.PART][N-1], a));
+		return new Or(pc);
+
+//		return new And(
+//				new Or(pc),
+//				// a cannot appear at the last position
+//				new XneqC(variables[Variables.PART][N-1], a));
 
 	}
 
