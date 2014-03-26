@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.net.URI;
 
-import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
@@ -14,27 +13,11 @@ import org.cidarlab.minieugene.util.SolutionExporter;
 public class TestSuite {
 
 	public static void main(String[] args) {
-//		new TestSuite().test(new File("./tests/drives.eug"));
-//		new TestSuite().test(new File("./tests/interactions.eug"));
-
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette01.eug"));
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette02.eug"));
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette03.eug"));
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/basic_composition.eug"));
 
 		/*
-		 * NOR GATE EXAMPLE
+		 * BASIC ``Syntax'' TESTS
 		 */
-//		new TestSuite().test(new File("./designs/nor-gate/repressing-cassette.eug"));
-//		new TestSuite().test(new File("./designs/nor-gate/reporting-cassette.eug"));
-//		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
-
-//		new TestSuite().test(new File("./designs/nor-gate/rev1/repressing-cassette.eug"));
-//		new TestSuite().test(new File("./designs/nor-gate/rev1/reporting-cassette.eug"));
-//		new TestSuite().test(new File("./designs/nor-gate/rev1/nor-gate.eug"));
-
-		//		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
-//		new TestSuite().test(new File("./examples/transcriptional-unit.eug"));
+//		new TestSuite().test(new File("./tests/comments"));
 
 		/*
 		 * naming of rule operands
@@ -44,6 +27,16 @@ public class TestSuite {
 		//new TestSuite().test(new File("./tests/bryan/ex2"));
 		//new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
+
+		
+		/*
+		 * COUNTING RULES
+		 */
+		
+		// SAME_COUNT
+		new TestSuite().test(new File("./tests/counting/same_count01"));
+		new TestSuite().test(new File("./tests/counting/same_count02"));
+		new TestSuite().test(new File("./tests/counting/same_count03"));
 
 		/*
 		 * CALCULATE minN
@@ -63,6 +56,13 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/then/then03"));
 
 //		new TestSuite().test(new File("./tests/swati/test01"));
+
+
+		/*
+		 * POSITIONING
+		 */
+//		new TestSuite().test(new File("./tests/before/some_before01"));
+//		new TestSuite().test(new File("./tests/before/some_before02"));
 
 		/*
 		 * ORIENTATION RULES
@@ -93,9 +93,16 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/some_same02"));
 
 		/*
+		 * INTERACTION RULES
+		 */
+//		new TestSuite().test(new File("./tests/drives.eug"));
+//		new TestSuite().test(new File("./tests/interactions.eug"));
+
+		/*
 		 * LOGICAL OR
 		 */
 //		new TestSuite().test(new File("./tests/or/or01"));
+		
 		
 		/*
 		 * ACT
@@ -117,7 +124,12 @@ public class TestSuite {
 
 //		new TestSuite().test(new File("./tests/swati/inverter"));
 
-		/*** TESTS ***/
+		/*
+		 * LATTICE 
+		 */
+//		new TestSuite().test(new File("./tests/lattice/daniel01"));
+//		new TestSuite().test(new File("./tests/lattice/daniel02"));
+
 //		new TestSuite().testAll("./tests");
 		
 		/*
@@ -130,12 +142,37 @@ public class TestSuite {
 
 		
 		// Inverter example of the web site
-		new TestSuite().test(new File("./designs/web-site/inverter"));
-		new TestSuite().test(new File("./designs/web-site/toggle-switch"));
-		new TestSuite().test(new File("./designs/web-site/nor"));
+//		new TestSuite().test(new File("./designs/web-site/inverter"));
+//		new TestSuite().test(new File("./designs/web-site/toggle-switch"));
+//		new TestSuite().test(new File("./designs/web-site/nor"));
+		
+		
+//		new TestSuite().test(new File("./designs/nor"));
 
 		// BROAD CISTRONS
 //		new TestSuite().test(new File("./designs/broad/pathway"));
+
+		/*
+		 * ACM JETC
+		 */
+//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette01.eug"));
+//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette02.eug"));
+//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette03.eug"));
+//		new TestSuite().test(new File("./designs/priority-encoder/rev3/basic_composition.eug"));
+
+		/*
+		 * NOR GATE EXAMPLE
+		 */
+//		new TestSuite().test(new File("./designs/nor-gate/repressing-cassette.eug"));
+//		new TestSuite().test(new File("./designs/nor-gate/reporting-cassette.eug"));
+//		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
+
+//		new TestSuite().test(new File("./designs/nor-gate/rev1/repressing-cassette.eug"));
+//		new TestSuite().test(new File("./designs/nor-gate/rev1/reporting-cassette.eug"));
+//		new TestSuite().test(new File("./designs/nor-gate/rev1/nor-gate.eug"));
+
+//		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
+//		new TestSuite().test(new File("./examples/transcriptional-unit.eug"));
 	}
 
 	public void test(File f) {
@@ -153,7 +190,7 @@ public class TestSuite {
 			/*
 			 * execute the script
 			 */
-			me.executeScript(script, -1, -1);
+			me.solve(script);
 
 			tProcessing = System.nanoTime() - t1;
 		} catch(Exception e) {
@@ -166,19 +203,26 @@ public class TestSuite {
 
 		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 		try {
-			// visualize the ACT
-			URI act = me.visualizeACT();
-			//WeyekinPoster.launchPage(act);
+			// ACT -> GraphViz
+//			URI act = me.visualizeACT();
+				
+			// PIGEON
+			URI pig = se.toPigeon();
+			WeyekinPoster.launchPage(pig);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-//			System.out.println(se.toPigeon());
 
 //			String filename = java.util.UUID.randomUUID().toString();
+		
+		// SBOL
 //			se.toSBOL("./test-results/"+filename+".sbol.xml");
+		
+		// EUGENE
 //			se.toEugene("./test-results/"+filename+".eug");
-			
+		
+		// CONSOLE OUTPUT
 		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");

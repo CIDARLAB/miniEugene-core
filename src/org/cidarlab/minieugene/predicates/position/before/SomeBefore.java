@@ -10,6 +10,7 @@ import org.cidarlab.minieugene.solver.jacop.Variables;
 import JaCoP.constraints.And;
 import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Not;
+import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XneqC;
@@ -57,22 +58,35 @@ public class SomeBefore
 		/*
 		 * a SOME_BEFORE b
 		 * 
-		 * contains(a) && contains(b)
-		 * => exists a: position(a) < position(b)
+		 * contains(a) && contains(b) => 
+		 *     exists a: position(a) < position(b)
 		 */
 		
-		/*
-		 * we cannot place any b before a's last possible occurrence
-		 * => a's last possible occurrence is at index N-1
-		 */
-		PrimitiveConstraint[] pcB = new PrimitiveConstraint[N];
-		for(int j=0; j<N; j++) {
-			pcB[j] = new XneqC(variables[Variables.PART][j], b);
-		} 
+		PrimitiveConstraint pc[] = new PrimitiveConstraint[N];
 		
-		return new IfThen(
-					new XeqC(variables[Variables.PART][N-1], a),
-					new And(pcB));			
+		// a can appear at the first position
+		pc[0] = new XeqC(variables[Variables.PART][0], a);
+ 
+		for(int i=1; i<N; i++) {
+
+			// if a appears at the i-th position,
+			// then at least one element after a must be b 
+			
+			PrimitiveConstraint[] pcB = new PrimitiveConstraint[N-i];
+			for(int j=i; j<N; j++) {
+				pcB[j-i] = new XeqC(variables[Variables.PART][j], b);
+			}
+			
+			pc[i] = new And(
+						new XeqC(variables[Variables.PART][i], a),
+						new Or(pcB));
+		}			
+
+		return new And(
+				new Or(pc),
+				// a cannot appear at the last position
+				new XneqC(variables[Variables.PART][N-1], a));
+
 	}
 
 	@Override

@@ -12,7 +12,10 @@ public class EugeneRules {
 	 */
 	private static final Set<String> setCountingRules = new HashSet<String>(
 			Arrays.asList(new String[] { 
-					 "CONTAINS", "NOTCONTAINS", "NOTMORETHAN", "MORETHAN", "EXACTLY", "NOTEXACTLY"}));
+					 "CONTAINS", "NOTCONTAINS", 
+					 "NOTMORETHAN", "MORETHAN", 
+					 "EXACTLY", "NOTEXACTLY",
+					 "SAME_COUNT"}));
 	
 	
 	/*

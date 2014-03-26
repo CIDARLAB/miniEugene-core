@@ -3,6 +3,7 @@ package org.cidarlab.minieugene.predicates.interaction;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.counting.Contains;
 
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
@@ -39,7 +40,10 @@ public class Induces
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
-		return null;
+
+		// x INDUCES a =>
+		//     CONTAINS a
+		return (new Contains(this.getB())).toJaCoP(store, variables);
 	}
 
 	@Override

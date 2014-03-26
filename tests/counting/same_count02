@@ -1,0 +1,6 @@
+N=3.
+CONTAINS A.
+CONTAINS B.
+A SAME_COUNT B.
+
+// -> no solutions

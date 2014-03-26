@@ -2,8 +2,6 @@ package org.cidarlab.minieugene.predicates;
 
 import org.cidarlab.minieugene.exception.EugeneException;
 
-import JaCoP.constraints.Constraint;
-import JaCoP.constraints.Not;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;

@@ -1,0 +1,20 @@
+N=4.
+ALL_FORWARD.
+
+// Need at least 1 of each
+CONTAINS p.
+CONTAINS r.
+CONTAINS c.
+CONTAINS t.
+
+// promoter drives coding seq
+p DRIVES c.
+
+
+// r must precede c immed.
+r ALL_BEFORE c.
+r NEXTTO c.
+
+
+// at least 1 t after C
+t SOME_AFTER c.

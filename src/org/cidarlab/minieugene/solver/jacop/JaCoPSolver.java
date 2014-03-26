@@ -1,9 +1,12 @@
 package org.cidarlab.minieugene.solver.jacop;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.cidarlab.minieugene.act.ACT;
+import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
@@ -18,21 +21,30 @@ import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
+import org.cidarlab.minieugene.util.SolutionExporter;
 
+import JaCoP.constraints.Alldifferent;
 import JaCoP.constraints.And;
+import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
+import JaCoP.constraints.XeqY;
+import JaCoP.constraints.XgtY;
+import JaCoP.constraints.XltY;
 import JaCoP.core.Domain;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 import JaCoP.core.ValueEnumeration;
 import JaCoP.search.DepthFirstSearch;
+import JaCoP.search.IndomainMin;
 import JaCoP.search.IndomainSimpleRandom;
 import JaCoP.search.MostConstrainedDynamic;
+import JaCoP.search.MostConstrainedStatic;
 import JaCoP.search.Search;
 import JaCoP.search.SelectChoicePoint;
 import JaCoP.search.SimpleMatrixSelect;
+import JaCoP.search.SimpleSelect;
 
 
 public class JaCoPSolver 
@@ -54,13 +66,15 @@ public class JaCoPSolver
 		this.N = and.getN();
 
 		// first, build the abstract syntax tree
-//		buildAST(and);
+//		buildACT(and);
 		
     	/*
     	 * create the variables of the constraint solving problem
     	 * i.e. the parts
     	 */
     	IntVar[][] variables = this.model(components);
+    	
+//    	this.solve_pos(components);
 
     	/*
     	 * map the Eugene rules onto JaCoP constraints
@@ -227,6 +241,157 @@ public class JaCoPSolver
 //    	return null;
 //    }
     
+	private void solve_pos(Component[] symbols) 
+			throws EugeneException {
+		
+		Store st = new Store();
+		
+		int i = 0, j = 0;
+		IntVar[] variables = new IntVar[symbols.length * 3];
+		IntVar[] pos_variables = new IntVar[symbols.length];
+		for(Component c : symbols) {
+
+			// ID
+			variables[i] = new IntVar(st, c.getName()+".id");
+			variables[i++].addDom(
+					this.symbols.getId(c.getName()), 
+					this.symbols.getId(c.getName()));
+			
+			// POSITION
+			variables[i++] = new IntVar(st, c.getName()+".pos", 0, N-1); 
+			pos_variables[j++] = (IntVar)st.findVariable(c.getName()+".pos");
+			
+			// ORIENTATION
+			variables[i] = new IntVar(st, c.getName()+".orientation");
+			variables[i].addDom(-1, -1);
+			variables[i++].addDom(1, 1);
+		}
+		
+		// different positions
+		st.impose(new Alldifferent(pos_variables));
+		
+
+		// pIn1 BEFORE cRep
+		
+		imposeBefore(st, "pIn1", "cRep");
+		imposeBefore(st, "pIn2", "cRep");
+		imposeBefore(st, "cRep", "pOut");
+		imposeBefore(st, "pOut", "cOut");
+		
+
+	
+		// now, we label the variables 
+		// and search for appropriate assignments
+		
+		SelectChoicePoint<IntVar> select = 
+				new SimpleSelect<IntVar>(
+						variables,
+						new MostConstrainedStatic<IntVar>(), 
+						new IndomainMin<IntVar>());
+
+		Search<IntVar> label = new DepthFirstSearch<IntVar>();
+		
+		label.getSolutionListener().searchAll(true);
+		label.getSolutionListener().recordSolutions(true);
+		label.setAssignSolution(true);
+		
+		boolean result = label.labeling(st, select);
+		if(result) {
+			List<Component[]> solutions = this.processPositioningSolutions(
+					label.getSolutionListener().getSolutions());
+			
+			SolutionExporter se = new SolutionExporter(solutions, 
+					null);
+
+			try {
+				// ACT -> GraphViz
+//				URI act = me.visualizeACT();
+					
+				// PIGEON
+				URI pig = se.toPigeon();
+				WeyekinPoster.launchPage(pig);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private void imposeBefore(Store st, String lhs, String rhs) {
+		// pIn1 and cRep must have the same orientation
+		st.impose(
+				new XeqY(
+					(IntVar)st.findVariable(lhs+".orientation"), 
+					(IntVar)st.findVariable(rhs+".orientation")));
+				
+		// if pIn1 is forward oriented, 
+		// then pIn1 should be BEFORE cRep...
+		st.impose(
+				new IfThen(
+					new XeqC((IntVar)st.findVariable(lhs+".orientation"), 1),
+					new XltY((IntVar)st.findVariable(lhs+".pos"), 
+							 (IntVar)st.findVariable(rhs+".pos"))));
+
+		// if pIn1 is reverse oriented, 
+		// then cRep should be BEFORE pIn1...
+		st.impose(
+				new IfThen(
+						new XeqC((IntVar)st.findVariable(lhs+".orientation"), -1),
+						new XgtY((IntVar)st.findVariable(lhs+".pos"), 
+								 (IntVar)st.findVariable(rhs+".pos"))));
+	}
+	
+	public List<Component[]> processPositioningSolutions(Domain[][] solutions) {
+		List<Component[]> lst = new ArrayList<Component[]>();
+		for(int i=0; i<solutions.length && solutions[i]!=null; i++) {
+			
+			Domain[] solution = solutions[i];
+			
+			Component[] sol = new Component[solution.length/3];
+
+			for(int j=0; j<solution.length; j++) {
+				
+				Component symbol = null;
+
+				/*
+				 * PART ID
+				 */
+				ValueEnumeration id = solution[j++].valueEnumeration();
+				while(id.hasMoreElements()) {
+					Component old = this.symbols.get(id.nextElement());
+					symbol = new Component(old.getName());
+				}
+				
+				/*
+				 * PART POSITION
+				 */
+				int position = -1;
+				ValueEnumeration pos = solution[j++].valueEnumeration();
+				while(pos.hasMoreElements()) {
+					position = pos.nextElement(); 
+				}
+				if(-1 != position) {
+					sol[position] = symbol;
+				}
+				
+				/*
+				 * ORIENTATION
+				 */
+				ValueEnumeration orientation = solution[j].valueEnumeration();
+				while(orientation.hasMoreElements()) {
+					if(orientation.nextElement() == (-1)) {
+						symbol.setForward(false);
+					}
+				}				
+
+			}
+			
+			lst.add(sol);
+		}
+		return lst;		
+	}
+	
 	private IntVar[][] model(Component[] symbols) 
 			throws EugeneException {
 
@@ -288,27 +453,34 @@ public class JaCoPSolver
 	public void imposeConstraints(IntVar[][] variables, LogicalAnd and) 
 			throws EugeneException {
 				
-		/*
-		 * per default, all parts have a FORWARD orientation
-		 */
 		for(Predicate predicate : and.getPredicates()) {
-
 			try {
-				if(predicate instanceof Represses || predicate instanceof Induces) {
-					this.symbols.putInteraction((InteractionPredicate)predicate);
-				} else {
-					PrimitiveConstraint constraint = predicate.toJaCoP(this.store, variables);
-					if(constraint != null) {
-						if(constraint instanceof And) {
-							for(PrimitiveConstraint pc : ((And)constraint).listOfC) {
-								//store.imposeWithConsistency(pc);
-								store.impose(pc);
-							}
-						} else {
-							store.impose(constraint);
+				
+				/*
+				 * if we have an interaction predicate (esp represses or induces), 
+				 * then we store the relation in the symbol tables 
+				 * (for later visualization)
+				 */
+				if(predicate instanceof Represses || 
+						predicate instanceof Induces) {
+					this.symbols.putInteraction(
+							(InteractionPredicate)predicate);
+				} 
+				
+				
+				PrimitiveConstraint constraint = predicate.toJaCoP(
+						this.store, variables);
+				
+				if(constraint != null) {
+					if(constraint instanceof And) {
+						for(PrimitiveConstraint pc : ((And)constraint).listOfC) {
+							store.impose(pc);
 						}
+					} else {
+						store.impose(constraint);
 					}
 				}
+
 			} catch(Exception e) {
 				e.printStackTrace();
 				throw new EugeneException("I cannot impose "+predicate);

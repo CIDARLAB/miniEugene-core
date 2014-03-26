@@ -3,21 +3,19 @@ package org.cidarlab.minieugene.predicates.interaction;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.counting.Contains;
+import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
 import org.cidarlab.minieugene.predicates.position.before.AllBefore;
 import org.cidarlab.minieugene.solver.jacop.PartTypes;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
-import JaCoP.constraints.Constraint;
 import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.Reified;
 import JaCoP.constraints.XeqC;
-import JaCoP.constraints.XeqY;
 import JaCoP.constraints.XneqC;
-import JaCoP.core.BooleanVar;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -45,10 +43,9 @@ public class Drives
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
-		
-//		System.out.println("[Drives.toJaCoP] -> "+this.toString());
 
     	int N = variables[Variables.TYPE].length;
+    	
 
     	/*
 		 *  0 <= i,j < N, i < j
@@ -59,17 +56,12 @@ public class Drives
 		PrimitiveConstraint pc[] = new PrimitiveConstraint[N];
 		for(int i=0; i<N-1; i++) {
 
-//			System.out.println("*****");
-//			System.out.println("Promoter at "+i+"...");
 			PrimitiveConstraint[] gene = new PrimitiveConstraint[N-(i+1)];
 			for(int j=(i+1); j<N; j++) {
 
-//				System.out.print("Gene at "+j+" -> ");
 				if(j-i > 1) {
 					PrimitiveConstraint[] noTerminator = new PrimitiveConstraint[j-(i+1)];
-//					System.out.print("no Terminator at ");
 					for(int k=i+1; k<=j-1; k++) {
-//						System.out.print(k+", ");
 
 						noTerminator[k-(i+1)] = new XneqC(variables[Variables.TYPE][k], PartTypes.get("TERMINATOR"));
 					}
@@ -82,8 +74,7 @@ public class Drives
 				} else {
 					gene[j-(i+1)] = new XeqC(variables[Variables.PART][j], this.getB().getId());
 				}
-//				System.out.println();
-				
+
 			}
 			
 			pc[i] = new IfThen(
@@ -92,68 +83,80 @@ public class Drives
 		}
 		
 		pc[N-1] = new XneqC(variables[Variables.PART][N-1], this.getA().getId());
-				
-		return new And(pc);
+
+    	// a DRIVES b =>
+    	//     CONTAINS a /\ CONTAINS b /\
+		//     a SAME_ORIENTATION b
+		
+		PrimitiveConstraint[] pcReturn = new PrimitiveConstraint[5];
+		
+		pcReturn[0] = new Contains(this.getA()).toJaCoP(store, variables);
+		pcReturn[1] = new Contains(this.getB()).toJaCoP(store, variables);
+		pcReturn[2] = new AllSameOrientation(
+				this.getA(), this.getB()).toJaCoP(store, variables);
+		pcReturn[3] = new And(pc);
+		pcReturn[4] = new Or(
+				this.PBeforeG_Forward(store, variables),
+				this.PAfterG_Reverse(store, variables)); 
+		
+		return new And(pcReturn);
 	}
 	
-//    private PrimitiveConstraint[] PBeforeG_Forward(Store store, IntVar[][] variables) {
-//
-//    	int N = variables[Variables.TYPE].length;
-//
-//    	PrimitiveConstraint[] pc = new PrimitiveConstraint[N-1];
-//    	for(int i=1; i<N; i++) {
-//
-//	    	PrimitiveConstraint[] upstreamPromoter = new PrimitiveConstraint[i];
-//			PrimitiveConstraint[] noInterveningTerminator = new PrimitiveConstraint[i];
-//			
-//			for(int j=0; j<i; j++) {				
-//	    		upstreamPromoter[j] = new XeqC(variables[Variables.PART][j], this.getA().getId()); 
-//
-//	    		noInterveningTerminator[j] = new XneqC(variables[Variables.TYPE][j], PartTypes.get("TERMINATOR"));
-//			}
-//
-//			pc[i-1] = new IfThen(
-//							new And(
-//								new XeqC(variables[Variables.PART][i], this.getB().getId()),
-//								new Or(upstreamPromoter)),
-//							new And(noInterveningTerminator));
-//    	}
-//    	
-//    	return pc;
-//    }
+    private PrimitiveConstraint PBeforeG_Forward(Store store, IntVar[][] variables) {
+
+    	int N = variables[Variables.TYPE].length;
+
+    	PrimitiveConstraint[] pc = new PrimitiveConstraint[N];
+    	pc[0] = new And(
+    				new XneqC(variables[Variables.PART][0], this.getB().getId()),
+    				new XneqC(variables[Variables.ORIENTATION][0], 1));
+    				
+    	for(int i=1; i<N; i++) {
+
+	    	PrimitiveConstraint[] upstreamPromoter = new PrimitiveConstraint[i];
+			
+			for(int j=0; j<i; j++) {				
+	    		upstreamPromoter[j] = new And( 
+	    				new XeqC(variables[Variables.ORIENTATION][j], 1), 
+	    				new XeqC(variables[Variables.PART][j], this.getA().getId())); 
+			}
+
+			pc[i] = new IfThen(
+						new XeqC(variables[Variables.PART][i], this.getB().getId()),
+						new And(new Or(upstreamPromoter),
+								new XeqC(variables[Variables.ORIENTATION][i], 1)));
+    	}
+    	
+    	return new Or(pc);
+    }
     
-//    private PrimitiveConstraint[] PAfterG_Reverse(Store store, IntVar[][] variables) {
-//    	
-//    	int N = variables[Variables.TYPE].length;
-//    	
-//    	PrimitiveConstraint[] pc = new PrimitiveConstraint[N-1];
-//    	for(int i=0; i<N-1; i++) {
-//
-//	    	PrimitiveConstraint[] upstreamPromoter = new PrimitiveConstraint[N-i];
-//			
-//			for(int j=i; j<N; j++) {				
-//	    		upstreamPromoter[j-i] = new XeqC(variables[Variables.PART][j], this.getA().getId());
-//			}
-//			
-//    		if(i != N-1) {
-//    			PrimitiveConstraint[] noInterveningTerminator = new PrimitiveConstraint[N-i-1];
-//    			for(int j=i; j<N-1; j++) {
-//    	    		noInterveningTerminator[j-i] = new XneqC(variables[Variables.TYPE][j], 4);
-//    			}
-//    			
-//    			pc[i] = new IfThen(
-//    						new XeqC(variables[Variables.PART][i], this.getB().getId()),
-//    						new And(new Or(upstreamPromoter),
-//    								new And(noInterveningTerminator)));
-//    		} else {
-//    			pc[i] = new IfThen(
-//							new XeqC(variables[Variables.PART][i], this.getB().getId()),
-//							new Or(upstreamPromoter));
-//    		}
-//    	}
-//    	
-//    	return pc;
-//    }
+    private PrimitiveConstraint PAfterG_Reverse(Store store, IntVar[][] variables) {
+    	
+    	int N = variables[Variables.TYPE].length;
+    	
+    	PrimitiveConstraint[] pc = new PrimitiveConstraint[N];
+    	for(int i=0; i<N-1; i++) {
+
+	    	PrimitiveConstraint[] upstreamPromoter = new PrimitiveConstraint[N-i];
+			
+			for(int j=i; j<N; j++) {				
+	    		upstreamPromoter[j-i] = new And(
+	    				new XeqC(variables[Variables.ORIENTATION][j], -1),
+	    				new XeqC(variables[Variables.PART][j], this.getA().getId()));
+			}
+			
+			pc[i] = new IfThen(
+							new XeqC(variables[Variables.PART][i], this.getB().getId()),
+							new And(new Or(upstreamPromoter),
+									new XeqC(variables[Variables.ORIENTATION][i], -1)));
+    	}
+    	
+    	pc[N-1] = new And(
+					new XneqC(variables[Variables.PART][N-1], this.getB().getId()),
+					new XneqC(variables[Variables.ORIENTATION][N-1], -1));
+    	
+    	return new Or(pc);
+    }
 
 
 	@Override

@@ -1,0 +1,5 @@
+N=3.
+all_forward.
+//contains p.
+//contains c.
+p some_before c.

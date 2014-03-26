@@ -63,6 +63,7 @@ public class AllBefore
 		 * 		for all a, b: position(a) < position(b)
 		 * otherwise => TRUE
 		 */
+		
 
 		// a is FORWARD oriented
 		PrimitiveConstraint pc[] = new PrimitiveConstraint[N-1];
@@ -74,12 +75,16 @@ public class AllBefore
 				}
 				
 				pc[i-1] = new IfThen(
-							new XeqC(variables[Variables.PART][i], a),
-							new And(pcB));
+						new And(									
+								new XeqC(variables[Variables.PART][i], a),
+								new XeqC(variables[Variables.ORIENTATION][i], 1)),
+						new And(pcB));
 			} else {
 
 				pc[i] = new IfThen(
-							new XeqC(variables[Variables.PART][i], a),
+							new And(									
+								new XeqC(variables[Variables.PART][i], a),
+								new XeqC(variables[Variables.ORIENTATION][i], 1)),
 							new XneqC(variables[Variables.PART][i], b));
 			}							
 		}			

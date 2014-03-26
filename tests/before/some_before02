@@ -1,0 +1,6 @@
+N=4.
+all_forward.
+contains p.
+contains r.
+contains c.
+p some_before c.

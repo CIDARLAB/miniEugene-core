@@ -174,6 +174,7 @@ operator:
 	|	('NOTEXACTLY'|'notexactly')
 	|	('MORETHAN'|'morethan')
 	|	('NOTMORETHAN'|'notmorethan')
+	|	('SAME_COUNT'|'same_count')
 	|	('WITH'|'with')
 	|	('NOTWITH'|'notwith')
 	|	('THEN'|'then')

@@ -9,6 +9,7 @@ import org.cidarlab.minieugene.predicates.counting.BinaryContains;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.Exactly;
 import org.cidarlab.minieugene.predicates.counting.MoreThan;
+import org.cidarlab.minieugene.predicates.counting.SameCount;
 import org.cidarlab.minieugene.predicates.interaction.Drives;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
@@ -164,6 +165,8 @@ public class PredicateBuilder {
 			return new AllSameOrientation(lhs, rhs);
 		} else if(RuleOperator.SOME_SAME_ORIENTATION.toString().equalsIgnoreCase(X)) {
 			return new SomeSameOrientation(lhs, rhs);
+		} else if(RuleOperator.SAME_COUNT.toString().equalsIgnoreCase(X)) {
+			return new SameCount(lhs, rhs);
 		}
 
 		throw new EugeneException("Invalid Binary Rule!");

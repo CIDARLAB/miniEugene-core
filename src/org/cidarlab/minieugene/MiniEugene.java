@@ -37,7 +37,6 @@ import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.parser.MiniEugeneLexer;
 import org.cidarlab.minieugene.parser.MiniEugeneParser;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
-import org.cidarlab.minieugene.solver.jacop.FSMSolver;
 import org.cidarlab.minieugene.solver.jacop.JaCoPSolver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 

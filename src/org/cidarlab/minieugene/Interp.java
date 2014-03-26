@@ -183,7 +183,8 @@ public class Interp {
 				 * it can be a binary CONTAINS rule
 				 */
 				if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X) ||
-						RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X)) {
+					RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X) ||
+					RuleOperator.SAME_COUNT.toString().equalsIgnoreCase(X)) {
 					/*
 					 * get the id from the symbol
 					 */
