@@ -61,9 +61,14 @@ public class TestSuite {
 		/*
 		 * POSITIONING
 		 */
-		new TestSuite().test(new File("./tests/before/some_before01"));
-		new TestSuite().test(new File("./tests/before/some_before02"));
-		new TestSuite().test(new File("./tests/before/some_before03"));
+//		new TestSuite().test(new File("./tests/before/some_before01"));
+//		new TestSuite().test(new File("./tests/before/some_before02"));
+//		new TestSuite().test(new File("./tests/before/some_before03"));
+
+		/*
+		 * PAIRING RULES
+		 */
+//		new TestSuite().test(new File("./tests/pairing/always_nextto01"));
 
 		/*
 		 * ORIENTATION RULES
@@ -81,7 +86,7 @@ public class TestSuite {
 
 		// ALTERNATE 
 //		new TestSuite().test(new File("./tests/orientation/alternate/alternate01"));
-//		new TestSuite().test(new File("./tests/orientation/alternate/alternate02"));
+		new TestSuite().test(new File("./tests/orientation/alternate/alternate02"));
 		
 		// SAME_ORIENTATION
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same01"));
@@ -130,6 +135,7 @@ public class TestSuite {
 		 */
 //		new TestSuite().test(new File("./tests/lattice/daniel01"));
 //		new TestSuite().test(new File("./tests/lattice/daniel02"));
+//		new TestSuite().test(new File("./tests/lattice/daniel03"));
 
 //		new TestSuite().testAll("./tests");
 		
@@ -224,7 +230,7 @@ public class TestSuite {
 //			se.toEugene("./test-results/"+filename+".eug");
 		
 		// CONSOLE OUTPUT
-		se.toConsole();
+//		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

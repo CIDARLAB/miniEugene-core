@@ -138,7 +138,7 @@ $lst = new ArrayList<Predicate>();
 }	
 	:	c=constraint {
 $lst.add($c.p);
-	}	(('OR'|'\\/'|'or') o=or_constraint {
+	}	(('OR'|'\\/'|'or'|'||') o=or_constraint {
 $lst.addAll($o.lst);
 	})?
 	;
@@ -190,6 +190,7 @@ operator:
 	|	('NEXTTO'|'nextto')
 	|	('ALL_NEXTTO'|'all_nextto')
 	|	('SOME_NEXTTO'|'some_nextto')
+	|	('ALWAYS_NEXTTO'|'always_nextto')
 	|	('EQUALS'|'equals')
 	|	('NOTEQUALS'|'notequals')
 	|	('MATCHES'|'matches')
@@ -206,7 +207,7 @@ operator:
 	|	('REPRESSES'|'represses')
 	|	('INDUCES'|'induces')
 	|	('DRIVES'|'drives')
-	|	('ALTERNATE'|'alternate')
+	|	('ALTERNATE_ORIENTATION'|'alternate_orientation')
 	;	
 		
 operand	:	ID 

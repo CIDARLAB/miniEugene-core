@@ -25,17 +25,17 @@ import JaCoP.core.Store;
  * for all i: orientation(i) != orientation(i+1)
  * 
  */
-public class Alternate 
+public class AlternateOrientation 
 	extends UnaryPredicate 
 	implements OrientationPredicate {
 
-	public Alternate(Component rhs) {
+	public AlternateOrientation(Component rhs) {
 		super(rhs);
 	}
 
 	@Override
 	public String getOperator() {
-		return RuleOperator.ALTERNATE.toString();
+		return RuleOperator.ALTERNATE_ORIENTATION.toString();
 	}
 	
 	@Override

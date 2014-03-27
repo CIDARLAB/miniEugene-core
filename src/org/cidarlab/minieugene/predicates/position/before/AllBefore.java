@@ -10,6 +10,7 @@ import org.cidarlab.minieugene.solver.jacop.Variables;
 import JaCoP.constraints.And;
 import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Not;
+import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XneqC;
@@ -66,27 +67,22 @@ public class AllBefore
 		
 
 		// a is FORWARD oriented
-		PrimitiveConstraint pc[] = new PrimitiveConstraint[N-1];
-		for(int i=1; i<N; i++) {
-			if(i > 0) {
-				PrimitiveConstraint[] pcB = new PrimitiveConstraint[i];
-				for(int j=0; j<i; j++) {
-					pcB[j] = new XneqC(variables[Variables.PART][j], b);
-				}
-				
-				pc[i-1] = new IfThen(
-						new And(									
-								new XeqC(variables[Variables.PART][i], a),
-								new XeqC(variables[Variables.ORIENTATION][i], 1)),
-						new And(pcB));
-			} else {
+		PrimitiveConstraint pc[] = new PrimitiveConstraint[N];
 
-				pc[i] = new IfThen(
-							new And(									
-								new XeqC(variables[Variables.PART][i], a),
-								new XeqC(variables[Variables.ORIENTATION][i], 1)),
-							new XneqC(variables[Variables.PART][i], b));
-			}							
+		pc[0] = new IfThen(
+					new XeqC(variables[Variables.PART][0], a),
+					new XneqC(variables[Variables.PART][0], b));
+
+		for(int i=1; i<N; i++) {
+
+			PrimitiveConstraint[] pcB = new PrimitiveConstraint[i];
+			for(int j=0; j<i; j++) {
+				pcB[j] = new XneqC(variables[Variables.PART][j], b);
+			}
+
+			pc[i] = new IfThen(
+							new XeqC(variables[Variables.PART][i], a),
+							new And(pcB));
 		}			
 
 		return new And(pc);

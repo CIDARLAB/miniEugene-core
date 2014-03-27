@@ -15,11 +15,12 @@ import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
-import org.cidarlab.minieugene.predicates.orientation.Alternate;
+import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
 import org.cidarlab.minieugene.predicates.orientation.SomeForward;
 import org.cidarlab.minieugene.predicates.orientation.SomeReverse;
 import org.cidarlab.minieugene.predicates.orientation.SomeSameOrientation;
+import org.cidarlab.minieugene.predicates.pairing.AlwaysNextTo;
 import org.cidarlab.minieugene.predicates.pairing.Equals;
 import org.cidarlab.minieugene.predicates.pairing.Then;
 import org.cidarlab.minieugene.predicates.pairing.With;
@@ -61,8 +62,8 @@ public class PredicateBuilder {
 			return new AllForward(null);
 		} else if(RuleOperator.SOME_FORWARD.toString().equalsIgnoreCase(p)) {
 			return new SomeForward(null);
-		} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(p)) {
-			return new Alternate(null);
+		} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(p)) {
+			return new AlternateOrientation(null);
 		}
 		
 		throw new EugeneException("Invalid Rule!");
@@ -97,8 +98,8 @@ public class PredicateBuilder {
 			return new AllForward(c);
 		} else if(RuleOperator.SOME_FORWARD.toString().equalsIgnoreCase(p)) {
 			return new SomeForward(c);
-		} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(p)) {
-			return new Alternate(c);
+		} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(p)) {
+			return new AlternateOrientation(c);
 		}
 		
 		throw new EugeneException("Invalid Unary Rule!");
@@ -167,6 +168,8 @@ public class PredicateBuilder {
 			return new SomeSameOrientation(lhs, rhs);
 		} else if(RuleOperator.SAME_COUNT.toString().equalsIgnoreCase(X)) {
 			return new SameCount(lhs, rhs);
+		} else if(RuleOperator.ALWAYS_NEXTTO.toString().equalsIgnoreCase(X)) {
+			return new AlwaysNextTo(lhs, rhs);
 		}
 
 		throw new EugeneException("Invalid Binary Rule!");

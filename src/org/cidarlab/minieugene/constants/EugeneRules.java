@@ -41,7 +41,7 @@ public class EugeneRules {
 	 */
 	private static final Set<String> setPairingRules = new HashSet<String>(
 			Arrays.asList(new String[] { 
-					"WITH", "NOTWITH", "THEN", "NOTTHEN"}));
+					"WITH", "NOTWITH", "THEN", "NOTTHEN", "ALWAYS_NEXTTO"}));
 	
 	/*
 	 * Positional Rules
@@ -64,7 +64,7 @@ public class EugeneRules {
 					RuleOperator.ALL_FORWARD.toString(),
 					RuleOperator.FORWARD.toString(), 
 					RuleOperator.SOME_FORWARD.toString(),
-					RuleOperator.ALTERNATE.toString()}));
+					RuleOperator.ALTERNATE_ORIENTATION.toString()}));
 
 	public static boolean isUnaryRule(String s) {
 		return setUnaryRules.contains(s.toUpperCase());

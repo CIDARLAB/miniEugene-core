@@ -9,7 +9,7 @@ import org.cidarlab.minieugene.predicates.LogicalOperator;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
-import org.cidarlab.minieugene.predicates.orientation.Alternate;
+import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 public class Interp {
@@ -82,8 +82,8 @@ public class Interp {
 				return new LogicalNot(new AllReverse(null));
 			} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(s)) {
 				return new LogicalNot(new AllForward(null));
-			} else if(RuleOperator.ALTERNATE.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new Alternate(null));
+			} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(s)) {
+				return new LogicalNot(new AlternateOrientation(null));
 			}
 
 			
