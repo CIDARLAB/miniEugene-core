@@ -88,7 +88,7 @@ public class Drives
     	//     CONTAINS a /\ CONTAINS b /\
 		//     a SAME_ORIENTATION b
 		
-		PrimitiveConstraint[] pcReturn = new PrimitiveConstraint[5];
+		PrimitiveConstraint[] pcReturn = new PrimitiveConstraint[6];
 		
 		pcReturn[0] = new Contains(this.getA()).toJaCoP(store, variables);
 		pcReturn[1] = new Contains(this.getB()).toJaCoP(store, variables);

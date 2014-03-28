@@ -6,6 +6,8 @@ import java.util.List;
 public class CompositeComponent 
 		extends Component {
 
+	private static final long serialVersionUID = 4774134879565380842L;
+	
 	private List<Component> components;
 	
 	/**

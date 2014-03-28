@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
 import org.cidarlab.minieugene.data.sbol.SBOLExporter;
@@ -67,7 +69,7 @@ public class SolutionExporter {
 	        	Pigeonizer pigeon = new Pigeonizer();
 	            
 	            /* 
-	             * we visualize up to 10 designs 
+	             * we visualize up to NR_OF_PIGEON designs 
 	             */
 	        	if(this.solutions.size() > NR_OF_PIGEON) {
 	            	return pigeon.pigeonize(
@@ -88,14 +90,6 @@ public class SolutionExporter {
 		return URI.create("");
 	}
 
-	private int[] generateRandomIndices(int N, int range) {
-		int[] idx = new int[N];
-		Random generator = new Random();
-		for(int i=0; i<N; i++) {
-			idx[i] = generator.nextInt( range );
-		}
-		return idx;
-	}
 	
 	/**
 	 * toSBOL takes as input the name of the SBOL file into 
@@ -163,6 +157,8 @@ public class SolutionExporter {
 			}
 		}
 		
+		System.out.println(Arrays.toString(idx));
+		
 		List<Component[]> lst = new ArrayList<Component[]>(idx.length);
 		for(int i=0; i<idx.length; i++) {
 			lst.add(this.solutions.get(idx[i]));
@@ -170,7 +166,24 @@ public class SolutionExporter {
 		return lst;
 	}
 	
-	 /**
+	private int[] generateRandomIndices(int N, int range) {
+		
+		int[] idx = new int[N];
+		Random generator = new Random();
+		for(int i=0; i<N; i++) {
+	
+			// here, we also need to check if
+			// the index is present already
+			int ix = generator.nextInt( range );
+			while(ArrayUtils.contains(idx, ix)) {
+				ix = generator.nextInt( range );
+			}
+			idx[i] = ix;
+		}
+		return idx;
+	}
+
+	/**
 	  * the method toEugene takes as input the name of the Eugene script 
 	  * file into which the solutions will be serialized using 
 	  * the Eugene language's syntax.

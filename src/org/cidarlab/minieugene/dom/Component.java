@@ -22,6 +22,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene.dom;
 
+import java.io.Serializable;
+
 import org.cidarlab.minieugene.solver.jacop.PartTypes;
 
 /**
@@ -42,7 +44,10 @@ import org.cidarlab.minieugene.solver.jacop.PartTypes;
  * <p>
  * @author Ernst Oberortner
  */
-public class Component {
+public class Component 
+		implements Serializable {
+
+	private static final long serialVersionUID = 7540207737327161186L;
 
 	/*
 	 * id
