@@ -62,7 +62,7 @@ public class TestSuite {
 		 * POSITIONING
 		 */
 		// ALL_BEFORE
-		new TestSuite().test(new File("./tests/before/all_before01"));
+//		new TestSuite().test(new File("./tests/before/all_before01"));
 		
 		// SOME_BEFORE
 //		new TestSuite().test(new File("./tests/before/some_before01"));
@@ -144,9 +144,16 @@ public class TestSuite {
 
 //		new TestSuite().testAll("./tests");
 		
+		
+		
 		/*
 		 * REAL DESIGNS
 		 */
+		
+		// NOR GATES
+//		new TestSuite().test(new File("./designs/nor-orientations"));
+		new TestSuite().test(new File("./designs/nor-events"));
+		
 		
 		// INVERTERS
 //		new TestSuite().test(new File("./tests/swati/test01"));

@@ -232,6 +232,7 @@ public class MiniEugene
 		 * first, we parse the script
 		 */
 		try {
+			System.out.println(script);
 			LogicalAnd la = this.parse(script);
 			this.solve(la, -1);
 		} catch(EugeneException e) {
@@ -263,6 +264,7 @@ public class MiniEugene
 		try {
 			parser.miniEugene();
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new EugeneException(e.getMessage());
 		}
 

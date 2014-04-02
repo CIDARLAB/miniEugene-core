@@ -41,12 +41,12 @@ public class Exactly
 				throws EugeneException {
 
 		// a EXACTLY N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter");
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
 		if(null == count) {
 			count = new IntVar(store, 
-					this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter", 
-					this.getNum(), 
-					this.getNum());
+					this.getA().getName()+"-counter", 
+					0, 
+					variables[Variables.PART].length);
 		}
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
 		
@@ -56,13 +56,14 @@ public class Exactly
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// a NOT EXACTLY N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter");
+
+		// a EXACTLY N
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
 		if(null == count) {
 			count = new IntVar(store, 
-					this.getA().getName()+"_EXACTLY_"+this.getNum()+"-counter", 
+					this.getA().getName()+"-counter", 
 					0, 
-					Integer.MAX_VALUE);
+					variables[Variables.PART].length);
 		}
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
 		

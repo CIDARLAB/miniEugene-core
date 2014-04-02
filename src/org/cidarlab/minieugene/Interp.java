@@ -1,5 +1,7 @@
 package org.cidarlab.minieugene;
 
+import java.util.Arrays;
+
 import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
@@ -31,6 +33,8 @@ public class Interp {
 	public Predicate interpreteRule(String[] tokens) 
 			throws EugeneException {
 
+		System.out.println(Arrays.toString(tokens));
+		
 		switch(tokens.length) {
 		case 1:
 			/*
@@ -206,7 +210,7 @@ public class Interp {
 			/*
 			 * 	0 <= b <= N
 			 */
-			if(idB < 0 || idB > this.N) {
+			if(idB < 0 /* || idB > this.N */) {
 				throw new EugeneException("Invalid rule!");
 			}
 			

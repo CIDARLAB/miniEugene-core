@@ -55,16 +55,22 @@ public class SameCount
 		 */
 		
 		// a's counter
-		IntVar counterA = (IntVar)store.findVariable("CONTAINS_"+this.getA().getName()+"-counter");
+		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
 		if(null == counterA) {
-			counterA = new IntVar(store, "CONTAINS_"+this.getA().getName()+"-counter", 0, variables[Variables.PART].length);
+			counterA = new IntVar(store, 
+					this.getA().getName()+"-counter", 
+					0, 
+					variables[Variables.PART].length);
 		}
 		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
 
 		// b's counter
-		IntVar counterB = (IntVar)store.findVariable("CONTAINS_"+this.getB().getName()+"-counter");
+		IntVar counterB = (IntVar)store.findVariable(this.getB().getName()+"-counter");
 		if(null == counterB) {
-			counterB = new IntVar(store, "CONTAINS_"+this.getB().getName()+"-counter", 0, variables[Variables.PART].length);
+			counterB = new IntVar(store, 
+					this.getB().getName()+"-counter", 
+					0, 
+					variables[Variables.PART].length);
 		}
 		store.impose(new Count(variables[Variables.PART], counterB, this.getB().getId()));
 

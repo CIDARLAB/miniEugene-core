@@ -7,8 +7,8 @@ import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.Count;
-import JaCoP.constraints.Not;
 import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XgtC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
@@ -52,9 +52,12 @@ public class Contains
 		 */
 		
 		// a's counter
-		IntVar counterA = (IntVar)store.findVariable("CONTAINS_"+this.getA().getName()+"-counter");
+		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
 		if(null == counterA) {
-			counterA = new IntVar(store, "CONTAINS_"+this.getA().getName()+"-counter", 0, variables[Variables.PART].length);
+			counterA = new IntVar(store, 
+					this.getA().getName()+"-counter", 
+					0, 
+					variables[Variables.PART].length);
 		}
 		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
 		
@@ -66,10 +69,17 @@ public class Contains
 	public PrimitiveConstraint toJaCoPNot(
 			Store store, IntVar[][] variables) 
 				throws EugeneException {
-		/*
-		 * NOT CONTAINS a
-		 */
-		return new Not(this.toJaCoP(store, variables));
+		// a's counter
+		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
+		if(null == counterA) {
+			counterA = new IntVar(store, 
+					this.getA().getName()+"-counter", 
+					0, 
+					variables[Variables.PART].length);
+		}
+		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
+		
+		return new XeqC(counterA, 0);
 	}
 
 }

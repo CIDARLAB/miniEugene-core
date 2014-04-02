@@ -43,12 +43,12 @@ public class MoreThan
 				throws EugeneException {
 		
 		// a MORETHAN N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter");
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
 		if(null == count) {
 			count = new IntVar(store, 
-					this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter", 
-					this.getNum(), 
-					Integer.MAX_VALUE);
+					this.getA().getName()+"-counter", 
+					0, 
+					variables[Variables.PART].length);
 		}
 
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
@@ -61,12 +61,12 @@ public class MoreThan
 				throws EugeneException {
 
 		// a MORETHAN N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter");
+		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
 		if(null == count) {
 			count = new IntVar(store, 
-					this.getA().getName()+"_MORETHAN_"+this.getNum()+"-counter", 
+					this.getA().getName()+"-counter", 
 					0, 
-					this.getNum());
+					variables[Variables.PART].length);
 		}
 
 		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
