@@ -70,4 +70,9 @@ public class Exactly
 		return new XneqC(count, this.getNum());
 	}
 
+	@Override
+	public int getMinimumLength() {
+		return this.getNum();
+	}
+
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
@@ -12,42 +13,42 @@ import JaCoP.core.Store;
 public class LogicalAnd 
 	extends LogicalPredicate {
 
-	private int N;
+	private int minN;
+	private int maxN;
 	
 	public LogicalAnd() {
 		super(LogicalOperator.AND, new ArrayList<Predicate>());
-		this.setN(-1);
+		this.setMinN(-1);
 	}
 	
 	public LogicalAnd(List<Predicate> predicates) {
 		super(LogicalOperator.AND, predicates);
-		this.setN(-1);
+		this.setMinN(-1);
 	}
 	
-	public void setN(int N) {
-		this.N = N;
+	public void setMinN(int minN) {
+		this.minN = minN;
 	}
-	public int getN() {
-		return this.N;		
+	
+	public int getMinN() {
+		if(this.minN == -1) {
+			this.minN = this.getMinimumLength();
+		}
+		return minN;
+	}
+
+	public void setMaxN(int maxN) {
+		this.maxN = maxN;
+	}
+	
+	public int getMaxN() {
+		return this.maxN;		
 	}
 	
 	
 	@Override
 	public String getOperator() {
 		return LogicalOperator.AND.toString();
-	}
-	
-	@Override
-	public int getSize() {
-		int n = 0;
-		for(Predicate predicate:this.getPredicates()) {
-			if(predicate instanceof LogicalOr) {
-				n += ((LogicalOr)predicate).getSize();
-			} else {
-				n++;
-			}
-		}
-		return n;
 	}
 	
 	@Override
@@ -80,6 +81,32 @@ public class LogicalAnd
 			throws EugeneException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getMinimumLength() {
+		int minN = 0;
+		for(Predicate p : this.getPredicates()) {
+			if(p instanceof LogicalPredicate) {
+				minN += ((LogicalPredicate)p).getMinimumLength();
+			} else if(p instanceof CountingPredicate) {
+				minN += ((CountingPredicate)p).getMinimumLength();
+			}
+		}
+		return minN;
+	}
+
+	@Override
+	public int getNumberOfRules() {
+		int n = 0;
+		for(Predicate p : this.getPredicates()) {
+			if(p instanceof LogicalPredicate) {
+				n += ((LogicalPredicate)p).getNumberOfRules();
+			} else {
+				n++;
+			}
+		}
+		return n;
 	}
 
 }

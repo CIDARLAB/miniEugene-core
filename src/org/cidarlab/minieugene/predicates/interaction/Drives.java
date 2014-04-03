@@ -3,9 +3,8 @@ package org.cidarlab.minieugene.predicates.interaction;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.predicates.counting.Contains;
+import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
-import org.cidarlab.minieugene.predicates.position.before.AllBefore;
 import org.cidarlab.minieugene.solver.jacop.PartTypes;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
@@ -85,19 +84,22 @@ public class Drives
 		pc[N-1] = new XneqC(variables[Variables.PART][N-1], this.getA().getId());
 
     	// a DRIVES b =>
-    	//     CONTAINS a /\ CONTAINS b /\
-		//     a SAME_ORIENTATION b
+		//     a SAME_ORIENTATION b /\
+		//     forward a => a before b /\
+		//     reverse a => a after b
 		
 		PrimitiveConstraint[] pcReturn = new PrimitiveConstraint[5];
 		
-		pcReturn[0] = new Contains(this.getA()).toJaCoP(store, variables);
-		pcReturn[1] = new Contains(this.getB()).toJaCoP(store, variables);
 		pcReturn[2] = new AllSameOrientation(
 				this.getA(), this.getB()).toJaCoP(store, variables);
 		pcReturn[3] = new And(pc);
-		pcReturn[4] = new Or(
-				this.PBeforeG_Forward(store, variables),
-				this.PAfterG_Reverse(store, variables)); 
+		pcReturn[4] = new And(
+				new IfThen(
+						new AllForward(this.getA()).toJaCoP(store, variables),
+						this.PBeforeG_Forward(store, variables)),
+				new IfThen(
+						new AllForward(this.getA()).toJaCoP(store, variables),
+						this.PAfterG_Reverse(store, variables))); 
 		
 		return new And(pcReturn);
 	}

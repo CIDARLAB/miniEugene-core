@@ -1,0 +1,6 @@
+N = 1.
+contains a.
+contains b.
+
+// ERROR
+// minN > maxN

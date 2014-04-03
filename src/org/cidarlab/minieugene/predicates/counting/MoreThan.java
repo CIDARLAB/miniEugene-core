@@ -73,4 +73,9 @@ public class MoreThan
 		
 		return new XlteqC(count, this.getNum());
 	}
+
+	@Override
+	public int getMinimumLength() {
+		return this.getNum();
+	}
 }

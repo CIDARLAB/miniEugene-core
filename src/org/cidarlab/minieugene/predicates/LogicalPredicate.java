@@ -50,5 +50,16 @@ public abstract class LogicalPredicate
 		return this.op.toString();
 	}
 	
-	public abstract int getSize();
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract int getMinimumLength();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract int getNumberOfRules();
+
 }

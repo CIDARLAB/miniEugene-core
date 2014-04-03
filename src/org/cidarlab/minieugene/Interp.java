@@ -1,6 +1,6 @@
 package org.cidarlab.minieugene;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneRules;
@@ -12,18 +12,43 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
+import org.cidarlab.minieugene.predicates.templating.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 public class Interp {
 	
 	private SymbolTables symbols;
 	private PredicateBuilder pb;
-	private int N;
+	private int minN;
+	private int maxN;
 	
-	public Interp(SymbolTables symbols, int N) {
+	public Interp(SymbolTables symbols) {
 		this.symbols = symbols;		
 		this.pb = new PredicateBuilder(this.symbols);
-		this.N = N;
+		this.minN = 0;
+		this.maxN = -1;
+	}
+	
+//	public Interp(SymbolTables symbols, int N) {
+//		this.symbols = symbols;		
+//		this.pb = new PredicateBuilder(this.symbols);
+//		this.N = N;
+//	}
+
+	public int getMinN() {
+		return this.minN;
+	}
+	
+	public void setMinN(int minN) {
+		this.minN = minN;
+	}
+
+	public int getMaxN() {
+		return this.maxN;
+	}
+	
+	public void setMaxN(int maxN) {
+		this.maxN = maxN;
 	}
 	
 	/*
@@ -32,8 +57,6 @@ public class Interp {
 	
 	public Predicate interpreteRule(String[] tokens) 
 			throws EugeneException {
-
-		System.out.println(Arrays.toString(tokens));
 		
 		switch(tokens.length) {
 		case 1:
@@ -71,6 +94,47 @@ public class Interp {
 		}
 	}
 	
+	public Template createTemplate(String name, List<String> ids) {
+		Template pp = new Template();
+		for(String id : ids) {
+			pp.getComponents().add(
+					this.symbols.get(
+						this.symbols.put(id)));
+		}
+		return pp;
+	}
+	
+	public Pattern createPattern(String name, List<String> ids) {
+		Pattern pp = new Pattern();
+		for(String id : ids) {
+			pp.getComponents().add(
+					this.symbols.get(
+						this.symbols.put(id)));
+		}
+		return pp;
+	}
+
+	
+	public Group createGroup(String name, List<String> ids) {
+		Group pp = new Group();
+		for(String id : ids) {
+			pp.getComponents().add(
+					this.symbols.get(
+						this.symbols.put(id)));
+		}
+		return pp;
+	}
+
+	public Sequence createSequence(String name, List<String> ids) {
+		Sequence pp = new Sequence();
+		for(String id : ids) {
+			pp.getComponents().add(
+					this.symbols.get(
+						this.symbols.put(id)));
+		}
+		return pp;
+	}
+
 	private Predicate createNullaryPredicate(String s) 
 			throws EugeneException {
 		return this.pb.buildNullaryPredicate(s);
@@ -210,7 +274,10 @@ public class Interp {
 			/*
 			 * 	0 <= b <= N
 			 */
-			if(idB < 0 /* || idB > this.N */) {
+			// idB > this.maxN commented out...
+			// => because of OR
+			// e.g. p exactly 2 \/ p exactly 4
+			if(idB < 0 /* || idB > this.maxN */) {
 				throw new EugeneException("Invalid rule!");
 			}
 			
@@ -245,7 +312,7 @@ public class Interp {
 			throw new EugeneException("Invalid index!");
 		}
 
-		if(idx < 0 || idx >= this.N) {
+		if(idx < 0 || idx >= this.maxN) {
 			throw new EugeneException("Index "+idx+" is out of range!");
 		}
 		

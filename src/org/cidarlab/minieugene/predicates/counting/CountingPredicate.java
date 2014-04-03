@@ -9,5 +9,5 @@ package org.cidarlab.minieugene.predicates.counting;
  */
 public interface CountingPredicate {
 
-
+	public int getMinimumLength();
 }

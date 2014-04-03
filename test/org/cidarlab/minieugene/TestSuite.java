@@ -4,15 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URI;
 
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
+import org.cidarlab.minieugene.util.FileUtil;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
 
 public class TestSuite {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+			throws Exception {
 
 		/*
 		 * BASIC ``Syntax'' TESTS
@@ -76,7 +79,8 @@ public class TestSuite {
 
 		/*
 		 * ORIENTATION RULES
-		 */
+		 */		
+//		new TestSuite().test("N=2.contains a.all_forward \\/ all_reverse.");
 		
 		// SOME_FORWARD
 //		new TestSuite().test(new File("./tests/orientation/forward/some01"));
@@ -114,6 +118,34 @@ public class TestSuite {
 		 */
 //		new TestSuite().test(new File("./tests/or/or01"));
 		
+		/*
+		 * minN calculations
+		 */
+//		new TestSuite().test(new File("./tests/N/minN01"));
+//		new TestSuite().test(new File("./tests/N/minN02"));
+//		new TestSuite().test(new File("./tests/N/minN03"));   // DOES NOT WORK YET!
+		
+		/*
+		 * miniEugene's TEMPLATING features
+		 */
+		
+		// TEMPLATES
+//		new TestSuite().test("N=1.all_forward.template a.");
+//		new TestSuite().test("N=100.all_forward.template a.");
+//		new TestSuite().test("N=4.all_forward.template Promoter, RBS, CDS, Terminator.");
+//		new TestSuite().test("N=400.all_forward.template Promoter, RBS, CDS, Terminator.");
+//		new TestSuite().test("N=4.all_forward.template a, b.");
+//		new TestSuite().test("N=20.alternate_orientation.template a, b.");
+//		new TestSuite().test("N=20.template a, b.");
+//		new TestSuite().test("N=200.all_forward \\/ all_reverse.template a, b.");
+		
+		// negated templates
+//		new TestSuite().test("N=4.not template promoter, rbs, cds, terminator.");
+
+		
+		// SEQUENCES
+//		new TestSuite().test("N=3.all_forward.sequence a, b.");
+		new TestSuite().test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
 		
 		/*
 		 * ACT
@@ -152,7 +184,7 @@ public class TestSuite {
 		
 		// NOR GATES
 //		new TestSuite().test(new File("./designs/nor-orientations"));
-		new TestSuite().test(new File("./designs/nor-events"));
+//		new TestSuite().test(new File("./designs/nor-events"));
 		
 		
 		// INVERTERS
@@ -194,16 +226,15 @@ public class TestSuite {
 //		new TestSuite().test(new File("./examples/transcriptional-unit.eug"));
 	}
 
-	public void test(File f) {
-		
+	public void test(String script) {
 		MiniEugene me = new MiniEugene();				
 		long t1 = -1;
 		long tProcessing = -1;
+		
 		try {
 			/*
 			 * read the file
 			 */
-			String script = this.readFile(f);
 			t1 = System.nanoTime();
 			
 			/*
@@ -226,8 +257,8 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// PIGEON
-			URI pig = se.toPigeon();
-			WeyekinPoster.launchPage(pig);
+//			URI pig = se.toPigeon();
+//			WeyekinPoster.launchPage(pig);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -249,21 +280,10 @@ public class TestSuite {
 		//new Eugene(sFile);
 	}
 	
-	
-
-	private String readFile(File f) throws java.io.IOException {
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(new FileReader(f));
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-
-		return fileData.toString();
+	public void test(File f) 
+			throws IOException {
+		String script = FileUtil.readFile(f);
+		this.test(script);
 	}
 	
 	public void testAll( String path ) {

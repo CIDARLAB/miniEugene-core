@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.Reified;
+import JaCoP.constraints.XeqC;
+import JaCoP.core.BooleanVar;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -65,7 +69,28 @@ public class LogicalOr
 	}
 
 	@Override
-	public int getSize() {
+	public int getMinimumLength() {
+		int minN = Integer.MAX_VALUE; 
+		for(Predicate p : this.getPredicates()) {
+			if(p instanceof CountingPredicate) {
+				
+				int pN = ((CountingPredicate)p).getMinimumLength();
+				
+				if (pN < minN) {
+					minN = pN;
+				}
+			} else if(p instanceof LogicalPredicate) {
+				int pN = ((LogicalPredicate)p).getMinimumLength();				
+				if (pN < minN) {
+					minN = pN;
+				}
+			}
+		}
+		return minN;
+	}
+
+	@Override
+	public int getNumberOfRules() {
 		return this.getPredicates().size();
 	}
 

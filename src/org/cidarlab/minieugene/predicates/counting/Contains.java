@@ -82,4 +82,9 @@ public class Contains
 		return new XeqC(counterA, 0);
 	}
 
+	@Override
+	public int getMinimumLength() {
+		return 1;
+	}
+
 }

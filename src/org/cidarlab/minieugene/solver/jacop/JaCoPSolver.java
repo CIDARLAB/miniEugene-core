@@ -63,7 +63,7 @@ public class JaCoPSolver
 	public List<Component[]> solve(Component[] components, LogicalAnd and, int NR_OF_SOLUTIONS)
 			throws EugeneException {
 
-		this.N = and.getN();
+		this.N = and.getMaxN();
 
 		// first, build the abstract syntax tree
 //		buildACT(and);

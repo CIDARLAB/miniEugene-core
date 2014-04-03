@@ -74,4 +74,10 @@ public class BinaryContains
 		return new Not(this.toJaCoP(store, variables));
 	}
 
+	@Override
+	public int getMinimumLength() {
+		// TODO:
+		return 1;
+	}
+
 }

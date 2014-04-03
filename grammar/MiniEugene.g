@@ -55,6 +55,7 @@ import org.cidarlab.minieugene.Interp;
 import org.cidarlab.minieugene.symbol.*;
 import org.cidarlab.minieugene.predicates.*;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.predicates.templating.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 }
@@ -68,10 +69,14 @@ private Interp interp;
 private SymbolTables symbols;
 public void init(SymbolTables symbols) {
     this.symbols = symbols;
+    this.interp = new Interp(this.symbols);
 }
 
-// N
-private int N;
+// MINIMUM LENGTH OF DESIGN
+private int minN = -1;
+
+// MAXIMUM LENGTH OF DESIGN
+private int maxN = -1;
 
 // PREDICATES
 private LogicalAnd la = new LogicalAnd();
@@ -81,7 +86,8 @@ private void addPredicate(Predicate p) {
 }
 
 public LogicalAnd getPredicate() {
-    this.la.setN(this.N);
+    this.la.setMinN(this.minN);
+    this.la.setMaxN(this.maxN);
     return this.la;
 }
 
@@ -114,9 +120,12 @@ if($c.lst.size() == 1) {
 
 size 	
 	throws EugeneException
-	:	 'N' '=' n=INT '.' {
-this.N = Integer.parseInt($n.text);
-this.interp = new Interp(this.symbols, this.N);
+	:	 ('minN' '=' minN=INT '.' {
+this.minN = Integer.parseInt($minN.text);
+this.interp.setMinN(this.minN);
+	})? 'N' '=' maxN=INT '.' {
+this.maxN = Integer.parseInt($maxN.text);
+this.interp.setMaxN(this.maxN);
 }
 	;
 
@@ -146,7 +155,7 @@ $lst.addAll($o.lst);
 constraint
         returns [Predicate p]
 	throws EugeneException
-	:	(not='NOT' {
+	:	(not=('NOT'|'not') {
 addToken("NOT");
 	})? (lhs=operand {
 addToken($lhs.text);	
@@ -162,11 +171,75 @@ $p = this.interp.interpreteRule(this.tokens);
 // reset the global token array
 this.tokens = null;
 	}
+	|	tem=template {
+$p = $tem.p;	
+	}
+	|	pat=pattern {
+$p = $pat.p;	
+	}
+	|	gr=group {
+$p = $gr.p;	
+	}
+	|	seq=sequence {
+$p = $seq.p;	
+	}
 	;
 	catch[EugeneException e] {
 throw new EugeneException(e.getMessage());	
 	}
 
+template	
+	returns [Template p]
+	:	(name=ID)? not=('NOT'|'not')? ('TEMPLATE'|'template') ids=list_of_ids {
+$p = this.interp.createTemplate($name.text, $ids.lst);
+if(null != not) {
+    $p.setNegated();
+}
+	}
+	;
+
+pattern	
+	returns [Pattern p]
+	:	(name=ID)? not=('NOT'|'not')? ('PATTERN'|'pattern') ids=list_of_ids {
+$p = this.interp.createPattern($name.text, $ids.lst);
+if(null != not) {
+    $p.setNegated();
+}
+	}
+	;
+
+sequence	
+	returns [Sequence p]
+	:	(name=ID)? not=('NOT'|'not')? ('SEQUENCE'|'sequence') ids=list_of_ids {
+$p = this.interp.createSequence($name.text, $ids.lst);
+if(null != not) {
+    $p.setNegated();
+}
+	}
+	;
+	
+group	
+	returns [Group p]
+	:	(name=ID)? not=('NOT'|'not')? ('GROUP'|'group') ids=list_of_ids {
+$p = this.interp.createGroup($name.text, $ids.lst);
+if(null != not) {
+    $p.setNegated();
+}
+	}
+	;
+
+list_of_ids
+        returns [List<String> lst]
+@init{
+$lst = new ArrayList<String>();
+}	
+	:	id=ID {
+$lst.add($id.text);	
+	}	(',' ids=list_of_ids {
+$lst.addAll($ids.lst);		
+	})?
+	;
+		
 operator:
 	|	('CONTAINS'|'contains')
 	|	('NOTCONTAINS'|'notcontains')

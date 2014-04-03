@@ -90,4 +90,9 @@ public class SameCount
 		return new Not(this.toJaCoP(store, variables));
 	}
 
+	@Override
+	public int getMinimumLength() {
+		return 0;
+	}
+
 }

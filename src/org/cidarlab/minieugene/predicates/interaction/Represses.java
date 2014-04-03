@@ -37,9 +37,11 @@ public class Represses
 
 		// a REPRESSES b =>
 		//   CONTAINS a /\ CONTAINS b
-		return new And(
-				(new Contains(this.getA())).toJaCoP(store, variables),
-				(new Contains(this.getB())).toJaCoP(store, variables));
+//		return new And(
+//				(new Contains(this.getA())).toJaCoP(store, variables),
+//				(new Contains(this.getB())).toJaCoP(store, variables));
+		
+		return null;
 	}
 
 	@Override

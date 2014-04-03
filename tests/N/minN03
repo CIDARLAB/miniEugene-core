@@ -1,0 +1,7 @@
+N = 2.
+contains a \/ contains b \/ contains c.
+contains a \/ contains c \/ contains b.
+contains b \/ contains a \/ contains c.
+contains b \/ contains c \/ contains a.
+contains c \/ contains a \/ contains b.
+contains c \/ contains b \/ contains a.

@@ -232,7 +232,6 @@ public class MiniEugene
 		 * first, we parse the script
 		 */
 		try {
-			System.out.println(script);
 			LogicalAnd la = this.parse(script);
 			this.solve(la, -1);
 		} catch(EugeneException e) {
@@ -288,10 +287,35 @@ public class MiniEugene
 				throw new EugeneException("no solutions found!");
 			}
 
+			int minN = la.getMinN();
+			int maxN = la.getMaxN();
+			
+			// future work:
+//			if(maxN < minN) {
+//				throw new EugeneException(
+//						"The given max. length ("+maxN+") of the design is less than the calculated min. length ("+minN+")!");
+//			}
+			
+			// calculate the number of possible solutions...
+			int numberOfParts = symbols.length;
+			
+			// future work:
+//			long possibleSolutions = 0;
+//			for(int i=minN; i<=maxN; i++) {
+//				possibleSolutions += 
+//						Math.pow(numberOfParts, i) * Math.pow(2, i);
+//			}
+			
+			// currently
+			long possibleSolutions = 
+					(long)(Math.pow(numberOfParts, maxN) * Math.pow(2, maxN));
+			
+			
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
-			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, 
-					Math.pow(symbols.length, la.getN()) * Math.pow(2, la.getN()));
-			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getSize());
+			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, possibleSolutions);
+			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
+			this.stats.add(EugeneConstants.MINIMUM_LENGTH_OF_DESIGN, la.getMinN());
+			this.stats.add(EugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 
 			/*
 			 * ACT

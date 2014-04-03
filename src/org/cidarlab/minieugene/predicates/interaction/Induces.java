@@ -43,7 +43,8 @@ public class Induces
 
 		// x INDUCES a =>
 		//     CONTAINS a
-		return (new Contains(this.getB())).toJaCoP(store, variables);
+		return null;
+//		return (new Contains(this.getB())).toJaCoP(store, variables);
 	}
 
 	@Override
