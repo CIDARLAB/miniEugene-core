@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:RDF xmlns="http://sbols.org/v1#" xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <Collection ns2:about="http://www.eugenecad.org/e13dc06e-5b58-4f38-9e66-d457e98d07cf">
+        <displayId>e13dc06e-5b58-4f38-9e66-d457e98d07cf</displayId>
+        <description>e13dc06e-5b58-4f38-9e66-d457e98d07cf</description>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter24">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter24</displayId>
+                <name>promoter24</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter24_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter22">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter22</displayId>
+                <name>promoter22</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter22_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter20">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter20</displayId>
+                <name>promoter20</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter20_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter18">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter18</displayId>
+                <name>promoter18</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter18_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter16">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter16</displayId>
+                <name>promoter16</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter16_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter14">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter14</displayId>
+                <name>promoter14</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter14_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter12">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter12</displayId>
+                <name>promoter12</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter12_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter10">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter10</displayId>
+                <name>promoter10</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter10_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter8">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter8</displayId>
+                <name>promoter8</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter8_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+        <component>
+            <DnaComponent ns2:about="http://www.eugenecad.org/parts/promoter6">
+                <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+                <displayId>promoter6</displayId>
+                <name>promoter6</name>
+                <description>Promoter</description>
+                <dnaSequence>
+                    <DnaSequence ns2:about="http://www.eugenecad.org/parts/promoter6_sequence">
+                        <nucleotides>atcg</nucleotides>
+                    </DnaSequence>
+                </dnaSequence>
+            </DnaComponent>
+        </component>
+    </Collection>
+</ns2:RDF>

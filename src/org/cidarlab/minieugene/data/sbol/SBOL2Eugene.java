@@ -1,0 +1,426 @@
+/*
+Copyright (c) 2012 Boston University.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL BOSTON UNIVERSITY BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+BOSTON UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+BOSTON UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND BOSTON UNIVERSITY HAS
+NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+ */
+
+package org.cidarlab.minieugene.data.sbol;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.cidarlab.minieugene.constants.PropertyType;
+import org.cidarlab.minieugene.constants.SBOLConstants;
+import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.CompositeComponent;
+import org.cidarlab.minieugene.dom.NamedElement;
+import org.cidarlab.minieugene.dom.Property;
+import org.cidarlab.minieugene.dom.PropertyValue;
+import org.cidarlab.minieugene.exception.ImportException;
+import org.sbolstandard.core.DnaComponent;
+import org.sbolstandard.core.SBOLRootObject;
+import org.sbolstandard.core.SequenceAnnotation;
+import org.sbolstandard.core.StrandType;
+import org.sbolstandard.core.util.SequenceOntology;
+
+/*
+ *   Mapping:
+ *   
+ *   basic DNACompomonent (ie a DNAComponent without SequenceAnnotations)   <-->  Part
+ *   composite DNAComponent (ie a DNAComponent with SequenceAnnotations)    <-->  Device
+ *   Collection                                                             <-->  Device[], Collection
+ *
+ */
+
+public class SBOL2Eugene {
+
+	private static List<Property> properties = null;
+
+	/*
+	 * the convert() method gets as input the SBOLRootObject (from the SBOLDocument)
+	 * and returns a corresponding Eugene object ... 
+	 * 
+	 * all classes in Eugene inherit (directly or indirectly) from the NamedElement class
+	 * 
+	 */
+	public static Object convert(SBOLRootObject sbolComponent)
+			throws ImportException {
+
+		if (null == properties) {
+			createSBOLProperties();
+		}
+
+		if (null != sbolComponent) {
+			/*
+			 * SBOL Collection --> Eugene Collection
+			 */
+			if (sbolComponent instanceof org.sbolstandard.core.impl.CollectionImpl) {
+				org.sbolstandard.core.impl.CollectionImpl sbolCollection = 
+						(org.sbolstandard.core.impl.CollectionImpl) sbolComponent;
+
+				Set<Component> components = new HashSet<Component>();
+				
+				/*
+				 * here, we iterate over the SBOL Collection's elements
+				 */
+				for (DnaComponent dc : sbolCollection.getComponents()) {
+
+					/*
+					 * every SBOL Collection element gets converted into a
+					 * Eugene NamedElement 
+					 */
+					NamedElement objElement = (NamedElement)SBOL2Eugene.convert(dc);
+					
+					if (null != objElement && objElement instanceof Component) {
+						
+						/*
+						 * every SBOL 
+						 */
+						components.add((Component) objElement);
+					}
+				}
+
+				return components;
+
+			/*
+			 * SBOL DnaComponent
+			 */
+			} else if (sbolComponent instanceof org.sbolstandard.core.impl.DnaComponentImpl) {
+				org.sbolstandard.core.impl.DnaComponentImpl sbolDC = (org.sbolstandard.core.impl.DnaComponentImpl) sbolComponent;
+
+				
+				if (null != sbolDC.getAnnotations()
+						&& !sbolDC.getAnnotations().isEmpty()) {
+					
+//					/*
+//					 * SBOL composite DNAComponent --> Eugene Device
+//					 */
+//					return buildComposite(sbolDC);
+					
+				} else {
+
+					/*
+					 *  if the SBOL component does not have any annotations, then we map it onto a 
+					 *  Eugene Part
+					 */
+
+					return buildComponent(sbolDC);
+				}
+			}
+		}
+
+		return (NamedElement) null;
+	}
+
+	
+//	private static CompositeComponent buildComposite(
+//			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
+//		throws ImportException {
+//		
+//		// if the SBOL component does have annotations, then we transform it into a 
+//		// Eugene Device
+//
+//		List<Component> lstDeviceElements = 
+//				new ArrayList<Component>(sbolDC.getAnnotations().size());
+//
+//		// for a device, we have to iterate over all sequence
+//		// annotations and
+//		// convert each annotated DNA component
+//		char[] directions = new char[sbolDC.getAnnotations().size()];
+//		int i=0;
+//		for (SequenceAnnotation sa : sbolDC.getAnnotations()) {
+//			Object element = SBOL2Eugene.convert(sa.getSubComponent());
+//			if (null != element && 
+//					element instanceof Component) {
+//				
+//				lstDeviceElements.add((Component) element);
+//			}
+//			if(sa.getStrand() == StrandType.NEGATIVE) {
+//				directions[i++] = '-';
+//			} else {
+//				directions[i++] = '+';
+//			}
+//			
+//		}
+//		
+//		/*
+//		 * get the directions
+//		 */
+//		return SparrowBuilder.buildDevice(
+//				sbolDC.getDisplayId(), lstDeviceElements, directions);
+//	}
+	
+	private static Component buildComponent(
+			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
+		throws ImportException {
+
+		
+		/*
+		 * let's get the part type
+		 */
+//		PartType pt = getPartType(sbolDC.getTypes().get(0).toString());
+
+		/*
+		 * finally, we set the part's property values
+		 */
+		List<PropertyValue> values = getPartPropertyValues(sbolDC);
+		
+		/*
+		 * next, we create the Part object
+		 */		
+		return new Component(sbolDC.getName());
+//		Part objPart = SparrowBuilder.buildPart(
+//				sbolDC.getDisplayId(), pt, values);
+
+		/*
+		 * and store it in the symbol tables
+		 */
+//		SymbolTables.put(objPart);
+
+//		return objPart;
+	}
+	
+	private static List<PropertyValue> getPartPropertyValues(
+			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
+					throws ImportException {
+		
+		List<PropertyValue> lstValues = new ArrayList<PropertyValue>();
+		
+		/*
+		 * displayId
+		 */
+		PropertyValue objDisplayId =
+				new PropertyValue(
+						SBOLConstants.DISPLAY_ID_PROPERTY,                          // name 
+						PropertyType.TXT,                                         	// type
+						(null!=sbolDC.getDisplayId())?sbolDC.getDisplayId():"");    // value
+		lstValues.add(objDisplayId);
+		
+		/*
+		 * name
+		 */
+		PropertyValue objName =
+				new PropertyValue(
+						SBOLConstants.NAME_PROPERTY,
+						PropertyType.TXT,                                        
+						(null!=sbolDC.getName())?sbolDC.getName():"");
+		lstValues.add(objName);
+		
+		/*
+		 * URI
+		 */
+		PropertyValue objURI = new PropertyValue(
+				SBOLConstants.URI_PROPERTY, 
+				PropertyType.TXT, 
+				(null!=sbolDC.getURI())?sbolDC.getURI().toString():"");
+		lstValues.add(objURI);
+		
+		/*
+		 * description
+		 */
+		PropertyValue objDescription =
+				new PropertyValue(
+						SBOLConstants.DESCRIPTION_PROPERTY,
+						PropertyType.TXT,                                        
+						(null!=sbolDC.getDescription())?sbolDC.getDescription():"");
+		lstValues.add(objDescription);
+		
+		/*
+		 * SEQUENCE
+		 */
+		PropertyValue objSequenceValue = 
+				new PropertyValue(
+						SBOLConstants.SEQUENCE_PROPERTY,
+						PropertyType.TXT,                                        
+						(sbolDC.getDnaSequence()!=null)?sbolDC.getDnaSequence().getNucleotides():"");
+		lstValues.add(objSequenceValue);
+		
+		return lstValues;
+	}
+	
+//	private static PartType buildPartType(
+//			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
+//					throws ImportException {
+//
+//		return getPartType(sbolDC.getTypes());
+//	}
+	
+//	private static PartType getPartType(List<URI> types) 
+//		throws ImportException {
+//		
+//		PartType pt = getPartType(types.get(0).toString());
+//		if(null != pt) {
+//			return pt;
+//		}
+//		
+//		/*
+//		 * we need to create the part type
+//		 */
+//		return getPartType(types.get(0).toString());
+//	}
+	
+//	private static String getPartType(String type) 
+//			throws ImportException {
+//		
+//		String sPartTypeName = soMapping(type);
+//
+//		return SparrowBuilder.buildPartType(
+//				sPartTypeName,
+//				properties);
+//
+////		PartType objPartType = (PartType) null;
+////		NamedElement objTmp = SymbolTables.get(sPartTypeName);
+////		if (null != objTmp && objTmp instanceof PartType) {
+////			return (PartType) objTmp;
+////		} else {
+////			SymbolTables.put(objPartType);
+////		}
+////		return objPartType;
+//	}
+
+	private static String soMapping(String s) {
+		if(null == s || s.isEmpty()) {
+			return SBOLConstants.SBOL_PART_TYPE;
+		}
+		
+		if (SequenceOntology.FIVE_PRIME_UTR.toString().equals(s)) {
+			return "Five_Prime_UTR";
+		} else if (SequenceOntology.CDS.toString().equals(s) || "CDS".equals(s)) {
+			return "CDS";
+		} else if(s.contains("SO_0000139") || s.contains("SO_0000552")) {
+			return "RBS";
+		} else if (SequenceOntology.INSULATOR.toString().equals(s)) {
+			return "Insulator";
+		} else if (SequenceOntology.OPERATOR.toString().equals(s)) {
+			return "Operator";
+		} else if (SequenceOntology.ORIGIN_OF_REPLICATION.toString().equals(s)) {
+			return "Origin_of_Replication";
+		} else if (SequenceOntology.PRIMER_BINDING_SITE.toString().equals(s)) {
+			return "Primiter_Binding_Site";
+		} else if (SequenceOntology.PROMOTER.toString().equals(s) || "Promoter".equals(s) ||
+				s.contains("SO_0005836")) {
+			return "Promoter";
+		} else if (SequenceOntology.RESTRICTION_ENZYME_RECOGNITION_SITE
+				.toString().equals(s)) {
+			return "Restriction_Enzyme_Recognition_Site";
+		} else if (SequenceOntology.TERMINATOR.toString().equals(s) ||
+				s.contains("SO_0000313") ||
+				s.contains("SO_0000614")) {
+			return "Terminator";
+		}
+
+		return SBOLConstants.SBOL_PART_TYPE;
+	}
+
+	public static void readURI(URI uri) throws Exception {
+		URL url = uri.toURL();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				url.openStream()));
+
+		String inputLine;
+		while ((inputLine = in.readLine()) != null)
+			System.out.println(inputLine);
+		in.close();
+	}
+
+	
+	private static void createSBOLProperties() 
+			throws ImportException {
+		if (null == properties) {
+			
+			properties = new ArrayList<Property>(6);
+			
+			/*
+			 * URI
+			 */
+			properties.add(
+					new Property(
+							SBOLConstants.URI_PROPERTY, 
+							PropertyType.TXT));
+			
+			/*
+			 * displayId
+			 */
+			properties.add(
+					new Property(
+							SBOLConstants.DISPLAY_ID_PROPERTY, 
+							PropertyType.TXT));
+			
+			/*
+			 * name
+			 */
+			properties.add(
+					new Property(
+							SBOLConstants.NAME_PROPERTY, 
+							PropertyType.TXT));
+			
+			/*
+			 * description
+			 */
+			properties.add(
+					new Property(
+							SBOLConstants.DESCRIPTION_PROPERTY, 
+							PropertyType.TXT));
+			
+			/*
+			 * type(s) 
+			 */
+			properties.add(
+					new Property(
+							SBOLConstants.TYPE_PROPERTY, 
+							PropertyType.TXTLIST));
+			
+			/*
+			 * Sequence
+			 */
+			properties.add(
+					new Property(
+							SBOLConstants.SEQUENCE_PROPERTY, 
+							PropertyType.TXT));
+			
+//			/*
+//			 * put the properties into the symbol tables
+//			 */
+//			for (Property objProperty : properties) {
+//				if (!SymbolTables.contains(objProperty.getName())) {
+//					SymbolTables.put(objProperty);
+//				}
+//			}
+			
+		}
+	}
+
+//	private static Property getSequenceProperty() {
+//		// every part type should have a sequence property
+//		Property objSequenceProperty = (Property) SymbolTables
+//				.get(PropertyType.SEQUENCE_PROPERTY);
+//		if (null == objSequenceProperty) {
+//			objSequenceProperty = new Property(
+//					PropertyType.SEQUENCE_PROPERTY, PropertyType.TXT);
+//		}
+//		return objSequenceProperty;
+//	}
+
+}

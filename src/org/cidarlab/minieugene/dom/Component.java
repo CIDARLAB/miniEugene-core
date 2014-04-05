@@ -22,8 +22,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene.dom;
 
-import java.io.Serializable;
-
+import org.cidarlab.minieugene.constants.Type;
 import org.cidarlab.minieugene.solver.jacop.PartTypes;
 
 /**
@@ -45,7 +44,7 @@ import org.cidarlab.minieugene.solver.jacop.PartTypes;
  * @author Ernst Oberortner
  */
 public class Component 
-		implements Serializable {
+		extends NamedElement {
 
 	private static final long serialVersionUID = 7540207737327161186L;
 
@@ -55,28 +54,23 @@ public class Component
 	private int id;
 	
 	/*
-	 * name
-	 */
-	private String name;
-	
-	/*
 	 * direction
 	 */
 	private boolean forward;
 	
 	
 	public Component(String name) {
-		this.name = name;
+		super(name);
 		this.forward = true;
 
-		this.id = hash(this.name);
+		this.id = hash(this.getName());
 	}
 	
 	public Component(String name, boolean forward) {
-		this.name = name;
+		super(name);
 		this.forward = forward;
 		
-		this.id = hash(this.name);
+		this.id = hash(this.getName());
 	}
 	
 	private int hash(String name) {
@@ -114,15 +108,6 @@ public class Component
 	}
 
 	/**
-	 * getName/0 returns the name of the symbol
-	 * 
-	 * @return String ... the name of the symbol
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
 	 * getID/0 returns the ID of the symbol
 	 * 
 	 * @return int ... the automatically generated ID of the symbol
@@ -143,14 +128,14 @@ public class Component
 	 * @return int ... the type's ID
 	 */
 	public int getTypeId() {
-		if('p' == this.name.charAt(0) || 'P' == this.name.charAt(0)) {
+		if('p' == this.getName().charAt(0) || 'P' == this.getName().charAt(0)) {
 			return PartTypes.get("PROMOTER");
-		} else if('r' == this.name.charAt(0) || 'R' == this.name.charAt(0)) {
+		} else if('r' == this.getName().charAt(0) || 'R' == this.getName().charAt(0)) {
 			return PartTypes.get("RBS");  
-		} else if('c' == this.name.charAt(0) || 'C' == this.name.charAt(0) ||
-				'g' == this.name.charAt(0) || 'G' == this.name.charAt(0)) {
+		} else if('c' == this.getName().charAt(0) || 'C' == this.getName().charAt(0) ||
+				'g' == this.getName().charAt(0) || 'G' == this.getName().charAt(0)) {
 			return PartTypes.get("GENE");  
-		} else if('t' == this.name.charAt(0) || 'T' == this.name.charAt(0)) {
+		} else if('t' == this.getName().charAt(0) || 'T' == this.getName().charAt(0)) {
 			return PartTypes.get("TERMINATOR");  
 		} 
 		return 5;
@@ -168,18 +153,37 @@ public class Component
 	 * @return the name of the component's type
 	 */
 	public String getTypeName() {
-		if('p' == this.name.charAt(0) || 'P' == this.name.charAt(0)) {
+		if('p' == this.getName().charAt(0) || 'P' == this.getName().charAt(0)) {
 			return "PROMOTER";
-		} else if('r' == this.name.charAt(0) || 'R' == this.name.charAt(0)) {
+		} else if('r' == this.getName().charAt(0) || 'R' == this.getName().charAt(0)) {
 			return  "RBS";  
-		} else if('c' == this.name.charAt(0) || 'C' == this.name.charAt(0) ||
-				'g' == this.name.charAt(0) || 'G' == this.name.charAt(0)) {
+		} else if('c' == this.getName().charAt(0) || 'C' == this.getName().charAt(0) ||
+				'g' == this.getName().charAt(0) || 'G' == this.getName().charAt(0)) {
 			return "GENE";  
-		} else if('t' == this.name.charAt(0) || 'T' == this.name.charAt(0)) {
+		} else if('t' == this.getName().charAt(0) || 'T' == this.getName().charAt(0)) {
 			return "TERMINATOR";  
 		} 
 		return "?";
 		
+	}
+	
+	/**
+	 * returns the type of the component
+	 * 
+	 * @return
+	 */
+	public Type getType() {
+		if(this.getName().toUpperCase().startsWith("P")) {
+			return Type.PROMOTER;
+		} else if(this.getName().toUpperCase().startsWith("R")) {
+			return Type.RIBOSOME_BINDING_SITE;
+		} else if(this.getName().toUpperCase().startsWith("C") ||
+				this.getName().toUpperCase().startsWith("G")) {
+			return Type.CODING_SEQUENCE;
+		} else if(this.getName().toUpperCase().startsWith("T")) {
+			return Type.TERMINATOR;
+		}
+		return Type.UNKNOWN;
 	}
 	
 	@Override
