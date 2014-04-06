@@ -278,7 +278,7 @@ public class TestSuite {
 //			se.toEugene("./test-results/"+filename+".eug");
 		
 		// CONSOLE OUTPUT
-		se.toConsole();
+//		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

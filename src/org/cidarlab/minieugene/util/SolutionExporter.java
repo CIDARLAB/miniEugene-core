@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
 import org.cidarlab.minieugene.data.sbol.SBOLExporter;
 import org.cidarlab.minieugene.dom.Component;
@@ -82,7 +81,7 @@ public class SolutionExporter {
 	        			this.interactions);
 	        	
 	        } catch(Exception e) {
-	        	e.printStackTrace();
+//	        	e.printStackTrace();
 	            throw new EugeneException(e.getMessage());
 	        }
 		}
@@ -156,8 +155,8 @@ public class SolutionExporter {
 				idx[i] = i;
 			}
 		}
-		
-		System.out.println(Arrays.toString(idx));
+//		
+//		System.out.println(Arrays.toString(idx));
 		
 		List<Component[]> lst = new ArrayList<Component[]>(idx.length);
 		for(int i=0; i<idx.length; i++) {
@@ -249,7 +248,6 @@ public class SolutionExporter {
 				 }
 				 sb.append(NEWLINE);
 			 }
-			 
 			 
 			 System.out.println(sb.toString());
 		 }
