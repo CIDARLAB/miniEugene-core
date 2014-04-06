@@ -14,6 +14,7 @@ import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.And;
+import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
@@ -130,11 +131,11 @@ public class JaCoPSolver
 				 * we also impose constraints that part and type match
 				 * so we avoid various permutations were the part and type do not match
 				 */
-				pc[j] = new And(
+				pc[j] = new IfThen(
 								new XeqC(variables[Variables.PART][i], symbols[j].getId()),
 								new XeqC(variables[Variables.TYPE][i], symbols[j].getTypeId()));
 			}
-			store.impose(new Or(pc));
+			store.impose(new And(pc));
 
 			variables[Variables.ORIENTATION][i].addDom(-1, -1);
 			variables[Variables.ORIENTATION][i].addDom( 1,  1);

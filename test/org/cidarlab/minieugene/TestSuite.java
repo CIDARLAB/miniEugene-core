@@ -112,6 +112,11 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/interaction/drives01"));
 //		new TestSuite().test(new File("./tests/interaction/drives02"));
 //		new TestSuite().test(new File("./tests/interactions.eug"));
+		
+		new TestSuite().test("N=3.contains p. contains c. contains t.p drives c.");
+//		new TestSuite().test("N=4.contains p. contains c. contains t.p drives c.");
+//		new TestSuite().test("N=5.contains p. contains c. contains t.p drives c.");
+//		new TestSuite().test("N=6.contains p. contains c. contains t.p drives c.");
 
 		/*
 		 * LOGICAL OR
@@ -145,7 +150,7 @@ public class TestSuite {
 		
 		// SEQUENCES
 //		new TestSuite().test("N=3.all_forward.sequence a, b.");
-		new TestSuite().test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
+//		new TestSuite().test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
 		
 		/*
 		 * ACT
@@ -257,8 +262,8 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// PIGEON
-//			URI pig = se.toPigeon();
-//			WeyekinPoster.launchPage(pig);
+			URI pig = se.toPigeon();
+			WeyekinPoster.launchPage(pig);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
