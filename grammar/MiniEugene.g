@@ -52,6 +52,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package org.cidarlab.minieugene.parser;
 
 import org.cidarlab.minieugene.Interp;
+import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.symbol.*;
 import org.cidarlab.minieugene.predicates.*;
 import org.cidarlab.minieugene.exception.EugeneException;
@@ -171,57 +172,77 @@ $p = this.interp.interpreteRule(this.tokens);
 // reset the global token array
 this.tokens = null;
 	}
-	|	tem=template {
-$p = $tem.p;	
-	}
-	|	pat=pattern {
-$p = $pat.p;	
-	}
-	|	gr=group {
-$p = $gr.p;	
-	}
-	|	seq=sequence {
-$p = $seq.p;	
+	|	temp=templatingConstraints {
+$p = $temp.p;	
 	}
 	;
 	catch[EugeneException e] {
 throw new EugeneException(e.getMessage());	
 	}
 
-template	
+templatingConstraints
+	returns [Predicate p]
+	throws EugeneException
+	:	tem=templateConstraint {
+$p = $tem.p;	
+	}
+	|	pat=patternConstraint {
+$p = $pat.p;	
+	}
+	|	gr=groupConstraint {
+$p = $gr.p;	
+	}
+	|	seq=sequenceConstraint {
+$p = $seq.p;	
+	}
+	;
+	
+templateConstraint	
 	returns [Template p]
 	:	(name=ID)? not=('NOT'|'not')? ('TEMPLATE'|'template') ids=list_of_ids {
-$p = this.interp.createTemplate($name.text, $ids.lst);
+$p = (Template)this.interp.createTemplatingConstraint(
+    TemplateType.TEMPLATE, 
+    $name.text, 
+    $ids.lst);
 if(null != not) {
     $p.setNegated();
 }
 	}
 	;
 
-pattern	
+patternConstraint	
 	returns [Pattern p]
 	:	(name=ID)? not=('NOT'|'not')? ('PATTERN'|'pattern') ids=list_of_ids {
-$p = this.interp.createPattern($name.text, $ids.lst);
+$p = (Pattern)this.interp.createTemplatingConstraint(
+    TemplateType.PATTERN, 
+    $name.text, 
+    $ids.lst);
 if(null != not) {
     $p.setNegated();
 }
 	}
 	;
 
-sequence	
+sequenceConstraint	
 	returns [Sequence p]
 	:	(name=ID)? not=('NOT'|'not')? ('SEQUENCE'|'sequence') ids=list_of_ids {
-$p = this.interp.createSequence($name.text, $ids.lst);
+$p = (Sequence)this.interp.createTemplatingConstraint(
+    TemplateType.SEQUENCE, 
+    $name.text, 
+    $ids.lst);
 if(null != not) {
     $p.setNegated();
 }
 	}
 	;
 	
-group	
+groupConstraint	
 	returns [Group p]
 	:	(name=ID)? not=('NOT'|'not')? ('GROUP'|'group') ids=list_of_ids {
-$p = this.interp.createGroup($name.text, $ids.lst);
+$p = (Group)this.interp.createTemplatingConstraint(
+    TemplateType.GROUP, 
+    $name.text, 
+    $ids.lst);
 if(null != not) {
     $p.setNegated();
 }
@@ -229,16 +250,33 @@ if(null != not) {
 	;
 
 list_of_ids
-        returns [List<String> lst]
+        returns [List<List<String>> lst]
+@init{
+$lst = new ArrayList<List<String>>();
+}	
+	:	(id=ID {
+List<String> id_lst = new ArrayList<String>();
+id_lst.add($id.text);
+$lst.add(id_lst);	
+	}	|	'[' sel=selection {
+$lst.add($sel.lst);	
+	}	']')
+		(',' ids=list_of_ids {
+$lst.addAll($ids.lst);		
+	})?
+	;
+
+selection
+	returns [List<String> lst]
 @init{
 $lst = new ArrayList<String>();
 }	
 	:	id=ID {
-$lst.add($id.text);	
-	}	(',' ids=list_of_ids {
-$lst.addAll($ids.lst);		
+$lst.add($id.text);		
+	} 	('|' sel=selection {
+$lst.addAll($sel.lst);	
 	})?
-	;
+	;	
 		
 operator:
 	|	('CONTAINS'|'contains')

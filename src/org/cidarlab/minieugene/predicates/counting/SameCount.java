@@ -61,8 +61,8 @@ public class SameCount
 					this.getA().getName()+"-counter", 
 					0, 
 					variables[Variables.PART].length);
+			store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
 		}
-		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
 
 		// b's counter
 		IntVar counterB = (IntVar)store.findVariable(this.getB().getName()+"-counter");
@@ -71,8 +71,8 @@ public class SameCount
 					this.getB().getName()+"-counter", 
 					0, 
 					variables[Variables.PART].length);
+			store.impose(new Count(variables[Variables.PART], counterB, this.getB().getId()));
 		}
-		store.impose(new Count(variables[Variables.PART], counterB, this.getB().getId()));
 
 		// both counters must be equal
 		return new XeqY(counterA, counterB);

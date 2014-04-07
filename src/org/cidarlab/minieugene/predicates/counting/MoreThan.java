@@ -49,10 +49,9 @@ public class MoreThan
 					this.getA().getName()+"-counter", 
 					0, 
 					variables[Variables.PART].length);
+			store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));			
 		}
 
-		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
-		
 		return new XgtC(count, this.getNum());
 	}
 

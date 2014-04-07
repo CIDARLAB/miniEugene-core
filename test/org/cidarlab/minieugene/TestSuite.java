@@ -113,7 +113,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/interaction/drives02"));
 //		new TestSuite().test(new File("./tests/interactions.eug"));
 		
-		new TestSuite().test("N=3.contains p. contains c. contains t.p drives c.");
+//		new TestSuite().test("N=3.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=4.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=5.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=6.contains p. contains c. contains t.p drives c.");
@@ -131,7 +131,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/N/minN03"));   // DOES NOT WORK YET!
 		
 		/*
-		 * miniEugene's TEMPLATING features
+		 * miniEugene's TEMPLATING CONSTRAINTS
 		 */
 		
 		// TEMPLATES
@@ -145,11 +145,32 @@ public class TestSuite {
 //		new TestSuite().test("N=200.all_forward \\/ all_reverse.template a, b.");
 		
 		// negated templates
-//		new TestSuite().test("N=4.not template promoter, rbs, cds, terminator.");
+//		new TestSuite().test("N=4.all_forward.not template promoter, rbs, cds, terminator.");
 
+		// templates with selections
+//		new TestSuite().test("N=4.all_forward.template [p1], [r1], [c1], [t1].");
+//		new TestSuite().test("N=4.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
+//		new TestSuite().test("N=4.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+//		new TestSuite().test("N=8.all_forward.template [p1], [r1], [c1], [t1].");
+//		new TestSuite().test("N=8.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
+//		new TestSuite().test("N=8.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+//		new TestSuite().test("N=12.all_forward.template [p1], [r1], [c1], [t1].");
+//		new TestSuite().test("N=12.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
+//		new TestSuite().test("N=12.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+		
+		
+		// DISJUNCTION OF TEMPLATES
+//		new TestSuite().test("N=4. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
+//		new TestSuite().test("N=8. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");		
+//		new TestSuite().test("N=12. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
 		
 		// SEQUENCES
-//		new TestSuite().test("N=3.all_forward.sequence a, b.");
+//		new TestSuite().test("N=3.contains X. all_forward. sequence p, c.");
+//		new TestSuite().test("N=3.contains X. all_forward. sequence [p1|p2], [c1|c2].");
+//		new TestSuite().test("N=50.X exactly 48. all_forward. sequence [p1|p2], [c1|c2].");
+//		new TestSuite().test("N=4. sequence [p1|p2|p3|c1|c2|c3]. p1 with c1 \\/ p2 with c2 \\/ p3 with c3. p1 same_orientation c1. p2 same_orientation c2. p3 same_orientation c3. not forward p1 \\/ p1 before c1. not forward p2 \\/ p2 before c2. not forward p3 \\/ p3 before c3. not reverse p1 \\/ p1 after c1. not reverse p2 \\/ p2 after c2. not reverse p3 \\/ p3 after c3.");
+		
+//		new TestSuite().test("N=5.all_forward. sequence [p1|p2], [c1|c2]. p1 then c1. p2 then c2.");
 //		new TestSuite().test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
 		
 		/*
@@ -278,7 +299,7 @@ public class TestSuite {
 //			se.toEugene("./test-results/"+filename+".eug");
 		
 		// CONSOLE OUTPUT
-//		se.toConsole();
+		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

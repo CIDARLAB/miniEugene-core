@@ -58,8 +58,8 @@ public class Contains
 					this.getA().getName()+"-counter", 
 					0, 
 					variables[Variables.PART].length);
+			store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
 		}
-		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
 		
 		return new XgtC(counterA, 0);
 		

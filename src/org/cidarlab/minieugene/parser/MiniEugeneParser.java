@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g 2014-04-03 15:40:32
+// $ANTLR 3.4 /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g 2014-04-07 12:05:53
 
 /*
 Copyright (c) 2012 Boston University.
@@ -25,6 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package org.cidarlab.minieugene.parser;
 
 import org.cidarlab.minieugene.Interp;
+import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.symbol.*;
 import org.cidarlab.minieugene.predicates.*;
 import org.cidarlab.minieugene.exception.EugeneException;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class MiniEugeneParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "CHAR", "COMMENT", "ESC_SEQ", "EXPONENT", "HEX_DIGIT", "ID", "INT", "OCTAL_ESC", "STRING", "UNICODE_ESC", "WS", "'('", "')'", "','", "'.'", "':='", "'='", "'AFTER'", "'ALL_AFTER'", "'ALL_BEFORE'", "'ALL_FORWARD'", "'ALL_NEXTTO'", "'ALL_REVERSE'", "'ALL_SAME_ORIENTATION'", "'ALTERNATE_ORIENTATION'", "'ALWAYS_NEXTTO'", "'BEFORE'", "'CONTAINS'", "'DRIVES'", "'ENDSWITH'", "'EQUALS'", "'EXACTLY'", "'FORWARD'", "'GROUP'", "'INDUCES'", "'MATCHES'", "'MORETHAN'", "'N'", "'NEXTTO'", "'NOT'", "'NOTCONTAINS'", "'NOTEQUALS'", "'NOTEXACTLY'", "'NOTMATCHES'", "'NOTMORETHAN'", "'NOTTHEN'", "'NOTWITH'", "'OR'", "'PATTERN'", "'REPRESSES'", "'REVERSE'", "'SAME_COUNT'", "'SAME_ORIENTATION'", "'SEQUENCE'", "'SOME_AFTER'", "'SOME_BEFORE'", "'SOME_FORWARD'", "'SOME_NEXTTO'", "'SOME_REVERSE'", "'SOME_SAME_ORIENTATION'", "'STARTSWITH'", "'TEMPLATE'", "'THEN'", "'WITH'", "'['", "'\\\\/'", "']'", "'after'", "'all_after'", "'all_before'", "'all_forward'", "'all_nextto'", "'all_reverse'", "'all_same_orientation'", "'alternate_orientation'", "'always_nextto'", "'before'", "'contains'", "'drives'", "'endswith'", "'equals'", "'exactly'", "'forward'", "'group'", "'induces'", "'matches'", "'minN'", "'morethan'", "'nextto'", "'not'", "'notcontains'", "'notequals'", "'notexactly'", "'notmatches'", "'notmorethan'", "'notthen'", "'notwith'", "'or'", "'pattern'", "'represses'", "'reverse'", "'same_count'", "'same_orientation'", "'sequence'", "'some_after'", "'some_before'", "'some_forward'", "'some_nextto'", "'some_reverse'", "'some_same_orientation'", "'startswith'", "'template'", "'then'", "'with'", "'||'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "CHAR", "COMMENT", "ESC_SEQ", "EXPONENT", "HEX_DIGIT", "ID", "INT", "OCTAL_ESC", "STRING", "UNICODE_ESC", "WS", "'('", "')'", "','", "'.'", "':='", "'='", "'AFTER'", "'ALL_AFTER'", "'ALL_BEFORE'", "'ALL_FORWARD'", "'ALL_NEXTTO'", "'ALL_REVERSE'", "'ALL_SAME_ORIENTATION'", "'ALTERNATE_ORIENTATION'", "'ALWAYS_NEXTTO'", "'BEFORE'", "'CONTAINS'", "'DRIVES'", "'ENDSWITH'", "'EQUALS'", "'EXACTLY'", "'FORWARD'", "'GROUP'", "'INDUCES'", "'MATCHES'", "'MORETHAN'", "'N'", "'NEXTTO'", "'NOT'", "'NOTCONTAINS'", "'NOTEQUALS'", "'NOTEXACTLY'", "'NOTMATCHES'", "'NOTMORETHAN'", "'NOTTHEN'", "'NOTWITH'", "'OR'", "'PATTERN'", "'REPRESSES'", "'REVERSE'", "'SAME_COUNT'", "'SAME_ORIENTATION'", "'SEQUENCE'", "'SOME_AFTER'", "'SOME_BEFORE'", "'SOME_FORWARD'", "'SOME_NEXTTO'", "'SOME_REVERSE'", "'SOME_SAME_ORIENTATION'", "'STARTSWITH'", "'TEMPLATE'", "'THEN'", "'WITH'", "'['", "'\\\\/'", "']'", "'after'", "'all_after'", "'all_before'", "'all_forward'", "'all_nextto'", "'all_reverse'", "'all_same_orientation'", "'alternate_orientation'", "'always_nextto'", "'before'", "'contains'", "'drives'", "'endswith'", "'equals'", "'exactly'", "'forward'", "'group'", "'induces'", "'matches'", "'minN'", "'morethan'", "'nextto'", "'not'", "'notcontains'", "'notequals'", "'notexactly'", "'notmatches'", "'notmorethan'", "'notthen'", "'notwith'", "'or'", "'pattern'", "'represses'", "'reverse'", "'same_count'", "'same_orientation'", "'sequence'", "'some_after'", "'some_before'", "'some_forward'", "'some_nextto'", "'some_reverse'", "'some_same_orientation'", "'startswith'", "'template'", "'then'", "'with'", "'|'", "'||'"
     };
 
     public static final int EOF=-1;
@@ -149,6 +150,7 @@ public class MiniEugeneParser extends Parser {
     public static final int T__116=116;
     public static final int T__117=117;
     public static final int T__118=118;
+    public static final int T__119=119;
     public static final int CHAR=4;
     public static final int COMMENT=5;
     public static final int ESC_SEQ=6;
@@ -226,16 +228,16 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "miniEugene"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:109:1: miniEugene : ( size )? (c= or_constraint '.' | composite_constraint )+ ;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:110:1: miniEugene : ( size )? (c= or_constraint '.' | composite_constraint )+ ;
     public final void miniEugene() throws EugeneException, RecognitionException {
         List<Predicate> c =null;
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:111:2: ( ( size )? (c= or_constraint '.' | composite_constraint )+ )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:111:4: ( size )? (c= or_constraint '.' | composite_constraint )+
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:112:2: ( ( size )? (c= or_constraint '.' | composite_constraint )+ )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:112:4: ( size )? (c= or_constraint '.' | composite_constraint )+
             {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:111:4: ( size )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:112:4: ( size )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -244,7 +246,7 @@ public class MiniEugeneParser extends Parser {
             }
             switch (alt1) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:111:5: size
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:112:5: size
                     {
                     pushFollow(FOLLOW_size_in_miniEugene45);
                     size();
@@ -258,20 +260,20 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:111:12: (c= or_constraint '.' | composite_constraint )+
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:112:12: (c= or_constraint '.' | composite_constraint )+
             int cnt2=0;
             loop2:
             do {
                 int alt2=3;
                 int LA2_0 = input.LA(1);
 
-                if ( (LA2_0==INT||LA2_0==18||(LA2_0 >= 21 && LA2_0 <= 40)||(LA2_0 >= 42 && LA2_0 <= 69)||(LA2_0 >= 71 && LA2_0 <= 89)||(LA2_0 >= 91 && LA2_0 <= 118)) ) {
+                if ( (LA2_0==INT||LA2_0==18||(LA2_0 >= 21 && LA2_0 <= 40)||(LA2_0 >= 42 && LA2_0 <= 69)||(LA2_0 >= 71 && LA2_0 <= 89)||(LA2_0 >= 91 && LA2_0 <= 117)||LA2_0==119) ) {
                     alt2=1;
                 }
                 else if ( (LA2_0==ID) ) {
                     int LA2_3 = input.LA(2);
 
-                    if ( ((LA2_3 >= ID && LA2_3 <= INT)||LA2_3==18||(LA2_3 >= 21 && LA2_3 <= 40)||(LA2_3 >= 42 && LA2_3 <= 69)||(LA2_3 >= 71 && LA2_3 <= 89)||(LA2_3 >= 91 && LA2_3 <= 118)) ) {
+                    if ( ((LA2_3 >= ID && LA2_3 <= INT)||LA2_3==18||(LA2_3 >= 21 && LA2_3 <= 40)||(LA2_3 >= 42 && LA2_3 <= 69)||(LA2_3 >= 71 && LA2_3 <= 89)||(LA2_3 >= 91 && LA2_3 <= 117)||LA2_3==119) ) {
                         alt2=1;
                     }
                     else if ( (LA2_3==15||LA2_3==19) ) {
@@ -284,7 +286,7 @@ public class MiniEugeneParser extends Parser {
 
                 switch (alt2) {
             	case 1 :
-            	    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:111:13: c= or_constraint '.'
+            	    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:112:13: c= or_constraint '.'
             	    {
             	    pushFollow(FOLLOW_or_constraint_in_miniEugene52);
             	    c=or_constraint();
@@ -306,7 +308,7 @@ public class MiniEugeneParser extends Parser {
             	    }
             	    break;
             	case 2 :
-            	    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:118:8: composite_constraint
+            	    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:119:8: composite_constraint
             	    {
             	    pushFollow(FOLLOW_composite_constraint_in_miniEugene58);
             	    composite_constraint();
@@ -345,16 +347,16 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "size"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:121:1: size : ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.' ;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:122:1: size : ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.' ;
     public final void size() throws EugeneException, RecognitionException {
         Token minN=null;
         Token maxN=null;
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:123:2: ( ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.' )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:123:5: ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.'
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:124:2: ( ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.' )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:124:5: ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.'
             {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:123:5: ( 'minN' '=' minN= INT '.' )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:124:5: ( 'minN' '=' minN= INT '.' )?
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -363,7 +365,7 @@ public class MiniEugeneParser extends Parser {
             }
             switch (alt3) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:123:6: 'minN' '=' minN= INT '.'
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:124:6: 'minN' '=' minN= INT '.'
                     {
                     match(input,90,FOLLOW_90_in_size80); 
 
@@ -415,15 +417,15 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "composite_constraint"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:132:1: composite_constraint : ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.' ;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:133:1: composite_constraint : ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.' ;
     public final void composite_constraint() throws EugeneException, RecognitionException {
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:134:2: ( ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.' )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:134:4: ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.'
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:135:2: ( ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.' )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:135:4: ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.'
             {
             match(input,ID,FOLLOW_ID_in_composite_constraint120); 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:134:7: ( '(' list_of_parameters ')' )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:135:7: ( '(' list_of_parameters ')' )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -432,7 +434,7 @@ public class MiniEugeneParser extends Parser {
             }
             switch (alt4) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:134:9: '(' list_of_parameters ')'
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:135:9: '(' list_of_parameters ')'
                     {
                     match(input,15,FOLLOW_15_in_composite_constraint124); 
 
@@ -478,11 +480,11 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "composite_constraint_block"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:137:1: composite_constraint_block : constraint ( ',' composite_constraint_block )? ;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:138:1: composite_constraint_block : constraint ( ',' composite_constraint_block )? ;
     public final void composite_constraint_block() throws EugeneException, RecognitionException {
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:139:2: ( constraint ( ',' composite_constraint_block )? )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:139:4: constraint ( ',' composite_constraint_block )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:140:2: ( constraint ( ',' composite_constraint_block )? )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:140:4: constraint ( ',' composite_constraint_block )?
             {
             pushFollow(FOLLOW_constraint_in_composite_constraint_block153);
             constraint();
@@ -490,7 +492,7 @@ public class MiniEugeneParser extends Parser {
             state._fsp--;
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:139:15: ( ',' composite_constraint_block )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:140:15: ( ',' composite_constraint_block )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -499,7 +501,7 @@ public class MiniEugeneParser extends Parser {
             }
             switch (alt5) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:139:16: ',' composite_constraint_block
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:140:16: ',' composite_constraint_block
                     {
                     match(input,17,FOLLOW_17_in_composite_constraint_block156); 
 
@@ -533,7 +535,7 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "or_constraint"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:142:1: or_constraint returns [List<Predicate> lst] : c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )? ;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:143:1: or_constraint returns [List<Predicate> lst] : c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )? ;
     public final List<Predicate> or_constraint() throws EugeneException, RecognitionException {
         List<Predicate> lst = null;
 
@@ -547,8 +549,8 @@ public class MiniEugeneParser extends Parser {
         lst = new ArrayList<Predicate>();
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:148:2: (c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )? )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:148:4: c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:149:2: (c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )? )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:149:4: c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )?
             {
             pushFollow(FOLLOW_constraint_in_or_constraint198);
             c=constraint();
@@ -560,18 +562,18 @@ public class MiniEugeneParser extends Parser {
             lst.add(c);
             	
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:150:4: ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:151:4: ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )?
             int alt6=2;
             int LA6_0 = input.LA(1);
 
-            if ( (LA6_0==51||LA6_0==69||LA6_0==101||LA6_0==118) ) {
+            if ( (LA6_0==51||LA6_0==69||LA6_0==101||LA6_0==119) ) {
                 alt6=1;
             }
             switch (alt6) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:150:5: ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:151:5: ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint
                     {
-                    if ( input.LA(1)==51||input.LA(1)==69||input.LA(1)==101||input.LA(1)==118 ) {
+                    if ( input.LA(1)==51||input.LA(1)==69||input.LA(1)==101||input.LA(1)==119 ) {
                         input.consume();
                         state.errorRecovery=false;
                     }
@@ -615,7 +617,7 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "constraint"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:155:1: constraint returns [Predicate p] : ( (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )? |tem= template |pat= pattern |gr= group |seq= sequence );
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:156:1: constraint returns [Predicate p] : ( (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )? |temp= templatingConstraints );
     public final Predicate constraint() throws EugeneException, RecognitionException {
         Predicate p = null;
 
@@ -627,316 +629,50 @@ public class MiniEugeneParser extends Parser {
 
         MiniEugeneParser.operand_return rhs =null;
 
-        Template tem =null;
-
-        Pattern pat =null;
-
-        Group gr =null;
-
-        Sequence seq =null;
+        Predicate temp =null;
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:158:2: ( (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )? |tem= template |pat= pattern |gr= group |seq= sequence )
-            int alt10=5;
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:159:2: ( (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )? |temp= templatingConstraints )
+            int alt10=2;
             switch ( input.LA(1) ) {
             case 43:
             case 93:
                 {
-                switch ( input.LA(2) ) {
-                case ID:
-                case INT:
-                case 17:
-                case 18:
-                case 21:
-                case 22:
-                case 23:
-                case 24:
-                case 25:
-                case 26:
-                case 27:
-                case 28:
-                case 29:
-                case 30:
-                case 31:
-                case 32:
-                case 33:
-                case 34:
-                case 35:
-                case 36:
-                case 38:
-                case 39:
-                case 40:
-                case 42:
-                case 44:
-                case 45:
-                case 46:
-                case 47:
-                case 48:
-                case 49:
-                case 50:
-                case 51:
-                case 53:
-                case 54:
-                case 55:
-                case 56:
-                case 58:
-                case 59:
-                case 60:
-                case 61:
-                case 62:
-                case 63:
-                case 64:
-                case 66:
-                case 67:
-                case 68:
-                case 69:
-                case 71:
-                case 72:
-                case 73:
-                case 74:
-                case 75:
-                case 76:
-                case 77:
-                case 78:
-                case 79:
-                case 80:
-                case 81:
-                case 82:
-                case 83:
-                case 84:
-                case 85:
-                case 86:
-                case 88:
-                case 89:
-                case 91:
-                case 92:
-                case 94:
-                case 95:
-                case 96:
-                case 97:
-                case 98:
-                case 99:
-                case 100:
-                case 101:
-                case 103:
-                case 104:
-                case 105:
-                case 106:
-                case 108:
-                case 109:
-                case 110:
-                case 111:
-                case 112:
-                case 113:
-                case 114:
-                case 116:
-                case 117:
-                case 118:
-                    {
+                int LA10_1 = input.LA(2);
+
+                if ( ((LA10_1 >= ID && LA10_1 <= INT)||(LA10_1 >= 17 && LA10_1 <= 18)||(LA10_1 >= 21 && LA10_1 <= 36)||(LA10_1 >= 38 && LA10_1 <= 40)||LA10_1==42||(LA10_1 >= 44 && LA10_1 <= 51)||(LA10_1 >= 53 && LA10_1 <= 56)||(LA10_1 >= 58 && LA10_1 <= 64)||(LA10_1 >= 66 && LA10_1 <= 69)||(LA10_1 >= 71 && LA10_1 <= 86)||(LA10_1 >= 88 && LA10_1 <= 89)||(LA10_1 >= 91 && LA10_1 <= 92)||(LA10_1 >= 94 && LA10_1 <= 101)||(LA10_1 >= 103 && LA10_1 <= 106)||(LA10_1 >= 108 && LA10_1 <= 114)||(LA10_1 >= 116 && LA10_1 <= 117)||LA10_1==119) ) {
                     alt10=1;
-                    }
-                    break;
-                case 65:
-                case 115:
-                    {
+                }
+                else if ( (LA10_1==37||LA10_1==52||LA10_1==57||LA10_1==65||LA10_1==87||LA10_1==102||LA10_1==107||LA10_1==115) ) {
                     alt10=2;
-                    }
-                    break;
-                case 52:
-                case 102:
-                    {
-                    alt10=3;
-                    }
-                    break;
-                case 37:
-                case 87:
-                    {
-                    alt10=4;
-                    }
-                    break;
-                case 57:
-                case 107:
-                    {
-                    alt10=5;
-                    }
-                    break;
-                default:
+                }
+                else {
                     NoViableAltException nvae =
                         new NoViableAltException("", 10, 1, input);
 
                     throw nvae;
 
                 }
-
                 }
                 break;
             case ID:
                 {
-                switch ( input.LA(2) ) {
-                case ID:
-                case INT:
-                case 17:
-                case 18:
-                case 21:
-                case 22:
-                case 23:
-                case 24:
-                case 25:
-                case 26:
-                case 27:
-                case 28:
-                case 29:
-                case 30:
-                case 31:
-                case 32:
-                case 33:
-                case 34:
-                case 35:
-                case 36:
-                case 38:
-                case 39:
-                case 40:
-                case 42:
-                case 44:
-                case 45:
-                case 46:
-                case 47:
-                case 48:
-                case 49:
-                case 50:
-                case 51:
-                case 53:
-                case 54:
-                case 55:
-                case 56:
-                case 58:
-                case 59:
-                case 60:
-                case 61:
-                case 62:
-                case 63:
-                case 64:
-                case 66:
-                case 67:
-                case 68:
-                case 69:
-                case 71:
-                case 72:
-                case 73:
-                case 74:
-                case 75:
-                case 76:
-                case 77:
-                case 78:
-                case 79:
-                case 80:
-                case 81:
-                case 82:
-                case 83:
-                case 84:
-                case 85:
-                case 86:
-                case 88:
-                case 89:
-                case 91:
-                case 92:
-                case 94:
-                case 95:
-                case 96:
-                case 97:
-                case 98:
-                case 99:
-                case 100:
-                case 101:
-                case 103:
-                case 104:
-                case 105:
-                case 106:
-                case 108:
-                case 109:
-                case 110:
-                case 111:
-                case 112:
-                case 113:
-                case 114:
-                case 116:
-                case 117:
-                case 118:
-                    {
+                int LA10_2 = input.LA(2);
+
+                if ( ((LA10_2 >= ID && LA10_2 <= INT)||(LA10_2 >= 17 && LA10_2 <= 18)||(LA10_2 >= 21 && LA10_2 <= 36)||(LA10_2 >= 38 && LA10_2 <= 40)||LA10_2==42||(LA10_2 >= 44 && LA10_2 <= 51)||(LA10_2 >= 53 && LA10_2 <= 56)||(LA10_2 >= 58 && LA10_2 <= 64)||(LA10_2 >= 66 && LA10_2 <= 69)||(LA10_2 >= 71 && LA10_2 <= 86)||(LA10_2 >= 88 && LA10_2 <= 89)||(LA10_2 >= 91 && LA10_2 <= 92)||(LA10_2 >= 94 && LA10_2 <= 101)||(LA10_2 >= 103 && LA10_2 <= 106)||(LA10_2 >= 108 && LA10_2 <= 114)||(LA10_2 >= 116 && LA10_2 <= 117)||LA10_2==119) ) {
                     alt10=1;
-                    }
-                    break;
-                case 43:
-                case 93:
-                    {
-                    switch ( input.LA(3) ) {
-                    case 65:
-                    case 115:
-                        {
-                        alt10=2;
-                        }
-                        break;
-                    case 52:
-                    case 102:
-                        {
-                        alt10=3;
-                        }
-                        break;
-                    case 37:
-                    case 87:
-                        {
-                        alt10=4;
-                        }
-                        break;
-                    case 57:
-                    case 107:
-                        {
-                        alt10=5;
-                        }
-                        break;
-                    default:
-                        NoViableAltException nvae =
-                            new NoViableAltException("", 10, 8, input);
-
-                        throw nvae;
-
-                    }
-
-                    }
-                    break;
-                case 65:
-                case 115:
-                    {
+                }
+                else if ( (LA10_2==37||LA10_2==43||LA10_2==52||LA10_2==57||LA10_2==65||LA10_2==87||LA10_2==93||LA10_2==102||LA10_2==107||LA10_2==115) ) {
                     alt10=2;
-                    }
-                    break;
-                case 52:
-                case 102:
-                    {
-                    alt10=3;
-                    }
-                    break;
-                case 37:
-                case 87:
-                    {
-                    alt10=4;
-                    }
-                    break;
-                case 57:
-                case 107:
-                    {
-                    alt10=5;
-                    }
-                    break;
-                default:
+                }
+                else {
                     NoViableAltException nvae =
                         new NoViableAltException("", 10, 2, input);
 
                     throw nvae;
 
                 }
-
                 }
                 break;
             case INT:
@@ -1026,33 +762,21 @@ public class MiniEugeneParser extends Parser {
             case 114:
             case 116:
             case 117:
-            case 118:
+            case 119:
                 {
                 alt10=1;
                 }
                 break;
+            case 37:
+            case 52:
+            case 57:
             case 65:
+            case 87:
+            case 102:
+            case 107:
             case 115:
                 {
                 alt10=2;
-                }
-                break;
-            case 52:
-            case 102:
-                {
-                alt10=3;
-                }
-                break;
-            case 37:
-            case 87:
-                {
-                alt10=4;
-                }
-                break;
-            case 57:
-            case 107:
-                {
-                alt10=5;
                 }
                 break;
             default:
@@ -1065,9 +789,9 @@ public class MiniEugeneParser extends Parser {
 
             switch (alt10) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:158:4: (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )?
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:159:4: (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )?
                     {
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:158:4: (not= ( 'NOT' | 'not' ) )?
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:159:4: (not= ( 'NOT' | 'not' ) )?
                     int alt7=2;
                     int LA7_0 = input.LA(1);
 
@@ -1076,7 +800,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     switch (alt7) {
                         case 1 :
-                            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:158:5: not= ( 'NOT' | 'not' )
+                            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:159:5: not= ( 'NOT' | 'not' )
                             {
                             not=(Token)input.LT(1);
 
@@ -1100,7 +824,7 @@ public class MiniEugeneParser extends Parser {
                     }
 
 
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:160:6: (lhs= operand )?
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:161:6: (lhs= operand )?
                     int alt8=2;
                     switch ( input.LA(1) ) {
                         case ID:
@@ -1130,7 +854,7 @@ public class MiniEugeneParser extends Parser {
 
                     switch (alt8) {
                         case 1 :
-                            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:160:7: lhs= operand
+                            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:161:7: lhs= operand
                             {
                             pushFollow(FOLLOW_operand_in_constraint264);
                             lhs=operand();
@@ -1158,7 +882,7 @@ public class MiniEugeneParser extends Parser {
                     addToken((op!=null?input.toString(op.start,op.stop):null));	
                     	
 
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:164:4: (rhs= operand )?
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:165:4: (rhs= operand )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -1167,7 +891,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     switch (alt9) {
                         case 1 :
-                            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:164:5: rhs= operand
+                            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:165:5: rhs= operand
                             {
                             pushFollow(FOLLOW_operand_in_constraint279);
                             rhs=operand();
@@ -1197,61 +921,16 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:174:4: tem= template
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:175:4: temp= templatingConstraints
                     {
-                    pushFollow(FOLLOW_template_in_constraint292);
-                    tem=template();
+                    pushFollow(FOLLOW_templatingConstraints_in_constraint292);
+                    temp=templatingConstraints();
 
                     state._fsp--;
 
 
 
-                    p = tem;	
-                    	
-
-                    }
-                    break;
-                case 3 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:177:4: pat= pattern
-                    {
-                    pushFollow(FOLLOW_pattern_in_constraint301);
-                    pat=pattern();
-
-                    state._fsp--;
-
-
-
-                    p = pat;	
-                    	
-
-                    }
-                    break;
-                case 4 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:180:4: gr= group
-                    {
-                    pushFollow(FOLLOW_group_in_constraint310);
-                    gr=group();
-
-                    state._fsp--;
-
-
-
-                    p = gr;	
-                    	
-
-                    }
-                    break;
-                case 5 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:183:4: seq= sequence
-                    {
-                    pushFollow(FOLLOW_sequence_in_constraint319);
-                    seq=sequence();
-
-                    state._fsp--;
-
-
-
-                    p = seq;	
+                    p = temp;	
                     	
 
                     }
@@ -1274,33 +953,275 @@ public class MiniEugeneParser extends Parser {
 
 
 
-    // $ANTLR start "template"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:191:1: template returns [Template p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'TEMPLATE' | 'template' ) ids= list_of_ids ;
-    public final Template template() throws RecognitionException {
+    // $ANTLR start "templatingConstraints"
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:183:1: templatingConstraints returns [Predicate p] : (tem= templateConstraint |pat= patternConstraint |gr= groupConstraint |seq= sequenceConstraint );
+    public final Predicate templatingConstraints() throws EugeneException, RecognitionException {
+        Predicate p = null;
+
+
+        Template tem =null;
+
+        Pattern pat =null;
+
+        Group gr =null;
+
+        Sequence seq =null;
+
+
+        try {
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:186:2: (tem= templateConstraint |pat= patternConstraint |gr= groupConstraint |seq= sequenceConstraint )
+            int alt11=4;
+            switch ( input.LA(1) ) {
+            case ID:
+                {
+                switch ( input.LA(2) ) {
+                case 43:
+                case 93:
+                    {
+                    switch ( input.LA(3) ) {
+                    case 65:
+                    case 115:
+                        {
+                        alt11=1;
+                        }
+                        break;
+                    case 52:
+                    case 102:
+                        {
+                        alt11=2;
+                        }
+                        break;
+                    case 37:
+                    case 87:
+                        {
+                        alt11=3;
+                        }
+                        break;
+                    case 57:
+                    case 107:
+                        {
+                        alt11=4;
+                        }
+                        break;
+                    default:
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 11, 2, input);
+
+                        throw nvae;
+
+                    }
+
+                    }
+                    break;
+                case 65:
+                case 115:
+                    {
+                    alt11=1;
+                    }
+                    break;
+                case 52:
+                case 102:
+                    {
+                    alt11=2;
+                    }
+                    break;
+                case 37:
+                case 87:
+                    {
+                    alt11=3;
+                    }
+                    break;
+                case 57:
+                case 107:
+                    {
+                    alt11=4;
+                    }
+                    break;
+                default:
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 11, 1, input);
+
+                    throw nvae;
+
+                }
+
+                }
+                break;
+            case 43:
+            case 93:
+                {
+                switch ( input.LA(2) ) {
+                case 65:
+                case 115:
+                    {
+                    alt11=1;
+                    }
+                    break;
+                case 52:
+                case 102:
+                    {
+                    alt11=2;
+                    }
+                    break;
+                case 37:
+                case 87:
+                    {
+                    alt11=3;
+                    }
+                    break;
+                case 57:
+                case 107:
+                    {
+                    alt11=4;
+                    }
+                    break;
+                default:
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 11, 2, input);
+
+                    throw nvae;
+
+                }
+
+                }
+                break;
+            case 65:
+            case 115:
+                {
+                alt11=1;
+                }
+                break;
+            case 52:
+            case 102:
+                {
+                alt11=2;
+                }
+                break;
+            case 37:
+            case 87:
+                {
+                alt11=3;
+                }
+                break;
+            case 57:
+            case 107:
+                {
+                alt11=4;
+                }
+                break;
+            default:
+                NoViableAltException nvae =
+                    new NoViableAltException("", 11, 0, input);
+
+                throw nvae;
+
+            }
+
+            switch (alt11) {
+                case 1 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:186:4: tem= templateConstraint
+                    {
+                    pushFollow(FOLLOW_templateConstraint_in_templatingConstraints323);
+                    tem=templateConstraint();
+
+                    state._fsp--;
+
+
+
+                    p = tem;	
+                    	
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:189:4: pat= patternConstraint
+                    {
+                    pushFollow(FOLLOW_patternConstraint_in_templatingConstraints332);
+                    pat=patternConstraint();
+
+                    state._fsp--;
+
+
+
+                    p = pat;	
+                    	
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:192:4: gr= groupConstraint
+                    {
+                    pushFollow(FOLLOW_groupConstraint_in_templatingConstraints341);
+                    gr=groupConstraint();
+
+                    state._fsp--;
+
+
+
+                    p = gr;	
+                    	
+
+                    }
+                    break;
+                case 4 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:195:4: seq= sequenceConstraint
+                    {
+                    pushFollow(FOLLOW_sequenceConstraint_in_templatingConstraints350);
+                    seq=sequenceConstraint();
+
+                    state._fsp--;
+
+
+
+                    p = seq;	
+                    	
+
+                    }
+                    break;
+
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return p;
+    }
+    // $ANTLR end "templatingConstraints"
+
+
+
+    // $ANTLR start "templateConstraint"
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:200:1: templateConstraint returns [Template p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'TEMPLATE' | 'template' ) ids= list_of_ids ;
+    public final Template templateConstraint() throws RecognitionException {
         Template p = null;
 
 
         Token name=null;
         Token not=null;
-        List<String> ids =null;
+        List<List<String>> ids =null;
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:193:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'TEMPLATE' | 'template' ) ids= list_of_ids )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:193:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'TEMPLATE' | 'template' ) ids= list_of_ids
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:202:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'TEMPLATE' | 'template' ) ids= list_of_ids )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:202:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'TEMPLATE' | 'template' ) ids= list_of_ids
             {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:193:4: (name= ID )?
-            int alt11=2;
-            int LA11_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:202:4: (name= ID )?
+            int alt12=2;
+            int LA12_0 = input.LA(1);
 
-            if ( (LA11_0==ID) ) {
-                alt11=1;
+            if ( (LA12_0==ID) ) {
+                alt12=1;
             }
-            switch (alt11) {
+            switch (alt12) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:193:5: name= ID
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:202:5: name= ID
                     {
-                    name=(Token)match(input,ID,FOLLOW_ID_in_template347); 
+                    name=(Token)match(input,ID,FOLLOW_ID_in_templateConstraint373); 
 
                     }
                     break;
@@ -1308,16 +1229,16 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:193:18: (not= ( 'NOT' | 'not' ) )?
-            int alt12=2;
-            int LA12_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:202:18: (not= ( 'NOT' | 'not' ) )?
+            int alt13=2;
+            int LA13_0 = input.LA(1);
 
-            if ( (LA12_0==43||LA12_0==93) ) {
-                alt12=1;
+            if ( (LA13_0==43||LA13_0==93) ) {
+                alt13=1;
             }
-            switch (alt12) {
+            switch (alt13) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:193:18: not= ( 'NOT' | 'not' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:202:18: not= ( 'NOT' | 'not' )
                     {
                     not=(Token)input.LT(1);
 
@@ -1347,14 +1268,17 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_list_of_ids_in_template368);
+            pushFollow(FOLLOW_list_of_ids_in_templateConstraint394);
             ids=list_of_ids();
 
             state._fsp--;
 
 
 
-            p = this.interp.createTemplate((name!=null?name.getText():null), ids);
+            p = (Template)this.interp.createTemplatingConstraint(
+                TemplateType.TEMPLATE, 
+                (name!=null?name.getText():null), 
+                ids);
             if(null != not) {
                 p.setNegated();
             }
@@ -1373,37 +1297,37 @@ public class MiniEugeneParser extends Parser {
         }
         return p;
     }
-    // $ANTLR end "template"
+    // $ANTLR end "templateConstraint"
 
 
 
-    // $ANTLR start "pattern"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:201:1: pattern returns [Pattern p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'PATTERN' | 'pattern' ) ids= list_of_ids ;
-    public final Pattern pattern() throws RecognitionException {
+    // $ANTLR start "patternConstraint"
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:1: patternConstraint returns [Pattern p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'PATTERN' | 'pattern' ) ids= list_of_ids ;
+    public final Pattern patternConstraint() throws RecognitionException {
         Pattern p = null;
 
 
         Token name=null;
         Token not=null;
-        List<String> ids =null;
+        List<List<String>> ids =null;
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:203:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'PATTERN' | 'pattern' ) ids= list_of_ids )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:203:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'PATTERN' | 'pattern' ) ids= list_of_ids
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:215:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'PATTERN' | 'pattern' ) ids= list_of_ids )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:215:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'PATTERN' | 'pattern' ) ids= list_of_ids
             {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:203:4: (name= ID )?
-            int alt13=2;
-            int LA13_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:215:4: (name= ID )?
+            int alt14=2;
+            int LA14_0 = input.LA(1);
 
-            if ( (LA13_0==ID) ) {
-                alt13=1;
+            if ( (LA14_0==ID) ) {
+                alt14=1;
             }
-            switch (alt13) {
+            switch (alt14) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:203:5: name= ID
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:215:5: name= ID
                     {
-                    name=(Token)match(input,ID,FOLLOW_ID_in_pattern390); 
+                    name=(Token)match(input,ID,FOLLOW_ID_in_patternConstraint416); 
 
                     }
                     break;
@@ -1411,16 +1335,16 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:203:18: (not= ( 'NOT' | 'not' ) )?
-            int alt14=2;
-            int LA14_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:215:18: (not= ( 'NOT' | 'not' ) )?
+            int alt15=2;
+            int LA15_0 = input.LA(1);
 
-            if ( (LA14_0==43||LA14_0==93) ) {
-                alt14=1;
+            if ( (LA15_0==43||LA15_0==93) ) {
+                alt15=1;
             }
-            switch (alt14) {
+            switch (alt15) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:203:18: not= ( 'NOT' | 'not' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:215:18: not= ( 'NOT' | 'not' )
                     {
                     not=(Token)input.LT(1);
 
@@ -1450,14 +1374,17 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_list_of_ids_in_pattern411);
+            pushFollow(FOLLOW_list_of_ids_in_patternConstraint437);
             ids=list_of_ids();
 
             state._fsp--;
 
 
 
-            p = this.interp.createPattern((name!=null?name.getText():null), ids);
+            p = (Pattern)this.interp.createTemplatingConstraint(
+                TemplateType.PATTERN, 
+                (name!=null?name.getText():null), 
+                ids);
             if(null != not) {
                 p.setNegated();
             }
@@ -1476,37 +1403,37 @@ public class MiniEugeneParser extends Parser {
         }
         return p;
     }
-    // $ANTLR end "pattern"
+    // $ANTLR end "patternConstraint"
 
 
 
-    // $ANTLR start "sequence"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:211:1: sequence returns [Sequence p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'SEQUENCE' | 'sequence' ) ids= list_of_ids ;
-    public final Sequence sequence() throws RecognitionException {
+    // $ANTLR start "sequenceConstraint"
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:226:1: sequenceConstraint returns [Sequence p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'SEQUENCE' | 'sequence' ) ids= list_of_ids ;
+    public final Sequence sequenceConstraint() throws RecognitionException {
         Sequence p = null;
 
 
         Token name=null;
         Token not=null;
-        List<String> ids =null;
+        List<List<String>> ids =null;
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'SEQUENCE' | 'sequence' ) ids= list_of_ids )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'SEQUENCE' | 'sequence' ) ids= list_of_ids
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:228:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'SEQUENCE' | 'sequence' ) ids= list_of_ids )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:228:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'SEQUENCE' | 'sequence' ) ids= list_of_ids
             {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:4: (name= ID )?
-            int alt15=2;
-            int LA15_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:228:4: (name= ID )?
+            int alt16=2;
+            int LA16_0 = input.LA(1);
 
-            if ( (LA15_0==ID) ) {
-                alt15=1;
+            if ( (LA16_0==ID) ) {
+                alt16=1;
             }
-            switch (alt15) {
+            switch (alt16) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:5: name= ID
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:228:5: name= ID
                     {
-                    name=(Token)match(input,ID,FOLLOW_ID_in_sequence433); 
+                    name=(Token)match(input,ID,FOLLOW_ID_in_sequenceConstraint459); 
 
                     }
                     break;
@@ -1514,16 +1441,16 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:18: (not= ( 'NOT' | 'not' ) )?
-            int alt16=2;
-            int LA16_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:228:18: (not= ( 'NOT' | 'not' ) )?
+            int alt17=2;
+            int LA17_0 = input.LA(1);
 
-            if ( (LA16_0==43||LA16_0==93) ) {
-                alt16=1;
+            if ( (LA17_0==43||LA17_0==93) ) {
+                alt17=1;
             }
-            switch (alt16) {
+            switch (alt17) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:213:18: not= ( 'NOT' | 'not' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:228:18: not= ( 'NOT' | 'not' )
                     {
                     not=(Token)input.LT(1);
 
@@ -1553,14 +1480,17 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_list_of_ids_in_sequence454);
+            pushFollow(FOLLOW_list_of_ids_in_sequenceConstraint480);
             ids=list_of_ids();
 
             state._fsp--;
 
 
 
-            p = this.interp.createSequence((name!=null?name.getText():null), ids);
+            p = (Sequence)this.interp.createTemplatingConstraint(
+                TemplateType.SEQUENCE, 
+                (name!=null?name.getText():null), 
+                ids);
             if(null != not) {
                 p.setNegated();
             }
@@ -1579,37 +1509,37 @@ public class MiniEugeneParser extends Parser {
         }
         return p;
     }
-    // $ANTLR end "sequence"
+    // $ANTLR end "sequenceConstraint"
 
 
 
-    // $ANTLR start "group"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:221:1: group returns [Group p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'GROUP' | 'group' ) ids= list_of_ids ;
-    public final Group group() throws RecognitionException {
+    // $ANTLR start "groupConstraint"
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:239:1: groupConstraint returns [Group p] : (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'GROUP' | 'group' ) ids= list_of_ids ;
+    public final Group groupConstraint() throws RecognitionException {
         Group p = null;
 
 
         Token name=null;
         Token not=null;
-        List<String> ids =null;
+        List<List<String>> ids =null;
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:223:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'GROUP' | 'group' ) ids= list_of_ids )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:223:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'GROUP' | 'group' ) ids= list_of_ids
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:241:2: ( (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'GROUP' | 'group' ) ids= list_of_ids )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:241:4: (name= ID )? (not= ( 'NOT' | 'not' ) )? ( 'GROUP' | 'group' ) ids= list_of_ids
             {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:223:4: (name= ID )?
-            int alt17=2;
-            int LA17_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:241:4: (name= ID )?
+            int alt18=2;
+            int LA18_0 = input.LA(1);
 
-            if ( (LA17_0==ID) ) {
-                alt17=1;
+            if ( (LA18_0==ID) ) {
+                alt18=1;
             }
-            switch (alt17) {
+            switch (alt18) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:223:5: name= ID
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:241:5: name= ID
                     {
-                    name=(Token)match(input,ID,FOLLOW_ID_in_group477); 
+                    name=(Token)match(input,ID,FOLLOW_ID_in_groupConstraint503); 
 
                     }
                     break;
@@ -1617,16 +1547,16 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:223:18: (not= ( 'NOT' | 'not' ) )?
-            int alt18=2;
-            int LA18_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:241:18: (not= ( 'NOT' | 'not' ) )?
+            int alt19=2;
+            int LA19_0 = input.LA(1);
 
-            if ( (LA18_0==43||LA18_0==93) ) {
-                alt18=1;
+            if ( (LA19_0==43||LA19_0==93) ) {
+                alt19=1;
             }
-            switch (alt18) {
+            switch (alt19) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:223:18: not= ( 'NOT' | 'not' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:241:18: not= ( 'NOT' | 'not' )
                     {
                     not=(Token)input.LT(1);
 
@@ -1656,14 +1586,17 @@ public class MiniEugeneParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_list_of_ids_in_group498);
+            pushFollow(FOLLOW_list_of_ids_in_groupConstraint524);
             ids=list_of_ids();
 
             state._fsp--;
 
 
 
-            p = this.interp.createGroup((name!=null?name.getText():null), ids);
+            p = (Group)this.interp.createTemplatingConstraint(
+                TemplateType.GROUP, 
+                (name!=null?name.getText():null), 
+                ids);
             if(null != not) {
                 p.setNegated();
             }
@@ -1682,51 +1615,108 @@ public class MiniEugeneParser extends Parser {
         }
         return p;
     }
-    // $ANTLR end "group"
+    // $ANTLR end "groupConstraint"
 
 
 
     // $ANTLR start "list_of_ids"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:231:1: list_of_ids returns [List<String> lst] : id= ID ( ',' ids= list_of_ids )? ;
-    public final List<String> list_of_ids() throws RecognitionException {
-        List<String> lst = null;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:252:1: list_of_ids returns [List<List<String>> lst] : (id= ID | '[' sel= selection ']' ) ( ',' ids= list_of_ids )? ;
+    public final List<List<String>> list_of_ids() throws RecognitionException {
+        List<List<String>> lst = null;
 
 
         Token id=null;
-        List<String> ids =null;
+        List<String> sel =null;
+
+        List<List<String>> ids =null;
 
 
 
-        lst = new ArrayList<String>();
+        lst = new ArrayList<List<String>>();
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:236:2: (id= ID ( ',' ids= list_of_ids )? )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:236:4: id= ID ( ',' ids= list_of_ids )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:257:2: ( (id= ID | '[' sel= selection ']' ) ( ',' ids= list_of_ids )? )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:257:4: (id= ID | '[' sel= selection ']' ) ( ',' ids= list_of_ids )?
             {
-            id=(Token)match(input,ID,FOLLOW_ID_in_list_of_ids530); 
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:257:4: (id= ID | '[' sel= selection ']' )
+            int alt20=2;
+            int LA20_0 = input.LA(1);
+
+            if ( (LA20_0==ID) ) {
+                alt20=1;
+            }
+            else if ( (LA20_0==68) ) {
+                alt20=2;
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 20, 0, input);
+
+                throw nvae;
+
+            }
+            switch (alt20) {
+                case 1 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:257:5: id= ID
+                    {
+                    id=(Token)match(input,ID,FOLLOW_ID_in_list_of_ids557); 
 
 
-            lst.add((id!=null?id.getText():null));	
-            	
+                    List<String> id_lst = new ArrayList<String>();
+                    id_lst.add((id!=null?id.getText():null));
+                    lst.add(id_lst);	
+                    	
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:238:4: ( ',' ids= list_of_ids )?
-            int alt19=2;
-            int LA19_0 = input.LA(1);
+                    }
+                    break;
+                case 2 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:261:6: '[' sel= selection ']'
+                    {
+                    match(input,68,FOLLOW_68_in_list_of_ids563); 
 
-            if ( (LA19_0==17) ) {
-                int LA19_1 = input.LA(2);
+                    pushFollow(FOLLOW_selection_in_list_of_ids567);
+                    sel=selection();
 
-                if ( (LA19_1==ID) ) {
-                    alt19=1;
+                    state._fsp--;
+
+
+
+                    lst.add(sel);	
+                    	
+
+                    match(input,70,FOLLOW_70_in_list_of_ids571); 
+
+                    }
+                    break;
+
+            }
+
+
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:264:3: ( ',' ids= list_of_ids )?
+            int alt21=2;
+            int LA21_0 = input.LA(1);
+
+            if ( (LA21_0==17) ) {
+                int LA21_1 = input.LA(2);
+
+                if ( (LA21_1==ID) ) {
+                    alt21=1;
+                }
+                else if ( (LA21_1==68) ) {
+                    int LA21_4 = input.LA(3);
+
+                    if ( (LA21_4==ID) ) {
+                        alt21=1;
+                    }
                 }
             }
-            switch (alt19) {
+            switch (alt21) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:238:5: ',' ids= list_of_ids
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:264:4: ',' ids= list_of_ids
                     {
-                    match(input,17,FOLLOW_17_in_list_of_ids535); 
+                    match(input,17,FOLLOW_17_in_list_of_ids577); 
 
-                    pushFollow(FOLLOW_list_of_ids_in_list_of_ids539);
+                    pushFollow(FOLLOW_list_of_ids_in_list_of_ids581);
                     ids=list_of_ids();
 
                     state._fsp--;
@@ -1758,20 +1748,89 @@ public class MiniEugeneParser extends Parser {
     // $ANTLR end "list_of_ids"
 
 
+
+    // $ANTLR start "selection"
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:269:1: selection returns [List<String> lst] : id= ID ( '|' sel= selection )? ;
+    public final List<String> selection() throws RecognitionException {
+        List<String> lst = null;
+
+
+        Token id=null;
+        List<String> sel =null;
+
+
+
+        lst = new ArrayList<String>();
+
+        try {
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:274:2: (id= ID ( '|' sel= selection )? )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:274:4: id= ID ( '|' sel= selection )?
+            {
+            id=(Token)match(input,ID,FOLLOW_ID_in_selection608); 
+
+
+            lst.add((id!=null?id.getText():null));		
+            	
+
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:276:5: ( '|' sel= selection )?
+            int alt22=2;
+            int LA22_0 = input.LA(1);
+
+            if ( (LA22_0==118) ) {
+                alt22=1;
+            }
+            switch (alt22) {
+                case 1 :
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:276:6: '|' sel= selection
+                    {
+                    match(input,118,FOLLOW_118_in_selection614); 
+
+                    pushFollow(FOLLOW_selection_in_selection618);
+                    sel=selection();
+
+                    state._fsp--;
+
+
+
+                    lst.addAll(sel);	
+                    	
+
+                    }
+                    break;
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return lst;
+    }
+    // $ANTLR end "selection"
+
+
     public static class operator_return extends ParserRuleReturnScope {
     };
 
 
     // $ANTLR start "operator"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:243:1: operator : (| ( 'CONTAINS' | 'contains' ) | ( 'NOTCONTAINS' | 'notcontains' ) | ( 'EXACTLY' | 'exactly' ) | ( 'NOTEXACTLY' | 'notexactly' ) | ( 'MORETHAN' | 'morethan' ) | ( 'NOTMORETHAN' | 'notmorethan' ) | ( 'SAME_COUNT' | 'same_count' ) | ( 'WITH' | 'with' ) | ( 'NOTWITH' | 'notwith' ) | ( 'THEN' | 'then' ) | ( 'NOTTHEN' | 'notthen' ) | ( 'STARTSWITH' | 'startswith' ) | ( 'ENDSWITH' | 'endswith' ) | ( 'BEFORE' | 'before' ) | ( 'ALL_BEFORE' | 'all_before' ) | ( 'SOME_BEFORE' | 'some_before' ) | ( 'AFTER' | 'after' ) | ( 'ALL_AFTER' | 'all_after' ) | ( 'SOME_AFTER' | 'some_after' ) | ( 'NEXTTO' | 'nextto' ) | ( 'ALL_NEXTTO' | 'all_nextto' ) | ( 'SOME_NEXTTO' | 'some_nextto' ) | ( 'ALWAYS_NEXTTO' | 'always_nextto' ) | ( 'EQUALS' | 'equals' ) | ( 'NOTEQUALS' | 'notequals' ) | ( 'MATCHES' | 'matches' ) | ( 'NOTMATCHES' | 'notmatches' ) | ( 'FORWARD' | 'forward' ) | ( 'ALL_FORWARD' | 'all_forward' ) | ( 'SOME_FORWARD' | 'some_forward' ) | ( 'REVERSE' | 'reverse' ) | ( 'ALL_REVERSE' | 'all_reverse' ) | ( 'SOME_REVERSE' | 'some_reverse' ) | ( 'SAME_ORIENTATION' | 'same_orientation' ) | ( 'ALL_SAME_ORIENTATION' | 'all_same_orientation' ) | ( 'SOME_SAME_ORIENTATION' | 'some_same_orientation' ) | ( 'REPRESSES' | 'represses' ) | ( 'INDUCES' | 'induces' ) | ( 'DRIVES' | 'drives' ) | ( 'ALTERNATE_ORIENTATION' | 'alternate_orientation' ) );
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:281:1: operator : (| ( 'CONTAINS' | 'contains' ) | ( 'NOTCONTAINS' | 'notcontains' ) | ( 'EXACTLY' | 'exactly' ) | ( 'NOTEXACTLY' | 'notexactly' ) | ( 'MORETHAN' | 'morethan' ) | ( 'NOTMORETHAN' | 'notmorethan' ) | ( 'SAME_COUNT' | 'same_count' ) | ( 'WITH' | 'with' ) | ( 'NOTWITH' | 'notwith' ) | ( 'THEN' | 'then' ) | ( 'NOTTHEN' | 'notthen' ) | ( 'STARTSWITH' | 'startswith' ) | ( 'ENDSWITH' | 'endswith' ) | ( 'BEFORE' | 'before' ) | ( 'ALL_BEFORE' | 'all_before' ) | ( 'SOME_BEFORE' | 'some_before' ) | ( 'AFTER' | 'after' ) | ( 'ALL_AFTER' | 'all_after' ) | ( 'SOME_AFTER' | 'some_after' ) | ( 'NEXTTO' | 'nextto' ) | ( 'ALL_NEXTTO' | 'all_nextto' ) | ( 'SOME_NEXTTO' | 'some_nextto' ) | ( 'ALWAYS_NEXTTO' | 'always_nextto' ) | ( 'EQUALS' | 'equals' ) | ( 'NOTEQUALS' | 'notequals' ) | ( 'MATCHES' | 'matches' ) | ( 'NOTMATCHES' | 'notmatches' ) | ( 'FORWARD' | 'forward' ) | ( 'ALL_FORWARD' | 'all_forward' ) | ( 'SOME_FORWARD' | 'some_forward' ) | ( 'REVERSE' | 'reverse' ) | ( 'ALL_REVERSE' | 'all_reverse' ) | ( 'SOME_REVERSE' | 'some_reverse' ) | ( 'SAME_ORIENTATION' | 'same_orientation' ) | ( 'ALL_SAME_ORIENTATION' | 'all_same_orientation' ) | ( 'SOME_SAME_ORIENTATION' | 'some_same_orientation' ) | ( 'REPRESSES' | 'represses' ) | ( 'INDUCES' | 'induces' ) | ( 'DRIVES' | 'drives' ) | ( 'ALTERNATE_ORIENTATION' | 'alternate_orientation' ) );
     public final MiniEugeneParser.operator_return operator() throws RecognitionException {
         MiniEugeneParser.operator_return retval = new MiniEugeneParser.operator_return();
         retval.start = input.LT(1);
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:243:9: (| ( 'CONTAINS' | 'contains' ) | ( 'NOTCONTAINS' | 'notcontains' ) | ( 'EXACTLY' | 'exactly' ) | ( 'NOTEXACTLY' | 'notexactly' ) | ( 'MORETHAN' | 'morethan' ) | ( 'NOTMORETHAN' | 'notmorethan' ) | ( 'SAME_COUNT' | 'same_count' ) | ( 'WITH' | 'with' ) | ( 'NOTWITH' | 'notwith' ) | ( 'THEN' | 'then' ) | ( 'NOTTHEN' | 'notthen' ) | ( 'STARTSWITH' | 'startswith' ) | ( 'ENDSWITH' | 'endswith' ) | ( 'BEFORE' | 'before' ) | ( 'ALL_BEFORE' | 'all_before' ) | ( 'SOME_BEFORE' | 'some_before' ) | ( 'AFTER' | 'after' ) | ( 'ALL_AFTER' | 'all_after' ) | ( 'SOME_AFTER' | 'some_after' ) | ( 'NEXTTO' | 'nextto' ) | ( 'ALL_NEXTTO' | 'all_nextto' ) | ( 'SOME_NEXTTO' | 'some_nextto' ) | ( 'ALWAYS_NEXTTO' | 'always_nextto' ) | ( 'EQUALS' | 'equals' ) | ( 'NOTEQUALS' | 'notequals' ) | ( 'MATCHES' | 'matches' ) | ( 'NOTMATCHES' | 'notmatches' ) | ( 'FORWARD' | 'forward' ) | ( 'ALL_FORWARD' | 'all_forward' ) | ( 'SOME_FORWARD' | 'some_forward' ) | ( 'REVERSE' | 'reverse' ) | ( 'ALL_REVERSE' | 'all_reverse' ) | ( 'SOME_REVERSE' | 'some_reverse' ) | ( 'SAME_ORIENTATION' | 'same_orientation' ) | ( 'ALL_SAME_ORIENTATION' | 'all_same_orientation' ) | ( 'SOME_SAME_ORIENTATION' | 'some_same_orientation' ) | ( 'REPRESSES' | 'represses' ) | ( 'INDUCES' | 'induces' ) | ( 'DRIVES' | 'drives' ) | ( 'ALTERNATE_ORIENTATION' | 'alternate_orientation' ) )
-            int alt20=41;
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:281:9: (| ( 'CONTAINS' | 'contains' ) | ( 'NOTCONTAINS' | 'notcontains' ) | ( 'EXACTLY' | 'exactly' ) | ( 'NOTEXACTLY' | 'notexactly' ) | ( 'MORETHAN' | 'morethan' ) | ( 'NOTMORETHAN' | 'notmorethan' ) | ( 'SAME_COUNT' | 'same_count' ) | ( 'WITH' | 'with' ) | ( 'NOTWITH' | 'notwith' ) | ( 'THEN' | 'then' ) | ( 'NOTTHEN' | 'notthen' ) | ( 'STARTSWITH' | 'startswith' ) | ( 'ENDSWITH' | 'endswith' ) | ( 'BEFORE' | 'before' ) | ( 'ALL_BEFORE' | 'all_before' ) | ( 'SOME_BEFORE' | 'some_before' ) | ( 'AFTER' | 'after' ) | ( 'ALL_AFTER' | 'all_after' ) | ( 'SOME_AFTER' | 'some_after' ) | ( 'NEXTTO' | 'nextto' ) | ( 'ALL_NEXTTO' | 'all_nextto' ) | ( 'SOME_NEXTTO' | 'some_nextto' ) | ( 'ALWAYS_NEXTTO' | 'always_nextto' ) | ( 'EQUALS' | 'equals' ) | ( 'NOTEQUALS' | 'notequals' ) | ( 'MATCHES' | 'matches' ) | ( 'NOTMATCHES' | 'notmatches' ) | ( 'FORWARD' | 'forward' ) | ( 'ALL_FORWARD' | 'all_forward' ) | ( 'SOME_FORWARD' | 'some_forward' ) | ( 'REVERSE' | 'reverse' ) | ( 'ALL_REVERSE' | 'all_reverse' ) | ( 'SOME_REVERSE' | 'some_reverse' ) | ( 'SAME_ORIENTATION' | 'same_orientation' ) | ( 'ALL_SAME_ORIENTATION' | 'all_same_orientation' ) | ( 'SOME_SAME_ORIENTATION' | 'some_same_orientation' ) | ( 'REPRESSES' | 'represses' ) | ( 'INDUCES' | 'induces' ) | ( 'DRIVES' | 'drives' ) | ( 'ALTERNATE_ORIENTATION' | 'alternate_orientation' ) )
+            int alt23=41;
             switch ( input.LA(1) ) {
             case ID:
             case INT:
@@ -1781,267 +1840,267 @@ public class MiniEugeneParser extends Parser {
             case 68:
             case 69:
             case 101:
-            case 118:
+            case 119:
                 {
-                alt20=1;
+                alt23=1;
                 }
                 break;
             case 31:
             case 81:
                 {
-                alt20=2;
+                alt23=2;
                 }
                 break;
             case 44:
             case 94:
                 {
-                alt20=3;
+                alt23=3;
                 }
                 break;
             case 35:
             case 85:
                 {
-                alt20=4;
+                alt23=4;
                 }
                 break;
             case 46:
             case 96:
                 {
-                alt20=5;
+                alt23=5;
                 }
                 break;
             case 40:
             case 91:
                 {
-                alt20=6;
+                alt23=6;
                 }
                 break;
             case 48:
             case 98:
                 {
-                alt20=7;
+                alt23=7;
                 }
                 break;
             case 55:
             case 105:
                 {
-                alt20=8;
+                alt23=8;
                 }
                 break;
             case 67:
             case 117:
                 {
-                alt20=9;
+                alt23=9;
                 }
                 break;
             case 50:
             case 100:
                 {
-                alt20=10;
+                alt23=10;
                 }
                 break;
             case 66:
             case 116:
                 {
-                alt20=11;
+                alt23=11;
                 }
                 break;
             case 49:
             case 99:
                 {
-                alt20=12;
+                alt23=12;
                 }
                 break;
             case 64:
             case 114:
                 {
-                alt20=13;
+                alt23=13;
                 }
                 break;
             case 33:
             case 83:
                 {
-                alt20=14;
+                alt23=14;
                 }
                 break;
             case 30:
             case 80:
                 {
-                alt20=15;
+                alt23=15;
                 }
                 break;
             case 23:
             case 73:
                 {
-                alt20=16;
+                alt23=16;
                 }
                 break;
             case 59:
             case 109:
                 {
-                alt20=17;
+                alt23=17;
                 }
                 break;
             case 21:
             case 71:
                 {
-                alt20=18;
+                alt23=18;
                 }
                 break;
             case 22:
             case 72:
                 {
-                alt20=19;
+                alt23=19;
                 }
                 break;
             case 58:
             case 108:
                 {
-                alt20=20;
+                alt23=20;
                 }
                 break;
             case 42:
             case 92:
                 {
-                alt20=21;
+                alt23=21;
                 }
                 break;
             case 25:
             case 75:
                 {
-                alt20=22;
+                alt23=22;
                 }
                 break;
             case 61:
             case 111:
                 {
-                alt20=23;
+                alt23=23;
                 }
                 break;
             case 29:
             case 79:
                 {
-                alt20=24;
+                alt23=24;
                 }
                 break;
             case 34:
             case 84:
                 {
-                alt20=25;
+                alt23=25;
                 }
                 break;
             case 45:
             case 95:
                 {
-                alt20=26;
+                alt23=26;
                 }
                 break;
             case 39:
             case 89:
                 {
-                alt20=27;
+                alt23=27;
                 }
                 break;
             case 47:
             case 97:
                 {
-                alt20=28;
+                alt23=28;
                 }
                 break;
             case 36:
             case 86:
                 {
-                alt20=29;
+                alt23=29;
                 }
                 break;
             case 24:
             case 74:
                 {
-                alt20=30;
+                alt23=30;
                 }
                 break;
             case 60:
             case 110:
                 {
-                alt20=31;
+                alt23=31;
                 }
                 break;
             case 54:
             case 104:
                 {
-                alt20=32;
+                alt23=32;
                 }
                 break;
             case 26:
             case 76:
                 {
-                alt20=33;
+                alt23=33;
                 }
                 break;
             case 62:
             case 112:
                 {
-                alt20=34;
+                alt23=34;
                 }
                 break;
             case 56:
             case 106:
                 {
-                alt20=35;
+                alt23=35;
                 }
                 break;
             case 27:
             case 77:
                 {
-                alt20=36;
+                alt23=36;
                 }
                 break;
             case 63:
             case 113:
                 {
-                alt20=37;
+                alt23=37;
                 }
                 break;
             case 53:
             case 103:
                 {
-                alt20=38;
+                alt23=38;
                 }
                 break;
             case 38:
             case 88:
                 {
-                alt20=39;
+                alt23=39;
                 }
                 break;
             case 32:
             case 82:
                 {
-                alt20=40;
+                alt23=40;
                 }
                 break;
             case 28:
             case 78:
                 {
-                alt20=41;
+                alt23=41;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 20, 0, input);
+                    new NoViableAltException("", 23, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt20) {
+            switch (alt23) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:244:2: 
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:282:2: 
                     {
                     }
                     break;
                 case 2 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:244:4: ( 'CONTAINS' | 'contains' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:282:4: ( 'CONTAINS' | 'contains' )
                     {
                     if ( input.LA(1)==31||input.LA(1)==81 ) {
                         input.consume();
@@ -2056,7 +2115,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:245:4: ( 'NOTCONTAINS' | 'notcontains' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:283:4: ( 'NOTCONTAINS' | 'notcontains' )
                     {
                     if ( input.LA(1)==44||input.LA(1)==94 ) {
                         input.consume();
@@ -2071,7 +2130,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:246:4: ( 'EXACTLY' | 'exactly' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:284:4: ( 'EXACTLY' | 'exactly' )
                     {
                     if ( input.LA(1)==35||input.LA(1)==85 ) {
                         input.consume();
@@ -2086,7 +2145,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:247:4: ( 'NOTEXACTLY' | 'notexactly' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:285:4: ( 'NOTEXACTLY' | 'notexactly' )
                     {
                     if ( input.LA(1)==46||input.LA(1)==96 ) {
                         input.consume();
@@ -2101,7 +2160,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:248:4: ( 'MORETHAN' | 'morethan' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:286:4: ( 'MORETHAN' | 'morethan' )
                     {
                     if ( input.LA(1)==40||input.LA(1)==91 ) {
                         input.consume();
@@ -2116,7 +2175,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:249:4: ( 'NOTMORETHAN' | 'notmorethan' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:287:4: ( 'NOTMORETHAN' | 'notmorethan' )
                     {
                     if ( input.LA(1)==48||input.LA(1)==98 ) {
                         input.consume();
@@ -2131,7 +2190,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:250:4: ( 'SAME_COUNT' | 'same_count' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:288:4: ( 'SAME_COUNT' | 'same_count' )
                     {
                     if ( input.LA(1)==55||input.LA(1)==105 ) {
                         input.consume();
@@ -2146,7 +2205,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:251:4: ( 'WITH' | 'with' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:289:4: ( 'WITH' | 'with' )
                     {
                     if ( input.LA(1)==67||input.LA(1)==117 ) {
                         input.consume();
@@ -2161,7 +2220,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 10 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:252:4: ( 'NOTWITH' | 'notwith' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:290:4: ( 'NOTWITH' | 'notwith' )
                     {
                     if ( input.LA(1)==50||input.LA(1)==100 ) {
                         input.consume();
@@ -2176,7 +2235,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:253:4: ( 'THEN' | 'then' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:291:4: ( 'THEN' | 'then' )
                     {
                     if ( input.LA(1)==66||input.LA(1)==116 ) {
                         input.consume();
@@ -2191,7 +2250,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 12 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:254:4: ( 'NOTTHEN' | 'notthen' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:292:4: ( 'NOTTHEN' | 'notthen' )
                     {
                     if ( input.LA(1)==49||input.LA(1)==99 ) {
                         input.consume();
@@ -2206,7 +2265,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 13 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:255:4: ( 'STARTSWITH' | 'startswith' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:293:4: ( 'STARTSWITH' | 'startswith' )
                     {
                     if ( input.LA(1)==64||input.LA(1)==114 ) {
                         input.consume();
@@ -2221,7 +2280,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 14 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:256:4: ( 'ENDSWITH' | 'endswith' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:294:4: ( 'ENDSWITH' | 'endswith' )
                     {
                     if ( input.LA(1)==33||input.LA(1)==83 ) {
                         input.consume();
@@ -2236,7 +2295,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 15 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:257:4: ( 'BEFORE' | 'before' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:295:4: ( 'BEFORE' | 'before' )
                     {
                     if ( input.LA(1)==30||input.LA(1)==80 ) {
                         input.consume();
@@ -2251,7 +2310,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 16 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:258:4: ( 'ALL_BEFORE' | 'all_before' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:296:4: ( 'ALL_BEFORE' | 'all_before' )
                     {
                     if ( input.LA(1)==23||input.LA(1)==73 ) {
                         input.consume();
@@ -2266,7 +2325,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 17 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:259:4: ( 'SOME_BEFORE' | 'some_before' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:297:4: ( 'SOME_BEFORE' | 'some_before' )
                     {
                     if ( input.LA(1)==59||input.LA(1)==109 ) {
                         input.consume();
@@ -2281,7 +2340,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 18 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:260:4: ( 'AFTER' | 'after' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:298:4: ( 'AFTER' | 'after' )
                     {
                     if ( input.LA(1)==21||input.LA(1)==71 ) {
                         input.consume();
@@ -2296,7 +2355,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 19 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:261:4: ( 'ALL_AFTER' | 'all_after' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:299:4: ( 'ALL_AFTER' | 'all_after' )
                     {
                     if ( input.LA(1)==22||input.LA(1)==72 ) {
                         input.consume();
@@ -2311,7 +2370,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 20 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:262:4: ( 'SOME_AFTER' | 'some_after' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:300:4: ( 'SOME_AFTER' | 'some_after' )
                     {
                     if ( input.LA(1)==58||input.LA(1)==108 ) {
                         input.consume();
@@ -2326,7 +2385,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 21 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:263:4: ( 'NEXTTO' | 'nextto' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:301:4: ( 'NEXTTO' | 'nextto' )
                     {
                     if ( input.LA(1)==42||input.LA(1)==92 ) {
                         input.consume();
@@ -2341,7 +2400,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 22 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:264:4: ( 'ALL_NEXTTO' | 'all_nextto' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:302:4: ( 'ALL_NEXTTO' | 'all_nextto' )
                     {
                     if ( input.LA(1)==25||input.LA(1)==75 ) {
                         input.consume();
@@ -2356,7 +2415,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 23 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:265:4: ( 'SOME_NEXTTO' | 'some_nextto' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:303:4: ( 'SOME_NEXTTO' | 'some_nextto' )
                     {
                     if ( input.LA(1)==61||input.LA(1)==111 ) {
                         input.consume();
@@ -2371,7 +2430,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 24 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:266:4: ( 'ALWAYS_NEXTTO' | 'always_nextto' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:304:4: ( 'ALWAYS_NEXTTO' | 'always_nextto' )
                     {
                     if ( input.LA(1)==29||input.LA(1)==79 ) {
                         input.consume();
@@ -2386,7 +2445,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 25 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:267:4: ( 'EQUALS' | 'equals' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:305:4: ( 'EQUALS' | 'equals' )
                     {
                     if ( input.LA(1)==34||input.LA(1)==84 ) {
                         input.consume();
@@ -2401,7 +2460,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 26 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:268:4: ( 'NOTEQUALS' | 'notequals' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:306:4: ( 'NOTEQUALS' | 'notequals' )
                     {
                     if ( input.LA(1)==45||input.LA(1)==95 ) {
                         input.consume();
@@ -2416,7 +2475,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 27 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:269:4: ( 'MATCHES' | 'matches' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:307:4: ( 'MATCHES' | 'matches' )
                     {
                     if ( input.LA(1)==39||input.LA(1)==89 ) {
                         input.consume();
@@ -2431,7 +2490,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 28 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:270:4: ( 'NOTMATCHES' | 'notmatches' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:308:4: ( 'NOTMATCHES' | 'notmatches' )
                     {
                     if ( input.LA(1)==47||input.LA(1)==97 ) {
                         input.consume();
@@ -2446,7 +2505,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 29 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:271:4: ( 'FORWARD' | 'forward' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:309:4: ( 'FORWARD' | 'forward' )
                     {
                     if ( input.LA(1)==36||input.LA(1)==86 ) {
                         input.consume();
@@ -2461,7 +2520,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 30 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:272:4: ( 'ALL_FORWARD' | 'all_forward' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:310:4: ( 'ALL_FORWARD' | 'all_forward' )
                     {
                     if ( input.LA(1)==24||input.LA(1)==74 ) {
                         input.consume();
@@ -2476,7 +2535,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 31 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:273:4: ( 'SOME_FORWARD' | 'some_forward' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:311:4: ( 'SOME_FORWARD' | 'some_forward' )
                     {
                     if ( input.LA(1)==60||input.LA(1)==110 ) {
                         input.consume();
@@ -2491,7 +2550,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 32 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:274:4: ( 'REVERSE' | 'reverse' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:312:4: ( 'REVERSE' | 'reverse' )
                     {
                     if ( input.LA(1)==54||input.LA(1)==104 ) {
                         input.consume();
@@ -2506,7 +2565,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 33 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:275:4: ( 'ALL_REVERSE' | 'all_reverse' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:313:4: ( 'ALL_REVERSE' | 'all_reverse' )
                     {
                     if ( input.LA(1)==26||input.LA(1)==76 ) {
                         input.consume();
@@ -2521,7 +2580,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 34 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:276:4: ( 'SOME_REVERSE' | 'some_reverse' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:314:4: ( 'SOME_REVERSE' | 'some_reverse' )
                     {
                     if ( input.LA(1)==62||input.LA(1)==112 ) {
                         input.consume();
@@ -2536,7 +2595,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 35 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:277:4: ( 'SAME_ORIENTATION' | 'same_orientation' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:315:4: ( 'SAME_ORIENTATION' | 'same_orientation' )
                     {
                     if ( input.LA(1)==56||input.LA(1)==106 ) {
                         input.consume();
@@ -2551,7 +2610,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 36 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:278:4: ( 'ALL_SAME_ORIENTATION' | 'all_same_orientation' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:316:4: ( 'ALL_SAME_ORIENTATION' | 'all_same_orientation' )
                     {
                     if ( input.LA(1)==27||input.LA(1)==77 ) {
                         input.consume();
@@ -2566,7 +2625,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 37 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:279:4: ( 'SOME_SAME_ORIENTATION' | 'some_same_orientation' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:317:4: ( 'SOME_SAME_ORIENTATION' | 'some_same_orientation' )
                     {
                     if ( input.LA(1)==63||input.LA(1)==113 ) {
                         input.consume();
@@ -2581,7 +2640,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 38 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:280:4: ( 'REPRESSES' | 'represses' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:318:4: ( 'REPRESSES' | 'represses' )
                     {
                     if ( input.LA(1)==53||input.LA(1)==103 ) {
                         input.consume();
@@ -2596,7 +2655,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 39 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:281:4: ( 'INDUCES' | 'induces' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:319:4: ( 'INDUCES' | 'induces' )
                     {
                     if ( input.LA(1)==38||input.LA(1)==88 ) {
                         input.consume();
@@ -2611,7 +2670,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 40 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:282:4: ( 'DRIVES' | 'drives' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:320:4: ( 'DRIVES' | 'drives' )
                     {
                     if ( input.LA(1)==32||input.LA(1)==82 ) {
                         input.consume();
@@ -2626,7 +2685,7 @@ public class MiniEugeneParser extends Parser {
                     }
                     break;
                 case 41 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:283:4: ( 'ALTERNATE_ORIENTATION' | 'alternate_orientation' )
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:321:4: ( 'ALTERNATE_ORIENTATION' | 'alternate_orientation' )
                     {
                     if ( input.LA(1)==28||input.LA(1)==78 ) {
                         input.consume();
@@ -2664,62 +2723,62 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "operand"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:286:1: operand : ( ID | INT | '[' INT ']' );
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:324:1: operand : ( ID | INT | '[' INT ']' );
     public final MiniEugeneParser.operand_return operand() throws RecognitionException {
         MiniEugeneParser.operand_return retval = new MiniEugeneParser.operand_return();
         retval.start = input.LT(1);
 
 
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:286:9: ( ID | INT | '[' INT ']' )
-            int alt21=3;
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:324:9: ( ID | INT | '[' INT ']' )
+            int alt24=3;
             switch ( input.LA(1) ) {
             case ID:
                 {
-                alt21=1;
+                alt24=1;
                 }
                 break;
             case INT:
                 {
-                alt21=2;
+                alt24=2;
                 }
                 break;
             case 68:
                 {
-                alt21=3;
+                alt24=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 21, 0, input);
+                    new NoViableAltException("", 24, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt21) {
+            switch (alt24) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:286:11: ID
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:324:11: ID
                     {
-                    match(input,ID,FOLLOW_ID_in_operand925); 
+                    match(input,ID,FOLLOW_ID_in_operand1005); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:287:4: INT
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:325:4: INT
                     {
-                    match(input,INT,FOLLOW_INT_in_operand931); 
+                    match(input,INT,FOLLOW_INT_in_operand1011); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:288:4: '[' INT ']'
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:326:4: '[' INT ']'
                     {
-                    match(input,68,FOLLOW_68_in_operand936); 
+                    match(input,68,FOLLOW_68_in_operand1016); 
 
-                    match(input,INT,FOLLOW_INT_in_operand938); 
+                    match(input,INT,FOLLOW_INT_in_operand1018); 
 
-                    match(input,70,FOLLOW_70_in_operand940); 
+                    match(input,70,FOLLOW_70_in_operand1020); 
 
                     }
                     break;
@@ -2744,32 +2803,32 @@ public class MiniEugeneParser extends Parser {
 
 
     // $ANTLR start "list_of_parameters"
-    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:291:1: list_of_parameters : operand ( ',' list_of_parameters )? ;
+    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:329:1: list_of_parameters : operand ( ',' list_of_parameters )? ;
     public final void list_of_parameters() throws RecognitionException {
         try {
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:292:2: ( operand ( ',' list_of_parameters )? )
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:292:4: operand ( ',' list_of_parameters )?
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:330:2: ( operand ( ',' list_of_parameters )? )
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:330:4: operand ( ',' list_of_parameters )?
             {
-            pushFollow(FOLLOW_operand_in_list_of_parameters951);
+            pushFollow(FOLLOW_operand_in_list_of_parameters1031);
             operand();
 
             state._fsp--;
 
 
-            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:292:12: ( ',' list_of_parameters )?
-            int alt22=2;
-            int LA22_0 = input.LA(1);
+            // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:330:12: ( ',' list_of_parameters )?
+            int alt25=2;
+            int LA25_0 = input.LA(1);
 
-            if ( (LA22_0==17) ) {
-                alt22=1;
+            if ( (LA25_0==17) ) {
+                alt25=1;
             }
-            switch (alt22) {
+            switch (alt25) {
                 case 1 :
-                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:292:13: ',' list_of_parameters
+                    // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:330:13: ',' list_of_parameters
                     {
-                    match(input,17,FOLLOW_17_in_list_of_parameters954); 
+                    match(input,17,FOLLOW_17_in_list_of_parameters1034); 
 
-                    pushFollow(FOLLOW_list_of_parameters_in_list_of_parameters956);
+                    pushFollow(FOLLOW_list_of_parameters_in_list_of_parameters1036);
                     list_of_parameters();
 
                     state._fsp--;
@@ -2823,83 +2882,90 @@ public class MiniEugeneParser extends Parser {
     public static final BitSet FOLLOW_constraint_in_composite_constraint_block153 = new BitSet(new long[]{0x0000000000020002L});
     public static final BitSet FOLLOW_17_in_composite_constraint_block156 = new BitSet(new long[]{0xFFF7FDFFFFE00600L,0x003FFFDFFBFFFF9FL});
     public static final BitSet FOLLOW_composite_constraint_block_in_composite_constraint_block158 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constraint_in_or_constraint198 = new BitSet(new long[]{0x0008000000000002L,0x0040002000000020L});
+    public static final BitSet FOLLOW_constraint_in_or_constraint198 = new BitSet(new long[]{0x0008000000000002L,0x0080002000000020L});
     public static final BitSet FOLLOW_set_in_or_constraint203 = new BitSet(new long[]{0xFFF7FDFFFFE00600L,0x003FFFDFFBFFFF9FL});
     public static final BitSet FOLLOW_or_constraint_in_or_constraint215 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_constraint251 = new BitSet(new long[]{0xFDE7F5DFFFE00600L,0x0037F79FDB7FFF9DL});
     public static final BitSet FOLLOW_operand_in_constraint264 = new BitSet(new long[]{0xFDE7F5DFFFE00600L,0x0037F79FDB7FFF9DL});
     public static final BitSet FOLLOW_operator_in_constraint272 = new BitSet(new long[]{0x0000000000000602L,0x0000000000000010L});
     public static final BitSet FOLLOW_operand_in_constraint279 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_template_in_constraint292 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_pattern_in_constraint301 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_group_in_constraint310 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_sequence_in_constraint319 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_template347 = new BitSet(new long[]{0x0000080000000000L,0x0008000020000002L});
-    public static final BitSet FOLLOW_set_in_template353 = new BitSet(new long[]{0x0000000000000000L,0x0008000000000002L});
-    public static final BitSet FOLLOW_set_in_template360 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_list_of_ids_in_template368 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_pattern390 = new BitSet(new long[]{0x0010080000000000L,0x0000004020000000L});
-    public static final BitSet FOLLOW_set_in_pattern396 = new BitSet(new long[]{0x0010000000000000L,0x0000004000000000L});
-    public static final BitSet FOLLOW_set_in_pattern403 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_list_of_ids_in_pattern411 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_sequence433 = new BitSet(new long[]{0x0200080000000000L,0x0000080020000000L});
-    public static final BitSet FOLLOW_set_in_sequence439 = new BitSet(new long[]{0x0200000000000000L,0x0000080000000000L});
-    public static final BitSet FOLLOW_set_in_sequence446 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_list_of_ids_in_sequence454 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_group477 = new BitSet(new long[]{0x0000082000000000L,0x0000000020800000L});
-    public static final BitSet FOLLOW_set_in_group483 = new BitSet(new long[]{0x0000002000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_set_in_group490 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_list_of_ids_in_group498 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_list_of_ids530 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_17_in_list_of_ids535 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_list_of_ids_in_list_of_ids539 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator557 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator566 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator575 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator584 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator593 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator602 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator611 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator620 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator629 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator638 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator647 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator656 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator665 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator674 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator683 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator692 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator701 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator710 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator719 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator728 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator737 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator746 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator755 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator764 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator773 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator782 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator791 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator800 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator809 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator818 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator827 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator836 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator845 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator854 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator863 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator872 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator881 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator890 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator899 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_operator908 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_operand925 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_INT_in_operand931 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_68_in_operand936 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_INT_in_operand938 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_operand940 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_operand_in_list_of_parameters951 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_17_in_list_of_parameters954 = new BitSet(new long[]{0x0000000000000600L,0x0000000000000010L});
-    public static final BitSet FOLLOW_list_of_parameters_in_list_of_parameters956 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_templatingConstraints_in_constraint292 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_templateConstraint_in_templatingConstraints323 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_patternConstraint_in_templatingConstraints332 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_groupConstraint_in_templatingConstraints341 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_sequenceConstraint_in_templatingConstraints350 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_templateConstraint373 = new BitSet(new long[]{0x0000080000000000L,0x0008000020000002L});
+    public static final BitSet FOLLOW_set_in_templateConstraint379 = new BitSet(new long[]{0x0000000000000000L,0x0008000000000002L});
+    public static final BitSet FOLLOW_set_in_templateConstraint386 = new BitSet(new long[]{0x0000000000000200L,0x0000000000000010L});
+    public static final BitSet FOLLOW_list_of_ids_in_templateConstraint394 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_patternConstraint416 = new BitSet(new long[]{0x0010080000000000L,0x0000004020000000L});
+    public static final BitSet FOLLOW_set_in_patternConstraint422 = new BitSet(new long[]{0x0010000000000000L,0x0000004000000000L});
+    public static final BitSet FOLLOW_set_in_patternConstraint429 = new BitSet(new long[]{0x0000000000000200L,0x0000000000000010L});
+    public static final BitSet FOLLOW_list_of_ids_in_patternConstraint437 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_sequenceConstraint459 = new BitSet(new long[]{0x0200080000000000L,0x0000080020000000L});
+    public static final BitSet FOLLOW_set_in_sequenceConstraint465 = new BitSet(new long[]{0x0200000000000000L,0x0000080000000000L});
+    public static final BitSet FOLLOW_set_in_sequenceConstraint472 = new BitSet(new long[]{0x0000000000000200L,0x0000000000000010L});
+    public static final BitSet FOLLOW_list_of_ids_in_sequenceConstraint480 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_groupConstraint503 = new BitSet(new long[]{0x0000082000000000L,0x0000000020800000L});
+    public static final BitSet FOLLOW_set_in_groupConstraint509 = new BitSet(new long[]{0x0000002000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_set_in_groupConstraint516 = new BitSet(new long[]{0x0000000000000200L,0x0000000000000010L});
+    public static final BitSet FOLLOW_list_of_ids_in_groupConstraint524 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_list_of_ids557 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_68_in_list_of_ids563 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_selection_in_list_of_ids567 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_list_of_ids571 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_17_in_list_of_ids577 = new BitSet(new long[]{0x0000000000000200L,0x0000000000000010L});
+    public static final BitSet FOLLOW_list_of_ids_in_list_of_ids581 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_selection608 = new BitSet(new long[]{0x0000000000000002L,0x0040000000000000L});
+    public static final BitSet FOLLOW_118_in_selection614 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_selection_in_selection618 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator637 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator646 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator655 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator664 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator673 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator682 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator691 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator700 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator709 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator718 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator727 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator736 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator745 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator763 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator772 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator781 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator790 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator799 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator808 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator817 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator826 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator835 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator844 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator853 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator862 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator871 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator880 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator889 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator898 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator907 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator916 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator925 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator934 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator943 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator952 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator961 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator970 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator979 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_operator988 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_operand1005 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INT_in_operand1011 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_68_in_operand1016 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_INT_in_operand1018 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_operand1020 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_operand_in_list_of_parameters1031 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_17_in_list_of_parameters1034 = new BitSet(new long[]{0x0000000000000600L,0x0000000000000010L});
+    public static final BitSet FOLLOW_list_of_parameters_in_list_of_parameters1036 = new BitSet(new long[]{0x0000000000000002L});
 
 }

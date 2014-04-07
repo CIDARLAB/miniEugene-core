@@ -5,6 +5,7 @@ import java.util.List;
 import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.LogicalOperator;
@@ -13,6 +14,7 @@ import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
 import org.cidarlab.minieugene.predicates.templating.*;
+import org.cidarlab.minieugene.constants.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 public class Interp {
@@ -94,46 +96,42 @@ public class Interp {
 		}
 	}
 	
-	public Template createTemplate(String name, List<String> ids) {
-		Template pp = new Template();
-		for(String id : ids) {
-			pp.getComponents().add(
-					this.symbols.get(
-						this.symbols.put(id)));
-		}
-		return pp;
+	public TemplatingPredicate createTemplatingConstraint(TemplateType template, String name, List<List<String>> ids) {
+		TemplatingPredicate tp = template.createPredicate(this.symbols, name, ids);
+		System.out.println(tp.toString());
+		return tp;
 	}
 	
-	public Pattern createPattern(String name, List<String> ids) {
-		Pattern pp = new Pattern();
-		for(String id : ids) {
-			pp.getComponents().add(
-					this.symbols.get(
-						this.symbols.put(id)));
-		}
-		return pp;
-	}
-
-	
-	public Group createGroup(String name, List<String> ids) {
-		Group pp = new Group();
-		for(String id : ids) {
-			pp.getComponents().add(
-					this.symbols.get(
-						this.symbols.put(id)));
-		}
-		return pp;
-	}
-
-	public Sequence createSequence(String name, List<String> ids) {
-		Sequence pp = new Sequence();
-		for(String id : ids) {
-			pp.getComponents().add(
-					this.symbols.get(
-						this.symbols.put(id)));
-		}
-		return pp;
-	}
+//	public Pattern createPattern(String name, List<List<String>> ids) {
+//		Pattern pp = new Pattern();
+//		for(String id : ids) {
+//			pp.getComponents().add(
+//					this.symbols.get(
+//						this.symbols.put(id)));
+//		}
+//		return pp;
+//	}
+//
+//	
+//	public Group createGroup(String name, List<List<String>> ids) {
+//		Group pp = new Group();
+//		for(String id : ids) {
+//			pp.getComponents().add(
+//					this.symbols.get(
+//						this.symbols.put(id)));
+//		}
+//		return pp;
+//	}
+//
+//	public Sequence createSequence(String name, List<String> ids) {
+//		Sequence pp = new Sequence();
+//		for(String id : ids) {
+//			pp.getComponents().add(
+//					this.symbols.get(
+//						this.symbols.put(id)));
+//		}
+//		return pp;
+//	}
 
 	private Predicate createNullaryPredicate(String s) 
 			throws EugeneException {
