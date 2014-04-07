@@ -96,7 +96,7 @@ public class Sequence
 				pc = ArrayUtils.add(pc, 
 					new And(
 							new Or(pcSelection),
-						new And(pcTemplate)));
+							new And(pcTemplate)));
 			}
 		}
 

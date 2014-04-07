@@ -192,6 +192,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/act/fsm02"));
 
 //		new TestSuite().test(new File("./tests/swati/inverter"));
+		new TestSuite().test(new File("./designs/templating/inverter"));
 
 		/*
 		 * LATTICE 

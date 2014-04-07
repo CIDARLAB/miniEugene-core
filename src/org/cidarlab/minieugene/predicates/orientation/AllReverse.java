@@ -64,7 +64,7 @@ public class AllReverse
 							new XeqC(variables[Variables.ORIENTATION][i], -1));
 			}
 		}
-		
+
 		return new And(pc);
 	}
 

@@ -63,7 +63,7 @@ public class AllForward
 							new XeqC(variables[Variables.ORIENTATION][i], 1));
 			}
 		}
-		
+
 		return new And(pc);
 	}
 

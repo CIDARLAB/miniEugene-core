@@ -35,9 +35,9 @@ public class Drives
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA())
+		sb.append(this.getA().getName())
 			.append(" ").append(RuleOperator.DRIVES).append(" ")
-			.append(this.getB());
+			.append(this.getB().getName());
 		return sb.toString();
 	}
 
@@ -45,6 +45,8 @@ public class Drives
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
+		System.out.println("**** "+this.toString()+" ***");
+		
     	// FORWARD ORIENTED
     	PrimitiveConstraint[] pcForward = new PrimitiveConstraint[3];
 		pcForward[0] = noTerminatorBetween(variables, this.getA(), this.getB());
@@ -64,10 +66,10 @@ public class Drives
 		//       a after b  => position(b) < position(a) ) /\
 		//     no terminator in between
 		PrimitiveConstraint[] pcReturn = new PrimitiveConstraint[2];
-		pcReturn[0] = new AllSameOrientation(
-						this.getA(), this.getB()).toJaCoP(store, variables);
-		pcReturn[1] = new Or(new And(pcForward), new And(pcReverse));
-		
+		pcReturn[0] = new AllSameOrientation(this.getA(), this.getB()).toJaCoP(store, variables);
+		pcReturn[1] = new Or(
+						new And(pcForward), 
+						new And(pcReverse));
 		return new And(pcReturn);
 	}
 	
