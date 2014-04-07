@@ -14,7 +14,6 @@ import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
 import org.cidarlab.minieugene.predicates.templating.*;
-import org.cidarlab.minieugene.constants.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 public class Interp {
@@ -31,12 +30,6 @@ public class Interp {
 		this.maxN = -1;
 	}
 	
-//	public Interp(SymbolTables symbols, int N) {
-//		this.symbols = symbols;		
-//		this.pb = new PredicateBuilder(this.symbols);
-//		this.N = N;
-//	}
-
 	public int getMinN() {
 		return this.minN;
 	}
@@ -96,10 +89,9 @@ public class Interp {
 		}
 	}
 	
-	public TemplatingPredicate createTemplatingConstraint(TemplateType template, String name, List<List<String>> ids) {
-		TemplatingPredicate tp = template.createPredicate(this.symbols, name, ids);
-		System.out.println(tp.toString());
-		return tp;
+	public TemplatingPredicate createTemplatingConstraint(
+			TemplateType template, String name, List<List<String>> ids) {
+		return template.createPredicate(this.symbols, name, ids);
 	}
 	
 //	public Pattern createPattern(String name, List<List<String>> ids) {
