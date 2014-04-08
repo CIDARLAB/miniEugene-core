@@ -45,7 +45,7 @@ public class Drives
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
-		System.out.println("**** "+this.toString()+" ***");
+//		System.out.println("**** "+this.toString()+" ***");
 		
     	// FORWARD ORIENTED
     	PrimitiveConstraint[] pcForward = new PrimitiveConstraint[3];
