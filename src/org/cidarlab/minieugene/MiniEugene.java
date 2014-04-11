@@ -262,8 +262,12 @@ public class MiniEugene
 		// PARSING
 		try {
 			parser.miniEugene();
+			
+			if(parser.hasErrors()) {
+				throw new EugeneException("The script contains invalid characters!");
+			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new EugeneException(e.getMessage());
 		}
 

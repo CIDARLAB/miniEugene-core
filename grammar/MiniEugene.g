@@ -104,6 +104,15 @@ private void addToken(String token) {
     }
 }
 
+boolean bError = false;
+@Override
+public void reportError(RecognitionException e) {
+    bError = true;
+}
+
+public boolean hasErrors() {
+    return bError;
+}
 }
 
  	
@@ -258,7 +267,7 @@ $lst = new ArrayList<List<String>>();
 List<String> id_lst = new ArrayList<String>();
 id_lst.add($id.text);
 $lst.add(id_lst);	
-	}	|	'[' sel=selection {
+	}	|'[' sel=selection {
 $lst.add($sel.lst);	
 	}	']')
 		(',' ids=list_of_ids {
@@ -332,7 +341,7 @@ list_of_parameters
 
 	
 					
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'-')*
+ID  :	('a'..'z'|'A'..'Z')+
     ;
 
 INT :	'0'..'9'+
@@ -382,3 +391,11 @@ fragment
 UNICODE_ESC
     :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
     ;
+
+FallThrough
+@after{
+  throw new RuntimeException(String.format(
+      "Encountered an illegal char  '\%s'", getText()));
+}
+  :  '*'|'+'|'?' 
+  ;

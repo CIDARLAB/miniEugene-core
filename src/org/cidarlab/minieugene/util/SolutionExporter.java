@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -197,6 +196,13 @@ public class SolutionExporter {
 		if(null == this.solutions || this.solutions.isEmpty())
 			throw new EugeneException("There are no solutions!");
 	
+		// first, we process the interactions
+		if(null != this.interactions && !this.interactions.isEmpty()) {
+			for(Interaction i : this.interactions) {
+				sb.append(i.toEugene()).append(NEWLINE);
+			}
+		}
+		
 		int d = 1;
 		for(Component[] solution : this.solutions) {
 			sb.append("Device d").append(d++).append("(");

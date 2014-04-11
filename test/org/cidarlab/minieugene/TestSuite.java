@@ -1,8 +1,6 @@
 package org.cidarlab.minieugene;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
@@ -10,7 +8,6 @@ import java.net.URI;
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.util.FileUtil;
 import org.cidarlab.minieugene.util.SolutionExporter;
-
 
 public class TestSuite {
 
@@ -173,6 +170,37 @@ public class TestSuite {
 //		new TestSuite().test("N=5.all_forward. sequence [p1|p2], [c1|c2]. p1 then c1. p2 then c2.");
 //		new TestSuite().test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
 		
+//		new TestSuite().test("N=40. all_forward. template [p1|p2],[r1|r2],[c1|c2],[t1|t2].");
+		
+		// INVALID SEQUENCS/TEMPLATES
+		
+		// Extensional Support
+//		new TestSuite().test("N=1. all_forward. template p.");
+//		new TestSuite().test("N=1. all_forward. template [p1|p2].");
+//		new TestSuite().test("N=1. all_forward. template [p1|p2|p3].");
+//		new TestSuite().test("N=1. all_forward. template [p1|p2|p3|p4].");
+//		new TestSuite().test("N=2. all_forward. template p.");
+//		new TestSuite().test("N=2. all_forward. template [p1|p2].");
+//		new TestSuite().test("N=2. all_forward. template [p1|p2|p3].");
+//		new TestSuite().test("N=2. all_forward. template [p1|p2|p3|p4].");
+//		new TestSuite().test("N=3. all_forward. template p.");
+//		new TestSuite().test("N=3. all_forward. template [p1|p2].");
+//		new TestSuite().test("N=3. all_forward. template [p1|p2|p3].");
+//		new TestSuite().test("N=3. all_forward. template [p1|p2|p3|p4].");
+//		
+//		new TestSuite().test("N=2. all_forward. template [p1|p2], [c1|c2].");
+//		new TestSuite().test("N=4. all_forward. template [p1|p2], [r1|r2].");
+//		new TestSuite().test("N=6. all_forward. template [p1|p2], [c1|c2].");
+//		new TestSuite().test("N=8. all_forward. template [p1|p2], [r1|r2].");
+//
+//		new TestSuite().test("N=3. template [p1|p2], [p2|p3], [p4|p5].");
+//		
+//		new TestSuite().test("N=3. all_forward. template [p1|p2|p3], [r1|r2|r3], [p1|p2|p3].");
+		
+		
+//		new TestSuite().test("N=12. template p, r, c, t.");
+//		new TestSuite().test("N=12. all_forward. template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+
 		/*
 		 * ACT
 		 */
@@ -192,7 +220,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/act/fsm02"));
 
 //		new TestSuite().test(new File("./tests/swati/inverter"));
-		new TestSuite().test(new File("./designs/templating/inverter"));
+//		new TestSuite().test(new File("./designs/templating/inverter"));
 
 		/*
 		 * LATTICE 
@@ -203,7 +231,10 @@ public class TestSuite {
 
 //		new TestSuite().testAll("./tests");
 		
-		
+		new TestSuite().test("N=4.sequence p,[[r,c],t]+.");
+		new TestSuite().test("N=4.sequence p,[[r,c],t]*.");
+		new TestSuite().test("N=4. sequence p, c+, t.");
+
 		
 		/*
 		 * REAL DESIGNS
@@ -244,6 +275,13 @@ public class TestSuite {
 //		new TestSuite().test(new File("./designs/nor-gate/repressing-cassette.eug"));
 //		new TestSuite().test(new File("./designs/nor-gate/reporting-cassette.eug"));
 //		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
+//		new TestSuite().test(new File("./designs/nor-orientations"));
+
+		/*
+		 * Swati's Inverters
+		 */
+//		new TestSuite().test(new File("./designs/templating/inverter"));
+//		new TestSuite().test(new File("./designs/templating/inverter_rev1"));
 
 //		new TestSuite().test(new File("./designs/nor-gate/rev1/repressing-cassette.eug"));
 //		new TestSuite().test(new File("./designs/nor-gate/rev1/reporting-cassette.eug"));
@@ -272,21 +310,28 @@ public class TestSuite {
 			tProcessing = System.nanoTime() - t1;
 		} catch(Exception e) {
 			e.printStackTrace();
+			return;
 		}
 
 //		MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
 			
 		me.getStatistics().print();
 
+		if(me.getSolutions() == null || me.getSolutions().isEmpty() ) {
+			return;
+		}
+		
 		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 		try {
 			// ACT -> GraphViz
 //			URI act = me.visualizeACT();
 				
 			// PIGEON
-			URI pig = se.toPigeon();
-			WeyekinPoster.launchPage(pig);
+//			URI pig = se.toPigeon();
+//			WeyekinPoster.launchPage(pig);
 			
+			// EUGENE
+			se.toEugene("./designs/templating/xxx_rev1.eug");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -296,8 +341,6 @@ public class TestSuite {
 		// SBOL
 //			se.toSBOL("./test-results/"+filename+".sbol.xml");
 		
-		// EUGENE
-//			se.toEugene("./test-results/"+filename+".eug");
 		
 		// CONSOLE OUTPUT
 		se.toConsole();

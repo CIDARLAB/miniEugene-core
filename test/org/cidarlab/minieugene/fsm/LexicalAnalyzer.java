@@ -1,3 +1,4 @@
+
 /**
  *  LexicalAnalyzer.java 
  *  This file is part of JaCoP.
@@ -37,10 +38,10 @@ import java.io.StringReader;
 
 /**
  * @author Polina Maakeva and Radoslaw Szymanek
- * @version 3.1
+ * @version 4.0
  */
 
-public class LexicalAnalyzer {
+class LexicalAnalyzer {
 	
     private StreamTokenizer input;
 
@@ -66,11 +67,12 @@ public class LexicalAnalyzer {
     LexicalAnalyzer(StringReader in) {
     	
     	input = new StreamTokenizer(in);
+    	
         input.resetSyntax();
         input.eolIsSignificant(false);
         input.wordChars('a', 'z');
-        input.wordChars('A','Z');
-        input.wordChars('0','9');
+        input.wordChars('A', 'Z');
+        input.wordChars('0', '9');
         input.wordChars('\u0000',' '-1);
         input.ordinaryChar('(');
         input.ordinaryChar(')');
@@ -81,7 +83,7 @@ public class LexicalAnalyzer {
      * Return the string recognized as word token or the body of a
      * quoted string.
      */
-    String getString() {
+    public String getString() {
         return input.sval;
     }
     
@@ -119,13 +121,13 @@ public class LexicalAnalyzer {
                   break;
               default:
                   token = INVALID_CHAR;
-                  break;
             } // switch
         } catch (IOException e) {
         	e.printStackTrace();
             // Treat an IOException as an end of file
             token = EOF;
         } 
+    	//System.out.println(token);
         return token;
     } 
 } 

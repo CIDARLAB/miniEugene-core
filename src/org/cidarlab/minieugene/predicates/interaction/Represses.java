@@ -25,9 +25,9 @@ public class Represses
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA())
+		sb.append(this.getA().getName())
 			.append(" ").append(RuleOperator.REPRESSES).append(" ")
-			.append(this.getB());
+			.append(this.getB().getName());
 		return sb.toString();
 	}
 

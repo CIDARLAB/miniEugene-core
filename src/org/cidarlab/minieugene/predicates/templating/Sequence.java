@@ -10,9 +10,11 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
+import JaCoP.constraints.DecomposedConstraint;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.Stretch;
 import JaCoP.constraints.XeqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
@@ -45,10 +47,28 @@ public class Sequence
 			return this.toJaCoPNot(store, variables);
 		}
 		
+		System.out.println(this.toString());
+		
 		int maxN = variables[Variables.PART].length;
 		
 		return createSequence(variables, maxN);
 	}
+	
+//	private DecomposedConstraint createStretch(IntVar[][] variables) {
+//		int N = variables[Variables.PART].length;
+//		
+//		int[] values = new int[this.getComponents().size()];
+//		int[] min = new int[this.getComponents().size()];
+//		int[] max = new int[this.getComponents().size()];
+//		for(int i=0; i<N; i++) {
+//			values[i] = this.getComponents().get(i).get(0).getId();
+//			min[i] = 1;
+//			max[i] = 1;			
+//		}
+//		
+//		return new Stretch(values, min, max, variables[Variables.PART]);
+////		return null;
+//	}
 	
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)

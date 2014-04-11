@@ -15,7 +15,6 @@ import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.And;
 import JaCoP.constraints.IfThen;
-import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.core.Domain;

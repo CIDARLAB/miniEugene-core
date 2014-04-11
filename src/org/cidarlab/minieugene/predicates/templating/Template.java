@@ -10,6 +10,10 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
+import JaCoP.constraints.Constraint;
+import JaCoP.constraints.ExtensionalSupportMDD;
+import JaCoP.constraints.ExtensionalSupportSTR;
+import JaCoP.constraints.ExtensionalSupportVA;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
@@ -47,15 +51,134 @@ public class Template
 		}
 		
 		int maxN = variables[Variables.PART].length;
+
+		if(maxN < this.getComponents().size()) {
+			throw new EugeneException("The length of the design ("+maxN+") is less than the template size ("+this.getComponents().size()+")");
+		} else if(maxN % this.getComponents().size() != 0) {
+			throw new EugeneException(
+					"The length of the design ("+maxN+") is not a multiple of the template size ("+this.getComponents().size()+")");
+		}
 		
-//		if(maxN < this.getComponents().size()) {
-//			throw new EugeneException("I cannot impose the strict template!");
-//		} else if(maxN % this.getComponents().size() != 0) {
-//			throw new EugeneException(
-//					"The max. length "+maxN+" is not a multiple of the template size ("+this.getComponents().size()+")");
-//		}
+		/*
+		 * for templates, we use JaCoP's Extensional Support constraints...
+		 * 
+		 * those constraints take as input a matrix of ``allowed'' combinations...
+		 * we need, however, calculate this matrix and impose it into the store...
+		 * 
+		 * that's why the constraints are called ``Extensional Support''...
+		 * we need to tell the constraint solver what valid combinations are...
+		 * i.e. we (``externals'') provide support...
+		 */
+//		store.impose(
+//				createExtensionalSupport(
+//						variables, 
+//						maxN));
+//		return null;
 		
 		return createTemplate(variables, maxN);
+	}
+	
+	private Constraint createExtensionalSupport(IntVar[][] variables, int N) {
+
+		int[][] template = this.combinations();
+
+
+		int[][] extSupport = new int[template.length][N];
+		for(int i=0; i<N; ) {
+
+			for(int j=0; j<template[0].length; j++, i++) {
+				for(int k = 0; k<template.length; k++) {
+					extSupport[k][i] = template[k][j];
+				}
+			}
+			
+		}
+		
+		this.printMatrix(extSupport);
+		
+		// TODO:
+		// - how to build the disjunction of Extensional Support constraints?
+		return new ExtensionalSupportVA(
+				variables[Variables.PART],
+				extSupport);
+	}
+	
+	/*
+	 * with this function we build all possible combinations
+	 * 
+	 * Example:
+	 * [p1|p2] x [c1|c2] 
+	 * 
+	 *  [p1, c1]
+	 *  [p1, c2]
+	 *  [p2, c1]
+	 *  [p2, c2]
+	 *  
+	 *  currently, the algorithm is O ( n*m * log(n*m) )
+	 *  n ... number of elements in a template (i.e. 2 in the example)
+	 *  m ... number of selections of one templates elements (i.e. 3 in the example)
+	 *  
+	 *  n and m will, as far as I believe, be small...
+	 *  I need to benchmark...
+	 *  
+	 *  NOTE:
+	 *  The algorithm can be improved...
+	 *  Any help/improvement is very welcome!
+	 */
+	private int[][] combinations() {
+
+		// first, we calculate the number of rows
+		int rows = 1;
+		for(int i=0; i<this.getComponents().size(); i++) {
+			rows *= this.getComponents().get(i).size();
+		}
+
+		// in the ext matrix, we store the combinations
+		int[][] ext = new int[rows][this.getComponents().size()];
+		row = 0;
+		
+		// now, we build the combinations recursively
+		this.buildCombinations(this.getComponents(), ext,  0);
+		
+		// finally, we fill the ``empty'' spots...
+		// i.e. all cells that are equal to 0 get the 
+		// value from the cell one row above
+		for(int i=0; i<ext.length; i++) {
+			for(int j=0; j<ext[i].length; j++) {
+				if(ext[i][j] == 0) {
+					ext[i][j] = ext[i-1][j];
+				}
+			}
+		}
+		
+		return ext;
+	}
+	
+	
+	/*
+	 * 
+	 */
+	private static int row;	
+	private void buildCombinations(List<List<Component>> lst, int[][] ext, int col) {
+		if(col >= 0 && col < lst.size()) {
+			for(int i=0; i<lst.get(col).size(); i++) {
+				ext[row][col] = lst.get(col).get(i).getId();
+				buildCombinations(lst, ext, col + 1);				
+				row++;
+			}
+			row--;
+		}
+	}
+	
+	private void printMatrix(int[][] matrix) {
+		// print the array
+		for(int k=0; k<matrix.length; k++) {
+			for(int j=0; j<matrix[k].length; j++) {
+				System.out.print(matrix[k][j]+", ");
+			}
+			System.out.println();
+		}
+		
 	}
 	
 	@Override
@@ -64,7 +187,7 @@ public class Template
 		int maxN = variables[Variables.PART].length;
 		
 		if(maxN < this.getComponents().size()) {
-			throw new EugeneException("I cannot impose the strict template!");
+			throw new EugeneException("I cannot impose "+this.toString());
 		} else if(maxN % this.getComponents().size() != 0) {
 			throw new EugeneException(
 					"The max. length "+maxN+" is not a multiple of the template size ("+this.getComponents().size()+")");

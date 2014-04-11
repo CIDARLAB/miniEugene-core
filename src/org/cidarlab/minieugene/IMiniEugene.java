@@ -26,7 +26,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
-import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;

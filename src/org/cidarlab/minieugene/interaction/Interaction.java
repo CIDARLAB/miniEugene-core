@@ -25,4 +25,10 @@ public class Interaction {
 		sb.append(this.b);
 		return sb.toString();
 	}
+	
+	public String toEugene() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.a).append(" ").append(RuleOperator.REPRESSES.toString()).append(" ").append(this.b).append(";");
+		return sb.toString();
+	}
 }

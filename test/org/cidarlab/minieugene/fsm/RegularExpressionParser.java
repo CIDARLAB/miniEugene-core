@@ -1,3 +1,4 @@
+
 /**
  *  RegularExpressionParser.java 
  *  This file is part of JaCoP.
@@ -45,7 +46,7 @@ import JaCoP.util.fsm.FSMTransition;
  * Instances of this class parse the word combination little language.
  * 
  * @author Polina Makeeva and Radoslaw Szymanek
- * @version 3.1
+ * @version 4.0
  */
 
 public class RegularExpressionParser {
@@ -63,14 +64,10 @@ public class RegularExpressionParser {
 			throws SyntaxException {
 		
 		lexer = new LexicalAnalyzer(input);
-		
-//		System.out.println(token);
-//		System.out.println(token = lexer.nextToken()+" vs "+LexicalAnalyzer.WORD+" vs "+LexicalAnalyzer.LEFT_PAREN);
-//		System.out.println(token = lexer.nextToken()+" vs "+LexicalAnalyzer.WORD+" vs "+LexicalAnalyzer.LEFT_PAREN);
-		lexer.nextToken();
 		token = lexer.nextToken();
-//		System.out.println(token = lexer.nextToken()+" vs "+LexicalAnalyzer.WORD+" vs "+LexicalAnalyzer.LEFT_PAREN);
-		if (token != LexicalAnalyzer.WORD && token != LexicalAnalyzer.LEFT_PAREN) {
+		
+		if (token != LexicalAnalyzer.WORD
+				&& token != LexicalAnalyzer.LEFT_PAREN) {
 			// print error message and throw SyntaxException
 			expect(LexicalAnalyzer.Beginning);
 		} 
@@ -83,7 +80,8 @@ public class RegularExpressionParser {
 	 * @return An expression that is the root of the parse tree produced by the parser.
 	 * @throws SyntaxException 
 	 */
-	public Expression parse(boolean parseOneNext) throws SyntaxException {
+	public Expression parse(boolean parseOneNext) 
+			throws SyntaxException {
 
 		Expression c = null;
 
@@ -91,11 +89,11 @@ public class RegularExpressionParser {
 
 		while (contin) {
 			contin = false;
-
 			switch (token) {
 			case LexicalAnalyzer.PLUS:
 				token = lexer.nextToken();
-				if (token != LexicalAnalyzer.WORD && token != LexicalAnalyzer.LEFT_PAREN) {
+				if (token != LexicalAnalyzer.WORD
+						&& token != LexicalAnalyzer.LEFT_PAREN) {
 					// print error message and throw SyntaxException
 					expect(LexicalAnalyzer.Beginning);
 				} // if
@@ -152,7 +150,7 @@ public class RegularExpressionParser {
 
 			case LexicalAnalyzer.STAR:
 				c = new Star(c);
-				token = lexer.nextToken();
+				lexer.nextToken();
 				if (token != LexicalAnalyzer.EOF)
 					contin = true;
 				break;
@@ -179,7 +177,7 @@ public class RegularExpressionParser {
 
 		}
 
-		if (Regular.debugAll)
+		if (/*Regular.debugAll*/true)
 			System.out.println("Succesful parsing of " + c);
 
 		return c;
@@ -509,4 +507,3 @@ public class RegularExpressionParser {
 	}
 
 } // class RegularExpressionParser
-
