@@ -60,9 +60,10 @@ public class Example01 {
 		
 			/*
 			 * STEP 3: 
-			 * here we set N to 3
+			 * we let miniEugene solve the constraints
+			 * with a given length of the designs of 3
 			 */
-			me.solve(rules, 1);     
+			me.solve(rules, 3);     
 
 		} catch(EugeneException e) {
 			/*

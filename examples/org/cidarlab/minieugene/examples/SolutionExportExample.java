@@ -48,13 +48,15 @@ public class SolutionExportExample {
 
 	public static void main(String[] args) {
 		/*
-		 * first, instantiate miniEugene
+		 * STEP 1:
+		 * Instantiating miniEugene
 		 */
 		MiniEugene me = new MiniEugene();
 		
 		/*
-		 * then, define some rules 
-		 * (in a String array)
+		 * STEP 2:
+		 * specify some rules and put them 
+		 * into a String array (String[])
 		 */
 		String[] rules = {
 				"CONTAINS a", "CONTAINS b", "CONTAINS c", 
@@ -67,50 +69,48 @@ public class SolutionExportExample {
 				"j BEFORE k", "k BEFORE l"};
 		try {
 			
-			/*
-			 * let miniEugene solve the problem
-			 * N=12 and we'd like to have 20 solutions
+			/* STEP 3:
+			 * Ask miniEugene to solve the constraints
+			 * for a design length of 12 and
+			 * we'd like to have 20 solutions
 			 */
 			me.solve(rules, 12, 20);
 
 		} catch(Exception e) {
 			e.printStackTrace();
-		}		
-			
-		/*
-		 * print the number of solutions
-		 * (should be equal to 20)
-		 */
-		if(null != me.getSolutions()) {
-			System.out.println("Number of Solutions: "+me.getSolutions().size());
 		}
 		
-		/*
-		 * export the solutions using miniEugene's SolutionExporter
+		/* STEP 4:
+		 * we instantiate miniEugene's SolutionExporter
 		 */
 		SolutionExporter se = new SolutionExporter(
 				me.getSolutions(), me.getInteractions());
 		
-		// Pigeon
+		/*
+		 * we visualize the solutions using Pigeon
+		 */
 		try {
 			URI pigeonURI = se.toPigeon();
 			System.out.println(pigeonURI.toString());
 		} catch(EugeneException ee) {
 			ee.printStackTrace();
 		}
-		
-		// SBOL Export
+
+		/*
+		 * we export the solutions to SBOL
+		 */
 		try {
 			se.toSBOL("./examples/solutions.sbol");
 		} catch(EugeneException ee) {
 			ee.printStackTrace();
 		}
 
-		// Eugene
+		/*
+		 * we export the solutions to Eugene
+		 */
 		try {
 			se.toEugene("./examples/solutions.eug");
 		} catch (EugeneException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

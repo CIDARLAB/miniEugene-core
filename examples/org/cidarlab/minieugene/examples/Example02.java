@@ -43,13 +43,15 @@ public class Example02 {
 
 	public static void main(String[] args) {
 		/*
-		 * first, instantiate miniEugene
+		 * STEP 1:
+		 * Instantiating miniEugene
 		 */
 		MiniEugene me = new MiniEugene();
 		
 		/*
-		 * then, define some rules 
-		 * (in a String array)
+		 * STEP 2:
+		 * specify some rules and put them 
+		 * into a String array (String[])
 		 */
 		String[] rules = {
 				"CONTAINS a", "CONTAINS b", "CONTAINS c", 
@@ -62,9 +64,10 @@ public class Example02 {
 				"j BEFORE k", "k BEFORE l"};
 		try {
 			
-			/*
-			 * let miniEugene solve the problem
-			 * N=12 and we'd like to have 20 solutions
+			/* STEP 3:
+			 * Ask miniEugene to solve the constraints
+			 * for a design length of 12 and
+			 * we'd like to have 20 solutions
 			 */
 			me.solve(rules, 12, 20);
 
@@ -72,16 +75,16 @@ public class Example02 {
 			e.printStackTrace();
 		}		
 			
-		/*
-		 * print the number of solutions
-		 * (should be equal to 20)
+		/* STEP 4:
+		 * ask miniEugene for the solutions and
+		 * process them.
 		 */
 		if(null != me.getSolutions()) {
 			System.out.println("Number of Solutions: "+me.getSolutions().size());
 		}
 		
-		/*
-		 * dump the statistics
+		/* 
+		 * also, we want to know more about the statistics
 		 */
 		if(null != me.getStatistics()) {
 			me.getStatistics().print();
