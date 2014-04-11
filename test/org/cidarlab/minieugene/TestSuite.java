@@ -231,9 +231,10 @@ public class TestSuite {
 
 //		new TestSuite().testAll("./tests");
 		
-		new TestSuite().test("N=4.sequence p,[[r,c],t]+.");
-		new TestSuite().test("N=4.sequence p,[[r,c],t]*.");
-		new TestSuite().test("N=4. sequence p, c+, t.");
+//		new TestSuite().test("N=4.sequence p,[[r,c],t]+.");
+//		new TestSuite().test("N=4.sequence p,[[r,c],t]*.");
+//		new TestSuite().test("N=4. sequence p, c+, t.");
+		new TestSuite().test("N=1. sequence p, c, t.");
 
 		
 		/*

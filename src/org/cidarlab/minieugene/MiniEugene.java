@@ -352,7 +352,6 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
-			e.printStackTrace();
 			throw new EugeneException(e.getMessage());
 		}
 	}

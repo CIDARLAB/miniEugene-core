@@ -165,7 +165,6 @@ public class JaCoPSolver
 							(InteractionPredicate)predicate);
 				} 
 				
-				
 				PrimitiveConstraint constraint = predicate.toJaCoP(
 						this.store, variables);
 				
@@ -180,8 +179,7 @@ public class JaCoPSolver
 				}
 
 			} catch(Exception e) {
-				e.printStackTrace();
-				throw new EugeneException("I cannot impose "+predicate);
+				throw new EugeneException(e.getMessage());
 			}
 		}
 	}
