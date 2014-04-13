@@ -47,7 +47,7 @@ public class AlwaysNextTo
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
 
-		System.out.println("imposing "+this.toString());
+//		System.out.println("imposing "+this.toString());
 		
 		int N = variables[Variables.PART].length;
 		int a = this.getA().getId();

@@ -23,21 +23,36 @@ public class TestSuite {
 		 * naming of rule operands
 		 */
 //		new TestSuite().test(new File("./tests/operand-naming.eug"));
-		//new TestSuite().test(new File("./tests/bryan/ex1"));
-		//new TestSuite().test(new File("./tests/bryan/ex2"));
-		//new TestSuite().test(new File("./tests/bryan/ex3"));
+//		new TestSuite().test(new File("./tests/bryan/ex1"));
+//		new TestSuite().test(new File("./tests/bryan/ex2"));
+//		new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
 
 		
 		/*
 		 * COUNTING RULES
 		 */
+		// CONTAINS
+//		new TestSuite().test("N=4.CONTAINS p.CONTAINS c.");
 		
 		// SAME_COUNT
 //		new TestSuite().test(new File("./tests/counting/same_count01"));
 //		new TestSuite().test(new File("./tests/counting/same_count02"));
 //		new TestSuite().test(new File("./tests/counting/same_count03"));
 
+		// EXACTLY
+//		new TestSuite().test("N=1. r1 exactly 1.");
+		
+//		new TestSuite().test("N=6.ALL_FORWARD.rc_ EXACTLY 1.rc_ AFTER rc.p DRIVES rc.p DRIVES rc_.p DRIVES r.t SOME_AFTER rc_.");
+//		new TestSuite().test("N=10.CONTAINS p.contains c.contains t.p drives c.p same_orientation t.[0] equals p.[1] equals c.");
+//		new TestSuite().test("N=8.CONTAINS c.STARTSWITH p OR STARTSWITH t.ENDSWITH p OR ENDSWITH t.c NEXTTO r. r BEFORE c.p SOME_BEFORE r.r SOME_BEFORE p.t SOME_AFTER c. t SOME_BEFORE p.");
+//		new TestSuite().test("N=16."+
+//				"P1 EXACTLY 1.r1 EXACTLY 1.c1 EXACTLY 1.T1 EXACTLY 1.ALL_FORWARD.STARTSWITH P1."+
+//				"r1 NEXTTO c1.c1 NEXTTO T1.P1 NEXTTO r1.P2 EXACTLY 1.r2 EXACTLY 1.c2 EXACTLY 1.T2 EXACTLY 1.ALL_FORWARD."+
+//				"P1 BEFORE P2.r2 NEXTTO c2.r2 BEFORE c2.c2 NEXTTO T2.P2 NEXTTO r2.P2 EXACTLY 1.r3 EXACTLY 1.c3 EXACTLY 1."+
+//				"T3 EXACTLY 1.ALL_FORWARD.P2 BEFORE P3.r3 NEXTTO c3.r3 BEFORE c3.c3 NEXTTO T3.P3 NEXTTO r3.P4 EXACTLY 1.r4 EXACTLY 1."+
+//				"c4 EXACTLY 1.T4 EXACTLY 1.ALL_FORWARD.P3 BEFORE P4.r4 NEXTTO c4.r4 BEFORE c4.c4 NEXTTO T4.P4 NEXTTO r4."+
+//				"cTetR REPRESSES PTetR.cLacI REPRESSES PLacI.");
 		/*
 		 * CALCULATE minN
 		 */
@@ -46,7 +61,7 @@ public class TestSuite {
 		/*
 		 * BEFORE
 		 */
-//		new TestSuite().test(new File("./tests/before/before01"));
+//		new TestSuite().test("N=2.a before b.");
 //		
 		/*
 		 * THEN
@@ -54,7 +69,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/then/then01"));
 //		new TestSuite().test(new File("./tests/then/then02"));
 //		new TestSuite().test(new File("./tests/then/then03"));
-
+//
 //		new TestSuite().test(new File("./tests/swati/test01"));
 
 
@@ -73,6 +88,23 @@ public class TestSuite {
 		 * PAIRING RULES
 		 */
 //		new TestSuite().test(new File("./tests/pairing/always_nextto01"));
+		
+		// EQUALS
+		
+		// solely indices
+//		new TestSuite().test("N=2.contains p.[0] equals [1].");
+//		new TestSuite().test("N=2.contains p.[1] equals [0].");
+//		new TestSuite().test("N=3.contains p.contains c.[1] equals [0].");
+//		new TestSuite().test("N=3.contains p.contains c.[1] equals [2].");
+//		new TestSuite().test("N=3.contains p.contains c.[0] equals [1] or [1] equals [2].");
+
+		// invalid indices
+//		new TestSuite().test("N=3.contains p.contains c.[3] equals [-1].");
+
+		// indices + components
+//		new TestSuite().test("N=2.[0] equals p or [0] equals c.[1] equals c or [1] equals p.");
+		
+		// NOTEQUALS
 
 		/*
 		 * ORIENTATION RULES
@@ -187,14 +219,13 @@ public class TestSuite {
 //		new TestSuite().test("N=3. all_forward. template [p1|p2].");
 //		new TestSuite().test("N=3. all_forward. template [p1|p2|p3].");
 //		new TestSuite().test("N=3. all_forward. template [p1|p2|p3|p4].");
-//		
+//
 //		new TestSuite().test("N=2. all_forward. template [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=4. all_forward. template [p1|p2], [r1|r2].");
 //		new TestSuite().test("N=6. all_forward. template [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=8. all_forward. template [p1|p2], [r1|r2].");
 //
 //		new TestSuite().test("N=3. template [p1|p2], [p2|p3], [p4|p5].");
-//		
 //		new TestSuite().test("N=3. all_forward. template [p1|p2|p3], [r1|r2|r3], [p1|p2|p3].");
 		
 		
@@ -234,7 +265,7 @@ public class TestSuite {
 //		new TestSuite().test("N=4.sequence p,[[r,c],t]+.");
 //		new TestSuite().test("N=4.sequence p,[[r,c],t]*.");
 //		new TestSuite().test("N=4. sequence p, c+, t.");
-		new TestSuite().test("N=1. sequence p, c, t.");
+//		new TestSuite().test("N=1. sequence p, c, t.");
 
 		
 		/*
@@ -242,8 +273,8 @@ public class TestSuite {
 		 */
 		
 		// NOR GATES
-//		new TestSuite().test(new File("./designs/nor-orientations"));
-//		new TestSuite().test(new File("./designs/nor-events"));
+		new TestSuite().test(new File("./designs/nor-orientations"));
+		new TestSuite().test(new File("./designs/nor-events"));
 		
 		
 		// INVERTERS
@@ -297,6 +328,8 @@ public class TestSuite {
 		long t1 = -1;
 		long tProcessing = -1;
 		
+		System.out.println("**** "+script+" ****");
+		
 		try {
 			/*
 			 * read the file
@@ -314,8 +347,6 @@ public class TestSuite {
 			return;
 		}
 
-//		MiniEugeneReturn mer = new MiniEugene(-1, -1, false).execute(script);
-			
 		me.getStatistics().print();
 
 		if(me.getSolutions() == null || me.getSolutions().isEmpty() ) {
@@ -328,11 +359,11 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// PIGEON
-//			URI pig = se.toPigeon();
-//			WeyekinPoster.launchPage(pig);
+			URI pig = se.toPigeon();
+			WeyekinPoster.launchPage(pig);
 			
 			// EUGENE
-			se.toEugene("./designs/templating/xxx_rev1.eug");
+//			se.toEugene("./designs/templating/xxx_rev1.eug");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -344,7 +375,7 @@ public class TestSuite {
 		
 		
 		// CONSOLE OUTPUT
-		se.toConsole();
+//		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

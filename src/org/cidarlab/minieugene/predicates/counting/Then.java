@@ -1,9 +1,10 @@
-package org.cidarlab.minieugene.predicates.pairing;
+package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.pairing.PairingPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.Count;

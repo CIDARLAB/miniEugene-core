@@ -1,5 +1,6 @@
 package org.cidarlab.minieugene;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.cidarlab.minieugene.builder.PredicateBuilder;
@@ -13,6 +14,7 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
+import org.cidarlab.minieugene.predicates.pairing.Equals;
 import org.cidarlab.minieugene.predicates.templating.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -52,7 +54,7 @@ public class Interp {
 	
 	public Predicate interpreteRule(String[] tokens) 
 			throws EugeneException {
-		
+
 		switch(tokens.length) {
 		case 1:
 			/*
@@ -198,22 +200,40 @@ public class Interp {
 		} else if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X) ||
 				RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
 				
-			if(!(a.startsWith("[") && a.endsWith("]") &&
-				 b.startsWith("[") && b.endsWith("]"))) {
-				throw new EugeneException("Invalid "+X+" rule!");
+			// [i] EQUALS [j]
+			if((a.startsWith("[") && a.endsWith("]") &&
+				b.startsWith("[") && b.endsWith("]"))) {
+				/*
+				 * next, we need to get the index out of the strings a and b
+				 */
+				a = a.substring(1, a.length()-1);
+				b = b.substring(1, b.length()-1);
+				
+				int idxA = this.toIndex(a);
+				int idxB = this.toIndex(b);
+				
+				if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
+					return this.pb.buildIndexedBinary(idxA, X, idxB);
+				} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
+					return new LogicalNot(this.pb.buildIndexedBinary(idxA, X, idxB));
+				}
+				
+			// [i] EQUALS p	
+			} else if(a.startsWith("[") && a.endsWith("]") && 
+					!b.startsWith("[") && !b.endsWith("]")) {
+
+				a = a.substring(1, a.length()-1);
+				int idxA = this.toIndex(a);
+								
+				if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
+					return new Equals(idxA, this.symbols.get(this.symbols.put(b)));
+				} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
+					return new LogicalNot(new Equals(idxA, this.symbols.get(this.symbols.put(b))));
+				}
 			}
 			
+			throw new EugeneException("Invalid EQUALS rule!");
 			
-			/*
-			 * next, we need to get the index out of the strings a and b
-			 */
-			a = a.substring(1, a.length()-1);
-			b = b.substring(1, b.length()-1);
-			
-			int idxA = this.toIndex(a);
-			int idxB = this.toIndex(b);
-			
-			return this.pb.buildIndexedBinary(idxA, X, idxB);
 			
 		} else if(EugeneRules.isInteractionRule(X)) {
 			

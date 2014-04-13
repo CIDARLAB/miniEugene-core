@@ -245,7 +245,7 @@ public class MiniEugene
 	 * @param script
 	 * @return
 	 */
-	private LogicalAnd parse(String script) 
+	public LogicalAnd parse(String script) 
 			throws EugeneException {
 		
 		// Lexer
@@ -318,9 +318,11 @@ public class MiniEugene
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
 			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, possibleSolutions);
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
-			this.stats.add(EugeneConstants.MINIMUM_LENGTH_OF_DESIGN, la.getMinN());
 			this.stats.add(EugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 
+			// TODO
+//			this.stats.add(EugeneConstants.MINIMUM_LENGTH_OF_DESIGN, la.getMinN());
+			
 			/*
 			 * ACT
 			 */
@@ -400,5 +402,13 @@ public class MiniEugene
 		return null;
 	}
 	
+	
+	public LogicalAnd getCNF(String script) 
+			throws EugeneException {
+		// first, we clear the symbol tables
+		this.symbols.clear();
+		
+		return this.parse(script);
+	}
 
 }
