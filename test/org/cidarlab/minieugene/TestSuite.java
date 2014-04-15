@@ -1,9 +1,15 @@
 package org.cidarlab.minieugene;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
+import java.util.UUID;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.util.FileUtil;
@@ -294,6 +300,10 @@ public class TestSuite {
 //		new TestSuite().test(new File("./designs/web-site/toggle-switch"));
 //		new TestSuite().test(new File("./designs/web-site/nor"));
 		
+		/*
+		 * Poojah and Devina's Senior Project
+		 */
+		new TestSuite().test("N=9.template pJ23104_AB, rBCD2_BC, [cE1010m_CD|cE0040m_CD], tB0015_DE, pJ23104_EB, rBCD2_BC, [cE1010m_CD|cE0040m_CD], tB0015_DF, DVL2.[2] NOTEQUALS [6]. all_forward.");
 		
 //		new TestSuite().test(new File("./designs/nor"));
 
@@ -365,9 +375,10 @@ public class TestSuite {
 			// ACT -> GraphViz
 //			URI act = me.visualizeACT();
 				
-			// PIGEON
-			URI pig = se.toPigeon();
-			WeyekinPoster.launchPage(pig);
+			// way better than PIGEON 
+			Image pic = se.pigeonize("./images/"+UUID.randomUUID().toString()+".png", null, false);
+//			se.show(pic);
+			//WeyekinPoster.launchPage(pig);
 			
 			// EUGENE
 //			se.toEugene("./designs/templating/xxx_rev1.eug");
@@ -382,12 +393,13 @@ public class TestSuite {
 		
 		
 		// CONSOLE OUTPUT
-		se.toConsole();
+//		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		
 		//new Eugene(sFile);
 	}
+	
 	
 	public void test(File f) 
 			throws IOException {

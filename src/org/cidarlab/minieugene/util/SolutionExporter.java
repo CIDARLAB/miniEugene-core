@@ -1,12 +1,21 @@
 package org.cidarlab.minieugene.util;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
@@ -32,7 +41,7 @@ public class SolutionExporter {
 	// interactions
 	private Set<Interaction> interactions;
 	
-	private static final int NR_OF_PIGEON = 10;
+	private static final int NR_OF_PIGEON = 25;
 	private static final int NR_OF_SBOL = 1000;
 	private static final String NEWLINE = System.getProperty("line.separator");
 	
@@ -88,7 +97,91 @@ public class SolutionExporter {
 		return URI.create("");
 	}
 
+	public Image pigeonize(String filename, Map<String, Integer> colors, boolean label) 
+			throws EugeneException {
+
+		if(null != solutions) {
+			
+			try {
+	        	Pigeonizer pigeon = new Pigeonizer(colors, label);
+	            
+	        	List<URI> uris = new ArrayList<URI>();
+	            /* 
+	             * we visualize up to NR_OF_PIGEON designs 
+	             */
+	        	List<Component[]> sols = this.solutions;
+	        	if(this.solutions.size() > NR_OF_PIGEON) {
+	        		sols = this.getRandomSolutions(NR_OF_PIGEON); 
+	        	}
+	        	
+	        	for(Component[] solution : sols) {
+	        		uris.add(pigeon.pigeonizeSingle(solution, this.interactions));
+	        	}
+	        	
+	        	return pigeonize(uris, filename);
+	        	// here, we need to merge all images...
+	        	
+	        } catch(Exception e) {
+//	        	e.printStackTrace();
+	            throw new EugeneException(e.getMessage());
+	        }
+		}
+		
+        throw new EugeneException("nothing to better visualize!");
+	}
 	
+	private Image pigeonize(List<URI> uris, String filename) 
+			throws EugeneException {
+
+		try {
+			int w = 0;
+			int h = 0;
+			
+			List<BufferedImage> images = new ArrayList<BufferedImage>();
+			
+			int idx = 0;
+			for(URI uri : uris) {
+
+				images.add(ImageIO.read(uri.toURL()));
+				
+				// create the new image, canvas size is the max. of both image sizes
+				if(w < images.get(idx).getWidth()) {
+					w = images.get(idx).getWidth();
+				}
+				
+				h += images.get(idx).getHeight();
+				
+				idx++;
+			}
+	
+			BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+			Graphics g = combined.getGraphics();
+			int ch = 0;
+			for(BufferedImage img : images) {
+				g.drawImage(img, 0, ch, null);
+				ch += img.getHeight();
+			}
+
+			File pic = new File(filename);
+			ImageIO.write(combined, "PNG", new File(filename));
+			
+			return ImageIO.read(pic);
+		} catch(Exception e) {
+			throw new EugeneException(e.getMessage());
+		}
+	}
+	
+	public void show(Image img) {
+		JFrame frame = new JFrame();
+		
+		// TODO: get image width + height
+        frame.setSize(300, 300);
+        JLabel label = new JLabel(new ImageIcon(img));
+        frame.add(label);
+        frame.setVisible(true);
+	}
+
 	/**
 	 * toSBOL takes as input the name of the SBOL file into 
 	 * which the solutions will be serialized following 

@@ -204,7 +204,18 @@ public class JaCoPSolver
 		List<Sequence> sequences = new ArrayList<Sequence>();
 		for(Predicate predicate : and.getPredicates()) {
 			if(predicate instanceof Sequence) {
-				sequences.add((Sequence)predicate);
+				
+				Sequence seq = (Sequence)predicate;
+				
+				// analyse the sequence
+				for(List<Component> lst : seq.getComponents()) {
+					if(lst.size() > 1) {
+						// we cannot optimize this right now
+						return;
+					}
+				}
+				
+				sequences.add(seq);
 			}
 		}
 		
@@ -223,6 +234,7 @@ public class JaCoPSolver
 		for(Sequence seq : lstPerm.get(0)) {
 			max_cols += seq.getComponents().size();
 		}
+		
 		if(max_cols == variables[Variables.PART].length) {
 			int[][] ext = new int[lstPerm.size()][max_cols];
 			int row = 0;

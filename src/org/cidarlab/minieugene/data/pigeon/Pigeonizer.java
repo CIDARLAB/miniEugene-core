@@ -1,6 +1,7 @@
 package org.cidarlab.minieugene.data.pigeon;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,14 +16,37 @@ public class Pigeonizer {
 
 	private static Map<String, Character> Eugene2PigeonMap;
 	private Map<String, Integer> colors;
-		
+	private boolean label;
+	
+	/**
+	 * 
+	 */
 	public Pigeonizer() {
 		if(Eugene2PigeonMap == null) {
 			loadMap();
 		}
 		colors = new HashMap<String, Integer>();
+		this.label = true;
 	}
 	
+	/**
+	 * 
+	 * @param colors ... the desired color coding map in that the keys are the part names and the values are the colors [1-14]  
+	 * @param label  ... if true, then do labeling
+	 */
+	public Pigeonizer( Map<String, Integer> colors, boolean label) {
+		if(Eugene2PigeonMap == null) {
+			loadMap();
+		}
+		
+		if(null == colors) {
+			this.colors = new HashMap<String, Integer>();
+		} else {
+			this.colors = colors;
+		}
+		this.label = label;
+	}
+
 	public URI pigeonize(Component[] solution) 
 			throws EugeneException {
 		
@@ -85,6 +109,34 @@ public class Pigeonizer {
 		return WeyekinPoster.getMyBirdsURL();		
 	}
 	
+	public URI pigeonizeSingle(Component[] solution, Set<Interaction> interactions) 
+			throws EugeneException {
+
+		StringBuilder sb = new StringBuilder();
+		for(Component symbol : solution) {
+			sb.append(toPigeon(symbol)).append("\r\n");
+		}
+
+		/*
+		 * finally, we add the arcs line
+		 */
+		sb.append("# Arcs").append("\r\n");
+		
+		/*
+		 * here, we iterate of the interactions
+		 */
+		if(null != interactions && !(interactions.isEmpty())) {
+			Iterator<Interaction> it = interactions.iterator();
+			while(it.hasNext()) {
+				sb.append((it.next()).toPigeon()).append("\r\n");
+			}
+		}
+		
+		WeyekinPoster.setPigeonText(sb.toString());	
+		return WeyekinPoster.getMyBirdsURL();		
+	}
+
+	
 	private String toPigeon(Component symbol) {
 
 		String s = symbol.getName();
@@ -131,12 +183,21 @@ public class Pigeonizer {
 			sb.append(" ").append(s).append(" ").append(getColor(s));
 		}
 		
+		if(!this.label) {
+			sb.append(" nl");
+		}
 		return sb.toString();
 	}
 	
 	private int getColor(String s) {
 		if(this.colors.containsKey(s)) {
-			return colors.get(s);
+			int color = colors.get(s);
+			if(color <= 1) {
+				return 1;
+			} else if(color >= 14) {
+				return 14;
+			}
+			return color;
 		}
 		/*
 		 * otherwise, we put the name into the coloring map
