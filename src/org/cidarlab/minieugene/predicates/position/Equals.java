@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.predicates.pairing;
+package org.cidarlab.minieugene.predicates.position;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
@@ -11,19 +11,21 @@ import JaCoP.constraints.Not;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XeqY;
+import JaCoP.constraints.XneqC;
+import JaCoP.constraints.XneqY;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 /**
- * [i] EQUALS [j] ... the elements at position i and j must be equal regarding name, type, and orientation
- * [i] EQUALS p   ... the element at position i must be p
+ * [i] EQUALS [j] ... the elements at index i and j must be equal regarding name and type
+ * [i] EQUALS p   ... the element at index i must be p
  * 
  * @author Ernst Oberortner
  *
  */
 public class Equals 
 	extends BinaryPredicate 
-	implements PairingPredicate {
+	implements PositioningPredicate {
 	
 	private int i;
 	private int j;
@@ -48,19 +50,23 @@ public class Equals
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws EugeneException {
+		
 		if(-1 == this.j) {
 			return new XeqC(variables[Variables.PART][i], this.getA().getId());
-		} else {
-			return new And(
-				new XeqY(variables[Variables.PART][i], variables[Variables.PART][j]),
-				new XeqY(variables[Variables.ORIENTATION][i], variables[Variables.ORIENTATION][j]));
 		}
+		
+		return new XeqY(variables[Variables.PART][i], variables[Variables.PART][j]);
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		return new Not(this.toJaCoP(store, variables));
+		
+		if(-1 == this.j) {
+			return new XneqC(variables[Variables.PART][i], this.getA().getId());
+		}
+		
+		return new XneqY(variables[Variables.PART][i], variables[Variables.PART][j]);
 	}
 
 }

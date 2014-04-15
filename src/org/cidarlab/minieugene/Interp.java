@@ -14,7 +14,7 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
-import org.cidarlab.minieugene.predicates.pairing.Equals;
+import org.cidarlab.minieugene.predicates.position.Equals;
 import org.cidarlab.minieugene.predicates.templating.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -213,9 +213,9 @@ public class Interp {
 				int idxB = this.toIndex(b);
 				
 				if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
-					return this.pb.buildIndexedBinary(idxA, X, idxB);
+					return new Equals(idxA, idxB);
 				} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
-					return new LogicalNot(this.pb.buildIndexedBinary(idxA, X, idxB));
+					return new LogicalNot(new Equals(idxA, idxB));
 				}
 				
 			// [i] EQUALS p	

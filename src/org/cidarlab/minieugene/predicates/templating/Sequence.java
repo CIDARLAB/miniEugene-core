@@ -10,10 +10,14 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
+import JaCoP.constraints.Constraint;
 import JaCoP.constraints.DecomposedConstraint;
+import JaCoP.constraints.Diff2;
+import JaCoP.constraints.Element;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.Rectangle;
 import JaCoP.constraints.Stretch;
 import JaCoP.constraints.XeqC;
 import JaCoP.core.IntVar;
@@ -47,80 +51,80 @@ public class Sequence
 			return this.toJaCoPNot(store, variables);
 		}
 		
-//		int maxN = variables[Variables.PART].length;
-//
-//		if(maxN < this.getComponents().size()) {
-//			throw new EugeneException(
-//					"The length of the design ("+maxN+") is less than the sequence size ("+this.getComponents().size()+")");
-//		}
-		return createSequence(variables);
+		return createSequence(store, variables);
 	}
 	
-//	private DecomposedConstraint createStretch(IntVar[][] variables) {
-//		int N = variables[Variables.PART].length;
-//		
-//		int[] values = new int[this.getComponents().size()];
-//		int[] min = new int[this.getComponents().size()];
-//		int[] max = new int[this.getComponents().size()];
-//		for(int i=0; i<N; i++) {
-//			values[i] = this.getComponents().get(i).get(0).getId();
-//			min[i] = 1;
-//			max[i] = 1;			
-//		}
-//		
-//		return new Stretch(values, min, max, variables[Variables.PART]);
-////		return null;
-//	}
 	
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
 		return new Not(
-				createSequence(variables));
+				createSequence(store, variables));
 	}
 	
-	private PrimitiveConstraint createSequence(IntVar[][] variables) 
+	
+	private PrimitiveConstraint createSequence(Store store, IntVar[][] variables) 
 			throws EugeneException {
 		
 		int N = variables[Variables.PART].length;
-		
+
 		PrimitiveConstraint[] pc = null;
 		for(int i=0; i + this.getComponents().size() <= N; i++) {
 			
+			// elements
 			List<Component> lst_ci = this.getComponents().get(0);
 			
 			PrimitiveConstraint[] pcTemplate = new PrimitiveConstraint[this.getComponents().size() - 1];
 			for(int j=1; j<this.getComponents().size(); j++) {
 				List<Component> lst_cj = this.getComponents().get(j);
 				
-				PrimitiveConstraint[] pcSelection = new PrimitiveConstraint[lst_cj.size()];
-				int k=0;
-				for(Component cj : this.getComponents().get(j)) {
-					pcSelection[k++] = new XeqC(variables[Variables.PART][j+i], cj.getId());
+				if(lst_cj.size() > 1) {
+					PrimitiveConstraint[] pcSelection = new PrimitiveConstraint[lst_cj.size()];
+					int k=0;
+					for(Component cj : this.getComponents().get(j)) {
+						pcSelection[k++] = new XeqC(variables[Variables.PART][j+i], cj.getId());
+					}
+	
+					pcTemplate[j-1] = new Or(pcSelection);
+				} else {
+					pcTemplate[j-1] = new XeqC(variables[Variables.PART][j+i], lst_cj.get(0).getId());
 				}
-
-				pcTemplate[j-1] = new Or(pcSelection);
 
 			}
 			
-			// SELECTION
-			PrimitiveConstraint[] pcSelection = new PrimitiveConstraint[lst_ci.size()];
-			int k=0;
-			for(Component ci : lst_ci) {
-				pcSelection[k++] = new XeqC(variables[Variables.PART][i], ci.getId());
-			}
-
-			if(pc == null) {
-				pc = new PrimitiveConstraint[1];
-				pc[0] =	new And(
-							new Or(pcSelection),
-							new And(pcTemplate)); 
+			if(lst_ci.size() > 1) {
+				// SELECTION
+				PrimitiveConstraint[] pcSelection = new PrimitiveConstraint[lst_ci.size()];
+				int k=0;
+				for(Component ci : lst_ci) {
+					pcSelection[k++] = new XeqC(variables[Variables.PART][i], ci.getId());
+				}
+	
+				if(pc == null) {
+					pc = new PrimitiveConstraint[1];
+					pc[0] =	new And(
+								new Or(pcSelection),
+								new And(pcTemplate)); 
+				} else {
+					pc = ArrayUtils.add(pc, 
+						new And(
+								new Or(pcSelection),
+								new And(pcTemplate)));
+				}
 			} else {
-				pc = ArrayUtils.add(pc, 
-					new And(
-							new Or(pcSelection),
-							new And(pcTemplate)));
+				if(pc == null) {
+					pc = new PrimitiveConstraint[1];
+					pc[0] =	new And(
+								new XeqC(variables[Variables.PART][i], lst_ci.get(0).getId()),
+								new And(pcTemplate)); 
+				} else {
+					pc = ArrayUtils.add(pc, 
+						new And(
+								new XeqC(variables[Variables.PART][i], lst_ci.get(0).getId()),
+								new And(pcTemplate)));
+				}
 			}
+			
 		}
 
 		if(null == pc) {

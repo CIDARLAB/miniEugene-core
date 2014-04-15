@@ -105,7 +105,13 @@ public class TestSuite {
 //		new TestSuite().test("N=2.[0] equals p or [0] equals c.[1] equals c or [1] equals p.");
 		
 		// NOTEQUALS
+//		new TestSuite().test("N=2.contains p.[0] notequals [1].");   // no solution
+//		new TestSuite().test("N=2.contains p.[1] notequals [0].");   // no solution
+//		new TestSuite().test("N=3.all_forward.contains p.contains c.[0] notequals [1].[1] notequals [2]."); 
+//		new TestSuite().test("N=3.all_forward.contains p.contains c.contains t.[0] notequals [1].[1] notequals [2]."); 
 
+//		new TestSuite().test("N=3.contains p.contains c.[0] equals [1].[1] notequals [2].all_forward p."); 
+		
 		/*
 		 * ORIENTATION RULES
 		 */		
@@ -194,6 +200,7 @@ public class TestSuite {
 //		new TestSuite().test("N=12. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
 		
 		// SEQUENCES
+//		new TestSuite().test("N=2.sequence p, c.");
 //		new TestSuite().test("N=3.contains X. all_forward. sequence p, c.");
 //		new TestSuite().test("N=3.contains X. all_forward. sequence [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=50.X exactly 48. all_forward. sequence [p1|p2], [c1|c2].");
@@ -273,8 +280,8 @@ public class TestSuite {
 		 */
 		
 		// NOR GATES
-		new TestSuite().test(new File("./designs/nor-orientations"));
-		new TestSuite().test(new File("./designs/nor-events"));
+//		new TestSuite().test(new File("./designs/nor-orientations"));
+//		new TestSuite().test(new File("./designs/nor-events"));
 		
 		
 		// INVERTERS
@@ -375,7 +382,7 @@ public class TestSuite {
 		
 		
 		// CONSOLE OUTPUT
-//		se.toConsole();
+		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

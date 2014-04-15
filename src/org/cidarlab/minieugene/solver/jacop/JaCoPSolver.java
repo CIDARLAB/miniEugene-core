@@ -1,7 +1,10 @@
 package org.cidarlab.minieugene.solver.jacop;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
@@ -10,13 +13,18 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
+import org.cidarlab.minieugene.predicates.templating.Sequence;
 import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.constraints.And;
+import JaCoP.constraints.ExtensionalSupportVA;
 import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.Reified;
 import JaCoP.constraints.XeqC;
+import JaCoP.core.BooleanVar;
 import JaCoP.core.Domain;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
@@ -63,7 +71,13 @@ public class JaCoPSolver
     	 */
     	if(null != and) {
     		this.imposeConstraints(variables, and);
+
+        	/*
+        	 * and let's try to do some optimizations
+        	 */
+    		this.optimize(variables, and);
     	}
+    	
     	
     	/*
     	 * for testing: print the store's information
@@ -121,7 +135,6 @@ public class JaCoPSolver
 			variables[Variables.ORIENTATION][i] = new IntVar(store, "O"+i);
 			
 			PrimitiveConstraint[] pc = new PrimitiveConstraint[symbols.length];
-			
 			for(int j=0; j<symbols.length; j++) {						
 				variables[Variables.PART][i].addDom(symbols[j].getId(), symbols[j].getId());
 				variables[Variables.TYPE][i].addDom(symbols[j].getTypeId(), symbols[j].getTypeId());
@@ -130,12 +143,13 @@ public class JaCoPSolver
 				 * we also impose constraints that part and type match
 				 * so we avoid various permutations were the part and type do not match
 				 */
-				pc[j] = new IfThen(
+				pc[j] = 
+						new IfThen(
 								new XeqC(variables[Variables.PART][i], symbols[j].getId()),
 								new XeqC(variables[Variables.TYPE][i], symbols[j].getTypeId()));
 			}
 			store.impose(new And(pc));
-
+			
 			variables[Variables.ORIENTATION][i].addDom(-1, -1);
 			variables[Variables.ORIENTATION][i].addDom( 1,  1);
 				/*
@@ -182,6 +196,95 @@ public class JaCoPSolver
 				throw new EugeneException(e.getMessage());
 			}
 		}
+	}
+	
+	public void optimize(IntVar[][] variables, LogicalAnd and) 
+			throws EugeneException {
+			
+		List<Sequence> sequences = new ArrayList<Sequence>();
+		for(Predicate predicate : and.getPredicates()) {
+			if(predicate instanceof Sequence) {
+				sequences.add((Sequence)predicate);
+			}
+		}
+		
+		if(!sequences.isEmpty()) {
+			this.sequenceOptimize(variables, sequences);
+		}
+	}	
+	
+	private void sequenceOptimize(IntVar[][] variables, List<Sequence> sequences) {
+				
+		// first, we permute the list of sequences
+		List<List<Sequence>> lstPerm = this.permute(sequences);
+
+		// let's try extensional support
+		int max_cols = 0;
+		for(Sequence seq : lstPerm.get(0)) {
+			max_cols += seq.getComponents().size();
+		}
+		if(max_cols == variables[Variables.PART].length) {
+			int[][] ext = new int[lstPerm.size()][max_cols];
+			int row = 0;
+			for(List<Sequence> lst : lstPerm) {
+				int col = 0;
+				for(Sequence sequence : lst) {
+					for(int i=0; i<sequence.getComponents().size(); i++) {
+						ext[row][col++] = sequence.getComponents().get(i).get(0).getId();
+					}
+				}
+				row ++;
+			}
+			store.impose(new ExtensionalSupportVA(variables[Variables.PART], ext));
+		}
+	}
+	
+	// sequence permute
+	private List<List<Sequence>> permute(List<Sequence> sequences) {
+
+        if(sequences.size()==1){
+            List<Sequence> arrayList = new ArrayList<Sequence>();
+            arrayList.add(sequences.get(0));
+            List<List<Sequence> > listOfList = new ArrayList<List<Sequence>>();
+            listOfList.add(arrayList);
+            return listOfList;
+        }
+
+        Set<Sequence> setOf = new HashSet<Sequence>(sequences);   
+
+        List<List<Sequence>> listOfLists = new ArrayList<List<Sequence>>();
+
+        for(Sequence i: sequences){
+            ArrayList<Sequence> arrayList = new ArrayList<Sequence>();
+            arrayList.add(i);
+
+            Set<Sequence> setOfCopied = new HashSet<Sequence>();
+            setOfCopied.addAll(setOf);
+            setOfCopied.remove(i);
+
+            List<Sequence> isttt = new ArrayList<Sequence>(setOfCopied);
+//            setOfCopied.toArray(isttt);
+
+            List<List<Sequence>> permute = permute(isttt);
+            Iterator<List<Sequence>> iterator = permute.iterator();
+            while (iterator.hasNext()) {
+                List<Sequence> list = iterator.next();
+                list.add(i);
+                listOfLists.add(list);
+            }
+        }   
+
+        return listOfLists;
+    }
+	
+	private PrimitiveConstraint sequenceStartsAt(IntVar[][] variables, Sequence seq, int idx) {
+		PrimitiveConstraint[] sel = new PrimitiveConstraint[seq.getComponents().get(0).size()];
+		int k=0;
+		for(Component c : seq.getComponents().get(0)) {
+			sel[k++] = new XeqC(variables[Variables.PART][idx], c.getId());
+		}
+		return new Or(sel);
+		
 	}
 	
     private Domain[][] search(IntVar[][] variables, int NR_OF_SOLUTIONS) 
