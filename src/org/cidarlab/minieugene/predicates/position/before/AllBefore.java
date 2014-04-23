@@ -17,7 +17,9 @@ import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
+import JaCoP.constraints.XltY;
 import JaCoP.constraints.XneqC;
+import JaCoP.constraints.XplusCeqZ;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -96,11 +98,30 @@ public class AllBefore
 		
 		int N = variables[Variables.PART].length;
 		
+//		/*
+//		 * POSITIONING VARIABLES
+//		 */
+//		IntVar aPosVar = (IntVar)store.findVariable(a.getName()+".position");
+//		if(null == aPosVar) {
+//			aPosVar = new IntVar(store, a.getName()+".position", 0, N-1);
+//		}
+//		IntVar bPosVar = (IntVar)store.findVariable(b.getName()+".position");
+//		if(null == bPosVar) {
+//			bPosVar = new IntVar(store, b.getName()+".position", 0, N-1);
+//		}
+//		// TODO:
+//		// work with Distance constraints!
+//		store.impose(
+//				new XltY(aPosVar, bPosVar));
+//
+//		return null;
+		
 		Contains containsA = new Contains(this.getA());
 
 		PrimitiveConstraint pc[] = new PrimitiveConstraint[N];
 		pc[0] = new IfThen(
 					containsA.toJaCoP(store, variables),
+//					new XeqC(variables[Variables.PART][0], a.getId()),
 					new XneqC(variables[Variables.PART][0], b.getId()));
 
 		for(int i=1; i<N; i++) {
@@ -122,72 +143,8 @@ public class AllBefore
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		return new Not(this.toJaCoP(store, variables));
+		return new Not(
+				this.toJaCoP(store, variables));
 	}
 	
-	/*
-	 * TODO:
-	 * check out the following two methods to integrate orientation 
-	 * into positioning rules 
-	 */
-	
-//  private PrimitiveConstraint[] PBeforeG_Forward(Store store, IntVar[][] variables) {
-//
-//  	int N = variables[Variables.TYPE].length;
-//
-//  	PrimitiveConstraint[] pc = new PrimitiveConstraint[N-1];
-//  	for(int i=1; i<N; i++) {
-//
-//	    	PrimitiveConstraint[] upstreamPromoter = new PrimitiveConstraint[i];
-//			PrimitiveConstraint[] noInterveningTerminator = new PrimitiveConstraint[i];
-//			
-//			for(int j=0; j<i; j++) {				
-//	    		upstreamPromoter[j] = new XeqC(variables[Variables.PART][j], this.getA().getId()); 
-//
-//	    		noInterveningTerminator[j] = new XneqC(variables[Variables.TYPE][j], PartTypes.get("TERMINATOR"));
-//			}
-//
-//			pc[i-1] = new IfThen(
-//							new And(
-//								new XeqC(variables[Variables.PART][i], this.getB().getId()),
-//								new Or(upstreamPromoter)),
-//							new And(noInterveningTerminator));
-//  	}
-//  	
-//  	return pc;
-//  }
-  
-//  private PrimitiveConstraint[] PAfterG_Reverse(Store store, IntVar[][] variables) {
-//  	
-//  	int N = variables[Variables.TYPE].length;
-//  	
-//  	PrimitiveConstraint[] pc = new PrimitiveConstraint[N-1];
-//  	for(int i=0; i<N-1; i++) {
-//
-//	    	PrimitiveConstraint[] upstreamPromoter = new PrimitiveConstraint[N-i];
-//			
-//			for(int j=i; j<N; j++) {				
-//	    		upstreamPromoter[j-i] = new XeqC(variables[Variables.PART][j], this.getA().getId());
-//			}
-//			
-//  		if(i != N-1) {
-//  			PrimitiveConstraint[] noInterveningTerminator = new PrimitiveConstraint[N-i-1];
-//  			for(int j=i; j<N-1; j++) {
-//  	    		noInterveningTerminator[j-i] = new XneqC(variables[Variables.TYPE][j], 4);
-//  			}
-//  			
-//  			pc[i] = new IfThen(
-//  						new XeqC(variables[Variables.PART][i], this.getB().getId()),
-//  						new And(new Or(upstreamPromoter),
-//  								new And(noInterveningTerminator)));
-//  		} else {
-//  			pc[i] = new IfThen(
-//							new XeqC(variables[Variables.PART][i], this.getB().getId()),
-//							new Or(upstreamPromoter));
-//  		}
-//  	}
-//  	
-//  	return pc;
-//  }
-
 }

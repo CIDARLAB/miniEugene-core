@@ -34,7 +34,7 @@ public class StartsWith
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.STARTSWITH).append(" ").append(this.getA());
+		sb.append(RuleOperator.STARTSWITH).append(" ").append(this.getA().getName());
 		return sb.toString();
 	}
 
@@ -42,12 +42,27 @@ public class StartsWith
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
+//		int N = (variables[Variables.PART].length);
+//		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
+//		if(null == aPosVar) {
+//			aPosVar = new IntVar(store, this.getA().getName()+".position", 0, N-1);
+//			store.impose(new XeqC(aPosVar, 0));
+//		}
+
 		return new XeqC(variables[Variables.PART][0], this.getA().getId());
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
+		
+//		int N = (variables[Variables.PART].length);
+//		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
+//		if(null == aPosVar) {
+//			aPosVar = new IntVar(store, this.getA().getName()+".position", 0, N-1);
+//			store.impose(new XneqC(aPosVar, 0));
+//		}
+		
 		return new XneqC(variables[Variables.PART][0], this.getA().getId());
 	}
 

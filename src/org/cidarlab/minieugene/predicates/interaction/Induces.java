@@ -30,7 +30,7 @@ public class Induces
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getName())
+		sb.append(this.inducer)
 			.append(" ").append(RuleOperator.INDUCES).append(" ")
 			.append(this.getB().getName());
 		return sb.toString();

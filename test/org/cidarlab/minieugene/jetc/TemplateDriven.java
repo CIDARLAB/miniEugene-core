@@ -53,10 +53,10 @@ public class TemplateDriven {
 		
 		// OUT cassettes
 		this.colors.put("rOut0", 10);
-		this.colors.put("cGFP",  10);
+		this.colors.put("cOut0", 10);
 		this.colors.put("tOut0", 10);
 		this.colors.put("rOut1", 6);
-		this.colors.put("cRFP", 6);
+		this.colors.put("cOut1", 6);
 		this.colors.put("tOut1", 6);
 
 	}
@@ -67,58 +67,61 @@ public class TemplateDriven {
 		TemplateDriven td = new TemplateDriven();
 		
 		// ITERATION 1:
-//		td.test("N=3.sequence r1, c1, t1. all_forward.");
-//		td.test("N=3.sequence r2, c2, t2. all_forward.");
-//		td.test("N=3.sequence r3, c3, t3. all_forward.");
-//		td.test("N=3.sequence r4, c4, t4. all_forward.");
-//		td.test("N=3.sequence r5, c5, t5. all_forward.");
-//		td.test("N=3.sequence rOut1, cRFP, tOut1. all_forward.");
-//		td.test("N=3.sequence rOut0, cGFP, tOut0.. all_forward.");
+		td.test("iteration1-c1", "N=3. sequence r1, c1, t1. all_forward.");
+		td.test("iteration1-c2", "N=3. sequence r2, c2, t2. all_forward.");
+		td.test("iteration1-c3", "N=3. sequence r3, c3, t3. all_forward.");
+		td.test("iteration1-c4", "N=3. sequence r4, c4, t4. all_forward.");
+		td.test("iteration1-c5", "N=3. sequence r5, c5, t5. all_forward.");
+		td.test("iteration1-cOut1", "N=3.sequence rOut1, cOut1, tOut1. all_forward.");
+		td.test("iteration1-cOut0", "N=3.sequence rOut0, cOut0, tOut0. all_forward.");
 		
 		// ITERATION 2:
 		// out1 Signal
-//		td.test("iteration2-out1",
-//				"N=14."+
-//				"all_forward." +
-//				
-//				// dark blue NOR gate
-//				"sequence pIn2, pIn1, r1, c1, t1."+
-//				
-//				// light blue NOR gate
-//				"sequence p1, p0, r2, c2, t2. "+
-//
-//				// out1 reporting device with RFP reporter
-//				"sequence pOut1, rOut1, cRFP, tOut1."+
-//
-//				// input signals of dark blue NOR gate
-//				"in2 induces pIn2. in1 induces pIn1."+
-//
-//				// input signals of light blue NOR gate
-//				"c1 represses p1. 0 induces p0. c2 represses pOut1.");
+		td.test("iteration2-out1",
+				"N=14."+
+				"all_forward." +
+				
+				// dark blue NOR gate
+				"sequence pIn2, pIn1, r1, c1, t1."+
+				
+				// light blue NOR gate
+				"sequence p1, p0, r2, c2, t2. "+
 
-//		// out0 Signal
-//		td.test("iteration2-out0",
-//				"N=19."+
-//				"all_forward." +
-//				
-//				// orange NOR gate
-//				"sequence p1, pIn2, r3, c3, t3."+
-//				
-//				// light green NOR gate
-//				"sequence pIn2, pIn0, r4, c4, t4. "+
-//
-//				"sequence p3, p4, r5, c5, t5."+
-//				
-//				// out0 reporting device with GFP reporter
-//				"sequence p5, rOut0, cGFP, tOut0."+
-//				
-//				// induces 
-//				"in2 induces pIn2. in0 induces pIn0."+
-//				
-//				// represses
-//				"c3 represses p3. c4 represses p4. c5 represses p5.");
+				// out1 reporting device with RFP reporter
+				"sequence p2, rOut1, cOut1, tOut1."+
+
+				// input signals of dark blue NOR gate
+				"in2 induces pIn2. in1 induces pIn1."+
+
+				// input signals of light blue NOR gate
+				"c1 represses p1. 0 induces p0. c2 represses pOut1." +
+				
+				// input signals of the out1 reporting cassette
+				"c2 represses p2.");
+
+		// out0 Signal
+		td.test("iteration2-out0",
+				"N=19."+
+				"all_forward." +
+				
+				// orange NOR gate
+				"sequence p1, pIn2, r3, c3, t3."+
+				
+				// light green NOR gate
+				"sequence pIn2, pIn0, r4, c4, t4. "+
+
+				"sequence p3, p4, r5, c5, t5."+
+				
+				// out0 reporting device with GFP reporter
+				"sequence p5, rOut0, cOut0, tOut0."+
+				
+				// induces 
+				"in2 induces pIn2. in0 induces pIn0."+
+				
+				// represses
+				"c3 represses p3. c4 represses p4. c5 represses p5.");
 		
-//		// ITERATION 2:
+		// ITERATION 2:
 		td.test("iteration3-penc",
 				"N=33."+
 		
@@ -134,7 +137,7 @@ public class TemplateDriven {
 				"sequence p1, p0, r2, c2, t2. "+
 
 				// out1 reporting device with RFP reporter
-				"sequence pOut1, rOut1, cRFP, tOut1."+
+				"sequence pOut1, rOut1, cOut1, tOut1."+
 
 				// input signals of dark blue NOR gate
 				"in2 induces pIn2. in1 induces pIn1."+
@@ -156,7 +159,7 @@ public class TemplateDriven {
 				"sequence p3, p4, r5, c5, t5."+
 				
 				// out0 reporting device with GFP reporter
-				"sequence p5, rOut0, cGFP, tOut0."+
+				"sequence p5, rOut0, cOut0, tOut0."+
 				
 				// induces 
 				"in2 induces pIn2. in0 induces pIn0."+
@@ -195,7 +198,7 @@ public class TemplateDriven {
 		
 		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 		try {
-			se.pigeonize("./images/acm-jetc/templates/"+name+".png", colors, false);
+			se.pigeonize("./images/acm-jetc/templates/5_"+name+".png", colors, true, 5);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

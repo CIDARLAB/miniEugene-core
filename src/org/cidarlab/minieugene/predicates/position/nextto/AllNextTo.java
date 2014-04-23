@@ -13,6 +13,7 @@ import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
+import JaCoP.constraints.XplusCeqZ;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -32,9 +33,9 @@ public class AllNextTo
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA())
+		sb.append(this.getA().getName())
 			.append(" ").append(RuleOperator.ALL_NEXTTO).append(" ")
-			.append(this.getB());
+			.append(this.getB().getName());
 		return sb.toString();
 	}
 
@@ -46,10 +47,15 @@ public class AllNextTo
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
+		
 		int a = (int)this.getA().getId();
 		int b = (int)this.getB().getId();
 		int N = variables[Variables.PART].length;
 		
+		if(N <= 1) {
+			throw new EugeneException("I cannot impose "+this.toString()+"! Invalid length of design!");
+		}
+
 		int[] idxA = new int[N];
 		for(int i=0; i<N; i++) {
 			idxA[i] = i;
@@ -58,13 +64,9 @@ public class AllNextTo
 		/*
 		 * a NEXTTO b
 		 */
-		PrimitiveConstraint[] pc = constraintIndices(variables[Variables.PART], idxA, a, b);
-//		if(null != pc) {
-//			for(int i=0; i<pc.length; i++) {
-//				store.impose(pc[i]);
-//			}
-//		}
-		
+		PrimitiveConstraint[] pc = 
+				constraintIndices(variables[Variables.PART], idxA, a, b);
+
 		return new And(pc);
 	}
 
@@ -84,11 +86,12 @@ public class AllNextTo
 				 *                     at the position immediately after
 				 */
 				pc[i] = new IfThen(
-						new XeqC(parts[idx], a),
-						new Or(
+							new XeqC(parts[idx], a),
+							new Or(
 								new XeqC(parts[idx-1], b),
 								new XeqC(parts[idx+1], b)));
 			} else if(idx == 0) {
+				
 				/*
 				 * if a is placed at the first position,
 				 * then place b at the second position
@@ -103,8 +106,8 @@ public class AllNextTo
 				 * then place b at the second last position
 				 */
 				pc[i] = new IfThen(
-								new XeqC(parts[idx], a),
-								new XeqC(parts[idx-1], b));
+							new XeqC(parts[idx], a),
+							new XeqC(parts[idx-1], b));
 			}
 		}
 		

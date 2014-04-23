@@ -9,7 +9,11 @@ public abstract class NamedElement
 	private String name;
 	
 	public NamedElement(String name) {
-		this.name = name;
+		if(null == name) {
+			this.name = "";
+		} else {
+			this.name = name;
+		}
 	}
 	
 	/**

@@ -97,7 +97,7 @@ public class SolutionExporter {
 		return URI.create("");
 	}
 
-	public Image pigeonize(String filename, Map<String, Integer> colors, boolean label) 
+	public Image pigeonize(String filename, Map<String, Integer> colors, boolean label, int N) 
 			throws EugeneException {
 
 		if(null != solutions) {
@@ -110,8 +110,9 @@ public class SolutionExporter {
 	             * we visualize up to NR_OF_PIGEON designs 
 	             */
 	        	List<Component[]> sols = this.solutions;
-	        	if(this.solutions.size() > NR_OF_PIGEON) {
-	        		sols = this.getRandomSolutions(NR_OF_PIGEON); 
+	        	
+	        	if(N != -1 && this.solutions.size() > N) {
+	        		sols = this.getRandomSolutions(N); 
 	        	}
 	        	
 	        	for(Component[] solution : sols) {

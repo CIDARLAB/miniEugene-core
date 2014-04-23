@@ -36,6 +36,7 @@ import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
+import org.cidarlab.minieugene.solver.jacop.SolutionPoolManager;
 
 
 /**
@@ -87,6 +88,7 @@ public class SymbolTables {
 		 * Abstract Composition Tree
 		 */
 		this.act = new ACT();
+		
 	}
 	
 	/* 

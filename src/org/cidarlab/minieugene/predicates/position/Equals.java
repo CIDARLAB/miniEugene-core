@@ -6,8 +6,6 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.And;
-import JaCoP.constraints.Not;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XeqY;
@@ -69,4 +67,16 @@ public class Equals
 		return new XneqY(variables[Variables.PART][i], variables[Variables.PART][j]);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(this.i).append("] ")
+			.append(this.getOperator()).append(" ");
+		if(-1 == this.j) {
+			sb.append(this.getA().getName());			
+		} else {
+			sb.append("[").append(this.j).append("]");			
+		}		
+		return sb.toString();
+	}
 }

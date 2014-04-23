@@ -51,6 +51,7 @@ public class Pigeonizer {
 			throws EugeneException {
 		
 		StringBuilder sb = new StringBuilder();
+		sb.append("fontsize 2.0\r\n");
 		for(int i=0; i<solution.length; i++) {
 			sb.append(toPigeon(solution[i])).append("\r\n");
 		}
@@ -113,6 +114,8 @@ public class Pigeonizer {
 			throws EugeneException {
 
 		StringBuilder sb = new StringBuilder();
+		sb.append("fontsize 2.0\r\n");
+
 		for(Component symbol : solution) {
 			sb.append(toPigeon(symbol)).append("\r\n");
 		}

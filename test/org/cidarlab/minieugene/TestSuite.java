@@ -34,7 +34,15 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
 
-		
+		// consistency
+//		new TestSuite().test("N=2. contains a. contains b. a before b.");
+//		new TestSuite().test("N=2. contains a. contains b. a before b. b before a.");
+//		new TestSuite().test("N=2. contains a. notcontains a.");
+//		new TestSuite().test("N=2. contains a. contains a.");
+//		new TestSuite().test("N=2. contains a. contains b. a nextto b.");
+//		new TestSuite().test("N=2. contains a. contains b. a nextto b. not a nextto b.");
+//		new TestSuite().test("N=2. contains a. contains b. a nextto b. b nextto a.");
+
 		/*
 		 * COUNTING RULES
 		 */
@@ -267,6 +275,18 @@ public class TestSuite {
 //		new TestSuite().test(new File("./designs/templating/inverter"));
 
 		/*
+		 * LARGE DESIGNS + SOLUTION LISTENER
+		 */
+//		new TestSuite().test("N=30. contains a. contains b.");
+//		new TestSuite().test("N=4. contains a. contains b. contains c. contains d.");
+		
+		/*
+		 * 
+		 */
+		new TestSuite().test("N=20. CONTAINS p or contains c or contains t or contains r. p before r. p nextto r. "+
+				"r before c. c before t. all_forward.");
+		
+		/*
 		 * LATTICE 
 		 */
 //		new TestSuite().test(new File("./tests/lattice/daniel01"));
@@ -303,7 +323,7 @@ public class TestSuite {
 		/*
 		 * Poojah and Devina's Senior Project
 		 */
-		new TestSuite().test("N=9.template pJ23104_AB, rBCD2_BC, [cE1010m_CD|cE0040m_CD], tB0015_DE, pJ23104_EB, rBCD2_BC, [cE1010m_CD|cE0040m_CD], tB0015_DF, DVL2.[2] NOTEQUALS [6]. all_forward.");
+//		new TestSuite().test("N=9.template pJ23104_AB, rBCD2_BC, [cE1010m_CD|cE0040m_CD], tB0015_DE, pJ23104_EB, rBCD2_BC, [cE1010m_CD|cE0040m_CD], tB0015_DF, DVL2.[2] NOTEQUALS [6]. all_forward.");
 		
 //		new TestSuite().test(new File("./designs/nor"));
 
@@ -325,6 +345,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./designs/nor-gate/reporting-cassette.eug"));
 //		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
 //		new TestSuite().test(new File("./designs/nor-orientations"));
+//		new TestSuite().test(new File("./designs/nor-gate/nor-templates"));
 
 		/*
 		 * Swati's Inverters
@@ -376,7 +397,7 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// way better than PIGEON 
-			Image pic = se.pigeonize("./images/"+UUID.randomUUID().toString()+".png", null, false);
+//			Image pic = se.pigeonize("./images/nor-gates.png", null, true, -1);
 //			se.show(pic);
 			//WeyekinPoster.launchPage(pig);
 			
@@ -393,7 +414,7 @@ public class TestSuite {
 		
 		
 		// CONSOLE OUTPUT
-//		se.toConsole();
+		se.toConsole();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

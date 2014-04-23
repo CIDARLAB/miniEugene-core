@@ -17,24 +17,28 @@ import org.cidarlab.minieugene.predicates.templating.Sequence;
 import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
+import JaCoP.constraints.Alldifferent;
 import JaCoP.constraints.And;
 import JaCoP.constraints.ExtensionalSupportVA;
 import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.Reified;
 import JaCoP.constraints.XeqC;
-import JaCoP.core.BooleanVar;
 import JaCoP.core.Domain;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 import JaCoP.core.ValueEnumeration;
 import JaCoP.search.DepthFirstSearch;
+import JaCoP.search.IndomainMin;
 import JaCoP.search.IndomainSimpleRandom;
+import JaCoP.search.LDS;
 import JaCoP.search.MostConstrainedDynamic;
 import JaCoP.search.Search;
 import JaCoP.search.SelectChoicePoint;
 import JaCoP.search.SimpleMatrixSelect;
+import JaCoP.search.SimpleSelect;
+import JaCoP.search.SmallestDomain;
+import JaCoP.search.SmallestMin;
 
 
 public class JaCoPSolver 
@@ -62,6 +66,7 @@ public class JaCoPSolver
     	 * create the variables of the constraint solving problem
     	 * i.e. the parts
     	 */
+//		IntVar[] positioning_variables = this.model_positioning(components, N);
     	IntVar[][] variables = this.model(components);
     	
 //    	this.solve_pos(components);
@@ -87,23 +92,42 @@ public class JaCoPSolver
     	/*
     	 * now, let's solve the problem
     	 */
-    	Domain[][] solutions = this.search(variables, NR_OF_SOLUTIONS);
+//    	Domain[][] solutions = this.search(positioning_variables);
+    	
+//    	Domain[][] solutions = this.optSearch(variables, positioning_variables, NR_OF_SOLUTIONS);
+    	return this.search(variables, NR_OF_SOLUTIONS);
+    	
     	
     	/*
     	 * finally, we process and return the solutions
     	 */
-    	if(null != solutions) {
-    		try {
-    			return this.processSolutions(solutions);
-    		} catch(java.lang.OutOfMemoryError e) {
-    			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
-    			
-    		}
-    	} 
-    	return null;
+//    	if(null != solutions) {
+//    		try {
+//    			return this.processSolutions(solutions);
+//    		} catch(java.lang.OutOfMemoryError e) {
+//    			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+//    			
+//    		}
+//    	} 
 	}
 	
 
+	/**
+	 * 
+	 * @param components   ... the components of the design
+	 * @param N            ... the length of the design
+	 * @return	
+	 */
+	private IntVar[] model_positioning(Component[] components, int N) {
+		IntVar[] variables = new IntVar[components.length];
+		for(int i=0; i<components.length; i++) {
+			Component c = components[i];
+			variables[i] = new IntVar(store, c.getName()+".position", 0, N-1);
+		}
+		store.impose(new Alldifferent(variables));
+		return variables;
+	}
+	
 	private IntVar[][] model(Component[] symbols) 
 			throws EugeneException {
 
@@ -164,8 +188,9 @@ public class JaCoPSolver
 
 	public void imposeConstraints(IntVar[][] variables, LogicalAnd and) 
 			throws EugeneException {
-				
+		
 		for(Predicate predicate : and.getPredicates()) {
+
 			try {
 				
 				/*
@@ -181,12 +206,15 @@ public class JaCoPSolver
 				
 				PrimitiveConstraint constraint = predicate.toJaCoP(
 						this.store, variables);
-				
+
 				if(constraint != null) {
 					if(constraint instanceof And) {
+
+						// option 1
 						for(PrimitiveConstraint pc : ((And)constraint).listOfC) {
 							store.impose(pc);
 						}
+
 					} else {
 						store.impose(constraint);
 					}
@@ -195,9 +223,227 @@ public class JaCoPSolver
 			} catch(Exception e) {
 				throw new EugeneException(e.getMessage());
 			}
+
 		}
 	}
 	
+//    private Domain[][] optSearch(IntVar[][] variables, IntVar[] position_variables, int NR_OF_SOLUTIONS) 
+//    		throws EugeneException {
+//    	
+//		boolean result = store.consistency();
+//		if(!result) {
+//			throw new EugeneException("Inconsistent constraints!");
+//		}
+//		
+//		long T1, T2, T;
+//		T1 = System.currentTimeMillis();
+//		
+//		
+//		// first, let's search for the orientations
+//		Search<IntVar> labelOrientation = new DepthFirstSearch<IntVar>();
+//		SelectChoicePoint<IntVar> selectOrientation = 
+//			new SimpleSelect<IntVar>(variables[Variables.ORIENTATION], 
+//					new SmallestMin<IntVar>(), 
+//					new SmallestDomain<IntVar>(),
+//					new IndomainMin<IntVar>());
+//		
+//		labelOrientation.setSelectChoicePoint(selectOrientation);
+//		labelOrientation.setPrintInfo(false);
+//
+////		// then, let's search for the positions
+////		Search<IntVar> labelPositioning = new DepthFirstSearch<IntVar>();
+////		SelectChoicePoint<IntVar> selectPositioning = 
+////			new SimpleSelect<IntVar>(
+////					position_variables, 
+////					new SmallestMin<IntVar>(), 
+////					new SmallestDomain<IntVar>(),
+////					new IndomainMin<IntVar>());
+////		
+////		labelPositioning.setSelectChoicePoint(selectPositioning);
+////		labelPositioning.setPrintInfo(false);
+//
+//		// finally, let's search for the parts
+//		Search<IntVar> labelParts = new DepthFirstSearch<IntVar>();
+//		SelectChoicePoint<IntVar> selectParts = 
+//			new SimpleSelect<IntVar>(
+//					variables[Variables.PART], 
+//					new SmallestMin<IntVar>(), 
+//					new SmallestDomain<IntVar>(),
+//					new IndomainMin<IntVar>());
+//
+//		labelParts.addChildSearch(labelOrientation);
+////		labelParts.addChildSearch(labelPositioning);
+//		
+//        if(NR_OF_SOLUTIONS != (-1)) {
+//        	labelParts.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
+//        } else {
+//        	labelParts.getSolutionListener().searchAll(true);   
+//        }
+//  
+//        labelParts.setPrintInfo(false);
+//        labelParts.getSolutionListener().recordSolutions(true);
+//                
+//		try {
+//			/*
+//			 * search the solutions
+//			 */
+//			result = labelParts.labeling(store, selectParts);
+//
+//		} catch(OutOfMemoryError oome) {
+//			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+//		} catch(Exception e) {
+//			throw new EugeneException(e.toString());
+//		}
+//
+//		T2 = System.currentTimeMillis();
+//		T = T2 - T1;
+//
+//		String s = String.format("%.2f", (float)T/1000);
+//		System.out.println("\n\t*** Solution Finding Time = "+ s + " s");
+//		
+//		/*
+//		 * return the solutions
+//		 */
+////		System.out.println("*** ORIENTATIONS ***");
+////		labelOrientation.getSolutionListener().printAllSolutions();
+////		System.out.println("*** PARTS ***");
+////		labelParts.getSolutionListener().printAllSolutions();
+//		return labelParts.getSolutionListener().getSolutions();
+//    }
+
+//    private Domain[][] search(IntVar[] variables) 
+//    		throws EugeneException {
+//		
+//		long T1, T2, T;
+//		T1 = System.currentTimeMillis();
+//
+//		Search<IntVar> labelPositions = new DepthFirstSearch<IntVar>();
+//		SelectChoicePoint<IntVar> selectParts = 
+//			new SimpleSelect<IntVar>(
+//					variables, 
+//					new SmallestMin<IntVar>(), 
+//					new SmallestDomain<IntVar>(),
+//					new IndomainMin<IntVar>());
+//
+//		labelPositions.getSolutionListener().searchAll(true);     
+//		labelPositions.setPrintInfo(true);
+//		labelPositions.getSolutionListener().recordSolutions(true);
+//                
+//		try {
+//			/*
+//			 * search the solutions
+//			 */
+//			labelPositions.labeling(store, selectParts);
+//
+//		} catch(OutOfMemoryError oome) {
+//			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+//		} catch(Exception e) {
+//			throw new EugeneException(e.toString());
+//		}
+//
+//		T2 = System.currentTimeMillis();
+//		T = T2 - T1;
+//
+//		String s = String.format("%.2f", (float)T/1000);
+//		System.out.println("\n\t*** Solution Finding Time = "+ s + " s");
+//		
+//		/*
+//		 * return the solutions
+//		 */
+//		System.out.println("*** POSITIONS ***");
+////		labelPositions.getSolutionListener().printAllSolutions();
+//		return labelPositions.getSolutionListener().getSolutions();
+//    }
+	
+
+    private List<Component[]> search(IntVar[][] variables, int NR_OF_SOLUTIONS) 
+    		throws EugeneException {
+
+    	Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
+
+        SelectChoicePoint<IntVar> select = new SimpleMatrixSelect<IntVar>(
+				variables, 
+				new MostConstrainedDynamic<IntVar>(), 
+				new IndomainSimpleRandom<IntVar>());  
+        
+        MiniEugeneSolutionListener<IntVar> listener = new MiniEugeneSolutionListener<IntVar>(this.symbols, this.N);
+        search.setSolutionListener(listener);
+        
+        if(NR_OF_SOLUTIONS != (-1)) {
+        	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
+        } else {
+        	search.getSolutionListener().setSolutionLimit(50000);
+//            search.getSolutionListener().searchAll(true);   
+        }
+
+        search.setPrintInfo(false);
+        search.getSolutionListener().recordSolutions(true);
+
+		try {
+			/*
+			 * search the solutions
+			 */
+			search.labeling(store, select);
+		} catch(OutOfMemoryError oome) {
+			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+//		search.getSolutionListener().printAllSolutions();
+		/*
+		 * return the solutions
+		 */
+//		return null;
+		return listener.getMiniEugeneSolutions();
+    }
+
+		
+	public List<Component[]> processSolutions(Domain[][] solutions) {
+		
+		List<Component[]> lst = new ArrayList<Component[]>();
+		for(int i=0; i<solutions.length && solutions[i]!=null; i++) {
+			
+			Domain[] solution = solutions[i];
+			
+			Component[] sol = new Component[this.N];
+
+			for(int j=0; j<this.N; j++) {
+				Component symbol = null;
+				
+				/*
+				 * PART
+				 */
+				ValueEnumeration ve = solution[j].valueEnumeration();
+				while(ve.hasMoreElements()) {
+					// interim solution ... no orientation
+//					symbol = this.symbols.get(ve.nextElement());
+					Component old = this.symbols.get(ve.nextElement());
+					symbol = new Component(old.getName());
+				}
+				
+				/*
+				 * ORIENTATION
+				 */
+				ve = solution[j+(Variables.ORIENTATION * N)].valueEnumeration();
+				while(ve.hasMoreElements()) {
+					if(ve.nextElement() == (-1)) {
+						symbol.setForward(false);
+					}
+				}				
+
+				sol[j] = symbol;
+			}
+			
+			lst.add(sol);
+		}
+		return lst;
+	}
+    
+	
+	/*
+	 * OPTIMIZATIONS
+	 */
 	public void optimize(IntVar[][] variables, LogicalAnd and) 
 			throws EugeneException {
 			
@@ -299,80 +545,4 @@ public class JaCoPSolver
 		
 	}
 	
-    private Domain[][] search(IntVar[][] variables, int NR_OF_SOLUTIONS) 
-    		throws EugeneException {
-    	Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
-
-        SelectChoicePoint<IntVar> select = new SimpleMatrixSelect<IntVar>(
-				variables, 
-				new MostConstrainedDynamic<IntVar>(), 
-				new IndomainSimpleRandom<IntVar>());  
-
-        if(NR_OF_SOLUTIONS != (-1)) {
-        	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
-        } else {
-            search.getSolutionListener().searchAll(true);   
-        }
-  
-
-        search.setPrintInfo(false);
-        search.getSolutionListener().recordSolutions(true);
-                
-		try {
-			/*
-			 * search the solutions
-			 */
-			search.labeling(store, select);
-		} catch(OutOfMemoryError oome) {
-			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-		/*
-		 * return the solutions
-		 */
-		return search.getSolutionListener().getSolutions();
-    }
-
-		
-	public List<Component[]> processSolutions(Domain[][] solutions) {
-		
-		List<Component[]> lst = new ArrayList<Component[]>();
-		for(int i=0; i<solutions.length && solutions[i]!=null; i++) {
-			
-			Domain[] solution = solutions[i];
-			
-			Component[] sol = new Component[this.N];
-
-			for(int j=0; j<this.N; j++) {
-				Component symbol = null;
-				
-				/*
-				 * PART
-				 */
-				ValueEnumeration ve = solution[j].valueEnumeration();
-				while(ve.hasMoreElements()) {
-					Component old = this.symbols.get(ve.nextElement());
-					symbol = new Component(old.getName());
-				}
-				
-				/*
-				 * ORIENTATION
-				 */
-				ve = solution[j+(Variables.ORIENTATION * N)].valueEnumeration();
-				while(ve.hasMoreElements()) {
-					if(ve.nextElement() == (-1)) {
-						symbol.setForward(false);
-					}
-				}				
-
-				sol[j] = symbol;
-			}
-			
-			lst.add(sol);
-		}
-		return lst;
-	}
-    
 }

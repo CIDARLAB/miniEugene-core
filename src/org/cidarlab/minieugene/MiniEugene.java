@@ -294,6 +294,14 @@ public class MiniEugene
 			int minN = la.getMinN();
 			int maxN = la.getMaxN();
 			
+			
+			/*
+			 * RBC
+			 */
+//			if(EugeneRBC.upperBound(la, maxN) > 1000000) {
+//				throw EugeneException("TOO BIG!");
+//			}
+			
 			// future work:
 //			if(maxN < minN) {
 //				throw new EugeneException(

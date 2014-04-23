@@ -23,6 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package org.cidarlab.minieugene.dom;
 
 import org.cidarlab.minieugene.constants.Type;
+import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.solver.jacop.PartTypes;
 
 /**

@@ -33,21 +33,33 @@ public class EndsWith
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.ENDSWITH).append(" ").append(this.getA());
+		sb.append(RuleOperator.ENDSWITH).append(" ").append(this.getA().getName());
 		return sb.toString();
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws EugeneException {
-		int N = variables[Variables.PART].length;
+		
+		int N = (variables[Variables.PART].length);
+		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
+		if(null == aPosVar) {
+			aPosVar = new IntVar(store, this.getA().getName()+".position", 0, N-1);
+			store.impose(new XeqC(aPosVar, N-1));
+		}
+		
 		return new XeqC(variables[Variables.PART][N-1], this.getA().getId());
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		int N = variables[Variables.PART].length;
+		int N = (variables[Variables.PART].length);
+		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
+		if(null == aPosVar) {
+			aPosVar = new IntVar(store, this.getA().getName()+".position", 0, N-1);
+			store.impose(new XneqC(aPosVar, N-1));
+		}
 		return new XneqC(variables[Variables.PART][N-1], this.getA().getId());
 	}
 
