@@ -359,6 +359,10 @@ public class JaCoPSolver
     private List<Component[]> search(IntVar[][] variables, int NR_OF_SOLUTIONS) 
     		throws EugeneException {
 
+    	if(!store.consistency()) {
+    		throw new EugeneException("Inconsistent rules!");
+    	}
+    	
     	Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
 
         SelectChoicePoint<IntVar> select = new SimpleMatrixSelect<IntVar>(
@@ -366,8 +370,8 @@ public class JaCoPSolver
 				new MostConstrainedDynamic<IntVar>(), 
 				new IndomainSimpleRandom<IntVar>());  
         
-        MiniEugeneSolutionListener<IntVar> listener = new MiniEugeneSolutionListener<IntVar>(this.symbols, this.N);
-        search.setSolutionListener(listener);
+//        MiniEugeneSolutionListener<IntVar> listener = new MiniEugeneSolutionListener<IntVar>(this.symbols, this.N);
+//        search.setSolutionListener(listener);
         
         if(NR_OF_SOLUTIONS != (-1)) {
         	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
@@ -394,8 +398,9 @@ public class JaCoPSolver
 		/*
 		 * return the solutions
 		 */
+		return this.processSolutions(search.getSolutionListener().getSolutions());
 //		return null;
-		return listener.getMiniEugeneSolutions();
+//		return listener.getMiniEugeneSolutions();
     }
 
 		

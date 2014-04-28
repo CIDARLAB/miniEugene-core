@@ -10,45 +10,36 @@ import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.util.FileUtil;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
-public class NORGateTemplates {
+public class ToggleSwitchTemplates {
 
 	private Map<String, Integer> colors;
 
-	public NORGateTemplates() {
+	public ToggleSwitchTemplates() {
 		this.colors = new HashMap<String, Integer>();
 
-		this.colors.put("rbs", 14);
-		this.colors.put("term",14);
+		this.colors.put("T1T2_1", 14);
+		this.colors.put("T1T2_2", 14);
 
-		this.colors.put("p1", 2);
-		this.colors.put("c1", 2);
+		this.colors.put("cLacI", 2);
+		this.colors.put("rRBS1", 2);
+		this.colors.put("Ptrc2", 2);
 
-		this.colors.put("p2", 1);		
-		this.colors.put("c2", 1);
+		this.colors.put("P1", 6);	
+		this.colors.put("rbsE", 6);
+		this.colors.put("cR1", 6);
 
-		this.colors.put("p3", 8);		
-		this.colors.put("c3", 8);
-
-		this.colors.put("p4", 3);		
-		this.colors.put("c4", 3);
-
-		// INDUCIBLE PROMOTERS
-		this.colors.put("pIn1", 14);
-		this.colors.put("pIn2", 14);
-		this.colors.put("pIn3", 14);
-		this.colors.put("pIn4", 14);
-		
-		// REPORTERS
-		this.colors.put("cGFP",  4);
-		this.colors.put("cRFP",  6);
-		this.colors.put("cRFP", 12);
+		this.colors.put("rbsB", 4);		
+		this.colors.put("cGFPmut3", 4);
 	}
 	
 	
 	public static void main(String[] args) 
-			throws Exception {
-		
-		new NORGateTemplates().test(new File("./designs/nor-gate/templates/nor-templates"));
+			throws Exception {		
+		new ToggleSwitchTemplates().test("N=10."+
+				"template T1T2_1, cLacI, rRBS1, P1, Ptrc2, rbsE, cR1, rbsB, cGFPmut3, T1T2_2."+
+				"reverse T1T2_1. reverse cLacI. reverse rRBS1. reverse P1."+
+				"forward Ptrc2. forward rbsE. forward cR1. forward rbsB. forward cGFPmut3. forward T1T2_2."+
+				"cR1 represses P1. cLacI represses Ptrc2.");
 	}
 
 	public void test(String script) {
@@ -84,9 +75,9 @@ public class NORGateTemplates {
 		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 		try {
 			se.pigeonize(
-					"./designs/nor-gate/templates/nor-gates.png", 
+					"./designs/toggle-switch.png", 
 					this.colors, 
-					true, 
+					false, 
 					10);
 		} catch(Exception e) {
 			e.printStackTrace();

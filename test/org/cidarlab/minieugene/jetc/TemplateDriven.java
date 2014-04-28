@@ -162,7 +162,8 @@ public class TemplateDriven {
 				"sequence p5, rOut0, cOut0, tOut0."+
 				
 				// induces 
-				"in2 induces pIn2. in0 induces pIn0."+
+				// in2 induces pIn2.  <- already specified 
+				"in0 induces pIn0."+
 				
 				// represses
 				"c3 represses p3. c4 represses p4. c5 represses p5.");
