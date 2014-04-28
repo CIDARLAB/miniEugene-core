@@ -413,13 +413,13 @@ public class RuleBased {
 		}
 		
 		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
-//		try {
-//			se.pigeonize("./images/acm-jetc/rules/subset/5_"+name+".png", colors, false, 5);
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			se.pigeonize("./images/acm-jetc/rules/subset/5_"+name+".png", colors, false, 5);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		// CONSOLE OUTPUT
-//		se.toConsole();
+		se.toConsole();
 	}
 }
