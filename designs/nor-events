@@ -1,0 +1,27 @@
+N=5.
+
+pIn1 exactly 1.
+pIn2 exactly 1.
+
+cRep exactly 1.
+pOut exactly 1.
+cOut exactly 1.
+
+// EVENTS
+in1 induces pIn1.
+in2 induces pIn2.
+
+pIn1 drives cRep.
+pIn2 drives cRep.
+
+cRep represses pOut.
+
+pOut drives cOut.
+
+
+// ORDER OF EVENTS
+pIn1 NEXTTO pIn2.
+
+//cRep BEFORE pOut.
+
+//pOut BEFORE cOut. 

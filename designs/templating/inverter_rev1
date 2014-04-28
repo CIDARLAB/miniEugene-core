@@ -1,0 +1,75 @@
+/*
+ * PART LIBRARY
+ * Const. Promoters = {J23100}
+ * Inducible Promoters = {R0062}
+ * Repressible Promoters = {R0040, R0051, K091112, I13453
+ * RBS = {B0030m, B0031m, B0032m, B0033m, B0031m1}
+ * Repressors = {C0040, C0012, C0080, C0051} 
+ * Inducers = {C0062}
+ * Reporters = {E1010m, E0040}
+ * Terminators = {B0015, B0015x}
+ *
+ * Relations:
+ * C0040 REPRESSES R0040;
+ * C0012 REPRESSES K091112;
+ * C0080 REPRESSES I13453;
+ * C0051 REPRESSES R0051;
+ * C0062 INDUCES R0062;
+ *
+ */
+ 
+N=12.
+
+// first, let's design the ``topology'' of an inverter
+/*
+ * Device TU1 (ConstPr, RBS, Repressor, Terminator);
+ * Device TU2 (RepPr, RBS, Repressor, Terminator);
+ * Device TU3 (RepPr, RBS, Reporter, Terminator);
+ * Device TU4 (RepPr, RBS, Reporter, Terminator); 
+ */
+
+all_forward.
+
+pConst same_orientation r1.
+pConst same_orientation c1.
+pConst same_orientation t1.
+not forward pConst or sequence pConst, r1, c1, t1.
+not reverse pConst or sequence t1, c1, r1, pConst.
+
+pRep2 same_orientation r2.
+pRep2 same_orientation c2.
+pRep2 same_orientation t2.
+not forward pRep2 or sequence pRep2, r2, c2, t2.
+not reverse pRep2 or sequence t2, c2, r2, pRep2.
+
+pRep3 same_orientation r3.
+pRep3 same_orientation c3.
+pRep3 same_orientation t3.
+not forward pRep3 or sequence pRep3, r3, c3, t3.
+not reverse pRep3 or sequence t3, c3, r3, pRep3.
+
+/** 
+// first, let's build all TU1s
+// Device TU1 (ConstPr, RBS, Repressor, Terminator);
+J23100 same_orientation B0030m.
+J23100 same_orientation B0031m.
+J23100 same_orientation B0032m.
+J23100 same_orientation B0033m.
+J23100 same_orientation B0031m1.
+J23100 same_orientation C0040.
+J23100 same_orientation C0012.
+J23100 same_orientation C0080.
+J23100 same_orientation C0051.
+J23100 same_orientation B0015.
+J23100 same_orientation B0015x.
+not forward J23100 or template J23100, [B0030m|B0031m|B0032m|B0033m|B0031m1], [C0040|C0012|C0080|C0051], [B0015|B0015x].
+not reverse J23100 or template [B0015|B0015x], [C0040|C0012|C0080|C0051], [B0030m|B0031m|B0032m|B0033m|B0031m1], J23100.
+**/ 
+ /**
+C0040 REPRESSES R0040.
+C0012 REPRESSES K091112.
+C0080 REPRESSES I13453.
+C0051 REPRESSES R0051.
+C0062 INDUCES R0062.
+ **/
+ 

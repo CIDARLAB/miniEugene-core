@@ -1,0 +1,15 @@
+p EXACTLY 2
+r EXACTLY 1
+c EXACTLY 1
+t EXACTLY 1
+
+p NEXTTO p
+
+r AFTER p
+r NEXTTO p
+
+c AFTER r
+c NEXTTO r
+
+t AFTER c
+t NEXTTO c

@@ -1,0 +1,49 @@
+N = 9.
+
+// COUNTING
+pIn1 exactly 1.
+pIn2 exactly 1.
+cRepressor exactly 1.
+pOut exactly 1.
+t1 exactly 1.
+r1 exactly 1.
+t2 exactly 1.
+r2 exactly 1.
+cOut exactly 1.
+
+// INTERACTIONS
+in1 induces pIn1.
+in2 induces pIn2.
+
+pIn1 drives cRepressor.
+pIn2 drives cRepressor.
+pOut drives cOut.
+
+cRepressor represses pOut.
+
+// ORIENTATIONS
+// t1 + cRepressor
+t1 same_orientation pIn1.
+t1 same_orientation pIn2.
+//t1 nextto cRepressor.
+not forward cRepressor or t1 after cRepressor.
+not reverse cRepressor or t1 before cRepressor.
+
+// r1 + cRepressor
+r1 same_orientation cRepressor.
+r1 nextto cRepressor.
+not forward cRepressor or r1 before cRepressor.
+not reverse cRepressor or r1 after cRepressor.
+
+// t2 + cOut
+t2 same_orientation pOut.
+//t2 nextto cOut.
+not forward cOut or t2 after cOut.
+not reverse cOut or t2 before cOut.
+
+// r2 + cOut
+r2 same_orientation cOut.
+r2 nextto cOut.
+not forward cOut or r2 before cOut.
+not reverse cOut or r2 after cOut.
+

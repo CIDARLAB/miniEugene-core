@@ -1,0 +1,32 @@
+N=8.
+
+// repressing device
+CONTAINS r1.
+CONTAINS c1.
+CONTAINS t1.
+r1 NEXTTO c1.
+r1 BEFORE c1.
+t1 NEXTTO c1.
+t1 AFTER c1.
+
+// reporting device
+CONTAINS r2.
+CONTAINS c2.
+CONTAINS t2.
+r2 NEXTTO c2.
+r2 BEFORE c2.
+t2 NEXTTO c2.
+t2 AFTER c2.
+
+
+// now, we wire both devices
+// using promoters and interaction rules
+CONTAINS p1.
+CONTAINS pIn.
+in INDUCES pIn.
+pIn DRIVES c1.
+c1 REPRESSES p1.
+p1 DRIVES c2.
+
+// and let's do all forward
+ALL_FORWARD.

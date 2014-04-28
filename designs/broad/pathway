@@ -1,0 +1,9 @@
+N=5.
+Pathway CONTAINS Cistron.
+Cistron EXACTLY 3.
+
+Cistron CONTAINS Promoter.
+Cistron CONTAINS Gene.
+Cistron CONTAINS Terminator.
+
+ALL_FORWARD Cistron \/ ALL_REVERSE Cistron.

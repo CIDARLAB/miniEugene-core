@@ -1,0 +1,236 @@
+// N = 33
+
+//   OUT 1
+// *********
+// COUNTING
+r1 EXACTLY 1
+c1 EXACTLY 1
+t1 EXACTLY 1
+
+// POSITIONING
+r1 BEFORE c1 
+r1 NEXTTO c1
+c1 BEFORE t1
+c1 NEXTTO t1
+
+// ORIENTATION
+FORWARD r1
+FORWARD c1
+FORWARD t1
+
+
+// COUNTING
+r2 EXACTLY 1
+c2 EXACTLY 1
+t2 EXACTLY 1
+
+// POSITIONING
+r2 BEFORE c2 
+r2 NEXTTO c2
+c2 BEFORE t2
+c2 NEXTTO t2
+
+// ORIENTATION
+FORWARD r2
+FORWARD c2
+FORWARD t2
+
+// COUNTING
+rOut1 EXACTLY 1
+cOut1 EXACTLY 1
+tOut1 EXACTLY 1
+
+// POSITIONING
+rOut1 BEFORE cOut1
+rOut1 NEXTTO cOut1
+cOut1 BEFORE tOut1
+cOut1 NEXTTO tOut1
+
+// ORIENTATION
+FORWARD rOut1
+FORWARD cOut1
+FORWARD tOut1
+
+
+// CASSETTE 03
+//*************
+
+// ORIENTATION
+FORWARD r3
+FORWARD c3
+FORWARD t3
+
+// COUNTING
+r3 EXACTLY 1
+c3 EXACTLY 1
+t3 EXACTLY 1
+
+// ORDER
+r3 BEFORE c3
+r3 NEXTTO c3
+c3 BEFORE t3
+c3 NEXTTO t3
+
+// CASSETTE 04
+//*************
+
+// ORIENTATION
+FORWARD r4
+FORWARD c4
+FORWARD t4
+
+// COUNTING
+r4 EXACTLY 1
+c4 EXACTLY 1
+t4 EXACTLY 1
+
+// ORDER
+r4 BEFORE c4
+r4 NEXTTO c4
+c4 BEFORE t4
+c4 NEXTTO t4
+
+// CASSETTE 05
+//*************
+
+// ORIENTATION
+FORWARD r5
+FORWARD c5
+FORWARD t5
+
+// COUNTING
+r5 EXACTLY 1
+c5 EXACTLY 1
+t5 EXACTLY 1
+
+// ORDER
+r5 BEFORE c5
+r5 NEXTTO c5
+c5 BEFORE t5
+c5 NEXTTO t5
+
+// REPORTING CASSETTE Out0
+//*************************
+
+// ORIENTATION
+FORWARD rOut0
+FORWARD cOut0
+FORWARD tOut0
+
+// COUNTING
+rOut0 EXACTLY 1
+cOut0 EXACTLY 1
+tOut0 EXACTLY 1
+
+// ORDER
+rOut0 BEFORE cOut0
+rOut0 NEXTTO cOut0
+cOut0 BEFORE tOut0
+cOut0 NEXTTO tOut0
+
+
+// Promoters of RepressingDevice 1
+pIn2_1 EXACTLY 1
+pIn1_1 EXACTLY 1
+FORWARD pIn2_1
+FORWARD pIn1_1
+in2 INDUCES pIn2_1 
+in1 INDUCES pIn1_1
+
+// Promoters of Repressing Device 2
+0 INDUCES p0
+FORWARD p0
+p0 DRIVES c2
+p0 EXACTLY 1
+
+
+// Drivers of Repressing
+// Device 1
+pIn2_1 DRIVES c1
+pIn1_1 DRIVES c1
+
+// RepressingDevice 1 +
+// RepressingDevice 2
+FORWARD p1_1
+p1_1 EXACTLY 1
+p1_1 DRIVES c2
+
+// Driving Promoters of
+// RepressingDevice 1
+FORWARD p2
+p2 EXACTLY 1
+p2 DRIVES cOut1
+
+// Repressing Interaction
+c1 REPRESSES p1_1
+c2 REPRESSES p2
+
+
+// PROMOTER ORDERING
+pIn2_1 BEFORE pIn1_1
+p0 BEFORE p1_1
+
+
+// Promoters of repressing device 3
+
+p1_3 EXACTLY 1
+FORWARD p1_3
+p1_3 BEFORE r3
+p1_3 NEXTTO r3
+//p1_3 DRIVES c3
+c1 REPRESSES p1_3
+
+pIn2_3 EXACTLY 1
+FORWARD pIn2_3
+in2 INDUCES pIn2_3
+pIn2_3 NEXTTO p1_3
+pIn2_3 BEFORE p1_3
+//pIn2_3 DRIVES c3
+
+
+// Promoters of repressing device 4
+pIn2_4 EXACTLY 1
+FORWARD pIn2_4
+in2 INDUCES pIn2_4
+pIn2_4 BEFORE r4
+pIn2_4 NEXTTO r4
+
+pIn0 EXACTLY 1
+FORWARD pIn0
+in0 INDUCES pIn0
+pIn0 DRIVES c4
+pIn0 BEFORE pIn2_4
+pIn0 NEXTTO pIn2_4
+
+
+// Promoters of repressing device 05
+p3 EXACTLY 1
+FORWARD p3
+c3 REPRESSES p3
+p3 BEFORE r5
+p3 NEXTTO r5
+//p3 DRIVES c5
+
+p4 EXACTLY 1
+FORWARD p4
+c4 REPRESSES p4
+p4 BEFORE p3
+p4 NEXTTO p3
+//p4 DRIVES c5
+
+// drivers of Out0
+FORWARD p5
+p5 EXACTLY 1
+p5 BEFORE rOut0
+p5 NEXTTO rOut0
+//p5 DRIVES cOut0
+c5 REPRESSES p5
+
+
+// let's do some ordering
+//c1 BEFORE c2
+//c2 BEFORE cOut1
+//cOut1 BEFORE c3
+//c3 BEFORE c4
+//c4 BEFORE c5
+//c5 BEFORE cOut0

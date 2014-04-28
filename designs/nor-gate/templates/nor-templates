@@ -1,0 +1,15 @@
+N=9.
+
+template [pIn1|pIn2|pIn3|pIn4], [pIn1|pIn2|pIn3|pIn4], rbs, [c1|c2|c3|c4], term, [p1|p2|p3|p4], rbs, [cGFP|cYFP|cRFP], term.
+
+in1 induces pIn1.
+in2 induces pIn2.
+in3 induces pIn3.
+in4 induces pIn4.
+
+c1 represses p1.
+c2 represses p2. 
+c3 represses p3. 
+c4 represses p4. 
+
+c1 with p1 or c2 with p2 or c3 with p3 or c4 with p4.

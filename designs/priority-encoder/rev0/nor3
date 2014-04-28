@@ -1,0 +1,15 @@
+STARTSWITH t
+t WITH r
+c3 WITH p3
+pP EXACTLY 2
+pP BEFORE p3
+r AFTER c3
+pP AFTER r
+REVERSE t
+REVERSE c3
+REVERSE r
+REVERSE pP
+
+// here, it'll be great to say
+// ALL_REVERSE
+// NOT REVERSE p3

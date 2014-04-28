@@ -1,0 +1,16 @@
+Device d1(-p, -c);
+Device d2(-p, c);
+Device d3(p, -c);
+Device d4(p, c);
+Device d5(-p, -p);
+Device d6(-p, p);
+Device d7(p, -p);
+Device d8(p, p);
+Device d9(-c, -c);
+Device d10(-c, c);
+Device d11(c, -c);
+Device d12(c, c);
+Device d13(-c, -p);
+Device d14(-c, p);
+Device d15(c, -p);
+Device d16(c, p);
