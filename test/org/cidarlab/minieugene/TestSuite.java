@@ -277,7 +277,7 @@ public class TestSuite {
 		/*
 		 * LARGE DESIGNS + SOLUTION LISTENER
 		 */
-//		new TestSuite().test("N=30. contains a. contains b.");
+		new TestSuite().test("N=30. contains a. contains b.");
 //		new TestSuite().test("N=4. contains a. contains b. contains c. contains d.");
 		
 		/*
@@ -349,7 +349,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./designs/nor-gate/repressing-cassette.eug"));
 //		new TestSuite().test(new File("./designs/nor-gate/reporting-cassette.eug"));
 //		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
-		new TestSuite().test(new File("./designs/nor-orientations"));
+//		new TestSuite().test(new File("./designs/nor-orientations"));
 //		new TestSuite().test(new File("./designs/nor-gate/nor-templates"));
 
 		/*

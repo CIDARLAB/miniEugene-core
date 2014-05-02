@@ -376,7 +376,7 @@ public class JaCoPSolver
         if(NR_OF_SOLUTIONS != (-1)) {
         	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
         } else {
-        	search.getSolutionListener().setSolutionLimit(50000);
+        	search.getSolutionListener().setSolutionLimit(MiniEugeneSolutionListener.MAX_NR_OF_SOLUTIONS);
 //            search.getSolutionListener().searchAll(true);   
         }
 

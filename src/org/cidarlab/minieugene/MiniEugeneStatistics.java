@@ -22,8 +22,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.cidarlab.minieugene.stats.Measurement;
@@ -35,10 +37,10 @@ import org.cidarlab.minieugene.stats.Measurement;
  */
 public class MiniEugeneStatistics {
 
-	private Set<Measurement> measurements;
+	private List<Measurement> measurements;
 	
 	public MiniEugeneStatistics() {
-		this.measurements = new HashSet<Measurement>();
+		this.measurements = new ArrayList<Measurement>();
 	}
 	
 	/**
@@ -71,7 +73,7 @@ public class MiniEugeneStatistics {
 	 * @return a set of measurements (i.e. key-value pairs) of measurements measured 
 	 * during finding compliant solutions to given rules.
 	 */
-	public Set<Measurement> getMeasurements() {
+	public List<Measurement> getMeasurements() {
 		return this.measurements;
 	}
 	

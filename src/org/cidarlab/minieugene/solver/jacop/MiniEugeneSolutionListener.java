@@ -1,6 +1,5 @@
 package org.cidarlab.minieugene.solver.jacop;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.cidarlab.minieugene.dom.Component;
@@ -19,8 +18,9 @@ public class MiniEugeneSolutionListener<T extends Var>
 	implements SolutionListener<T> {
 
 	private SymbolTables symbols; 
-
 	private SolutionPoolManager poolManager;
+	
+	public static final int MAX_NR_OF_SOLUTIONS = 50000;
 	
 	public MiniEugeneSolutionListener(SymbolTables symbols, int N) {
 		this.symbols = symbols;
@@ -28,7 +28,7 @@ public class MiniEugeneSolutionListener<T extends Var>
 		/*
 		 * Solution Pool Manager
 		 */
-		this.poolManager = new SolutionPoolManager(5000, N);			
+		this.poolManager = new SolutionPoolManager(MAX_NR_OF_SOLUTIONS, N);			
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class MiniEugeneSolutionListener<T extends Var>
 
 		this.processSolution(search.getSolution());
 
-		if(this.poolManager.getCurrentNumberOfSolutions() > 20000) {
+		if(this.poolManager.getCurrentNumberOfSolutions() > MAX_NR_OF_SOLUTIONS) {
 			// i.e. we stop searching
 			return true;
 		}
