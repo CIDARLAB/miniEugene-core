@@ -1,0 +1,15 @@
+// Please select 3 of the "Length of the Design" choice
+ 
+// COUNTING
+r4 exactly 1
+c4 exactly 1
+t4 exactly 1
+
+// POSITIONING
+r4 before c4
+r4 nextto c4
+c4 before t4 
+c4 nextto t4
+			
+// ORIENTATION
+all_forward

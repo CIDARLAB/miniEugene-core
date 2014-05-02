@@ -1,0 +1,109 @@
+// Please select 19 of the "Length of the Design" choice
+
+// ORANGE
+// COUNTING
+r3 exactly 1
+c3 exactly 1
+t3 exactly 1
+
+// POSITIONING
+r3 before c3
+r3 nextto c3
+c3 before t3 
+c3 nextto t3
+			
+// ORIENTATION
+all_forward
+
+// LIGHT GREEN
+// COUNTING
+r4 exactly 1
+c4 exactly 1
+t4 exactly 1
+
+// POSITIONING
+r4 before c4
+r4 nextto c4
+c4 before t4 
+c4 nextto t4
+			
+// ORIENTATION
+all_forward
+
+// DARK GREEN
+// COUNTING
+r5 exactly 1
+c5 exactly 1
+t5 exactly 1
+
+// POSITIONING
+r5 before c5
+r5 nextto c5
+c5 before t5 
+c5 nextto t5
+			
+// ORIENTATION
+all_forward
+
+// OUT0 REPORTER
+// COUNTING
+rOut0 exactly 1
+cOut0 exactly 1
+tOut0 exactly 1
+
+// POSITIONING
+rOut0 before cOut0
+rOut0 nextto cOut0
+cOut0 before tOut0 
+cOut0 nextto tOut0
+			
+// ORIENTATION
+all_forward
+
+
+// NOTE:
+// we have two pIn2 promoters in the design
+// i.e. we need to name them differently
+
+// input promoters of orange
+//   - in2 -> pIn2 -> c3   
+// (named pIn2_3 since it drives c3)
+in2 induces pIn2_3
+pIn2_3 exactly 1
+pIn2_3 nextto r3 
+//   - p1 -> c3
+p1 exactly 1
+p1 nextto pIn2_3
+// - positioning of the input promoters
+p1 before pIn2_3
+
+
+// input promoters of light green
+//   - in2 -> pIn2 -> c4
+in2 induces pIn2_4
+pIn2_4 exactly 1
+pIn2_4 nextto pIn0
+//   - in0 -> pIn0 -> c4
+in0 induces pIn0
+pIn0 exactly 1
+pIn0 nextto r4
+// - positioning of the input promoters
+pIn2_4 before pIn0
+
+// input promoters of dark green
+//   - c3 -> p3 -> c5
+c3 represses p3
+p3 exactly 1
+p3 nextto p4
+//   - c4 -> p4 -> c5
+c4 represses p4
+p4 exactly 1
+p4 nextto r5
+// - positioning of its input promoters
+p3 before p4
+
+// input promoters of out0 reporter
+// c5 -> p5 -> cGFP
+c5 represses p5
+p5 exactly 1
+p5 nextto rOut0

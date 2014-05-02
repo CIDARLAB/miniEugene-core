@@ -1,0 +1,78 @@
+// Please select 14 of the "Length of the Design" choice
+
+// DARK BLUE
+// COUNTING
+r1 exactly 1
+c1 exactly 1
+t1 exactly 1
+
+// POSITIONING
+r1 before c1
+r1 nextto c1
+c1 before t1 
+c1 nextto t1
+			
+// ORIENTATION
+all_forward
+
+// LIGHT BLUE
+// COUNTING
+r2 exactly 1
+c2 exactly 1
+t2 exactly 1
+
+// POSITIONING
+r2 before c2
+r2 nextto c2
+c2 before t2 
+c2 nextto t2
+			
+// ORIENTATION
+all_forward
+
+// out1 REPORTER
+// COUNTING
+rOut1 exactly 1
+cOut1 exactly 1
+tOut1 exactly 1
+
+// POSITIONING
+rOut1 before cOut1
+rOut1 nextto cOut1
+cOut1 before tOut1 
+cOut1 nextto tOut1
+			
+// ORIENTATION
+all_forward
+
+
+// input promoters of dark-blue
+// in2 -> pIn2 -> c1
+pIn2 exactly 1
+in2 induces pIn2
+pIn2 nextto pIn1
+// in1 -> pIn1 -> c1
+pIn1 exactly 1
+in1 induces pIn1
+pIn1 nextto r1
+// order of the promoters
+pIn2 before pIn1
+
+// input promoters of light-blue
+// c1 -> p1 -> c2 
+p1 exactly 1
+c1 represses p1
+p1 nextto p0
+// 0 -> p0 -> c2
+p0 exactly 1
+0 induces p0
+p0 nextto r2
+// order of the promoters
+p1 before p0
+
+// input promoter of out1 reporter
+// c2 -> p2 -> cRFP 
+p2 exactly 1
+c2 represses p2
+p2 nextto rOut1
+
