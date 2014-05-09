@@ -1,34 +1,44 @@
 package org.cidarlab.minieugene.interaction;
 
-import org.cidarlab.minieugene.constants.RuleOperator;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.interaction.Participation.Role;
 
 public class Interaction {
 
 	private String a;
-	private String type;
+//	private String type;
 	private String b;
 	
-	public Interaction(String a, String type, String b) {
-		this.a = a;
-		this.type = type;
-		this.b = b;
+	private InteractionType type;
+	private List<Participation> participations;
+	
+	public static enum InteractionType {
+		INDUCES, DRIVES, REPRESSES, BINDS 
 	}
 	
-	public String toPigeon() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.a);
-		if(RuleOperator.REPRESSES.toString().equalsIgnoreCase(this.type)) {
-			sb.append(" rep ");
-		} else if(RuleOperator.INDUCES.toString().equalsIgnoreCase(this.type)) {
-			sb.append(" ind ");
-		}
-		sb.append(this.b);
-		return sb.toString();
+	public Interaction(InteractionType type) {
+		this.type = type;
+		this.participations = new ArrayList<Participation>();		
+	}
+	
+	public void addParticipation(Role role, Component participant) {
+		this.getParticipations().add(new Participation(role, participant));
+	}
+	
+	public List<Participation> getParticipations() {
+		return this.participations;
+	}
+		
+	public InteractionType getType() {
+		return this.type;
 	}
 	
 	public String toEugene() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.a).append(" ").append(RuleOperator.REPRESSES.toString()).append(" ").append(this.b).append(";");
+		sb.append(this.a).append(" ").append(this.type).append(" ").append(this.b).append(";");
 		return sb.toString();
 	}
 }

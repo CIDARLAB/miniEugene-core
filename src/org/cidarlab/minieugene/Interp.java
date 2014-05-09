@@ -49,9 +49,8 @@ public class Interp {
 	}
 	
 	/*
-	 * INTERPRETER - RELATED METHODS
+	 * 
 	 */
-	
 	public Predicate interpreteRule(String[] tokens) 
 			throws EugeneException {
 
@@ -65,14 +64,12 @@ public class Interp {
 			return createNullaryPredicate(tokens[0]);
 		case 2:
 			/*
-			 * unary rule
+			 * unary rule \/ negated nullary rule
 			 */
 			return createUnaryPredicate(tokens[0], tokens[1]);
 		case 3:
 			/*
-			 * binary rule
-			 * or
-			 * negated unary rule
+			 * binary rule \/ negated unary rule
 			 */
 			if(LogicalOperator.NOT.toString().equalsIgnoreCase(tokens[0])) {
 				return new LogicalNot(createUnaryPredicate(tokens[1], tokens[2]));
@@ -96,37 +93,6 @@ public class Interp {
 		return template.createPredicate(this.symbols, name, ids);
 	}
 	
-//	public Pattern createPattern(String name, List<List<String>> ids) {
-//		Pattern pp = new Pattern();
-//		for(String id : ids) {
-//			pp.getComponents().add(
-//					this.symbols.get(
-//						this.symbols.put(id)));
-//		}
-//		return pp;
-//	}
-//
-//	
-//	public Group createGroup(String name, List<List<String>> ids) {
-//		Group pp = new Group();
-//		for(String id : ids) {
-//			pp.getComponents().add(
-//					this.symbols.get(
-//						this.symbols.put(id)));
-//		}
-//		return pp;
-//	}
-//
-//	public Sequence createSequence(String name, List<String> ids) {
-//		Sequence pp = new Sequence();
-//		for(String id : ids) {
-//			pp.getComponents().add(
-//					this.symbols.get(
-//						this.symbols.put(id)));
-//		}
-//		return pp;
-//	}
-
 	private Predicate createNullaryPredicate(String s) 
 			throws EugeneException {
 		return this.pb.buildNullaryPredicate(s);
@@ -137,14 +103,15 @@ public class Interp {
 
 		if(LogicalOperator.NOT.toString().equalsIgnoreCase(p)) {
 			
-			// negated nullary constraint 
-			if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new AllReverse(null));
-			} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new AllForward(null));
-			} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(s)) {
-				return new LogicalNot(new AlternateOrientation(null));
-			}
+			return new LogicalNot(this.pb.buildNullaryPredicate(s));
+//			// negated nullary constraint 
+//			if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(s)) {
+//				return new LogicalNot(new AllReverse(null));
+//			} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(s)) {
+//				return new LogicalNot(new AllForward(null));
+//			} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(s)) {
+//				return new LogicalNot(new AlternateOrientation(null));
+//			}
 
 			
 		} else if(EugeneRules.isUnaryRule(p)) {

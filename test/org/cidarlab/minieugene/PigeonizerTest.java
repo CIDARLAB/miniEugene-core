@@ -6,6 +6,17 @@ import org.cidarlab.minieugene.util.SolutionExporter;
 public class PigeonizerTest {
 
 	public static void main(String[] args) {
+
+//		if(!testPrimitives()) {
+//			System.exit(1);
+//		}
+		
+		if(!testInteractions()) {
+			System.exit(2);
+		}
+	}
+	
+	private static boolean testPrimitives() {
 		MiniEugene me = new MiniEugene();
 
 		try {
@@ -14,6 +25,7 @@ public class PigeonizerTest {
 			WeyekinPoster.launchPage(se.toPigeon());
 		} catch(Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 		
 		// forward oriented invertase site
@@ -24,6 +36,7 @@ public class PigeonizerTest {
 			WeyekinPoster.launchPage(se.toPigeon());
 		} catch(Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 		
 		// in the last test case, we try to rebuild 
@@ -57,8 +70,60 @@ public class PigeonizerTest {
 			WeyekinPoster.launchPage(se.toPigeon());
 		} catch(Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 		
+		return true;
+	}
+	
+	private static boolean testInteractions() {
+		MiniEugene me = new MiniEugene();
+		
+		// NEGATIVE REPRESSION
+		try {
+			me.solve("N=2. contains c. contains p. c represses p.");
+//			System.out.println(me.getInteractions());
+
+			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+			WeyekinPoster.launchPage(se.toPigeon());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}		
+
+		// POSITIVE INDUCTION
+		try {
+			me.solve("N=2. contains c. contains p. c induces p.");
+//			System.out.println(me.getInteractions());
+
+			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+			WeyekinPoster.launchPage(se.toPigeon());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}		
+
+		// INDUCTION
+		try {
+			me.solve("N=1. contains ipIn1. in1 induces ipIn1.");
+//			System.out.println(me.getInteractions());
+
+			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+			WeyekinPoster.launchPage(se.toPigeon());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}		
+
+		// REPRESSION + ORIENTATION
+		try {
+			me.solve("N=2. contains c. contains p. p same_orientation c. not forward p or p after c. not reverse p or p before c. c represses p.");
+//			System.out.println(me.getInteractions());
+
+			SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
+			WeyekinPoster.launchPage(se.toPigeon());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}		
+
+		return true;
 	}
 
 }

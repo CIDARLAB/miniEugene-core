@@ -11,6 +11,8 @@ import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
+import org.cidarlab.minieugene.interaction.Interaction.InteractionType;
+import org.cidarlab.minieugene.interaction.Participation;
 
 public class Pigeonizer {
 
@@ -79,13 +81,7 @@ public class Pigeonizer {
 		}
 
 		// INTERACTIONS
-		sb.append("# Arcs").append("\r\n");
-		if(null != interactions && !(interactions.isEmpty())) {
-			Iterator<Interaction> it = interactions.iterator();
-			while(it.hasNext()) {
-				sb.append((it.next()).toPigeon()).append("\r\n");
-			}
-		}
+		sb.append(this.toPigeon(interactions));
 		
 		/*
 		 * Sending the script to the Pigeon server. 
@@ -123,13 +119,7 @@ public class Pigeonizer {
 		}
 
 		// INTERACTIONS
-		sb.append("# Arcs").append("\r\n");
-		if(null != interactions && !(interactions.isEmpty())) {
-			Iterator<Interaction> it = interactions.iterator();
-			while(it.hasNext()) {
-				sb.append((it.next()).toPigeon()).append("\r\n");
-			}
-		}
+		sb.append(this.toPigeon(interactions));
 
 		/*
 		 * sending the Pigeon script to the Pigeon server
@@ -185,10 +175,86 @@ public class Pigeonizer {
 			sb.append(" nl");
 		}
 		
-//		System.out.println(sb.toString());
 		return sb.toString();
 	}
 	
+	/**
+	 * 
+	 * @param interactions
+	 * @return
+	 */
+	private String toPigeon(Set<Interaction> interactions) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("# Arcs").append("\r\n");
+		if(null != interactions && !(interactions.isEmpty())) {
+			Iterator<Interaction> it = interactions.iterator();
+			while(it.hasNext()) {
+				Interaction ia = it.next();
+				if(InteractionType.REPRESSES == ia.getType()) {
+					sb.append(toPigeonRep(ia));
+				} else if(InteractionType.INDUCES == ia.getType()) {
+					sb.append(toPigeonInd(ia));
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
+	/*
+	 * REPRESSES -> REP
+	 */
+	private String toPigeonRep(Interaction represses) {
+		StringBuilder sb = new StringBuilder();
+		
+		// get the individual roles
+		String repressor = null;
+		String repressee = null;		
+		for(Participation part : represses.getParticipations()) {
+			if(Participation.Role.REPRESSOR == part.getRole()) {
+				repressor = part.getParticipant().getName();
+			} else if (Participation.Role.REPRESSEE == part.getRole()) {
+				repressee = part.getParticipant().getName();
+			}
+		}
+
+		// finally, we build the Pigeon statement
+		sb.append(repressor);
+		sb.append(" rep ");
+		sb.append(repressee);
+		
+		return sb.toString();
+	}
+	
+	/*
+	 * REPRESSES -> REP
+	 */
+	private String toPigeonInd(Interaction induces) {
+		StringBuilder sb = new StringBuilder();
+		
+		// get the individual roles
+		String inducer = null;
+		String inducee = null;		
+		for(Participation part : induces.getParticipations()) {
+			if(Participation.Role.INDUCER == part.getRole()) {
+				inducer = part.getParticipant().getName();
+			} else if (Participation.Role.INDUCEE == part.getRole()) {
+				inducee = part.getParticipant().getName();
+			}
+		}
+
+		// finally, we build the Pigeon statement
+		sb.append(inducer);
+		sb.append(" ing ");
+		sb.append(inducee);
+		
+		return sb.toString();
+	}
+
+	/**
+	 * 
+	 * @param s  ... the name of a component
+	 * @return   the color code of the component
+	 */
 	private int getColor(String s) {
 		if(this.colors.containsKey(s)) {
 			int color = colors.get(s);

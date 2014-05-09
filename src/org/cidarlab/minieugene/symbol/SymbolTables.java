@@ -32,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.interaction.Interaction;
+import org.cidarlab.minieugene.interaction.Participation;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
@@ -207,10 +208,11 @@ public class SymbolTables {
 	}
 	
 	public Set<Interaction> getInteractions() {
-		Set<Interaction> inters = new HashSet<Interaction>();
+		Set<Interaction> interactions = new HashSet<Interaction>();
 		Iterator<InteractionPredicate> it = this.interactions.iterator();
 		while(it.hasNext()) {
 			InteractionPredicate ip = it.next();
+			
 			Component a = null;
 			if(ip instanceof Represses) {
 				a = ip.getA();
@@ -220,10 +222,23 @@ public class SymbolTables {
 
 			Component b = ip.getB();
 			
-			inters.add(
-					new Interaction(a.getName(), ip.getOperator(), b.getName()));
+			// a <interaction-type> b
+			
+			Interaction ia = new Interaction(Interaction.InteractionType.valueOf(ip.getOperator()));
+			if("REPRESSES".equalsIgnoreCase(ip.getOperator())) {
+				ia.addParticipation(Participation.Role.REPRESSOR, a);
+				ia.addParticipation(Participation.Role.REPRESSEE, b);
+			} else if("INDUCES".equalsIgnoreCase(ip.getOperator())) {
+				ia.addParticipation(Participation.Role.INDUCER, a);
+				ia.addParticipation(Participation.Role.INDUCEE, b);
+			} else if("DRIVES".equalsIgnoreCase(ip.getOperator())) {
+				ia.addParticipation(Participation.Role.DRIVER, a);
+				ia.addParticipation(Participation.Role.DRIVEE, b);
+			}
+
+			interactions.add(ia);
 		}
-		return inters;
+		return interactions;
 	}
 	
 

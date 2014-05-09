@@ -3,6 +3,7 @@ package org.cidarlab.minieugene.builder;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
@@ -66,7 +67,7 @@ public class PredicateBuilder {
 			return new AlternateOrientation(null);
 		}
 		
-		throw new EugeneException("Invalid Rule!");
+		throw new EugeneException("Invalid Nullary Rule!");
 
 	}
 	
@@ -195,7 +196,7 @@ public class PredicateBuilder {
 			return new LogicalNot(new MoreThan(lhs, num));
 		}
 		
-		throw new EugeneException("Invalid Binary Rule!");
+		throw new EugeneException("Invalid Counting Rule!");
 	}
 	
 	/**
@@ -214,7 +215,7 @@ public class PredicateBuilder {
 			return new LogicalNot(new Equals(i, j));
 		}
 		
-		throw new EugeneException("Invalid Binary Rule!");
+		throw new EugeneException("Invalid Indexed Rule!");
 	}
 	
 	/**
@@ -246,7 +247,7 @@ public class PredicateBuilder {
 		} else {
 			// a X b
 			// X := {INDUCES, REPRESSES, DRIVES}
-			if(RuleOperator.INDUCES.toString().equalsIgnoreCase(X)) {
+			if(Interaction.InteractionType.INDUCES.toString().equalsIgnoreCase(X)) {
 				
 				/*
 				 * the inducer is not allowed to appear in any
@@ -260,13 +261,13 @@ public class PredicateBuilder {
 						a,
 						this.symbols.get(this.symbols.getId(b)));
 				
-			} else if(RuleOperator.REPRESSES.toString().equalsIgnoreCase(X)) {
+			} else if(Interaction.InteractionType.REPRESSES.toString().equalsIgnoreCase(X)) {
 				
 				return new Represses(
 						this.symbols.get(this.symbols.getId(a)),
 						this.symbols.get(this.symbols.getId(b)));
 				
-			} else if(RuleOperator.DRIVES.toString().equalsIgnoreCase(X)) {
+			} else if(Interaction.InteractionType.DRIVES.toString().equalsIgnoreCase(X)) {
 				
 				return new Drives(
 						this.symbols.get(this.symbols.getId(a)),
