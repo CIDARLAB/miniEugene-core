@@ -52,7 +52,6 @@ public class MiniEugene
 	 * reference to the symbol tables
 	 */
 	private SymbolTables symbols;
-	//private PredicateBuilder pb;
 	
 	private MiniEugeneStatistics stats;		
 	private List<Component[]> solutions;
@@ -61,10 +60,11 @@ public class MiniEugene
 	 * non-args constructor
 	 */
 	public MiniEugene() {
+		// symbol tables
 		this.symbols = new SymbolTables();
-		//this.pb = new PredicateBuilder(this.symbols);
 		
 		this.stats = new MiniEugeneStatistics();
+		
 		this.solutions = null;
 	}
 	
@@ -223,13 +223,13 @@ public class MiniEugene
 			throws EugeneException {
 			
 		/*
-		 * at the beginning of every run, we clear the symbol tables 
-		 * that might contain symbols from earlier runs
+		 * first, we clear the symbol tables 
+		 * since they might contain symbols from the last run
 		 */
 		this.symbols.clear();
 
 		/*
-		 * first, we parse the script
+		 * next, we parse the script
 		 */
 		try {
 			LogicalAnd la = this.parse(script);
@@ -394,15 +394,8 @@ public class MiniEugene
 	@Override
 	public URI visualizeACT() 
 			throws EugeneException {
-		/*
-		 * for FSM testing...
-		 */
 		ACT act = this.symbols.getACT();
 		if(null != act) {
-			
-//			FSMSolver fsm = new FSMSolver(this.symbols, act);
-//			fsm.solve();
-			
 			String gv = act.toGraphViz();
 			WeyekinPoster.setDotText(gv);
 			return WeyekinPoster.postMyVision();
@@ -413,6 +406,7 @@ public class MiniEugene
 	
 	public LogicalAnd getCNF(String script) 
 			throws EugeneException {
+		
 		// first, we clear the symbol tables
 		this.symbols.clear();
 		

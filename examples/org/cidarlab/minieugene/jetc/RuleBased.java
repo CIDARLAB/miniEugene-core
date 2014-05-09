@@ -420,6 +420,6 @@ public class RuleBased {
 		}
 
 		// CONSOLE OUTPUT
-		se.toConsole();
+		//se.toConsole();
 	}
 }

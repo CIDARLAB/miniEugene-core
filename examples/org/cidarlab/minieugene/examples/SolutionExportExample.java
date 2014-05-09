@@ -25,6 +25,7 @@ package org.cidarlab.minieugene.examples;
 import java.net.URI;
 
 import org.cidarlab.minieugene.MiniEugene;
+import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
@@ -92,6 +93,7 @@ public class SolutionExportExample {
 		try {
 			URI pigeonURI = se.toPigeon();
 			System.out.println(pigeonURI.toString());
+//			WeyekinPoster.launchPage(pigeonURI);
 		} catch(EugeneException ee) {
 			ee.printStackTrace();
 		}

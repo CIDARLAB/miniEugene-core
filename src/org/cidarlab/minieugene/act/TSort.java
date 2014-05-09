@@ -13,7 +13,7 @@ import org.cidarlab.minieugene.exception.ACTException;
 public class TSort {
 	/** <p>
 	 * <b>Topological sort</b> solves a problem of - finding a linear ordering
-	 * of the vertices of <i>V</i> such that for each edge <i>(i, j) ∈ E</i>,
+	 * of the vertices of <i>V</i> such that for each edge <i>(i, j) $\in$ E</i>,
 	 * vertex <i>i</i> is to the left of vertex <i>j</i>. (Skiena 2008, p. 481)
 	 * </p>
 	 * 

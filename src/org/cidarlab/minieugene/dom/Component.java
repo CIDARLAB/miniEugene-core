@@ -22,8 +22,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.cidarlab.minieugene.dom;
 
-import org.cidarlab.minieugene.constants.Type;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.solver.jacop.PartTypes;
 
 /**
@@ -55,25 +54,33 @@ public class Component
 	private int id;
 	
 	/*
-	 * direction
+	 * orientation
 	 */
 	private boolean forward;
 	
+	/*
+	 * part type
+	 */
+	private PartTypesTable.PartType pt;
+	
 	
 	public Component(String name) {
-		super(name);
+		super(name);		
 		this.forward = true;
-
 		this.id = hash(this.getName());
+		this.pt = PartTypesTable.toPartType(this.getName());
 	}
 	
 	public Component(String name, boolean forward) {
 		super(name);
-		this.forward = forward;
-		
+		this.forward = forward;		
 		this.id = hash(this.getName());
+		this.pt = PartTypesTable.toPartType(this.getName());
 	}
 	
+	// to convert the name to an integer
+	// for the constraint solver.
+	// NEEDS IMPROVEMENT!
 	private int hash(String name) {
 		int hash = name.hashCode();
 		if(hash < 0) {
@@ -118,7 +125,8 @@ public class Component
 	}
 
 	/**
-	 * getTypeId/0 returns the type's ID of the component
+	 * getTypeId/0 returns the type's ID of the component. 
+	 * This method is only relevant for the constraint solver.
 	 * 
 	 * 1 ... Promoter
 	 * 2 ... RBS
@@ -128,70 +136,42 @@ public class Component
 	 * 
 	 * @return int ... the type's ID
 	 */
-	public int getTypeId() {
-		if('p' == this.getName().charAt(0) || 'P' == this.getName().charAt(0)) {
-			return PartTypes.get("PROMOTER");
-		} else if('r' == this.getName().charAt(0) || 'R' == this.getName().charAt(0)) {
-			return PartTypes.get("RBS");  
-		} else if('c' == this.getName().charAt(0) || 'C' == this.getName().charAt(0) ||
-				'g' == this.getName().charAt(0) || 'G' == this.getName().charAt(0)) {
-			return PartTypes.get("GENE");  
-		} else if('t' == this.getName().charAt(0) || 'T' == this.getName().charAt(0)) {
-			return PartTypes.get("TERMINATOR");  
-		} 
-		return 5;
+	public int getTypeId() {		
+		return PartTypesTable.toId(this.pt);
 	}
 	
 	/**
 	 * the getTypeName method returns the component's type name derived 
-	 * from the first character of the name of the component.
-	 * 
-	 * p|P     ... Promoter
-	 * r|R     ... RBS
-	 * c|g|C|G ... Gene
-	 * t|T     ... Terminator
+	 * from the first two characters of the name of the component.
 	 *  
 	 * @return the name of the component's type
 	 */
 	public String getTypeName() {
-		if('p' == this.getName().charAt(0) || 'P' == this.getName().charAt(0)) {
-			return "PROMOTER";
-		} else if('r' == this.getName().charAt(0) || 'R' == this.getName().charAt(0)) {
-			return  "RBS";  
-		} else if('c' == this.getName().charAt(0) || 'C' == this.getName().charAt(0) ||
-				'g' == this.getName().charAt(0) || 'G' == this.getName().charAt(0)) {
-			return "GENE";  
-		} else if('t' == this.getName().charAt(0) || 'T' == this.getName().charAt(0)) {
-			return "TERMINATOR";  
-		} 
-		return "?";
-		
+		String s = PartTypesTable.toName(this.pt);
+		if(null == s) {
+			return "?";
+		}
+		return s;		
 	}
 	
 	/**
-	 * returns the type of the component
+	 * returns the type of the component as a 
+	 * two character long string
 	 * 
 	 * @return
 	 */
-	public Type getType() {
-		if(this.getName().toUpperCase().startsWith("P")) {
-			return Type.PROMOTER;
-		} else if(this.getName().toUpperCase().startsWith("R")) {
-			return Type.RIBOSOME_BINDING_SITE;
-		} else if(this.getName().toUpperCase().startsWith("C") ||
-				this.getName().toUpperCase().startsWith("G")) {
-			return Type.CODING_SEQUENCE;
-		} else if(this.getName().toUpperCase().startsWith("T")) {
-			return Type.TERMINATOR;
-		}
-		return Type.UNKNOWN;
+	private PartTypesTable.PartType getPartType() {
+		return this.pt;
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("{").append(this.getId()).append(", ").append(this.getName()).append(", ");
-		if(this.isForward()) {
+		sb.append("{")
+			.append(this.getId()).append(", ")          // ID
+			.append(this.getPartType()).append(", ")    // PART TYPE
+			.append(this.getName()).append(", ");       // PART NAME
+		if(this.isForward()) {                          // ORIENTATION
 			sb.append("->");
 		} else {
 			sb.append("<-");

@@ -89,7 +89,6 @@ public class SolutionExporter {
 	        			this.interactions);
 	        	
 	        } catch(Exception e) {
-//	        	e.printStackTrace();
 	            throw new EugeneException(e.getMessage());
 	        }
 		}
@@ -119,19 +118,19 @@ public class SolutionExporter {
 	        		uris.add(pigeon.pigeonizeSingle(solution, this.interactions));
 	        	}
 	        	
-	        	return pigeonize(uris, filename);
-	        	// here, we need to merge all images...
+	        	// finally, we merge all pigeon images 
+	        	// into one big image
+	        	return toMergedImage(uris, filename);
 	        	
 	        } catch(Exception e) {
-//	        	e.printStackTrace();
 	            throw new EugeneException(e.getMessage());
 	        }
 		}
 		
-        throw new EugeneException("nothing to better visualize!");
+        throw new EugeneException("nothing to visualize!");
 	}
 	
-	private Image pigeonize(List<URI> uris, String filename) 
+	private Image toMergedImage(List<URI> uris, String filename) 
 			throws EugeneException {
 
 		try {
