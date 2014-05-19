@@ -376,8 +376,8 @@ public class JaCoPSolver
         if(NR_OF_SOLUTIONS != (-1)) {
         	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
         } else {
-        	search.getSolutionListener().setSolutionLimit(MiniEugeneSolutionListener.MAX_NR_OF_SOLUTIONS);
-//            search.getSolutionListener().searchAll(true);   
+//        	search.getSolutionListener().setSolutionLimit(MiniEugeneSolutionListener.MAX_NR_OF_SOLUTIONS);
+            search.getSolutionListener().searchAll(true);   
         }
 
         search.setPrintInfo(false);
@@ -398,6 +398,10 @@ public class JaCoPSolver
 		/*
 		 * return the solutions
 		 */
+
+		if(null == search.getSolutionListener().getSolutions()) {
+			return null;
+		}
 		return this.processSolutions(search.getSolutionListener().getSolutions());
 //		return null;
 //		return listener.getMiniEugeneSolutions();
@@ -405,7 +409,7 @@ public class JaCoPSolver
 
 		
 	public List<Component[]> processSolutions(Domain[][] solutions) {
-		
+
 		List<Component[]> lst = new ArrayList<Component[]>();
 		for(int i=0; i<solutions.length && solutions[i]!=null; i++) {
 			

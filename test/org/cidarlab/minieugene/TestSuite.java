@@ -173,6 +173,30 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/or/or01"));
 		
 		/*
+		 * LOGICAL NOT
+		 * negation of rules
+		 */
+//		new TestSuite().test("N=2.contains a. not contains b.all_forward.");
+//		new TestSuite().test("N=2.not contains a. not contains b.all_forward.");
+//		
+//		// IF contains a THEN contains b
+//		// <==>
+//		new TestSuite().test("N=2.not contains a or contains b.all_forward.");
+//		// forward a => forward b
+//		new TestSuite().test("N=2.not forward a or forward b.contains a.contains b.");
+//		
+//		// 
+//		// we want this pattern:
+//		// a1, b, a2, c
+//		// a2, c, a1, b
+//		new TestSuite().test("N=4.template [a1|a2|b|c], [a1|a2|b|c], [a1|a2|b|c], [a1|a2|b|c]. "+
+//				"a1 exactly 1. a2 exactly 1. b exactly 1. c exactly 1. all_forward."+
+//				"a1 before b. a1 nextto b."+
+//				"a2 before c. a2 nextto c.");
+		
+		
+		
+		/*
 		 * minN calculations
 		 */
 //		new TestSuite().test(new File("./tests/N/minN01"));
@@ -277,7 +301,7 @@ public class TestSuite {
 		/*
 		 * LARGE DESIGNS + SOLUTION LISTENER
 		 */
-		new TestSuite().test("N=30. contains a. contains b.");
+//		new TestSuite().test("N=30. contains a. contains b.");
 //		new TestSuite().test("N=4. contains a. contains b. contains c. contains d.");
 		
 		/*
@@ -317,6 +341,9 @@ public class TestSuite {
 		// INVERTERS
 //		new TestSuite().test(new File("./tests/swati/test01"));
 //		new TestSuite().test(new File("./tests/swati/inverter"));
+		
+		// HERE!
+		new TestSuite().test(new File("./designs/cidar/inverters/inverters"));
 
 		
 		// Examples of the miniEugene web site
@@ -390,8 +417,6 @@ public class TestSuite {
 			return;
 		}
 
-		me.getStatistics().print();
-
 		if(me.getSolutions() == null || me.getSolutions().isEmpty() ) {
 			return;
 		}
@@ -402,8 +427,8 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// way better than PIGEON 
-			Image pic = se.pigeonize("./images/nor-igem.png", null, true, -1);
-			se.show(pic);
+//			Image pic = se.pigeonize("./images/nor-igem.png", null, true, -1);
+//			se.show(pic);
 //			WeyekinPoster.launchPage(se.toPigeon());
 			
 			// EUGENE
@@ -420,6 +445,11 @@ public class TestSuite {
 		
 		// CONSOLE OUTPUT
 		se.toConsole();
+		
+		// STATISTICS
+		me.getStatistics().print();
+
+
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

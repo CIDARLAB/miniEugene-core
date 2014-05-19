@@ -10,10 +10,10 @@ public class PartTypes {
 	private static void init() {
 		types = new HashMap<String, Integer>();
 		
-		types.put("PROMOTER", 1);
-		types.put("RBS", 2);
-		types.put("GENE", 3);
-		types.put("TERMINATOR", 4);
+		types.put("PROMOTER", 3);
+		types.put("RBS", 4);
+		types.put("GENE", 7);
+		types.put("TERMINATOR", 9);
 	}
 	
 	public static int get(String s) {

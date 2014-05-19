@@ -1,5 +1,6 @@
 package org.cidarlab.minieugene.predicates.interaction;
 
+import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.interaction.Interaction;
@@ -53,7 +54,7 @@ public class Drives
 		pcForward[0] = noTerminatorBetween(variables, this.getA(), this.getB());
 		pcForward[1] = new AllBefore(this.getA(), this.getB()).toJaCoP(store, variables);
 		pcForward[2] = new AllForward(this.getA()).toJaCoP(store, variables);
-
+		
 		// REVERSE ORIENTED
 		PrimitiveConstraint[] pcReverse = new PrimitiveConstraint[3];
 		pcReverse[0] = noTerminatorBetween(variables, this.getB(), this.getA());
@@ -71,12 +72,15 @@ public class Drives
 		pcReturn[1] = new Or(
 						new And(pcForward), 
 						new And(pcReverse));
+		
 		return new And(pcReturn);
 	}
 	
 	
 	private PrimitiveConstraint noTerminatorBetween(
 			IntVar[][] variables, Component A, Component B) {
+		
+		int termId = PartTypesTable.toId(PartTypesTable.toPartType("TERMINATOR"));
 		
 		int N = variables[Variables.PART].length;
 		
@@ -88,7 +92,7 @@ public class Drives
 				if(i < j) {
 					PrimitiveConstraint[] noTerminator = new PrimitiveConstraint[Math.abs(i-j)];
 					for(int k=i; k<j; k++) {
-						noTerminator[k-i] = new XneqC(variables[Variables.TYPE][k], PartTypes.get("TERMINATOR"));
+						noTerminator[k-i] = new XneqC(variables[Variables.TYPE][k], termId);
 					}
 					downstream[j] = new IfThen(new XeqC(variables[Variables.PART][j], B.getId()), new And(noTerminator));
 				} else if (i==j) {
@@ -96,7 +100,7 @@ public class Drives
 				} else { // i >= j
 					PrimitiveConstraint[] noTerminator = new PrimitiveConstraint[Math.abs(i-j)];
 					for(int k=j; k<i; k++) {
-						noTerminator[k-j] = new XneqC(variables[Variables.TYPE][k], PartTypes.get("TERMINATOR"));
+						noTerminator[k-j] = new XneqC(variables[Variables.TYPE][k], termId);
 					}
 					downstream[j] = new IfThen(new XeqC(variables[Variables.PART][j], B.getId()), new And(noTerminator));
 				}
