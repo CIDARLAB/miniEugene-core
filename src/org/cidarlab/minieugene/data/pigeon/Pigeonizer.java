@@ -10,9 +10,9 @@ import java.util.Set;
 import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
-import org.cidarlab.minieugene.interaction.Interaction.InteractionType;
-import org.cidarlab.minieugene.interaction.Participation;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
+import org.cidarlab.minieugene.predicates.interaction.Participation;
+import org.cidarlab.minieugene.predicates.interaction.Interaction.InteractionType;
 
 public class Pigeonizer {
 

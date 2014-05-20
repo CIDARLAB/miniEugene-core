@@ -1,0 +1,39 @@
+// please set the ``Lenght of the Design'' to 33
+N=33.
+// OUT1
+
+// TEMPLATES
+SEQUENCE pIn2,pIn1,r1,c1,t1.
+SEQUENCE p0,p1,r2,c2,t2.
+SEQUENCE p2,rOut1,cOut1,tOut1.
+
+// ORIENTATION
+ALL_FORWARD.
+
+// INTERACTIONS
+in2 INDUCES pIn2.
+in1 INDUCES pIn1.
+0 INDUCES p0.
+
+c1 REPRESSES p1.
+c2 REPRESSES p2.
+
+
+// OUT0
+
+// TEMPLATES
+SEQUENCE p1,pIn2,r3,c3,t3.
+SEQUENCE pIn2,pIn0,r4,c4,t4.
+SEQUENCE p3,p4,r5,c5,t5.
+SEQUENCE p5,rOut0,cOut0,tOut0.
+
+// ORIENTATION
+ALL_FORWARD.
+
+// INTERACTIONS
+in2 INDUCES pIn2.
+in0 INDUCES pIn0.
+
+c3 REPRESSES p3.
+c4 REPRESSES p4.
+c5 REPRESSES p5.

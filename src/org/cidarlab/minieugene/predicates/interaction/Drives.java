@@ -3,7 +3,6 @@ package org.cidarlab.minieugene.predicates.interaction;
 import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
@@ -21,25 +20,16 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 public class Drives 
-	extends InteractionPredicate {
+	extends Interaction {
 	
-	public Drives(Component a, Component b) {
-		super(a, b);
+	public Drives(Component a, Component b) {		
+		super(a, InteractionType.DRIVES, b);
 	}
 		
 
 	@Override
 	public String getOperator() {
 		return Interaction.InteractionType.DRIVES.toString();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getName())
-			.append(" ").append(Interaction.InteractionType.DRIVES).append(" ")
-			.append(this.getB().getName());
-		return sb.toString();
 	}
 
 	@Override

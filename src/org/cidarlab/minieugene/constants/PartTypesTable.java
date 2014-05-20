@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.cidarlab.minieugene.dom.Component;
 
 public class PartTypesTable {
 	

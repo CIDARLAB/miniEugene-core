@@ -33,10 +33,10 @@ import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.parser.MiniEugeneLexer;
 import org.cidarlab.minieugene.parser.MiniEugeneParser;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.solver.jacop.JaCoPSolver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -205,15 +205,22 @@ public class MiniEugene
 	public void solve(String script, int NR_OF_SOLUTIONS) 
 		throws EugeneException {
 		
-		try {
-			this.solve(script);
-		} catch(EugeneException ee) {
-			throw new EugeneException(ee.getMessage());
-		}
-		
 		/*
-		 * TODO: pick NR_OF_SOLUTIONS solutions randomly
+		 * first, we clear the symbol tables 
+		 * since they might contain symbols from the last run
 		 */
+		this.symbols.clear();
+
+		/*
+		 * next, we parse the script
+		 */
+		try {
+			LogicalAnd la = this.parse(script);
+			this.solve(la, NR_OF_SOLUTIONS);
+		} catch(EugeneException e) {
+			e.printStackTrace();
+			throw new EugeneException(e.getMessage());
+		}
 	}
 	
 	/**

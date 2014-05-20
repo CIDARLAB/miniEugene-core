@@ -3,7 +3,6 @@ package org.cidarlab.minieugene.builder;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
@@ -15,6 +14,7 @@ import org.cidarlab.minieugene.predicates.counting.Then;
 import org.cidarlab.minieugene.predicates.counting.With;
 import org.cidarlab.minieugene.predicates.interaction.Drives;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
@@ -249,16 +249,8 @@ public class PredicateBuilder {
 			// X := {INDUCES, REPRESSES, DRIVES}
 			if(Interaction.InteractionType.INDUCES.toString().equalsIgnoreCase(X)) {
 				
-				/*
-				 * the inducer is not allowed to appear in any
-				 * non-INDUCES rule
-				 */
-				if(this.symbols.contains(a)) {
-					throw new EugeneException("Invalid INDUCES rule!");
-				}
-				
 				return new Induces(
-						a,
+						new Component(a),
 						this.symbols.get(this.symbols.getId(b)));
 				
 			} else if(Interaction.InteractionType.REPRESSES.toString().equalsIgnoreCase(X)) {

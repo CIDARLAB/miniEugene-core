@@ -166,6 +166,13 @@ public class TestSuite {
 //		new TestSuite().test("N=4.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=5.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=6.contains p. contains c. contains t.p drives c.");
+		
+		// INDUCES
+//		new TestSuite().test("N=2. contains c. contains p. c induces p.");
+//		new TestSuite().test("N=1. contains p. in induces p.");
+
+		// REPRESSES
+		new TestSuite().test("N=2. contains c. contains p. c represses p.");
 
 		/*
 		 * LOGICAL OR
@@ -328,6 +335,12 @@ public class TestSuite {
 //		new TestSuite().test("N=4. sequence p, c+, t.");
 //		new TestSuite().test("N=1. sequence p, c, t.");
 
+		/*
+		 * NR_OF_SOLUTIONS tests
+		 * => miniEugene should always return 50000 solutions
+		 * we need this test, to test the miniEugene web app
+		 */
+//		new TestSuite().test("N=16.template [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR],[rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term.");
 		
 		/*
 		 * REAL DESIGNS
@@ -343,7 +356,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/swati/inverter"));
 		
 		// HERE!
-		new TestSuite().test(new File("./designs/cidar/inverters/inverters"));
+//		new TestSuite().test(new File("./designs/cidar/inverters/inverters"));
 
 		
 		// Examples of the miniEugene web site
@@ -365,10 +378,10 @@ public class TestSuite {
 		/*
 		 * ACM JETC
 		 */
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette01.eug"));
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette02.eug"));
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/cassette03.eug"));
-//		new TestSuite().test(new File("./designs/priority-encoder/rev3/basic_composition.eug"));
+		// TODO NEXT
+//		new TestSuite().test(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration1/dark-blue"));
+//		new TestSuite().test(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration2/out0"));
+//		new TestSuite().test(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration2/out1"));
 
 		/*
 		 * NOR GATE EXAMPLE
@@ -409,7 +422,7 @@ public class TestSuite {
 			/*
 			 * execute the script
 			 */
-			me.solve(script);
+			me.solve(script, 50000);
 
 			tProcessing = System.nanoTime() - t1;
 		} catch(Exception e) {
@@ -427,12 +440,12 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// way better than PIGEON 
-			Image pic = se.pigeonize("./designs/cidar/inverters/inverters.png", null, true, 20);
+//			Image pic = se.pigeonize("./designs/cidar/inverters/inverters.png", null, true, 20);
 //			se.show(pic);
 //			WeyekinPoster.launchPage(se.toPigeon());
 			
 			// EUGENE
-//			se.toEugene("./designs/templating/xxx_rev1.eug");
+			se.toEugene("./test-results/eugene/"+UUID.randomUUID().toString());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

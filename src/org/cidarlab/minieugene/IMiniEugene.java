@@ -28,7 +28,7 @@ import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
 
 /**
  * 

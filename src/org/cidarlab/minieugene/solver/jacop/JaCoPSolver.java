@@ -11,7 +11,7 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
-import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.predicates.templating.Sequence;
 import org.cidarlab.minieugene.solver.Solver;
@@ -201,7 +201,7 @@ public class JaCoPSolver
 				if(predicate instanceof Represses || 
 						predicate instanceof Induces) {
 					this.symbols.putInteraction(
-							(InteractionPredicate)predicate);
+							(Interaction)predicate);
 				} 
 				
 				PrimitiveConstraint constraint = predicate.toJaCoP(

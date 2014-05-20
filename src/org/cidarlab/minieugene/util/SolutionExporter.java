@@ -22,7 +22,8 @@ import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
 import org.cidarlab.minieugene.data.sbol.SBOLExporter;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
+import org.cidarlab.minieugene.predicates.interaction.Participation;
 import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLFactory;
 
@@ -292,7 +293,7 @@ public class SolutionExporter {
 		// first, we process the interactions
 		if(null != this.interactions && !this.interactions.isEmpty()) {
 			for(Interaction i : this.interactions) {
-				sb.append(i.toEugene()).append(NEWLINE);
+				sb.append(this.toEugeneInteraction(i)).append(NEWLINE);
 			}
 		}
 		
@@ -324,6 +325,50 @@ public class SolutionExporter {
 			throw new EugeneException("Cannot serialize to "+filename+"!");
 		}
 	}
+	 
+	 private String toEugeneInteraction(Interaction ia) {
+			StringBuilder sb = new StringBuilder();
+
+			if(ia.getType() == Interaction.InteractionType.REPRESSES ) {
+				sb.append(toRepresses(ia));
+			} else if(ia.getType() == Interaction.InteractionType.INDUCES ) {
+				sb.append(toInduces(ia));
+			} 
+			
+			return sb.toString();
+		}
+		
+		private String toRepresses(Interaction ia) {
+			String repressee = null;
+			String repressor = null;
+			for(Participation p : ia.getParticipations()) {
+				if(p.getRole() == Participation.Role.REPRESSOR ) {
+					repressor = p.getParticipant().getName();
+				} else if(p.getRole() == Participation.Role.REPRESSEE ) {
+					repressee = p.getParticipant().getName();
+				}
+			}
+
+			StringBuilder sb = new StringBuilder();
+			sb.append(repressor).append(" ").append(ia.getType()).append(" ").append(repressee).append(".");
+			return sb.toString();
+		}
+
+		private String toInduces(Interaction ia) {
+			String inducee = null;
+			String inducer = null;
+			for(Participation p : ia.getParticipations()) {
+				if(p.getRole() == Participation.Role.INDUCER ) {
+					inducer = p.getParticipant().getName();
+				} else if(p.getRole() == Participation.Role.INDUCEE ) {
+					inducee = p.getParticipant().getName();
+				}
+			}
+
+			StringBuilder sb = new StringBuilder();
+			sb.append(inducer).append(" ").append(ia.getType()).append(" ").append(inducee).append(".");
+			return sb.toString();
+		}
 
 	 /**
 	  * 

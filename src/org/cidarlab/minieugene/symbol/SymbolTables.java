@@ -31,11 +31,10 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.interaction.Interaction;
-import org.cidarlab.minieugene.interaction.Participation;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
-import org.cidarlab.minieugene.predicates.interaction.InteractionPredicate;
+import org.cidarlab.minieugene.predicates.interaction.Interaction;
+import org.cidarlab.minieugene.predicates.interaction.Participation;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
 import org.cidarlab.minieugene.solver.jacop.SolutionPoolManager;
 
@@ -61,7 +60,7 @@ public class SymbolTables {
 	 */
 	private Map<Integer, Component> symbols;
 	private Set<Predicate> predicates;
-	private Set<InteractionPredicate> interactions;
+	private Set<Interaction> interactions;
 	
 	/*
 	 * the Abstract Composition Tree
@@ -83,7 +82,7 @@ public class SymbolTables {
 	
 		this.predicates = new HashSet<Predicate>();
 		
-		this.interactions = new HashSet<InteractionPredicate>();
+		this.interactions = new HashSet<Interaction>();
 		
 		/*
 		 * Abstract Composition Tree
@@ -119,8 +118,7 @@ public class SymbolTables {
 	}
 	
 	public boolean contains(String s) {
-		boolean b = this.symbols.containsValue(s);
-		return b;
+		return this.symbols.containsKey(new Component(s).getId());
 	}
 	
 	public Component get(int i) {
@@ -201,44 +199,18 @@ public class SymbolTables {
 	/*
 	 * methods to store information on regulatory interactions
 	 */
-	public void putInteraction(InteractionPredicate ip) {	
+	public void putInteraction(Interaction ip) {	
 		if(!this.interactions.contains(ip)) {
 			this.interactions.add(ip);
 		}		
 	}
 	
+	/**
+	 * 
+	 * @return the set of regulatory interactions
+	 */
 	public Set<Interaction> getInteractions() {
-		Set<Interaction> interactions = new HashSet<Interaction>();
-		Iterator<InteractionPredicate> it = this.interactions.iterator();
-		while(it.hasNext()) {
-			InteractionPredicate ip = it.next();
-			
-			Component a = null;
-			if(ip instanceof Represses) {
-				a = ip.getA();
-			} else if(ip instanceof Induces) {
-				a = new Component(((Induces)ip).getInducer());
-			}
-
-			Component b = ip.getB();
-			
-			// a <interaction-type> b
-			
-			Interaction ia = new Interaction(Interaction.InteractionType.valueOf(ip.getOperator()));
-			if("REPRESSES".equalsIgnoreCase(ip.getOperator())) {
-				ia.addParticipation(Participation.Role.REPRESSOR, a);
-				ia.addParticipation(Participation.Role.REPRESSEE, b);
-			} else if("INDUCES".equalsIgnoreCase(ip.getOperator())) {
-				ia.addParticipation(Participation.Role.INDUCER, a);
-				ia.addParticipation(Participation.Role.INDUCEE, b);
-			} else if("DRIVES".equalsIgnoreCase(ip.getOperator())) {
-				ia.addParticipation(Participation.Role.DRIVER, a);
-				ia.addParticipation(Participation.Role.DRIVEE, b);
-			}
-
-			interactions.add(ia);
-		}
-		return interactions;
+		return this.interactions;
 	}
 	
 

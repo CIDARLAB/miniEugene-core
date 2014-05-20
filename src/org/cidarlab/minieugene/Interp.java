@@ -11,9 +11,6 @@ import org.cidarlab.minieugene.exception.EugeneException;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.LogicalOperator;
 import org.cidarlab.minieugene.predicates.Predicate;
-import org.cidarlab.minieugene.predicates.orientation.AllForward;
-import org.cidarlab.minieugene.predicates.orientation.AllReverse;
-import org.cidarlab.minieugene.predicates.orientation.AlternateOrientation;
 import org.cidarlab.minieugene.predicates.position.Equals;
 import org.cidarlab.minieugene.predicates.templating.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
@@ -84,7 +81,7 @@ public class Interp {
 				return new LogicalNot(createBinaryPredicate(tokens[1], tokens[2], tokens[3]));
 			}
 		default:
-			throw new EugeneException("Invalid Rule!");
+			throw new EugeneException(Arrays.toString(tokens) + " is an invalid rule. Wrong number of tokens.");
 		}
 	}
 	
@@ -136,7 +133,7 @@ public class Interp {
 			return this.pb.buildUnary(p, this.symbols.get(id));
 		}
 		
-		throw new EugeneException("Invalid rule!");		
+		throw new EugeneException(p + " is an invalid unary rule operand!");		
 	}
 
 	
@@ -199,7 +196,7 @@ public class Interp {
 				}
 			}
 			
-			throw new EugeneException("Invalid EQUALS rule!");
+			throw new EugeneException(a+" "+X+" "+b+" is an invalid rule!");
 			
 			
 		} else if(EugeneRules.isInteractionRule(X)) {

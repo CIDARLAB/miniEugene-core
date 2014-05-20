@@ -1,17 +1,15 @@
-package org.cidarlab.minieugene.interaction;
+package org.cidarlab.minieugene.predicates.interaction;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.interaction.Participation.Role;
+import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.interaction.Participation.Role;
 
-public class Interaction {
+public abstract class Interaction 
+		extends BinaryPredicate {
 
-	private String a;
-//	private String type;
-	private String b;
-	
 	private InteractionType type;
 	private List<Participation> participations;
 	
@@ -19,7 +17,9 @@ public class Interaction {
 		INDUCES, DRIVES, REPRESSES, BINDS 
 	}
 	
-	public Interaction(InteractionType type) {
+	public Interaction(Component a, InteractionType type, Component b) {		
+		super(a, b);
+		
 		this.type = type;
 		this.participations = new ArrayList<Participation>();		
 	}
@@ -36,9 +36,14 @@ public class Interaction {
 		return this.type;
 	}
 	
-	public String toEugene() {
+	@Override
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.a).append(" ").append(this.type).append(" ").append(this.b).append(";");
+		sb.append(this.getA().getName())
+			.append(" ").append(this.getType()).append(" ")
+			.append(this.getB().getName());
 		return sb.toString();
 	}
+
+
 }

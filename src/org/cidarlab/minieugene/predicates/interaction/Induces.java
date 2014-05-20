@@ -1,56 +1,45 @@
 package org.cidarlab.minieugene.predicates.interaction;
 
-import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.EugeneException;
-import org.cidarlab.minieugene.interaction.Interaction;
+import org.cidarlab.minieugene.predicates.interaction.Participation.Role;
 
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
+/**
+ * 
+ * @author Ernst Oberortner
+ *
+ */
 public class Induces 
-	extends InteractionPredicate {
+	extends Interaction {
 	
-	private String inducer;
-	
-	public Induces(String inducer, Component b) {
-		super(null, b);
-		this.inducer = inducer;
-	}
+	/*
+	 * the inducer induces the inducee
+	 */
+	public Induces(Component inducer, Component inducee) {
+		super(inducer, InteractionType.INDUCES, inducee);
 
-	public String getInducer() {
-		return this.inducer;
+		this.getParticipations().add(new Participation(Role.INDUCEE, inducee));
+		this.getParticipations().add(new Participation(Role.INDUCER, inducer));
 	}
 
 	@Override
 	public String getOperator() {
-		return Interaction.InteractionType.INDUCES.toString();
+		return this.getType().toString();
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.inducer)
-			.append(" ").append(Interaction.InteractionType.INDUCES).append(" ")
-			.append(this.getB().getName());
-		return sb.toString();
-	}
-
-	@Override
-	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
-
-		// x INDUCES a =>
-		//     CONTAINS a
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
+			throws EugeneException {
 		return null;
-//		return (new Contains(this.getB())).toJaCoP(store, variables);
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws EugeneException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

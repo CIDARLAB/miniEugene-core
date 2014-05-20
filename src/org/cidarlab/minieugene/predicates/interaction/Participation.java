@@ -1,4 +1,4 @@
-package org.cidarlab.minieugene.interaction;
+package org.cidarlab.minieugene.predicates.interaction;
 
 import org.cidarlab.minieugene.dom.Component;
 
