@@ -398,7 +398,7 @@ public class TestSuite {
 		long t1 = -1;
 		long tProcessing = -1;
 		
-		System.out.println("**** "+script+" ****");
+//		System.out.println("**** "+script+" ****");
 		
 		try {
 			/*
@@ -427,7 +427,7 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// way better than PIGEON 
-//			Image pic = se.pigeonize("./images/nor-igem.png", null, true, -1);
+			Image pic = se.pigeonize("./designs/cidar/inverters/inverters.png", null, true, 20);
 //			se.show(pic);
 //			WeyekinPoster.launchPage(se.toPigeon());
 			

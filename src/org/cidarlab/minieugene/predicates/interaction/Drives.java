@@ -8,7 +8,6 @@ import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
 import org.cidarlab.minieugene.predicates.position.before.AllBefore;
-import org.cidarlab.minieugene.solver.jacop.PartTypes;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;

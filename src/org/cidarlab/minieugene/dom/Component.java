@@ -23,7 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package org.cidarlab.minieugene.dom;
 
 import org.cidarlab.minieugene.constants.PartTypesTable;
-import org.cidarlab.minieugene.solver.jacop.PartTypes;
 
 /**
  * A Component represents a rule operand in miniEugene. From a biology perspective, 

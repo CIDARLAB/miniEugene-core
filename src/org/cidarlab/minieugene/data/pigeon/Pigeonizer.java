@@ -113,7 +113,7 @@ public class Pigeonizer {
 		 * COMPILATION into a Pigeon script
 		 */
 		StringBuilder sb = new StringBuilder();
-		sb.append("fontsize 2.0\r\n");
+		sb.append("fontsize 1.5\r\n");
 		for(Component symbol : solution) {
 			sb.append(toPigeon(symbol)).append("\r\n");
 		}
@@ -121,6 +121,7 @@ public class Pigeonizer {
 		// INTERACTIONS
 		sb.append(this.toPigeon(interactions));
 
+		
 		/*
 		 * sending the Pigeon script to the Pigeon server
 		 */
@@ -195,6 +196,7 @@ public class Pigeonizer {
 				} else if(InteractionType.INDUCES == ia.getType()) {
 					sb.append(toPigeonInd(ia));
 				}
+				sb.append("\r\n");
 			}
 		}
 		return sb.toString();
@@ -274,11 +276,8 @@ public class Pigeonizer {
 		return color;
 	}
 	
-	
-	
-	
 	private static final int COLOR_MIN = 1;
-	private static final int COLOR_MAX = 13;
+	private static final int COLOR_MAX = 14;
 	
 	private static int getRandomColor() {
 		return COLOR_MIN + (int)(Math.random() * ((COLOR_MAX - COLOR_MIN) + 1));
