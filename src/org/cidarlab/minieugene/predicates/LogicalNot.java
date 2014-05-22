@@ -1,6 +1,6 @@
 package org.cidarlab.minieugene.predicates;
 
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 import org.cidarlab.minieugene.predicates.counting.Exactly;
@@ -31,13 +31,13 @@ public class LogicalNot
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return this.getPredicates().get(0).toJaCoPNot(store, variables);
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		// TODO Auto-generated method stub
 		return null;
 	}

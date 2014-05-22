@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.templating;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 import org.cidarlab.minieugene.dom.Component;
@@ -41,7 +41,7 @@ public class Pattern
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		if(this.isNegated()) {
 			return this.toJaCoPNot(store, variables);
@@ -61,13 +61,13 @@ public class Pattern
 	
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		int maxN = variables[Variables.PART].length;
 		
 		if(maxN < this.getComponents().size()) {
-			throw new EugeneException("I cannot impose the strict template!");
+			throw new MiniEugeneException("I cannot impose the strict template!");
 		} else if(maxN % this.getComponents().size() != 0) {
-			throw new EugeneException(
+			throw new MiniEugeneException(
 					"The max. length "+maxN+" is not a multiple of the template size ("+this.getComponents().size()+")");
 		}
 		

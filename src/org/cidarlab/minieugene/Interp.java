@@ -7,7 +7,7 @@ import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.EugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.constants.TemplateType;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.LogicalOperator;
 import org.cidarlab.minieugene.predicates.Predicate;
@@ -49,7 +49,7 @@ public class Interp {
 	 * 
 	 */
 	public Predicate interpreteRule(String[] tokens) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		switch(tokens.length) {
 		case 1:
@@ -81,7 +81,7 @@ public class Interp {
 				return new LogicalNot(createBinaryPredicate(tokens[1], tokens[2], tokens[3]));
 			}
 		default:
-			throw new EugeneException(Arrays.toString(tokens) + " is an invalid rule. Wrong number of tokens.");
+			throw new MiniEugeneException(Arrays.toString(tokens) + " is an invalid rule. Wrong number of tokens.");
 		}
 	}
 	
@@ -91,12 +91,12 @@ public class Interp {
 	}
 	
 	private Predicate createNullaryPredicate(String s) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		return this.pb.buildNullaryPredicate(s);
 	}
 	
 	private Predicate createUnaryPredicate(String p, String s) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		if(LogicalOperator.NOT.toString().equalsIgnoreCase(p)) {
 			
@@ -133,12 +133,12 @@ public class Interp {
 			return this.pb.buildUnary(p, this.symbols.get(id));
 		}
 		
-		throw new EugeneException(p + " is an invalid unary rule operand!");		
+		throw new MiniEugeneException(p + " is an invalid unary rule operand!");		
 	}
 
 	
 	private Predicate createBinaryPredicate(String a, String X, String b) 
-			throws EugeneException {
+			throws MiniEugeneException {
 	
 		if(LogicalOperator.NOT.toString().equalsIgnoreCase(a)) {
 			/*
@@ -196,7 +196,7 @@ public class Interp {
 				}
 			}
 			
-			throw new EugeneException(a+" "+X+" "+b+" is an invalid rule!");
+			throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
 			
 			
 		} else if(EugeneRules.isInteractionRule(X)) {
@@ -242,7 +242,7 @@ public class Interp {
 
 					return this.pb.buildBinary(this.symbols.get(idA), X, this.symbols.get(idB));
 				}
-				throw new EugeneException("Invalid rule!");
+				throw new MiniEugeneException("Invalid rule!");
 			}
 
 			/*
@@ -252,7 +252,7 @@ public class Interp {
 			// => because of OR
 			// e.g. p exactly 2 \/ p exactly 4
 			if(idB < 0 /* || idB > this.maxN */) {
-				throw new EugeneException("Invalid rule!");
+				throw new MiniEugeneException("Invalid rule!");
 			}
 			
 			// create the counting rule object
@@ -273,21 +273,21 @@ public class Interp {
 			return this.pb.buildBinary(this.symbols.get(idA), X, this.symbols.get(idB));
 		}
 		
-		throw new EugeneException("Invalid rule!");
+		throw new MiniEugeneException("Invalid rule!");
 	}
 
 	private int toIndex(String a) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		int idx = -1;
 		try {
 			idx = Integer.parseInt(a);
 		} catch(NumberFormatException nfe) {
-			throw new EugeneException("Invalid index!");
+			throw new MiniEugeneException("Invalid index!");
 		}
 
 		if(idx < 0 || idx >= this.maxN) {
-			throw new EugeneException("Index "+idx+" is out of range!");
+			throw new MiniEugeneException("Index "+idx+" is out of range!");
 		}
 		
 		return idx;

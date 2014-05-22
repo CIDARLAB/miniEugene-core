@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
@@ -55,7 +55,7 @@ public class JaCoPSolver
 	}
 	
 	public List<Component[]> solve(Component[] components, LogicalAnd and, int NR_OF_SOLUTIONS)
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		this.N = and.getMaxN();
 
@@ -129,7 +129,7 @@ public class JaCoPSolver
 	}
 	
 	private IntVar[][] model(Component[] symbols) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		IntVar[][] variables = new IntVar[3][N];
 				/*
@@ -187,7 +187,7 @@ public class JaCoPSolver
 	}
 
 	public void imposeConstraints(IntVar[][] variables, LogicalAnd and) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		for(Predicate predicate : and.getPredicates()) {
 
@@ -221,7 +221,7 @@ public class JaCoPSolver
 				}
 
 			} catch(Exception e) {
-				throw new EugeneException(e.getMessage());
+				throw new MiniEugeneException(e.getMessage());
 			}
 
 		}
@@ -357,10 +357,10 @@ public class JaCoPSolver
 	
 
     private List<Component[]> search(IntVar[][] variables, int NR_OF_SOLUTIONS) 
-    		throws EugeneException {
+    		throws MiniEugeneException {
 
     	if(!store.consistency()) {
-    		throw new EugeneException("Inconsistent rules!");
+    		throw new MiniEugeneException("Inconsistent rules!");
     	}
     	
     	Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
@@ -389,7 +389,7 @@ public class JaCoPSolver
 			 */
 			search.labeling(store, select);
 		} catch(OutOfMemoryError oome) {
-			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+			throw new MiniEugeneException("I'm sorry! This problem is currently too big for me to solve!");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -454,7 +454,7 @@ public class JaCoPSolver
 	 * OPTIMIZATIONS
 	 */
 	public void optimize(IntVar[][] variables, LogicalAnd and) 
-			throws EugeneException {
+			throws MiniEugeneException {
 			
 		List<Sequence> sequences = new ArrayList<Sequence>();
 		for(Predicate predicate : and.getPredicates()) {

@@ -26,7 +26,7 @@ import java.net.URI;
 
 import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
 /**
@@ -94,7 +94,7 @@ public class SolutionExportExample {
 			URI pigeonURI = se.toPigeon();
 			System.out.println(pigeonURI.toString());
 //			WeyekinPoster.launchPage(pigeonURI);
-		} catch(EugeneException ee) {
+		} catch(MiniEugeneException ee) {
 			ee.printStackTrace();
 		}
 
@@ -103,7 +103,7 @@ public class SolutionExportExample {
 		 */
 		try {
 			se.toSBOL("./examples/solutions.sbol");
-		} catch(EugeneException ee) {
+		} catch(MiniEugeneException ee) {
 			ee.printStackTrace();
 		}
 
@@ -112,7 +112,7 @@ public class SolutionExportExample {
 		 */
 		try {
 			se.toEugene("./examples/solutions.eug");
-		} catch (EugeneException e) {
+		} catch (MiniEugeneException e) {
 			e.printStackTrace();
 		}
 	}

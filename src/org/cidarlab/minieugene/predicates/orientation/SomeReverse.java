@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
@@ -46,7 +46,7 @@ public class SomeReverse
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 
 		/*
 		 * SOME_REVERSE a ...
@@ -72,7 +72,7 @@ public class SomeReverse
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		return new Not(this.toJaCoP(store, variables));
 	}

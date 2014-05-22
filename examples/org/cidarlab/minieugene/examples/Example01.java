@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 
 /**
  * In this example we demonstrate how to utilize miniEugene in order 
@@ -65,7 +65,7 @@ public class Example01 {
 			 */
 			me.solve(rules, 3);     
 
-		} catch(EugeneException e) {
+		} catch(MiniEugeneException e) {
 			/*
 			 * do some exception handling here
 			 */

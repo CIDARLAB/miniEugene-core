@@ -3,7 +3,7 @@ package org.cidarlab.minieugene.predicates;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -71,14 +71,14 @@ public class LogicalAnd
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		System.out.println("[toJaCop] -> "+this.toString());
 		return null;
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		// TODO Auto-generated method stub
 		return null;
 	}

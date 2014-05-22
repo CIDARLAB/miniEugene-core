@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
@@ -18,7 +18,7 @@ public class Exactly
 	implements CountingPredicate {
 
 	public Exactly(Component a, int num) 
-			throws EugeneException {				
+			throws MiniEugeneException {				
 		super(a, num);
 
 	}
@@ -38,7 +38,7 @@ public class Exactly
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 
 		// a EXACTLY N
 		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
@@ -55,7 +55,7 @@ public class Exactly
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		// a EXACTLY N
 		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");

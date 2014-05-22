@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.predicates.pairing.PairingPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
@@ -50,7 +50,7 @@ public class With
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 		
 		/*
 		 * CONTAINS a /\ CONTAINS b
@@ -62,7 +62,7 @@ public class With
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		// a's counter
 		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");

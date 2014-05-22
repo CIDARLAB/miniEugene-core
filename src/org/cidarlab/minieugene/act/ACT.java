@@ -10,7 +10,7 @@ import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.ACTException;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.LogicalOr;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
@@ -47,7 +47,7 @@ public class ACT {
 	}
 	
 	public void constructACT(List<Predicate> predicates) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		// first, we build a list of all
 		// binary contains constraints
@@ -73,11 +73,11 @@ public class ACT {
 				this.sortTree();
 			} catch(ACTException e) {
 				this.cycles = e.getCycles();
-				throw new EugeneException("Cyclic Design!");
+				throw new MiniEugeneException("Cyclic Design!");
 			}
 			
-		} catch(EugeneException ee) {
-			throw new EugeneException(ee.getMessage());
+		} catch(MiniEugeneException ee) {
+			throw new MiniEugeneException(ee.getMessage());
 		}
 		
 	}
@@ -89,7 +89,7 @@ public class ACT {
 	}
 	
 	private void buildTree(List<CountingPredicate> lst) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		this.roots = new ArrayList<Component>();
 		
@@ -169,7 +169,7 @@ public class ACT {
 	
 	private static final String NEWLINE = System.getProperty("line.separator");	
 	public String toGraphViz() 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		// print the Tree
 		StringBuilder sb = new StringBuilder();

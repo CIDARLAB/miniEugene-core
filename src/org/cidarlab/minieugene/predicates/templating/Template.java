@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -44,7 +44,7 @@ public class Template
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		if(this.isNegated()) {
 			return this.toJaCoPNot(store, variables);
@@ -183,7 +183,7 @@ public class Template
 	
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 //		int maxN = variables[Variables.PART].length;
 //		
 //		if(maxN < this.getComponents().size()) {
@@ -197,7 +197,7 @@ public class Template
 	}
 	
 	private PrimitiveConstraint createTemplate(IntVar[][] variables) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		int N = variables[Variables.PART].length;
 		
@@ -242,7 +242,7 @@ public class Template
 		}
 		
 		if(null == pc) {
-			throw new EugeneException("I cannot impose "+this.toString());
+			throw new MiniEugeneException("I cannot impose "+this.toString());
 		}
 		
 

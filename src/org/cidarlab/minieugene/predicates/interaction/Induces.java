@@ -1,7 +1,7 @@
 package org.cidarlab.minieugene.predicates.interaction;
 
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.interaction.Participation.Role;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -33,13 +33,13 @@ public class Induces
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return null;
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return null;
 	}
 

@@ -3,7 +3,7 @@ package org.cidarlab.minieugene.predicates;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
 
 import JaCoP.constraints.Or;
@@ -45,7 +45,7 @@ public class LogicalOr
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		int i = 0;
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getPredicates().size()];
@@ -58,7 +58,7 @@ public class LogicalOr
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		int i = 0;
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getPredicates().size()];
 		for(Predicate predicate : this.getPredicates()) {

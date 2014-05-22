@@ -1,6 +1,6 @@
 package org.cidarlab.minieugene.predicates;
 
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
@@ -23,19 +23,19 @@ public abstract class Predicate {
 	 * @param store
 	 * @param variables
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public abstract PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-		throws EugeneException;
+		throws MiniEugeneException;
 	
 	/**
 	 * 
 	 * @param store
 	 * @param variables
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public abstract PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException;
+			throws MiniEugeneException;
 	
 }

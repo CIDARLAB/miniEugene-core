@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.position.before;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
@@ -56,7 +56,7 @@ public class AllBefore
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 
 		/*
 		 * a ALL_BEFORE b
@@ -94,7 +94,7 @@ public class AllBefore
 	
 	private PrimitiveConstraint before(Component a, Component b,
 			Store store, IntVar[][] variables) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		int N = variables[Variables.PART].length;
 		
@@ -142,7 +142,7 @@ public class AllBefore
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return new Not(
 				this.toJaCoP(store, variables));
 	}

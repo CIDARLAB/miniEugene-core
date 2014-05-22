@@ -32,7 +32,7 @@ import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.constants.EugeneConstants;
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.parser.MiniEugeneLexer;
 import org.cidarlab.minieugene.parser.MiniEugeneParser;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
@@ -79,22 +79,22 @@ public class MiniEugene
 	 */	
 	@Override
 	public void solve(String[] rules, int N, int NR_OF_SOLUTIONS) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		/*
 		 * Error handling
 		 */
 		if(null == rules) {
-			throw new EugeneException("No rules provided!");
+			throw new MiniEugeneException("No rules provided!");
 		}
 		
 		if(N < 1) {
-			throw new EugeneException("Invalid size of design!");
+			throw new MiniEugeneException("Invalid size of design!");
 		}
 		
 
 		if(NR_OF_SOLUTIONS < -1) {
-			throw new EugeneException("Invalid number of required solutions!");
+			throw new MiniEugeneException("Invalid number of required solutions!");
 		}
 
 		/*
@@ -151,7 +151,7 @@ public class MiniEugene
 	 */	
 	@Override
 	public void solve(String[] rules, int N) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		/*
 		 * we look for ALL solutions...
@@ -203,7 +203,7 @@ public class MiniEugene
 	 * 
 	 */
 	public void solve(String script, int NR_OF_SOLUTIONS) 
-		throws EugeneException {
+		throws MiniEugeneException {
 		
 		/*
 		 * first, we clear the symbol tables 
@@ -217,9 +217,9 @@ public class MiniEugene
 		try {
 			LogicalAnd la = this.parse(script);
 			this.solve(la, NR_OF_SOLUTIONS);
-		} catch(EugeneException e) {
+		} catch(MiniEugeneException e) {
 			e.printStackTrace();
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class MiniEugene
 	 * 
 	 */
 	public void solve(String script) 
-			throws EugeneException {
+			throws MiniEugeneException {
 			
 		/*
 		 * first, we clear the symbol tables 
@@ -241,9 +241,9 @@ public class MiniEugene
 		try {
 			LogicalAnd la = this.parse(script);
 			this.solve(la, -1);
-		} catch(EugeneException e) {
+		} catch(MiniEugeneException e) {
 			e.printStackTrace();
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 			
 	}
@@ -254,7 +254,7 @@ public class MiniEugene
 	 * @return
 	 */
 	public LogicalAnd parse(String script) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		// Lexer
 		MiniEugeneLexer lexer = new MiniEugeneLexer(
@@ -272,11 +272,11 @@ public class MiniEugene
 			parser.miniEugene();
 			
 			if(parser.hasErrors()) {
-				throw new EugeneException("The script contains invalid characters!");
+				throw new MiniEugeneException("The script contains invalid characters!");
 			}
 		} catch(Exception e) {
 			//e.printStackTrace();
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 
 		// finally, we return the create
@@ -290,13 +290,13 @@ public class MiniEugene
 	 * @param NR_OF_SOLUTIONS
 	 */
 	private void solve(LogicalAnd la, int NR_OF_SOLUTIONS) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		try {
 			Component[] symbols = this.symbols.getSymbols();
 
 			if(null == symbols || symbols.length==0) {
-				throw new EugeneException("no solutions found!");
+				throw new MiniEugeneException("no solutions found!");
 			}
 
 			int minN = la.getMinN();
@@ -366,12 +366,12 @@ public class MiniEugene
 					(T2-T1)*Math.pow(10, -9));
 
 			if(null == solutions || solutions.size()==0) {
-				throw new EugeneException("no solutions found!");
+				throw new MiniEugeneException("no solutions found!");
 			}
 
 		} catch(Exception e) {
 			e.printStackTrace();
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 	}
 	
@@ -379,10 +379,10 @@ public class MiniEugene
 	 * ONLY FOR TESTING PURPOSE
 	 */
 	protected void executeScript(String script, int N, int NR_OF_SOLUTIONS) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		if(null == script || script.isEmpty()) {
-			throw new EugeneException("please provide some input!");
+			throw new MiniEugeneException("please provide some input!");
 		}
 
 		/*
@@ -395,14 +395,14 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);			
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(Exception e) {
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 
 	}
 
 	@Override
 	public URI visualizeACT() 
-			throws EugeneException {
+			throws MiniEugeneException {
 		ACT act = this.symbols.getACT();
 		if(null != act) {
 			String gv = act.toGraphViz();
@@ -414,7 +414,7 @@ public class MiniEugene
 	
 	
 	public LogicalAnd getCNF(String script) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		// first, we clear the symbol tables
 		this.symbols.clear();

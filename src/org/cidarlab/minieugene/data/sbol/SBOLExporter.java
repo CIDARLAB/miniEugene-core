@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLDocument;
@@ -54,7 +54,7 @@ public class SBOLExporter {
 	 */
 
 	public SBOLDocument toSBOLDocument(List<Component[]> solutions) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		try {
 			// create an empty document populated with the SBOL objects
@@ -82,7 +82,7 @@ public class SBOLExporter {
 			return document;
 
 		} catch (Exception e) {
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 	}
 	

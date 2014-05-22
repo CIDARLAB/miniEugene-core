@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.interaction;
 
 import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
@@ -34,7 +34,7 @@ public class Drives
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 
 //		System.out.println("**** "+this.toString()+" ***");
 		
@@ -104,7 +104,7 @@ public class Drives
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		// we just negate the toJaCoP primitive constraint
 		return new Not((PrimitiveConstraint)this.toJaCoP(store, variables));

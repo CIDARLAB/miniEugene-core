@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.builder;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
@@ -51,10 +51,10 @@ public class PredicateBuilder {
 	 * 
 	 * @param p
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildNullaryPredicate(String p) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p)) {
 			return new AllReverse(null);
 		} else if(RuleOperator.SOME_REVERSE.toString().equalsIgnoreCase(p)) {
@@ -67,7 +67,7 @@ public class PredicateBuilder {
 			return new AlternateOrientation(null);
 		}
 		
-		throw new EugeneException("Invalid Nullary Rule!");
+		throw new MiniEugeneException("Invalid Nullary Rule!");
 
 	}
 	
@@ -76,10 +76,10 @@ public class PredicateBuilder {
 	 * @param p
 	 * @param c
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildUnary(String p, Component c) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(p)) {
 			return new Contains(c);
@@ -103,7 +103,7 @@ public class PredicateBuilder {
 			return new AlternateOrientation(c);
 		}
 		
-		throw new EugeneException("Invalid Unary Rule!");
+		throw new MiniEugeneException("Invalid Unary Rule!");
 	}
 
 	/**
@@ -111,17 +111,17 @@ public class PredicateBuilder {
 	 * @param p
 	 * @param c
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildNegatedUnary(String p, Component c) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		Predicate predicate = this.buildUnary(p, c);
 		if(null != predicate) {
 			return new LogicalNot(predicate);
 		}
 
-		throw new EugeneException("Invalid Negated Unary Rule!");
+		throw new MiniEugeneException("Invalid Negated Unary Rule!");
 	}
 	
 	/**
@@ -130,10 +130,10 @@ public class PredicateBuilder {
 	 * @param X
 	 * @param rhs
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildBinary(Component lhs, String X, Component rhs) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		if(RuleOperator.ALL_BEFORE.toString().equalsIgnoreCase(X) || 
 				RuleOperator.BEFORE.toString().equalsIgnoreCase(X)) {
@@ -173,7 +173,7 @@ public class PredicateBuilder {
 			return new AlwaysNextTo(lhs, rhs);
 		}
 
-		throw new EugeneException("Invalid Binary Rule!");
+		throw new MiniEugeneException("Invalid Binary Rule!");
 	}
 	
 	/**
@@ -182,10 +182,10 @@ public class PredicateBuilder {
 	 * @param p
 	 * @param num
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildBinary(Component lhs, String p, int num) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		if(RuleOperator.EXACTLY.toString().equalsIgnoreCase(p)) {
 			return new Exactly(lhs, num);
 		} else if(RuleOperator.NOTEXACTLY.toString().equalsIgnoreCase(p)) {
@@ -196,7 +196,7 @@ public class PredicateBuilder {
 			return new LogicalNot(new MoreThan(lhs, num));
 		}
 		
-		throw new EugeneException("Invalid Counting Rule!");
+		throw new MiniEugeneException("Invalid Counting Rule!");
 	}
 	
 	/**
@@ -205,17 +205,17 @@ public class PredicateBuilder {
 	 * @param p
 	 * @param j
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildIndexedBinary(int i, String p, int j) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		if(RuleOperator.EQUALS.toString().equalsIgnoreCase(p)) {
 			return new Equals(i, j);
 		} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(p)) {
 			return new LogicalNot(new Equals(i, j));
 		}
 		
-		throw new EugeneException("Invalid Indexed Rule!");
+		throw new MiniEugeneException("Invalid Indexed Rule!");
 	}
 	
 	/**
@@ -224,10 +224,10 @@ public class PredicateBuilder {
 	 * @param X
 	 * @param b
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public Predicate buildInteraction(String a, String X, String b)
-		throws EugeneException {
+		throws MiniEugeneException {
 		
 		if(a.startsWith("[") && a.endsWith("]")) {
 			if(b.startsWith("[") && b.endsWith("]")) {
@@ -268,7 +268,7 @@ public class PredicateBuilder {
 			}			
 		}
 		
-		throw new EugeneException("Invalid Interaction Rule!");
+		throw new MiniEugeneException("Invalid Interaction Rule!");
  
 	}
 

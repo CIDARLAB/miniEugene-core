@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
@@ -50,7 +50,7 @@ public class AlternateOrientation
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 		
 		if(null != this.getA()) {
 			throw new UnsupportedOperationException("The constraint 'ALTERNATE a' is not fully supported yet!");
@@ -148,7 +148,7 @@ public class AlternateOrientation
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return new Not((PrimitiveConstraint)this.toJaCoP(store, variables));
 	}
 	

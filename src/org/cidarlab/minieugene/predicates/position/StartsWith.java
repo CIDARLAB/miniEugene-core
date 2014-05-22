@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.position;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.UnaryPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
@@ -41,7 +41,7 @@ public class StartsWith
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 //		int N = (variables[Variables.PART].length);
 //		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
 //		if(null == aPosVar) {
@@ -54,7 +54,7 @@ public class StartsWith
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 //		int N = (variables[Variables.PART].length);
 //		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");

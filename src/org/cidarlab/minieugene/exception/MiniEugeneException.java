@@ -25,11 +25,11 @@ package org.cidarlab.minieugene.exception;
 /**
  * @author Ernst Oberortner
  */
-public class EugeneException extends Exception {
+public class MiniEugeneException extends Exception {
 
 	private static final long serialVersionUID = 1881767055663398555L;
 
-	public EugeneException(String sMessage) {
+	public MiniEugeneException(String sMessage) {
 		super(sMessage);
 	}
 

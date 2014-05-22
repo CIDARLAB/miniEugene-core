@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 
 public class PartTypeTest {
 
@@ -158,7 +158,7 @@ public class PartTypeTest {
 			for(Component[] s : ss) {
 				for(int i=0; i<s.length; i++) {
 					if(PartTypesTable.toId(PartTypesTable.toPartType("p")) != s[i].getTypeId()) {
-						throw new EugeneException("miniEugeneTest01 failed! -> "+s[i]);
+						throw new MiniEugeneException("miniEugeneTest01 failed! -> "+s[i]);
 					}
 				}
 			}
@@ -174,7 +174,7 @@ public class PartTypeTest {
 			for(Component[] s : ss) {
 				if(PartTypesTable.toId(PartTypesTable.toPartType("p")) != s[0].getTypeId() && 
 						PartTypesTable.toId(PartTypesTable.toPartType("r")) != s[1].getTypeId()) {
-					throw new EugeneException("miniEugeneTest02 failed!");
+					throw new MiniEugeneException("miniEugeneTest02 failed!");
 				}
 			}
 		} catch(Exception e) {
@@ -188,7 +188,7 @@ public class PartTypeTest {
 			List<Component[]> ss = me.getSolutions();
 			for(Component[] s : ss) {
 				if(PartTypesTable.toId(PartTypesTable.toPartType(null)) != s[0].getTypeId()) {
-					throw new EugeneException("miniEugeneTest03 failed!");
+					throw new MiniEugeneException("miniEugeneTest03 failed!");
 				}
 			}
 		} catch(Exception e) {

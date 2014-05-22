@@ -28,7 +28,7 @@ import org.cidarlab.minieugene.Interp;
 import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.symbol.*;
 import org.cidarlab.minieugene.predicates.*;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.templating.*;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -239,7 +239,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "miniEugene"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:119:1: miniEugene : ( size )? (c= or_constraint '.' | composite_constraint )+ ;
-    public final void miniEugene() throws EugeneException, RecognitionException {
+    public final void miniEugene() throws MiniEugeneException, RecognitionException {
         List<Predicate> c =null;
 
 
@@ -358,7 +358,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "size"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:131:1: size : ( 'minN' '=' minN= INT '.' )? 'N' '=' maxN= INT '.' ;
-    public final void size() throws EugeneException, RecognitionException {
+    public final void size() throws MiniEugeneException, RecognitionException {
         Token minN=null;
         Token maxN=null;
 
@@ -428,7 +428,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "composite_constraint"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:142:1: composite_constraint : ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.' ;
-    public final void composite_constraint() throws EugeneException, RecognitionException {
+    public final void composite_constraint() throws MiniEugeneException, RecognitionException {
         try {
             // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:144:2: ( ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.' )
             // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:144:4: ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.'
@@ -491,7 +491,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "composite_constraint_block"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:147:1: composite_constraint_block : constraint ( ',' composite_constraint_block )? ;
-    public final void composite_constraint_block() throws EugeneException, RecognitionException {
+    public final void composite_constraint_block() throws MiniEugeneException, RecognitionException {
         try {
             // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:149:2: ( constraint ( ',' composite_constraint_block )? )
             // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:149:4: constraint ( ',' composite_constraint_block )?
@@ -546,7 +546,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "or_constraint"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:152:1: or_constraint returns [List<Predicate> lst] : c= constraint ( ( 'OR' | '\\\\/' | 'or' | '||' ) o= or_constraint )? ;
-    public final List<Predicate> or_constraint() throws EugeneException, RecognitionException {
+    public final List<Predicate> or_constraint() throws MiniEugeneException, RecognitionException {
         List<Predicate> lst = null;
 
 
@@ -628,7 +628,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "constraint"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:165:1: constraint returns [Predicate p] : ( (not= ( 'NOT' | 'not' ) )? (lhs= operand )? op= operator (rhs= operand )? |temp= templatingConstraints );
-    public final Predicate constraint() throws EugeneException, RecognitionException {
+    public final Predicate constraint() throws MiniEugeneException, RecognitionException {
         Predicate p = null;
 
 
@@ -948,9 +948,9 @@ public class MiniEugeneParser extends Parser {
 
             }
         }
-        catch (EugeneException e) {
+        catch (MiniEugeneException e) {
 
-            throw new EugeneException(e.getMessage());	
+            throw new MiniEugeneException(e.getMessage());	
             	
         }
 
@@ -965,7 +965,7 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "templatingConstraints"
     // /Users/ernstl/PostDoc/BU/Eugene/miniEugene/workspace/miniEugene-core/grammar/MiniEugene.g:192:1: templatingConstraints returns [Predicate p] : (tem= templateConstraint |pat= patternConstraint |gr= groupConstraint |seq= sequenceConstraint );
-    public final Predicate templatingConstraints() throws EugeneException, RecognitionException {
+    public final Predicate templatingConstraints() throws MiniEugeneException, RecognitionException {
         Predicate p = null;
 
 

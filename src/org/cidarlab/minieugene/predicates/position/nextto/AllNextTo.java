@@ -2,7 +2,7 @@ package org.cidarlab.minieugene.predicates.position.nextto;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryPredicate;
 import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
 import org.cidarlab.minieugene.solver.jacop.Variables;
@@ -46,14 +46,14 @@ public class AllNextTo
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
-				throws EugeneException {
+				throws MiniEugeneException {
 		
 		int a = (int)this.getA().getId();
 		int b = (int)this.getB().getId();
 		int N = variables[Variables.PART].length;
 		
 		if(N <= 1) {
-			throw new EugeneException("I cannot impose "+this.toString()+"! Invalid length of design!");
+			throw new MiniEugeneException("I cannot impose "+this.toString()+"! Invalid length of design!");
 		}
 
 		int[] idxA = new int[N];
@@ -116,7 +116,7 @@ public class AllNextTo
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return new Not(this.toJaCoP(store, variables));
 	}
 	

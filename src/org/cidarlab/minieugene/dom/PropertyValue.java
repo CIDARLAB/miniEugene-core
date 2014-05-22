@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.cidarlab.minieugene.constants.PropertyType;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 
 
 /**
@@ -255,14 +255,14 @@ public class PropertyValue
 //	}
 
 	public void assign(NamedElement objElement)
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		if (objElement instanceof PropertyValue) {
 			PropertyValue objVariable = (PropertyValue) objElement;
 			if (this.getType().equals(objVariable.getType())) {
 				this.setValue((PropertyValue) objElement);
 			} else {
-				throw new EugeneException("Cannot assign a "
+				throw new MiniEugeneException("Cannot assign a "
 						+ objVariable.getType() + " value to a "
 						+ this.getType() + " value!");
 			}
@@ -270,7 +270,7 @@ public class PropertyValue
 	}
 
 	public void set(int idx, NamedElement objElement)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		if (objElement instanceof PropertyValue) {
 			PropertyValue objVariable = (PropertyValue) objElement;
@@ -280,7 +280,7 @@ public class PropertyValue
 				if (idx >= 0 && idx < this.numList.size()) {
 					this.numList.set(idx, new Double(objVariable.getNum()));
 				} else {
-					throw new EugeneException(
+					throw new MiniEugeneException(
 							"The array index (" + idx
 									+ ") is out of bounds for the "
 									+ this.getName() + " variable!");
@@ -290,39 +290,39 @@ public class PropertyValue
 				if (idx >= 0 && idx < this.txtList.size()) {
 					this.txtList.set(idx, new String(objVariable.getTxt()));
 				} else {
-					throw new EugeneException(
+					throw new MiniEugeneException(
 							"The array index (" + idx
 									+ ") is out of bounds for the "
 									+ this.getName() + " variable!");
 				}
 			} else {
-				throw new EugeneException("Cannot assign a "
+				throw new MiniEugeneException("Cannot assign a "
 						+ objVariable.getType() + " value to an element of a "
 						+ this.getType() + " list!");
 			}
 		} else {
-			throw new EugeneException("Cannot assign the "
+			throw new MiniEugeneException("Cannot assign the "
 					+ objElement + " element to the " + (idx + 1)
 					+ " element of the " + this.getName() + " Variable");
 		}
 	}
 
 	public void set(String sElementName, NamedElement objElement)
-			throws EugeneException {
-		throw new EugeneException("This is not possible!");
+			throws MiniEugeneException {
+		throw new MiniEugeneException("This is not possible!");
 	}
 
-	public void increase() throws EugeneException {
+	public void increase() throws MiniEugeneException {
 		if (!PropertyType.NUM.equals(this.getType())) {
-			throw new EugeneException(
+			throw new MiniEugeneException(
 					"Cannot increase the value of a " + this.getType() + "!");
 		}
 		this.setNum(this.getNum() + 1);
 	}
 
-	public void decrease() throws EugeneException {
+	public void decrease() throws MiniEugeneException {
 		if (!PropertyType.NUM.equals(this.getType())) {
-			throw new EugeneException(
+			throw new MiniEugeneException(
 					"Cannot increase the value of a " + this.getType() + "!");
 		}
 		this.setNum(this.getNum() - 1);

@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.cidarlab.minieugene.constants.PartTypesTable;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.interaction.Participation;
 import org.cidarlab.minieugene.predicates.interaction.Interaction.InteractionType;
@@ -59,10 +59,10 @@ public class Pigeonizer {
 	 * @param solutions     ... a list of solutions
 	 * @param interactions  ... a list of interactions (i.e. the # Arcs)
 	 * @return              ... a URI of the Pigeon image
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public URI pigeonize(List<Component[]> solutions, Set<Interaction> interactions) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		/*
 		 * Compilation to Pigeon script
@@ -104,10 +104,10 @@ public class Pigeonizer {
 	 * @param solution     ... a Component[] representing the solution
 	 * @param interactions ... a set of interactions representing the Arcs
 	 * @return
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public URI pigeonizeSingle(Component[] solution, Set<Interaction> interactions) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		/*
 		 * COMPILATION into a Pigeon script

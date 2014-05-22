@@ -21,7 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
 import org.cidarlab.minieugene.data.sbol.SBOLExporter;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.interaction.Participation;
 import org.sbolstandard.core.SBOLDocument;
@@ -66,10 +66,10 @@ public class SolutionExporter {
 	 * ten solutions using Pigeon (pigeoncad.org)
 	 * 
 	 * @return an URI referring to the generated Pigeon image
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public URI toPigeon() 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		if(null != solutions) {
 			
@@ -90,7 +90,7 @@ public class SolutionExporter {
 	        			this.interactions);
 	        	
 	        } catch(Exception e) {
-	            throw new EugeneException(e.getMessage());
+	            throw new MiniEugeneException(e.getMessage());
 	        }
 		}
 		
@@ -98,7 +98,7 @@ public class SolutionExporter {
 	}
 
 	public Image pigeonize(String filename, Map<String, Integer> colors, boolean label, int N) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		if(null != solutions) {
 			
@@ -124,15 +124,15 @@ public class SolutionExporter {
 	        	return toMergedImage(uris, filename);
 	        	
 	        } catch(Exception e) {
-	            throw new EugeneException(e.getMessage());
+	            throw new MiniEugeneException(e.getMessage());
 	        }
 		}
 		
-        throw new EugeneException("nothing to visualize!");
+        throw new MiniEugeneException("nothing to visualize!");
 	}
 	
 	private Image toMergedImage(List<URI> uris, String filename) 
-			throws EugeneException {
+			throws MiniEugeneException {
 
 		try {
 			int w = 0;
@@ -169,7 +169,7 @@ public class SolutionExporter {
 			
 			return ImageIO.read(pic);
 		} catch(Exception e) {
-			throw new EugeneException(e.getMessage());
+			throw new MiniEugeneException(e.getMessage());
 		}
 	}
 	
@@ -192,10 +192,10 @@ public class SolutionExporter {
 	 *  
 	 * @param filename  ... the path+filename of the SBOL file
 	 * 
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public void toSBOL(String filename) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		/*
 		 * create the SBOLDocument
@@ -210,12 +210,12 @@ public class SolutionExporter {
 				new File(filename));
 			SBOLFactory.write(doc, fos);
 		} catch(Exception e) {
-			throw new EugeneException(e.toString());
+			throw new MiniEugeneException(e.toString());
 		}
 	}
 	
 	private SBOLDocument sbolExport()  
-			throws EugeneException {
+			throws MiniEugeneException {
 		if(null != this.solutions) {
 			try {
 				
@@ -227,8 +227,8 @@ public class SolutionExporter {
 				} 
 				return new SBOLExporter().toSBOLDocument(this.solutions);
 				
-			} catch(EugeneException ee) {
-				throw new EugeneException(ee.getMessage());
+			} catch(MiniEugeneException ee) {
+				throw new MiniEugeneException(ee.getMessage());
 			}
 		}
 		/*
@@ -284,11 +284,11 @@ public class SolutionExporter {
 	  *
 	  */
 	 public void toEugene(String filename) 
-	 		throws EugeneException {
+	 		throws MiniEugeneException {
 		 
 		StringBuilder sb = new StringBuilder();
 		if(null == this.solutions || this.solutions.isEmpty())
-			throw new EugeneException("There are no solutions!");
+			throw new MiniEugeneException("There are no solutions!");
 	
 		// first, we process the interactions
 		if(null != this.interactions && !this.interactions.isEmpty()) {
@@ -322,7 +322,7 @@ public class SolutionExporter {
 		try {
 			FileUtil.writeToFile(sb.toString(), new File(filename));
 		} catch(Exception e) {
-			throw new EugeneException("Cannot serialize to "+filename+"!");
+			throw new MiniEugeneException("Cannot serialize to "+filename+"!");
 		}
 	}
 	 

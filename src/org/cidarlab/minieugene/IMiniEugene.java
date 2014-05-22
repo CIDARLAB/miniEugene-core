@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 
 /**
@@ -41,20 +41,20 @@ public interface IMiniEugene {
 	 * 
 	 * @param rules
 	 * @param N
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public void solve(String[] rules, int N)
-			throws EugeneException;
+			throws MiniEugeneException;
 
 	/**
 	 * 
 	 * @param rules
 	 * @param N
 	 * @param NR_OF_SOLUTIONS
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public void solve(String[] rules, int N, int NR_OF_SOLUTIONS)
-			throws EugeneException;
+			throws MiniEugeneException;
 	
 	/**
 	 * solve/1 finds NR_OF_SOLUTIONS solutions based on the given
@@ -62,20 +62,20 @@ public interface IMiniEugene {
 	 * 
 	 * @param script
 	 * @param NR_OF_SOLUTIONS
-	 * @throws EugeneException
+	 * @throws MiniEugeneException
 	 */
 	public void solve(String script, int NR_OF_SOLUTIONS)
-			throws EugeneException;
+			throws MiniEugeneException;
 	
 	/**
 	 * solve/1 finds all solutions based on the given
 	 * miniEugene script.
 	 *  
 	 * @param script The miniEugene script.
-	 * @throws EugeneException 
+	 * @throws MiniEugeneException 
 	 */
 	public void solve(String script) 
-			throws EugeneException;
+			throws MiniEugeneException;
 	
 	public MiniEugeneStatistics getStatistics();
 	public List<Component[]> getSolutions();
@@ -86,5 +86,5 @@ public interface IMiniEugene {
 	 * @return the Abstract Composition Tree (ACT)
 	 */
 	public URI visualizeACT()
-			throws EugeneException;
+			throws MiniEugeneException;
 }

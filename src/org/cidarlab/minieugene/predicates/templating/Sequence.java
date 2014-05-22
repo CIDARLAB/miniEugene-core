@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -45,7 +45,7 @@ public class Sequence
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		if(this.isNegated()) {
 			return this.toJaCoPNot(store, variables);
@@ -57,14 +57,14 @@ public class Sequence
 	
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
-			throws EugeneException {
+			throws MiniEugeneException {
 		return new Not(
 				createSequence(store, variables));
 	}
 	
 	
 	private PrimitiveConstraint createSequence(Store store, IntVar[][] variables) 
-			throws EugeneException {
+			throws MiniEugeneException {
 		
 		int N = variables[Variables.PART].length;
 
@@ -128,7 +128,7 @@ public class Sequence
 		}
 
 		if(null == pc) {
-			throw new EugeneException("I cannot impose "+this.toString());
+			throw new MiniEugeneException("I cannot impose "+this.toString());
 		}
 		
 		return new Or(pc);

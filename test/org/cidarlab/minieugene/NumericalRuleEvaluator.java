@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.cidarlab.minieugene.MiniEugene;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 
 /**
  *
@@ -80,12 +80,12 @@ public class NumericalRuleEvaluator {
                 System.out.println("ALL_AFTER DOES NOT WORK");
             }
             
-        } catch (EugeneException ex) {
+        } catch (MiniEugeneException ex) {
             Logger.getLogger(NumericalRuleEvaluator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public static boolean validateContains() throws EugeneException {
+    public static boolean validateContains() throws MiniEugeneException {
         boolean validated = true;
         for (int n = 1; n <= MAX_N; n++) {
             for(int k = 1; k <= n && k <= MAX_K; k++) {
@@ -95,7 +95,7 @@ public class NumericalRuleEvaluator {
         return validated;
     }
     
-    public static boolean validateContains(int N, int k) throws EugeneException {
+    public static boolean validateContains(int N, int k) throws MiniEugeneException {
         String constrainedPart = "CONTAINS i0";
         List<String> ruleDisjunction = getRuleDisjunction(k, constrainedPart);
         long totalDevices = 0;
@@ -112,7 +112,7 @@ public class NumericalRuleEvaluator {
         return containsDeviceAmount(N, k) == totalDevices;
     }
     
-    public static boolean validateNotContains() throws EugeneException {
+    public static boolean validateNotContains() throws MiniEugeneException {
         boolean validated = true;
         for(int n = 1; n <= MAX_N; n++) {
             for(int k = 1; k <= n && k <= MAX_K; k++ ) {
@@ -122,7 +122,7 @@ public class NumericalRuleEvaluator {
         return validated;
     }
     
-    public static boolean validateNotContains(int N, int k) throws EugeneException {
+    public static boolean validateNotContains(int N, int k) throws MiniEugeneException {
         String constrainedPart = "NOTCONTAINS i0";
         List<String> ruleDisjunction = getRuleDisjunction(k, constrainedPart);
         long totalDevices = 0;
@@ -131,14 +131,14 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }
         }
         return notContainsDeviceAmount(N, k) == totalDevices;
     }
     
-    public static boolean validateExactly() throws EugeneException {
+    public static boolean validateExactly() throws MiniEugeneException {
         boolean validated = true;
         for(int n = 1; n <= MAX_N; n++) {
             for(int k = 1; k <=n && k <= MAX_K; k++) {
@@ -150,7 +150,7 @@ public class NumericalRuleEvaluator {
         return validated;
     }
     
-    public static boolean validateExactly(int N, int k, int i) throws EugeneException {
+    public static boolean validateExactly(int N, int k, int i) throws MiniEugeneException {
         String constrainedPart = " i0 EXACTLY " + i;
         List<String> ruleDisjunction = getRuleDisjunction(k, constrainedPart);
         long totalDevices = 0;
@@ -159,7 +159,7 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }
         }
@@ -187,7 +187,7 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }
             /*
@@ -218,7 +218,7 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }   
         }
@@ -249,7 +249,7 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }   
         }
@@ -280,7 +280,7 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }   
         }
@@ -311,7 +311,7 @@ public class NumericalRuleEvaluator {
     			MiniEugene me = new MiniEugene();				
                 me.solve(rule.split(NEWLINE), N, -1);
                 totalDevices += (long) me.getStatistics().getValueByKey("NumSolutions");
-            } catch(EugeneException e) {
+            } catch(MiniEugeneException e) {
                 totalDevices += 0;
             }   
         }
