@@ -327,9 +327,9 @@ public class MiniEugene
 //			}
 			
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
+			this.stats.add(EugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 			this.stats.add(EugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
-			this.stats.add(EugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 
 			// TODO
 //			this.stats.add(EugeneConstants.MINIMUM_LENGTH_OF_DESIGN, la.getMinN());
