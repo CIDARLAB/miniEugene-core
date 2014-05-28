@@ -326,8 +326,6 @@ public class MiniEugene
 //						Math.pow(numberOfParts, i) * Math.pow(2, i);
 //			}
 			
-			System.out.println(Long.MAX_VALUE);
-			System.out.println((Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
 			this.stats.add(EugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
