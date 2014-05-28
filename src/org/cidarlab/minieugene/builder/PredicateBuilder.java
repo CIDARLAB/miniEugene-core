@@ -67,7 +67,7 @@ public class PredicateBuilder {
 			return new AlternateOrientation(null);
 		}
 		
-		throw new MiniEugeneException("Invalid Nullary Rule!");
+		throw new MiniEugeneException(p+" is an invalid Nullary constraint!");
 
 	}
 	

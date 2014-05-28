@@ -172,7 +172,7 @@ public class TestSuite {
 //		new TestSuite().test("N=1. contains p. in induces p.");
 
 		// REPRESSES
-		new TestSuite().test("N=2. contains c. contains p. c represses p.");
+//		new TestSuite().test("N=2. contains c. contains p. c represses p.");
 
 		/*
 		 * LOGICAL OR
@@ -340,7 +340,7 @@ public class TestSuite {
 		 * => miniEugene should always return 50000 solutions
 		 * we need this test, to test the miniEugene web app
 		 */
-//		new TestSuite().test("N=16.template [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR],[rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term.");
+//		new TestSuite().test("N=16.all_forward.template [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR],[rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term, [pAraBAD1|pAraBAD2|pConst|pTetR], [rB0030m|rB0031m|rB0032m|rB0033m|rB0034m], [cAraC|cTetR|cRFP|cGFP], term.");
 		
 		/*
 		 * REAL DESIGNS
@@ -404,6 +404,12 @@ public class TestSuite {
 
 //		new TestSuite().test(new File("./designs/nor-gate/nor-gate.eug"));
 //		new TestSuite().test(new File("./examples/transcriptional-unit.eug"));
+		
+		/*
+		 * SB2 examples
+		 */
+//		new TestSuite().test("N=1. template [p1|r1|c1|t1].");
+		
 	}
 
 	public void test(String script) {
@@ -422,7 +428,7 @@ public class TestSuite {
 			/*
 			 * execute the script
 			 */
-			me.solve(script, 50000);
+			me.solve(script);
 
 			tProcessing = System.nanoTime() - t1;
 		} catch(Exception e) {
@@ -440,12 +446,12 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// way better than PIGEON 
-//			Image pic = se.pigeonize("./designs/cidar/inverters/inverters.png", null, true, 20);
+			Image pic = se.pigeonize("./designs/demo.png", null, true, 20);
 //			se.show(pic);
 //			WeyekinPoster.launchPage(se.toPigeon());
 			
 			// EUGENE
-			se.toEugene("./test-results/eugene/"+UUID.randomUUID().toString());
+//			se.toEugene("./test-results/eugene/"+UUID.randomUUID().toString());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

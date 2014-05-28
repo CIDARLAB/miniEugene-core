@@ -326,13 +326,10 @@ public class MiniEugene
 //						Math.pow(numberOfParts, i) * Math.pow(2, i);
 //			}
 			
-			// currently
-			long possibleSolutions = 
-					(long)(Math.pow(numberOfParts, maxN) * Math.pow(2, maxN));
-			
-			
+			System.out.println(Long.MAX_VALUE);
+			System.out.println((Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
-			this.stats.add(EugeneConstants.POSSIBLE_SOLUTIONS, possibleSolutions);
+			this.stats.add(EugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
 			this.stats.add(EugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 
