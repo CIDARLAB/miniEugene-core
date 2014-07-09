@@ -1,3 +1,35 @@
+/*
+ * Copyright (c) 2014, Boston University
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the following 
+ * conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright 
+ *    notice, this list of conditions and the following disclaimer.
+ *    
+ * 2. Redistributions in binary form must reproduce the above copyright 
+ *    notice, this list of conditions and the following disclaimer in 
+ *    the documentation and/or other materials provided with the distribution.
+ *    
+ * 3. Neither the name of the copyright holder nor the names of its 
+ *    contributors may be used to endorse or promote products derived 
+ *    from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package org.cidarlab.minieugene.jetc;
 
 import java.util.HashMap;
@@ -66,6 +98,7 @@ public class TemplateDriven {
 
 		TemplateDriven td = new TemplateDriven();
 		
+		/**
 		// ITERATION 1:
 		td.test("iteration1-c1", "N=3. sequence r1, c1, t1. all_forward.");
 		td.test("iteration1-c2", "N=3. sequence r2, c2, t2. all_forward.");
@@ -74,7 +107,7 @@ public class TemplateDriven {
 		td.test("iteration1-c5", "N=3. sequence r5, c5, t5. all_forward.");
 		td.test("iteration1-cOut1", "N=3.sequence rOut1, cOut1, tOut1. all_forward.");
 		td.test("iteration1-cOut0", "N=3.sequence rOut0, cOut0, tOut0. all_forward.");
-		
+
 		// ITERATION 2:
 		// out1 Signal
 		td.test("iteration2-out1",
@@ -98,6 +131,7 @@ public class TemplateDriven {
 				
 				// input signals of the out1 reporting cassette
 				"c2 represses p2.");
+				**/
 
 		// out0 Signal
 		td.test("iteration2-out0",
@@ -121,13 +155,13 @@ public class TemplateDriven {
 				// represses
 				"c3 represses p3. c4 represses p4. c5 represses p5.");
 		
+		/**
+		
 		// ITERATION 2:
 		td.test("iteration3-penc",
 				"N=33."+
 		
-				/*
-				 * reusing out1 signal 
-				 */
+				//*** reusing out1 signal 
 				"all_forward." +
 				
 				// dark blue NOR gate
@@ -137,17 +171,15 @@ public class TemplateDriven {
 				"sequence p1, p0, r2, c2, t2. "+
 
 				// out1 reporting device with RFP reporter
-				"sequence pOut1, rOut1, cOut1, tOut1."+
+				"sequence p2, rOut1, cOut1, tOut1."+
 
 				// input signals of dark blue NOR gate
 				"in2 induces pIn2. in1 induces pIn1."+
 
 				// input signals of light blue NOR gate
-				"c1 represses p1. 0 induces p0. c2 represses pOut1." +
+				"c1 represses p1. 0 induces p0. c2 represses p2." +
 				
-				/*
-				 * reusing out0 signal
-				 */
+				// *** reusing out0 signal
 				"all_forward." +
 				
 				// orange NOR gate
@@ -167,6 +199,7 @@ public class TemplateDriven {
 				
 				// represses
 				"c3 represses p3. c4 represses p4. c5 represses p5.");
+		***/				
 	
 	}
 
@@ -184,7 +217,7 @@ public class TemplateDriven {
 			/*
 			 * execute the script
 			 */
-			me.solve(script, 1);
+			me.solve(script);
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -199,7 +232,7 @@ public class TemplateDriven {
 		
 		SolutionExporter se = new SolutionExporter(me.getSolutions(), me.getInteractions());
 		try {
-			se.pigeonize("./images/acm-jetc/templates/5_"+name+".png", colors, true, 5);
+			se.pigeonize("./images/acm-jetc/5_"+name+"_1.png", colors, false, 5);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

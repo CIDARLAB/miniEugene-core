@@ -1,23 +1,33 @@
 /*
-Copyright (c) 2012 Boston University.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL BOSTON UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-BOSTON UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-BOSTON UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND BOSTON UNIVERSITY HAS
-NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ * Copyright (c) 2014, Boston University
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the following 
+ * conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright 
+ *    notice, this list of conditions and the following disclaimer.
+ *    
+ * 2. Redistributions in binary form must reproduce the above copyright 
+ *    notice, this list of conditions and the following disclaimer in 
+ *    the documentation and/or other materials provided with the distribution.
+ *    
+ * 3. Neither the name of the copyright holder nor the names of its 
+ *    contributors may be used to endorse or promote products derived 
+ *    from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.cidarlab.minieugene.data.sbol;
@@ -34,16 +44,11 @@ import java.util.Set;
 import org.cidarlab.minieugene.constants.PropertyType;
 import org.cidarlab.minieugene.constants.SBOLConstants;
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.dom.CompositeComponent;
 import org.cidarlab.minieugene.dom.NamedElement;
 import org.cidarlab.minieugene.dom.Property;
-import org.cidarlab.minieugene.dom.PropertyValue;
 import org.cidarlab.minieugene.exception.ImportException;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLRootObject;
-import org.sbolstandard.core.SequenceAnnotation;
-import org.sbolstandard.core.StrandType;
-import org.sbolstandard.core.util.SequenceOntology;
 
 /*
  *   Mapping:
@@ -185,7 +190,7 @@ public class SBOL2Eugene {
 		/*
 		 * finally, we set the part's property values
 		 */
-		List<PropertyValue> values = getPartPropertyValues(sbolDC);
+//		List<PropertyValue> values = getPartPropertyValues(sbolDC);
 		
 		/*
 		 * next, we create the Part object
@@ -202,63 +207,63 @@ public class SBOL2Eugene {
 //		return objPart;
 	}
 	
-	private static List<PropertyValue> getPartPropertyValues(
-			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
-					throws ImportException {
-		
-		List<PropertyValue> lstValues = new ArrayList<PropertyValue>();
-		
-		/*
-		 * displayId
-		 */
-		PropertyValue objDisplayId =
-				new PropertyValue(
-						SBOLConstants.DISPLAY_ID_PROPERTY,                          // name 
-						PropertyType.TXT,                                         	// type
-						(null!=sbolDC.getDisplayId())?sbolDC.getDisplayId():"");    // value
-		lstValues.add(objDisplayId);
-		
-		/*
-		 * name
-		 */
-		PropertyValue objName =
-				new PropertyValue(
-						SBOLConstants.NAME_PROPERTY,
-						PropertyType.TXT,                                        
-						(null!=sbolDC.getName())?sbolDC.getName():"");
-		lstValues.add(objName);
-		
-		/*
-		 * URI
-		 */
-		PropertyValue objURI = new PropertyValue(
-				SBOLConstants.URI_PROPERTY, 
-				PropertyType.TXT, 
-				(null!=sbolDC.getURI())?sbolDC.getURI().toString():"");
-		lstValues.add(objURI);
-		
-		/*
-		 * description
-		 */
-		PropertyValue objDescription =
-				new PropertyValue(
-						SBOLConstants.DESCRIPTION_PROPERTY,
-						PropertyType.TXT,                                        
-						(null!=sbolDC.getDescription())?sbolDC.getDescription():"");
-		lstValues.add(objDescription);
-		
-		/*
-		 * SEQUENCE
-		 */
-		PropertyValue objSequenceValue = 
-				new PropertyValue(
-						SBOLConstants.SEQUENCE_PROPERTY,
-						PropertyType.TXT,                                        
-						(sbolDC.getDnaSequence()!=null)?sbolDC.getDnaSequence().getNucleotides():"");
-		lstValues.add(objSequenceValue);
-		
-		return lstValues;
-	}
+//	private static List<PropertyValue> getPartPropertyValues(
+//			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
+//					throws ImportException {
+//		
+//		List<PropertyValue> lstValues = new ArrayList<PropertyValue>();
+//		
+//		/*
+//		 * displayId
+//		 */
+//		PropertyValue objDisplayId =
+//				new PropertyValue(
+//						SBOLConstants.DISPLAY_ID_PROPERTY,                          // name 
+//						PropertyType.TXT,                                         	// type
+//						(null!=sbolDC.getDisplayId())?sbolDC.getDisplayId():"");    // value
+//		lstValues.add(objDisplayId);
+//		
+//		/*
+//		 * name
+//		 */
+//		PropertyValue objName =
+//				new PropertyValue(
+//						SBOLConstants.NAME_PROPERTY,
+//						PropertyType.TXT,                                        
+//						(null!=sbolDC.getName())?sbolDC.getName():"");
+//		lstValues.add(objName);
+//		
+//		/*
+//		 * URI
+//		 */
+//		PropertyValue objURI = new PropertyValue(
+//				SBOLConstants.URI_PROPERTY, 
+//				PropertyType.TXT, 
+//				(null!=sbolDC.getURI())?sbolDC.getURI().toString():"");
+//		lstValues.add(objURI);
+//		
+//		/*
+//		 * description
+//		 */
+//		PropertyValue objDescription =
+//				new PropertyValue(
+//						SBOLConstants.DESCRIPTION_PROPERTY,
+//						PropertyType.TXT,                                        
+//						(null!=sbolDC.getDescription())?sbolDC.getDescription():"");
+//		lstValues.add(objDescription);
+//		
+//		/*
+//		 * SEQUENCE
+//		 */
+//		PropertyValue objSequenceValue = 
+//				new PropertyValue(
+//						SBOLConstants.SEQUENCE_PROPERTY,
+//						PropertyType.TXT,                                        
+//						(sbolDC.getDnaSequence()!=null)?sbolDC.getDnaSequence().getNucleotides():"");
+//		lstValues.add(objSequenceValue);
+//		
+//		return lstValues;
+//	}
 	
 //	private static PartType buildPartType(
 //			org.sbolstandard.core.impl.DnaComponentImpl sbolDC)
@@ -300,39 +305,39 @@ public class SBOL2Eugene {
 ////		return objPartType;
 //	}
 
-	private static String soMapping(String s) {
-		if(null == s || s.isEmpty()) {
-			return SBOLConstants.SBOL_PART_TYPE;
-		}
-		
-		if (SequenceOntology.FIVE_PRIME_UTR.toString().equals(s)) {
-			return "Five_Prime_UTR";
-		} else if (SequenceOntology.CDS.toString().equals(s) || "CDS".equals(s)) {
-			return "CDS";
-		} else if(s.contains("SO_0000139") || s.contains("SO_0000552")) {
-			return "RBS";
-		} else if (SequenceOntology.INSULATOR.toString().equals(s)) {
-			return "Insulator";
-		} else if (SequenceOntology.OPERATOR.toString().equals(s)) {
-			return "Operator";
-		} else if (SequenceOntology.ORIGIN_OF_REPLICATION.toString().equals(s)) {
-			return "Origin_of_Replication";
-		} else if (SequenceOntology.PRIMER_BINDING_SITE.toString().equals(s)) {
-			return "Primiter_Binding_Site";
-		} else if (SequenceOntology.PROMOTER.toString().equals(s) || "Promoter".equals(s) ||
-				s.contains("SO_0005836")) {
-			return "Promoter";
-		} else if (SequenceOntology.RESTRICTION_ENZYME_RECOGNITION_SITE
-				.toString().equals(s)) {
-			return "Restriction_Enzyme_Recognition_Site";
-		} else if (SequenceOntology.TERMINATOR.toString().equals(s) ||
-				s.contains("SO_0000313") ||
-				s.contains("SO_0000614")) {
-			return "Terminator";
-		}
-
-		return SBOLConstants.SBOL_PART_TYPE;
-	}
+//	private static String soMapping(String s) {
+//		if(null == s || s.isEmpty()) {
+//			return SBOLConstants.SBOL_PART_TYPE;
+//		}
+//		
+//		if (SequenceOntology.FIVE_PRIME_UTR.toString().equals(s)) {
+//			return "Five_Prime_UTR";
+//		} else if (SequenceOntology.CDS.toString().equals(s) || "CDS".equals(s)) {
+//			return "CDS";
+//		} else if(s.contains("SO_0000139") || s.contains("SO_0000552")) {
+//			return "RBS";
+//		} else if (SequenceOntology.INSULATOR.toString().equals(s)) {
+//			return "Insulator";
+//		} else if (SequenceOntology.OPERATOR.toString().equals(s)) {
+//			return "Operator";
+//		} else if (SequenceOntology.ORIGIN_OF_REPLICATION.toString().equals(s)) {
+//			return "Origin_of_Replication";
+//		} else if (SequenceOntology.PRIMER_BINDING_SITE.toString().equals(s)) {
+//			return "Primiter_Binding_Site";
+//		} else if (SequenceOntology.PROMOTER.toString().equals(s) || "Promoter".equals(s) ||
+//				s.contains("SO_0005836")) {
+//			return "Promoter";
+//		} else if (SequenceOntology.RESTRICTION_ENZYME_RECOGNITION_SITE
+//				.toString().equals(s)) {
+//			return "Restriction_Enzyme_Recognition_Site";
+//		} else if (SequenceOntology.TERMINATOR.toString().equals(s) ||
+//				s.contains("SO_0000313") ||
+//				s.contains("SO_0000614")) {
+//			return "Terminator";
+//		}
+//
+//		return SBOLConstants.SBOL_PART_TYPE;
+//	}
 
 	public static void readURI(URI uri) throws Exception {
 		URL url = uri.toURL();
