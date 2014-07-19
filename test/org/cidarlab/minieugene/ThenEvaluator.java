@@ -33,7 +33,7 @@
 package org.cidarlab.minieugene;
 
 import org.cidarlab.minieugene.MiniEugene;
-import org.cidarlab.minieugene.constants.EugeneConstants;
+import org.cidarlab.minieugene.constants.MiniEugeneConstants;
 
 public class ThenEvaluator {
 
@@ -52,7 +52,7 @@ public class ThenEvaluator {
 	            me.solve(s.split(NEWLINE), i, -1);
 
 				System.out.println(
-						me.getStatistics().getValueByKey(EugeneConstants.NUMBER_OF_SOLUTIONS));
+						me.getStatistics().getValueByKey(MiniEugeneConstants.NUMBER_OF_SOLUTIONS));
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

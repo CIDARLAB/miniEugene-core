@@ -39,7 +39,7 @@ import java.util.Set;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.cidarlab.minieugene.act.ACT;
-import org.cidarlab.minieugene.constants.EugeneConstants;
+import org.cidarlab.minieugene.constants.MiniEugeneConstants;
 import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
@@ -336,10 +336,10 @@ public class MiniEugene
 //						Math.pow(numberOfParts, i) * Math.pow(2, i);
 //			}
 			
-			this.stats.add(EugeneConstants.NUMBER_OF_PARTS, symbols.length);
-			this.stats.add(EugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
-			this.stats.add(EugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
-			this.stats.add(EugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
+			this.stats.add(MiniEugeneConstants.NUMBER_OF_PARTS, symbols.length);
+			this.stats.add(MiniEugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
+			this.stats.add(MiniEugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
+			this.stats.add(MiniEugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
 
 			// TODO
 //			this.stats.add(EugeneConstants.MINIMUM_LENGTH_OF_DESIGN, la.getMinN());
@@ -357,9 +357,9 @@ public class MiniEugene
 			long T2 = System.nanoTime();
 
 			if(null != solutions) {
-				this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, solutions.size());
+				this.stats.add(MiniEugeneConstants.NUMBER_OF_SOLUTIONS, solutions.size());
 			} else {
-				this.stats.add(EugeneConstants.NUMBER_OF_SOLUTIONS, 0);
+				this.stats.add(MiniEugeneConstants.NUMBER_OF_SOLUTIONS, 0);
 			}					
 				
 
@@ -367,7 +367,7 @@ public class MiniEugene
 			 * next, we iterate over the predicates and check if there are any
 			 * SOME_REVERSE directionality predicates
 			 */
-			stats.add(EugeneConstants.SOLUTION_FINDING_TIME, 
+			stats.add(MiniEugeneConstants.SOLUTION_FINDING_TIME, 
 					(T2-T1)*Math.pow(10, -9));
 
 			if(null == solutions || solutions.size()==0) {

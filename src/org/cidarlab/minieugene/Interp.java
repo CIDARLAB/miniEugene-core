@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.cidarlab.minieugene.builder.PredicateBuilder;
-import org.cidarlab.minieugene.constants.EugeneRules;
+import org.cidarlab.minieugene.constants.MiniEugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
@@ -143,7 +143,7 @@ public class Interp {
 //			}
 
 			
-		} else if(EugeneRules.isUnaryRule(p)) {
+		} else if(MiniEugeneRules.isUnaryRule(p)) {
 			/*
 			 * get the id from the symbol
 			 */
@@ -231,7 +231,7 @@ public class Interp {
 			throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
 			
 			
-		} else if(EugeneRules.isInteractionRule(X)) {
+		} else if(MiniEugeneRules.isInteractionRule(X)) {
 			
 			return this.pb.buildInteraction(a, X, b);
 		}
@@ -243,7 +243,7 @@ public class Interp {
 		int idA = this.symbols.getId(a);
 		
 		int idB = -1;
-		if(EugeneRules.isCountingRule(X)) {
+		if(MiniEugeneRules.isCountingRule(X)) {
 
 			/*
 			 * b can be a decimal non-negative number
@@ -290,8 +290,8 @@ public class Interp {
 			// create the counting rule object
 			return this.pb.buildBinary(this.symbols.get(idA), X, idB);
 			
-		} else if(EugeneRules.isPositionalRule(X) || EugeneRules.isPairingRule(X) || 
-				EugeneRules.isOrientationRule(X)) {
+		} else if(MiniEugeneRules.isPositionalRule(X) || MiniEugeneRules.isPairingRule(X) || 
+				MiniEugeneRules.isOrientationRule(X)) {
 			
 			idB = this.symbols.getId(b);
 

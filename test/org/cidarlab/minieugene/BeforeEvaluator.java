@@ -33,7 +33,7 @@
 package org.cidarlab.minieugene;
 
 import org.cidarlab.minieugene.MiniEugene;
-import org.cidarlab.minieugene.constants.EugeneConstants;
+import org.cidarlab.minieugene.constants.MiniEugeneConstants;
 
 public class BeforeEvaluator {
 
@@ -50,7 +50,7 @@ public class BeforeEvaluator {
 				MiniEugene me = new MiniEugene();				
 				me.solve(s.split(System.getProperty("line.separator")), i, -1);
 				System.out.println(
-						me.getStatistics().getValueByKey(EugeneConstants.NUMBER_OF_SOLUTIONS));
+						me.getStatistics().getValueByKey(MiniEugeneConstants.NUMBER_OF_SOLUTIONS));
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

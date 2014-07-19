@@ -33,7 +33,7 @@
 package org.cidarlab.minieugene;
 
 import org.cidarlab.minieugene.MiniEugene;
-import org.cidarlab.minieugene.constants.EugeneConstants;
+import org.cidarlab.minieugene.constants.MiniEugeneConstants;
 
 public class WithEvaluator {
 
@@ -58,7 +58,7 @@ public class WithEvaluator {
 					MiniEugene me = new MiniEugene();				
 		            me.solve(s.split(NEWLINE), i, -1);
 
-					times[k] = me.getStatistics().getValueByKey(EugeneConstants.SOLUTION_FINDING_TIME);
+					times[k] = me.getStatistics().getValueByKey(MiniEugeneConstants.SOLUTION_FINDING_TIME);
 					
 					me = null;
 					

@@ -36,7 +36,7 @@ package org.cidarlab.minieugene.constants;
  * 
  * @author Ernst Oberortner
  */
-public class EugeneConstants {
+public class MiniEugeneConstants {
 
 	public static final String MINIMUM_LENGTH_OF_DESIGN = "Min. Length of Design";
 	public static final String MAXIMUM_LENGTH_OF_DESIGN = "Max. Length of Design";
