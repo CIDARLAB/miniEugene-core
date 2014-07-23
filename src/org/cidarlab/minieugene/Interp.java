@@ -77,8 +77,41 @@ public class Interp {
 		this.maxN = maxN;
 	}
 	
-	/*
+	/**
+	 * The insertFact/2 method takes as input two Strings.
+	 * The first String indicates the name of the component.
+	 * The second String indicates the type of the component.
 	 * 
+	 * Example:
+	 * insertFact("p", "Promoter");
+	 * indicates that the component p is of type promoter
+	 * 
+	 * @param c ... the name of the component
+	 * @param t ... the name of the component type
+	 * 
+	 * @throws MiniEugeneException
+	 */
+	public void insertFact(String c, String t) 
+			throws MiniEugeneException {
+		this.symbols.put(c, t);
+	}
+
+	/**
+	 * The interpreteRule/1 method takes as input an array of Strings, 
+	 * which represents a miniEugene constraint.
+	 * 
+	 * Example:
+	 * the String array ["p", "before", "g"] represents the 
+	 * p before g miniEugene constraint.
+	 * 
+	 * The interpreteRule/1 method returns a Predicate object which 
+	 * represents the miniEugene constraint.
+	 * 
+	 * 
+	 * @param tokens  ... a String array representing a miniEugene constraint
+	 * @return a Predicate object
+	 * 
+	 * @throws MiniEugeneException
 	 */
 	public Predicate interpreteRule(String[] tokens) 
 			throws MiniEugeneException {
@@ -290,7 +323,7 @@ public class Interp {
 			// create the counting rule object
 			return this.pb.buildBinary(this.symbols.get(idA), X, idB);
 			
-		} else if(MiniEugeneRules.isPositionalRule(X) || MiniEugeneRules.isPairingRule(X) || 
+		} else if(MiniEugeneRules.isPositioningRule(X) || MiniEugeneRules.isPairingRule(X) || 
 				MiniEugeneRules.isOrientationRule(X)) {
 			
 			idB = this.symbols.getId(b);

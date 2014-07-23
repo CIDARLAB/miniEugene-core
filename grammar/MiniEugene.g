@@ -1,53 +1,115 @@
 grammar MiniEugene;
 
+tokens {
+	LEFTP = '(';
+	RIGHTP = ')';
+	LEFTSBR = '[';
+	RIGHTSBR = ']';
+	LEFTCUR = '{';
+	RIGHTCUR = '}';
+	UNDERS = '_';
+	DOT = '.';
+	COMMA = ',';
+	PIPE = '|';
+	
+	UC_AND = 'AND';
+	LC_AND = 'and';
+	LOG_AND = '/\\';
+	BOOL_AND = '&&';
+	UC_OR = 'OR';
+	LC_OR = 'or';
+	LOG_OR = '\\/';
+	BOOL_OR = '||';
+	UC_NOT = 'NOT';
+	LC_NOT = 'not';
+	BOOL_NOT = '!';
+	
+	LC_IS_A = 'is_a';
+	UC_IS_A = 'IS_A';
+	
+	UC_TEMPLATE = 'TEMPLATE';
+	LC_TEMPLATE = 'template';
+	UC_PATTERN = 'PATTERN';
+	LC_PATTERN = 'pattern';
+	UC_SEQUENCE = 'SEQUENCE';
+	LC_SEQUENCE = 'sequence';
+	UC_GROUP = 'GROUP';
+	LC_GROUP = 'group';
+	
+	EQUALS = '=';
+	N_SIZE = 'N';
+	MIN_SIZE = 'minN';
+}
+
+
 @lexer::header {
 /*
-Copyright (c) 2012 Boston University.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL BOSTON UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-BOSTON UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-BOSTON UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND BOSTON UNIVERSITY HAS
-NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * Copyright (c) 2014, Boston University
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the following 
+ * conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright 
+ *    notice, this list of conditions and the following disclaimer.
+ *    
+ * 2. Redistributions in binary form must reproduce the above copyright 
+ *    notice, this list of conditions and the following disclaimer in 
+ *    the documentation and/or other materials provided with the distribution.
+ *    
+ * 3. Neither the name of the copyright holder nor the names of its 
+ *    contributors may be used to endorse or promote products derived 
+ *    from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package org.cidarlab.minieugene.parser;
 }
 
 @header {
 /*
-Copyright (c) 2012 Boston University.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL BOSTON UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-BOSTON UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-BOSTON UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND BOSTON UNIVERSITY HAS
-NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * Copyright (c) 2014, Boston University
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the following 
+ * conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright 
+ *    notice, this list of conditions and the following disclaimer.
+ *    
+ * 2. Redistributions in binary form must reproduce the above copyright 
+ *    notice, this list of conditions and the following disclaimer in 
+ *    the documentation and/or other materials provided with the distribution.
+ *    
+ * 3. Neither the name of the copyright holder nor the names of its 
+ *    contributors may be used to endorse or promote products derived 
+ *    from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package org.cidarlab.minieugene.parser;
 
@@ -55,7 +117,7 @@ import org.cidarlab.minieugene.Interp;
 import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.symbol.*;
 import org.cidarlab.minieugene.predicates.*;
-import org.cidarlab.minieugene.exception.EugeneException;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.templating.*;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -107,153 +169,218 @@ private void addToken(String token) {
 boolean bError = false;
 @Override
 public void reportError(RecognitionException e) {
+    e.printStackTrace();
     bError = true;
 }
 
 public boolean hasErrors() {
     return bError;
 }
+
+private boolean bCollectFacts = true;
+public void setCollectFacts(boolean b) {
+    this.bCollectFacts = b;
+}
+
+public void printFacts() {
+    this.interp.printFacts();
+}
 }
 
  	
-miniEugene 
-	throws EugeneException
-	:	(size)? (c=or_constraint {
-if($c.lst.size() == 1) {
-    // ``store'' the predicate
-    this.addPredicate($c.lst.get(0));   
-} else {
-    this.addPredicate(new LogicalOr($c.lst));   
-}	
-	}'.' |composite_constraint)+
+miniEugene
+	throws MiniEugeneException
+	:	(size DOT)? (statement DOT)+
+	;
+
+statement
+	throws MiniEugeneException
+	: 	fact
+	| 	constraint_specification
+	;
+	
+fact
+	throws MiniEugeneException
+	:	c=ID (UC_IS_A|LC_IS_A) t=ID {
+if(bCollectFacts) {		
+    this.interp.insertFact($c.text, $t.text);	
+}
+	}
+	;
+
+constraint_specification
+	throws MiniEugeneException 
+	:	c=or_constraint {
+if(!bCollectFacts) {		
+    if($c.lst.size() == 1) 	{
+        // ``store'' the predicate
+        this.addPredicate($c.lst.get(0));   
+    } else {
+        this.addPredicate(new LogicalOr($c.lst));   
+    }	
+}
+	}	
+	 |	composite_constraint
 	;
 
 size 	
-	throws EugeneException
-	:	 ('minN' '=' minN=INT '.' {
+	throws MiniEugeneException
+	:	 ('minN' EQUALS minN=INT DOT {
 this.minN = Integer.parseInt($minN.text);
 this.interp.setMinN(this.minN);
-	})? 'N' '=' maxN=INT '.' {
+	}	)? 	
+		N_SIZE EQUALS maxN=INT {
 this.maxN = Integer.parseInt($maxN.text);
 this.interp.setMaxN(this.maxN);
 }
 	;
 
 composite_constraint
-	throws EugeneException
-	:	ID ( '(' list_of_parameters ')' )? ':=' composite_constraint_block '.'
+	throws MiniEugeneException
+	:	ID ( LEFTP list_of_parameters RIGHTP )? ':=' composite_constraint_block DOT
 	;
 
 composite_constraint_block
-	throws EugeneException
-	:	constraint (',' composite_constraint_block)?
+	throws MiniEugeneException
+	:	constraint (COMMA composite_constraint_block)?
 	;	
 	
 or_constraint 
         returns [List<Predicate> lst]
-	throws EugeneException
+	throws MiniEugeneException
 @init{
 $lst = new ArrayList<Predicate>();
 }	
 	:	c=constraint {
-$lst.add($c.p);
-	}	(('OR'|'\\/'|'or'|'||') o=or_constraint {
-$lst.addAll($o.lst);
+if(!bCollectFacts) {		
+    $lst.add($c.p);
+}
+	}	((UC_OR|LC_OR|LOG_OR|BOOL_OR) o=or_constraint {
+if(!bCollectFacts) {		
+    $lst.addAll($o.lst);
+}
 	})?
 	;
 	
 constraint
         returns [Predicate p]
-	throws EugeneException
-	:	(not=('NOT'|'not') {
-addToken("NOT");
+	throws MiniEugeneException
+	:	(not=(UC_NOT|LC_NOT|BOOL_NOT) {
+if(!bCollectFacts) {		
+    addToken("NOT");
+}
 	})? (lhs=operand {
-addToken($lhs.text);	
+if(!bCollectFacts) {		
+    addToken($lhs.text);
+}	
 	})? op=operator {
-addToken($op.text);	
+if(!bCollectFacts) {		
+    addToken($op.text);	
+}
 	} (rhs=operand {
-addToken($rhs.text);	
+if(!bCollectFacts) {		
+    addToken($rhs.text);	
+}
 	})? {
+if(!bCollectFacts) {		
+    // turn the tokens into a miniEugene predicate	
+    $p = this.interp.interpreteRule(this.tokens);
 
-// turn the tokens into a miniEugene predicate	
-$p = this.interp.interpreteRule(this.tokens);
-
-// reset the global token array
-this.tokens = null;
+    // reset the global token array
+    this.tokens = null;
+}
 	}
 	|	temp=templatingConstraints {
-$p = $temp.p;	
+if(!bCollectFacts) {		
+    $p = $temp.p;	
+}
 	}
 	;
-	catch[EugeneException e] {
-throw new EugeneException(e.getMessage());	
+	catch[MiniEugeneException e] {
+throw new MiniEugeneException(e.getMessage());	
 	}
 
 templatingConstraints
 	returns [Predicate p]
-	throws EugeneException
+	throws MiniEugeneException
 	:	tem=templateConstraint {
-$p = $tem.p;	
+if(!bCollectFacts) {		
+    $p = $tem.p;	
+}
 	}
 	|	pat=patternConstraint {
-$p = $pat.p;	
+if(!bCollectFacts) {		
+    $p = $pat.p;	
+}
 	}
 	|	gr=groupConstraint {
-$p = $gr.p;	
+if(!bCollectFacts) {		
+    $p = $gr.p;	
+}
 	}
 	|	seq=sequenceConstraint {
-$p = $seq.p;	
+if(!bCollectFacts) {		
+    $p = $seq.p;	
+}
 	}
 	;
 	
 templateConstraint	
 	returns [Template p]
-	:	(name=ID)? not=('NOT'|'not')? ('TEMPLATE'|'template') ids=list_of_ids {
-$p = (Template)this.interp.createTemplatingConstraint(
-    TemplateType.TEMPLATE, 
-    $name.text, 
-    $ids.lst);
-if(null != not) {
-    $p.setNegated();
-}
+	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_TEMPLATE|LC_TEMPLATE) ids=list_of_ids {
+if(!bCollectFacts) {		
+    $p = (Template)this.interp.createTemplatingConstraint(
+        TemplateType.TEMPLATE, 
+        $name.text, 
+        $ids.lst);
+    if(null != not) {
+        $p.setNegated();
+    }
+}	
 	}
 	;
 
 patternConstraint	
 	returns [Pattern p]
-	:	(name=ID)? not=('NOT'|'not')? ('PATTERN'|'pattern') ids=list_of_ids {
-$p = (Pattern)this.interp.createTemplatingConstraint(
-    TemplateType.PATTERN, 
-    $name.text, 
-    $ids.lst);
-if(null != not) {
-    $p.setNegated();
+	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_PATTERN|LC_PATTERN) ids=list_of_ids {
+if(!bCollectFacts) {		
+    $p = (Pattern)this.interp.createTemplatingConstraint(
+        TemplateType.PATTERN, 
+        $name.text, 
+        $ids.lst);
+    if(null != not) {
+        $p.setNegated();
+    }
 }
 	}
 	;
 
 sequenceConstraint	
 	returns [Sequence p]
-	:	(name=ID)? not=('NOT'|'not')? ('SEQUENCE'|'sequence') ids=list_of_ids {
-$p = (Sequence)this.interp.createTemplatingConstraint(
-    TemplateType.SEQUENCE, 
-    $name.text, 
-    $ids.lst);
-if(null != not) {
-    $p.setNegated();
+	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_SEQUENCE|LC_SEQUENCE) ids=list_of_ids {
+if(!bCollectFacts) {		
+    $p = (Sequence)this.interp.createTemplatingConstraint(
+        TemplateType.SEQUENCE, 
+        $name.text, 
+        $ids.lst);
+    if(null != not) {
+        $p.setNegated();
+    }
 }
 	}
 	;
 	
 groupConstraint	
 	returns [Group p]
-	:	(name=ID)? not=('NOT'|'not')? ('GROUP'|'group') ids=list_of_ids {
-$p = (Group)this.interp.createTemplatingConstraint(
-    TemplateType.GROUP, 
-    $name.text, 
-    $ids.lst);
-if(null != not) {
-    $p.setNegated();
+	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_GROUP|LC_GROUP) ids=list_of_ids {
+if(!bCollectFacts) {		
+    $p = (Group)this.interp.createTemplatingConstraint(
+        TemplateType.GROUP, 
+        $name.text, 
+        $ids.lst);
+    if(null != not) {
+        $p.setNegated();
+    }
 }
 	}
 	;
@@ -264,14 +391,20 @@ list_of_ids
 $lst = new ArrayList<List<String>>();
 }	
 	:	(id=ID {
-List<String> id_lst = new ArrayList<String>();
-id_lst.add($id.text);
-$lst.add(id_lst);	
-	}	|'[' sel=selection {
-$lst.add($sel.lst);	
-	}	']')
-		(',' ids=list_of_ids {
-$lst.addAll($ids.lst);		
+if(!bCollectFacts) {		
+    List<String> id_lst = new ArrayList<String>();
+    id_lst.add($id.text);
+    $lst.add(id_lst);	
+}
+	}	|LEFTSBR sel=selection {
+if(!bCollectFacts) {		
+    $lst.add($sel.lst);	
+}
+	}	RIGHTSBR)
+		(COMMA ids=list_of_ids {
+if(!bCollectFacts) {		
+    $lst.addAll($ids.lst);		
+}
 	})?
 	;
 
@@ -281,9 +414,13 @@ selection
 $lst = new ArrayList<String>();
 }	
 	:	id=ID {
-$lst.add($id.text);		
-	} 	('|' sel=selection {
-$lst.addAll($sel.lst);	
+if(!bCollectFacts) {		
+    $lst.add($id.text);		
+}
+	} 	(PIPE sel=selection {
+if(!bCollectFacts) {		
+    $lst.addAll($sel.lst);	
+}
 	})?
 	;	
 		
@@ -332,11 +469,11 @@ operator:
 		
 operand	:	ID 
 	|	INT
-	|	'[' INT ']'
+	|	LEFTSBR INT RIGHTSBR
 	;
 
 list_of_parameters
-	:	operand (',' list_of_parameters)?
+	:	operand (COMMA list_of_parameters)?
 	;	
 
 	

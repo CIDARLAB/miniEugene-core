@@ -73,8 +73,10 @@ public class MiniEugene
 		// symbol tables
 		this.symbols = new SymbolTables();
 		
+		// statistics
 		this.stats = new MiniEugeneStatistics();
 		
+		// solutions
 		this.solutions = null;
 	}
 	
@@ -113,6 +115,11 @@ public class MiniEugene
 		 */
 		this.symbols.clear();
 
+		/*
+		 * also, clear the statistics
+		 */
+		this.stats.getMeasurements().clear();
+		
 		/*
 		 * first, we need to build the miniEugene script
 		 * based on the given information
@@ -216,11 +223,12 @@ public class MiniEugene
 		throws MiniEugeneException {
 		
 		/*
-		 * first, we clear the symbol tables 
-		 * since they might contain symbols from the last run
+		 * first, we clear the symbol tables and statistics
+		 * since they might contain information from the last run
 		 */
 		this.symbols.clear();
-
+		this.stats.getMeasurements().clear();
+		
 		/*
 		 * next, we parse the script
 		 */
@@ -240,11 +248,12 @@ public class MiniEugene
 			throws MiniEugeneException {
 			
 		/*
-		 * first, we clear the symbol tables 
-		 * since they might contain symbols from the last run
+		 * first, we clear the symbol tables and statistics 
+		 * since they might contain information from the last run
 		 */
 		this.symbols.clear();
-
+		this.stats.getMeasurements().clear();
+		
 		/*
 		 * next, we parse the script
 		 */
@@ -252,7 +261,7 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);
 			this.solve(la, -1);
 		} catch(MiniEugeneException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 			
@@ -266,6 +275,26 @@ public class MiniEugene
 	public LogicalAnd parse(String script) 
 			throws MiniEugeneException {
 		
+		/*
+		 * FIRST RUN
+		 * we collect all facts
+		 */
+		try {
+			this.collectFacts(script);
+		} catch(MiniEugeneException me) {
+			throw new MiniEugeneException(me.getMessage());
+		}
+		
+		/*
+		 * SECOND RUN
+		 * we interpret all constraints
+		 */
+		return this.interpretConstraints(script);
+	}
+	
+	private void collectFacts(String script) 
+			throws MiniEugeneException {
+
 		// Lexer
 		MiniEugeneLexer lexer = new MiniEugeneLexer(
 				new ANTLRStringStream(script));
@@ -279,7 +308,36 @@ public class MiniEugene
 		
 		// PARSING
 		try {
+			parser.setCollectFacts(true);
 			parser.miniEugene();
+			parser.printFacts();
+			if(parser.hasErrors()) {
+				throw new MiniEugeneException("The script contains invalid characters!");
+			}
+		} catch(Exception e) {
+			throw new MiniEugeneException(e.getMessage());
+		}
+	}
+	
+	private LogicalAnd interpretConstraints(String script) 
+			throws MiniEugeneException {
+
+		// Lexer
+		MiniEugeneLexer lexer = new MiniEugeneLexer(
+				new ANTLRStringStream(script));
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		// Parser
+		MiniEugeneParser parser = new MiniEugeneParser(tokens);
+
+		// initialize the parser with the symboltables
+		parser.init(this.symbols);
+		
+		// PARSING
+		try {
+			parser.setCollectFacts(false);
+			parser.miniEugene();
+			parser.printFacts();
 			
 			if(parser.hasErrors()) {
 				throw new MiniEugeneException("The script contains invalid characters!");
@@ -375,7 +433,7 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -425,6 +483,12 @@ public class MiniEugene
 		this.symbols.clear();
 		
 		return this.parse(script);
+	}
+	
+	public void printFacts() {
+		for(int i=0; i<this.symbols.getSymbols().length; i++) {
+			System.out.println(this.symbols.getSymbols()[i]);
+		}
 	}
 
 }

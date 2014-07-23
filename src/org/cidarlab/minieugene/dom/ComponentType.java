@@ -30,39 +30,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.predicates;
-
-import org.cidarlab.minieugene.dom.Component;
-
+package org.cidarlab.minieugene.dom;
 
 /**
- * Unary predicates are rule predicates that MUST have at least one rule operand 
- * i.e. the right-hand-side (RHS) of the constraint MUST be a given
- * 
- * In miniEugene, the following rules, for example, are unary rules:
- * CONTAINS, STARTSWITH, ENDSWITH
  * 
  * @author Ernst Oberortner
  */
-public abstract class UnaryPredicate 
-		extends EugeneConstraint {
-		
-	private Component a;
-	
-	/**
-	 * 
-	 * @param lhs
-	 * @param rhs
-	 */
-	public UnaryPredicate(Component a) {
-		this.a = a;
+public class ComponentType 
+		extends NamedElement {
+
+	private static final long serialVersionUID = -8290152785547467536L;
+
+	public ComponentType(String name) {
+		super(name);
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Component getA() {
-		return this.a;
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 }

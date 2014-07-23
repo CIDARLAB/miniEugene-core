@@ -184,21 +184,18 @@ public class JaCoPSolver
 			variables[Variables.TYPE][i] = new IntVar(store, "T"+i);
 			variables[Variables.ORIENTATION][i] = new IntVar(store, "O"+i);
 			
-			PrimitiveConstraint[] pc = new PrimitiveConstraint[symbols.length];
 			for(int j=0; j<symbols.length; j++) {						
 				variables[Variables.PART][i].addDom(symbols[j].getId(), symbols[j].getId());
 				variables[Variables.TYPE][i].addDom(symbols[j].getTypeId(), symbols[j].getTypeId());
 			
 				/*
-				 * we also impose constraints that part and type match
+				 * we also impose constraints that part and type must match
 				 * so we avoid various permutations were the part and type do not match
 				 */
-				pc[j] = 
-						new IfThen(
+				store.impose(new IfThen(
 								new XeqC(variables[Variables.PART][i], symbols[j].getId()),
-								new XeqC(variables[Variables.TYPE][i], symbols[j].getTypeId()));
+								new XeqC(variables[Variables.TYPE][i], symbols[j].getTypeId())));
 			}
-			store.impose(new And(pc));
 			
 			variables[Variables.ORIENTATION][i].addDom(-1, -1);
 			variables[Variables.ORIENTATION][i].addDom( 1,  1);

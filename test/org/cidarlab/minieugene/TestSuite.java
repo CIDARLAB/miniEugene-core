@@ -59,6 +59,28 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/bryan/ex3"));
 //		new TestSuite().test(new File("./tests/bryan/ex4"));
 
+		
+		/*
+		 * specification of facts
+		 */
+//		new TestSuite().test("N=2. p is_a Promoter. g is_a Gene.");
+		new TestSuite().test("N=4. p is_a Promoter. r is_a RBS. g is_a Gene. t is_a Terminator.");
+
+		new TestSuite().test("N=4. contains p. p is_a Promoter. "+
+				"contains r. r is_a RBS. "+
+				"contains g. g is_a Gene. "+
+				"contains t. t is_a Terminator.");
+		
+		// first run -> p, r, g, t
+		// second run -> p, r, g, t, p1, r1, g1, t1
+		new TestSuite().test("N=4. contains p1. p is_a Promoter. "+
+				"contains r1. r is_a RBS. "+
+				"contains g1. g is_a Gene. "+
+				"contains t1. t is_a Terminator.");
+
+//		new TestSuite().test("N=2. contains p. contains g.");
+		
+
 		// consistency
 //		new TestSuite().test("N=2. contains a. contains b. a before b.");
 //		new TestSuite().test("N=2. contains a. contains b. a before b. b before a.");
@@ -80,8 +102,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/counting/same_count03"));
 
 		// EXACTLY
-//		new TestSuite().test("N=1. r1 exactly 1.");
-		
+//		new TestSuite().test("N=1. r1 exactly 1.");		
 //		new TestSuite().test("N=6.ALL_FORWARD.rc_ EXACTLY 1.rc_ AFTER rc.p DRIVES rc.p DRIVES rc_.p DRIVES r.t SOME_AFTER rc_.");
 //		new TestSuite().test("N=10.CONTAINS p.contains c.contains t.p drives c.p same_orientation t.[0] equals p.[1] equals c.");
 //		new TestSuite().test("N=8.CONTAINS c.STARTSWITH p OR STARTSWITH t.ENDSWITH p OR ENDSWITH t.c NEXTTO r. r BEFORE c.p SOME_BEFORE r.r SOME_BEFORE p.t SOME_AFTER c. t SOME_BEFORE p.");
@@ -92,6 +113,7 @@ public class TestSuite {
 //				"T3 EXACTLY 1.ALL_FORWARD.P2 BEFORE P3.r3 NEXTTO c3.r3 BEFORE c3.c3 NEXTTO T3.P3 NEXTTO r3.P4 EXACTLY 1.r4 EXACTLY 1."+
 //				"c4 EXACTLY 1.T4 EXACTLY 1.ALL_FORWARD.P3 BEFORE P4.r4 NEXTTO c4.r4 BEFORE c4.c4 NEXTTO T4.P4 NEXTTO r4."+
 //				"cTetR REPRESSES PTetR.cLacI REPRESSES PLacI.");
+		
 		/*
 		 * CALCULATE minN
 		 */
@@ -108,7 +130,6 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/then/then01"));
 //		new TestSuite().test(new File("./tests/then/then02"));
 //		new TestSuite().test(new File("./tests/then/then03"));
-//
 //		new TestSuite().test(new File("./tests/swati/test01"));
 
 
@@ -123,11 +144,12 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/before/some_before02"));
 //		new TestSuite().test(new File("./tests/before/some_before03"));
 
+		// ALWAYS_NEXTTO
+//		new TestSuite().test(new File("./tests/pairing/always_nextto01"));
+		
 		/*
 		 * PAIRING RULES
 		 */
-//		new TestSuite().test(new File("./tests/pairing/always_nextto01"));
-		
 		// EQUALS
 		
 		// solely indices
@@ -148,7 +170,6 @@ public class TestSuite {
 //		new TestSuite().test("N=2.contains p.[1] notequals [0].");   // no solution
 //		new TestSuite().test("N=3.all_forward.contains p.contains c.[0] notequals [1].[1] notequals [2]."); 
 //		new TestSuite().test("N=3.all_forward.contains p.contains c.contains t.[0] notequals [1].[1] notequals [2]."); 
-
 //		new TestSuite().test("N=3.contains p.contains c.[0] equals [1].[1] notequals [2].all_forward p."); 
 		
 		/*
@@ -176,7 +197,7 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same03"));
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same04"));
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/same05"));
-		//TODO
+
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/some_same01"));
 //		new TestSuite().test(new File("./tests/orientation/same_orientation/some_same02"));
 
@@ -186,7 +207,8 @@ public class TestSuite {
 //		new TestSuite().test(new File("./tests/interaction/drives01"));
 //		new TestSuite().test(new File("./tests/interaction/drives02"));
 //		new TestSuite().test(new File("./tests/interactions.eug"));
-		
+
+		// DRIVES
 //		new TestSuite().test("N=3.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=4.contains p. contains c. contains t.p drives c.");
 //		new TestSuite().test("N=5.contains p. contains c. contains t.p drives c.");
@@ -210,17 +232,16 @@ public class TestSuite {
 		 */
 //		new TestSuite().test("N=2.contains a. not contains b.all_forward.");
 //		new TestSuite().test("N=2.not contains a. not contains b.all_forward.");
-//		
-//		// IF contains a THEN contains b
-//		// <==>
+
+		// IF contains a THEN contains b
+		// <==>
 //		new TestSuite().test("N=2.not contains a or contains b.all_forward.");
-//		// forward a => forward b
+		// forward a => forward b
 //		new TestSuite().test("N=2.not forward a or forward b.contains a.contains b.");
-//		
-//		// 
-//		// we want this pattern:
-//		// a1, b, a2, c
-//		// a2, c, a1, b
+		
+		// we want this pattern:
+		// a1, b, a2, c
+		// a2, c, a1, b
 //		new TestSuite().test("N=4.template [a1|a2|b|c], [a1|a2|b|c], [a1|a2|b|c], [a1|a2|b|c]. "+
 //				"a1 exactly 1. a2 exactly 1. b exactly 1. c exactly 1. all_forward."+
 //				"a1 before b. a1 nextto b."+
@@ -275,10 +296,8 @@ public class TestSuite {
 //		new TestSuite().test("N=3.contains X. all_forward. sequence [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=50.X exactly 48. all_forward. sequence [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=4. sequence [p1|p2|p3|c1|c2|c3]. p1 with c1 \\/ p2 with c2 \\/ p3 with c3. p1 same_orientation c1. p2 same_orientation c2. p3 same_orientation c3. not forward p1 \\/ p1 before c1. not forward p2 \\/ p2 before c2. not forward p3 \\/ p3 before c3. not reverse p1 \\/ p1 after c1. not reverse p2 \\/ p2 after c2. not reverse p3 \\/ p3 after c3.");
-		
 //		new TestSuite().test("N=5.all_forward. sequence [p1|p2], [c1|c2]. p1 then c1. p2 then c2.");
 //		new TestSuite().test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
-		
 //		new TestSuite().test("N=40. all_forward. template [p1|p2],[r1|r2],[c1|c2],[t1|t2].");
 		
 		// INVALID SEQUENCS/TEMPLATES
@@ -296,16 +315,12 @@ public class TestSuite {
 //		new TestSuite().test("N=3. all_forward. template [p1|p2].");
 //		new TestSuite().test("N=3. all_forward. template [p1|p2|p3].");
 //		new TestSuite().test("N=3. all_forward. template [p1|p2|p3|p4].");
-//
 //		new TestSuite().test("N=2. all_forward. template [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=4. all_forward. template [p1|p2], [r1|r2].");
 //		new TestSuite().test("N=6. all_forward. template [p1|p2], [c1|c2].");
 //		new TestSuite().test("N=8. all_forward. template [p1|p2], [r1|r2].");
-//
 //		new TestSuite().test("N=3. template [p1|p2], [p2|p3], [p4|p5].");
-//		new TestSuite().test("N=3. all_forward. template [p1|p2|p3], [r1|r2|r3], [p1|p2|p3].");
-		
-		
+//		new TestSuite().test("N=3. all_forward. template [p1|p2|p3], [r1|r2|r3], [p1|p2|p3].");		
 //		new TestSuite().test("N=12. template p, r, c, t.");
 //		new TestSuite().test("N=12. all_forward. template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
 
@@ -342,6 +357,7 @@ public class TestSuite {
 //		new TestSuite().test("N=20. CONTAINS p or contains c or contains t or contains r. p before r. p nextto r. "+
 //				"r before c. c before t. all_forward.");
 		
+		// the published toggle-switch design
 //		new TestSuite().test("N=10. template T1T2_1, cLacI, rRBS1, P1, Ptrc2, rbsE, cR1, rbsB, cGFPmut3, T1T2_1."+
 //				"reverse T1T2_1. reverse cLacI. reverse rRBS1. reverse P1."+
 //				"forward Ptrc2. forward rbsE. forward cR1. forward rbsB. forward cGFPmut3. forward T1T2_2."+
@@ -471,7 +487,7 @@ public class TestSuite {
 //			URI act = me.visualizeACT();
 				
 			// way better than PIGEON 
-			Image pic = se.pigeonize("./designs/demo.png", null, true, 20);
+//			Image pic = se.pigeonize("./designs/demo.png", null, true, 20);
 //			se.show(pic);
 //			WeyekinPoster.launchPage(se.toPigeon());
 			
@@ -488,12 +504,12 @@ public class TestSuite {
 		
 		
 		// CONSOLE OUTPUT
-		se.toConsole();
+//		se.toConsole();
 		
 		// STATISTICS
 		me.getStatistics().print();
-
-
+		
+		me.printFacts();
 
 		System.out.println("[TestSuite.test] full processing time: "+tProcessing*Math.pow(10, -9)+"sec");
 		

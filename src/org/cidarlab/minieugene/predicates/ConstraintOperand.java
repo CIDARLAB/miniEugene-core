@@ -33,36 +33,59 @@
 package org.cidarlab.minieugene.predicates;
 
 import org.cidarlab.minieugene.dom.Component;
-
+import org.cidarlab.minieugene.dom.ComponentType;
+import org.cidarlab.minieugene.dom.CompositeComponent;
+import org.cidarlab.minieugene.dom.NamedElement;
 
 /**
- * Unary predicates are rule predicates that MUST have at least one rule operand 
- * i.e. the right-hand-side (RHS) of the constraint MUST be a given
+ * The ConstraintOperand class represents the operands 
+ * of miniEugene constraints.
  * 
- * In miniEugene, the following rules, for example, are unary rules:
- * CONTAINS, STARTSWITH, ENDSWITH
- * 
+ * Example:
+ * contains p  ... p is the operand of the contains constraint
+ * forward [i] ... i is the operand of the forward constraint 
+ * a before b  ... a and b are operands of the before constraint
+ *  
  * @author Ernst Oberortner
  */
-public abstract class UnaryPredicate 
-		extends EugeneConstraint {
-		
-	private Component a;
+public class ConstraintOperand {
+
+	private NamedElement operand;
+	private int index;
 	
-	/**
-	 * 
-	 * @param lhs
-	 * @param rhs
-	 */
-	public UnaryPredicate(Component a) {
-		this.a = a;
+	public ConstraintOperand(NamedElement operand) {
+		this.operand = operand;
+		this.index = -1;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Component getA() {
-		return this.a;
+	public ConstraintOperand(int index) {
+		this.index = index;
+		this.operand = null;
 	}
+	
+	public NamedElement getOperand() {
+		return this.operand;
+	}
+	
+	public boolean isPrimitiveComponent() {
+		return null != this.getOperand() && this.getOperand() instanceof Component;
+	}
+	
+	public boolean isType() {
+		return null != this.getOperand() && this.getOperand() instanceof ComponentType;
+	}
+
+	public boolean isComposite() {
+		return null != this.getOperand() && this.getOperand() instanceof CompositeComponent;
+	}
+
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public boolean isIndex() {
+		return this.getIndex() != -1;
+	}
+	
+	
 }

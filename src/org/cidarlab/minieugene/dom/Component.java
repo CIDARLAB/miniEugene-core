@@ -72,6 +72,21 @@ public class Component
 	 */
 	private PartTypesTable.PartType pt;
 	
+	/*
+	 * type
+	 */
+	private ComponentType type;
+	
+	public Component(String name, ComponentType type) {
+		// name
+		super(name);
+		// type
+		this.type = type;
+		// orientation
+		this.forward = true;
+		// id
+		this.id = hash(this.getName());
+	}
 	
 	public Component(String name) {
 		super(name);		
@@ -173,13 +188,52 @@ public class Component
 		return this.pt;
 	}
 	
+	/**
+	 * the getType/0 method returns the type 
+	 * of the component as object
+	 * 
+	 * @return ... the ComponentType object representing
+	 *             the type of this component
+	 */
+	public ComponentType getType() {
+		return this.type;
+	}
+	
+	/**
+	 * the setType/1 method takes as input the type of the component
+	 * and sets the type of the component to the given type.
+	 * if the type of the component is already is, then the current 
+	 * type will be overwritten.
+	 * 
+	 * we need this method since the type specifications can happen 
+	 * after the constraint specifications.
+	 * 
+	 * Example: imagine the following miniEugene script
+	 * contains p. p is_a promoter.
+	 * 
+	 * the type of p is specified after p has been declared.
+	 * 
+	 * @param type ... the type of the component
+	 */
+	public void setType(ComponentType type) {
+		this.type = type;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{")
-			.append(this.getId()).append(", ")          // ID
-			.append(this.getPartType()).append(", ")    // PART TYPE
-			.append(this.getName()).append(", ");       // PART NAME
+			.append(this.getId()).append(", ");          // ID
+		
+		if(null != this.getType()) {
+			sb.append(this.getType()).append(", ");    	// TYPE
+		} else {
+			sb.append(PartTypesTable.toName(
+					this.getPartType())).append(", ");
+		}
+		
+		sb.append(this.getName()).append(", ");         // NAME
+		
 		if(this.isForward()) {                          // ORIENTATION
 			sb.append("->");
 		} else {

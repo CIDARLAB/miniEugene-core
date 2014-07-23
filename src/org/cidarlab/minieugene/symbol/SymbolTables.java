@@ -41,6 +41,7 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.predicates.Predicate;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 
@@ -67,6 +68,7 @@ public class SymbolTables {
 	private Map<Integer, Component> symbols;
 	private Set<Predicate> predicates;
 	private Set<Interaction> interactions;
+	private Map<String, ComponentType> types;
 	
 	/*
 	 * the Abstract Composition Tree
@@ -90,6 +92,8 @@ public class SymbolTables {
 		
 		this.interactions = new HashSet<Interaction>();
 		
+		this.types = new HashMap<String, ComponentType>();
+		
 		/*
 		 * Abstract Composition Tree
 		 */
@@ -101,7 +105,9 @@ public class SymbolTables {
 	 * put a symbol into the symbol tables
 	 */
 	public int put(String s) {
-		return this.put(new Component(s));
+		
+		return this.put(
+				new Component(s));
 	}
 	
 	public int put(Component s) {
@@ -113,6 +119,55 @@ public class SymbolTables {
 	
 	public void put(Predicate p) {
 		this.predicates.add(p);
+	}
+	
+	/**
+	 * The put/2 method takes as input 
+	 * - the name of the component
+	 * - the type of the component
+	 * 
+	 * @param s
+	 * @param t
+	 */
+	public Component put(String s, String t) {
+		/*
+		 * first, we check if the type exists
+		 */
+		ComponentType ct = null;
+		if(this.types.containsKey(t)) {
+			// if it exists, then 
+			// we get it from the types map
+			ct = this.types.get(ct);
+		} else {
+			// if it does not exist, then
+			// we put it into the types map
+			ct = new ComponentType(t);
+			this.types.put(t, ct);
+		}
+		
+		/*
+		 * then, we check if the component exists
+		 */
+		Component c = null;
+		if(this.contains(s)) {
+			// if the component exists, then
+			// we need to update its type
+			c = this.get(this.getId(s));
+			c.setType(ct);
+		} else {
+			// if the component does not exists,
+			// then we create a new component with 
+			// the specified type
+			c = new Component(s, ct);
+		}
+		
+		// finally, we put the component into the 
+		// symbols map
+		this.symbols.put(c.getId(), c);
+		
+		// lastly, we return a reference to the 
+		// create Component object
+		return c;
 	}
 		
 	public Set<Predicate> getPredicates() {

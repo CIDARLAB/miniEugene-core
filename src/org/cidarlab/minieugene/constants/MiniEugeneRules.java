@@ -57,7 +57,13 @@ public class MiniEugeneRules {
 			Arrays.asList(new String[] { 
 					 RuleOperator.SAME_ORIENTATION.toString(),
 					 RuleOperator.ALL_SAME_ORIENTATION.toString(),
-					 RuleOperator.SOME_SAME_ORIENTATION.toString()
+					 RuleOperator.SOME_SAME_ORIENTATION.toString(),
+					 RuleOperator.FORWARD.toString(),
+					 RuleOperator.REVERSE.toString(),
+					 RuleOperator.ALL_FORWARD.toString(),
+					 RuleOperator.ALL_REVERSE.toString(),
+					 RuleOperator.SOME_FORWARD.toString(),
+					 RuleOperator.SOME_REVERSE.toString()
 					 }));
 	/*
 	 * Interaction Rules ... 
@@ -78,14 +84,15 @@ public class MiniEugeneRules {
 	/*
 	 * Positional Rules
 	 */
-	private static final Set<String> setPositionalRules = new HashSet<String>(
+	private static final Set<String> setPositioningRules = new HashSet<String>(
 			Arrays.asList(new String[] { 
 					"BEFORE", "ALL_BEFORE", "SOME_BEFORE", 
 					"AFTER", "ALL_AFTER", "SOME_AFTER",
 					"NEXTTO", "ALL_NEXTTO", "SOME_NEXTTO",
 					"LEFTTO", "ALL_LEFTTO", "SOME_LEFTTO",
 					"RIGHTTO", "ALL_RIGHTTO", "SOME_RIGHTTO",
-					"STARTSWITH", "ENDSWITH"}));
+					"STARTSWITH", "ENDSWITH", 
+					"EQUALS", "NOTEQUALS"}));
 
 	private static final Set<String> setUnaryRules = new HashSet<String>(
 			Arrays.asList(new String[] { 
@@ -102,8 +109,8 @@ public class MiniEugeneRules {
 		return setUnaryRules.contains(s.toUpperCase());
 	}
 
-	public static boolean isPositionalRule(String s) {
-		return setPositionalRules.contains(s.toUpperCase());
+	public static boolean isPositioningRule(String s) {
+		return setPositioningRules.contains(s.toUpperCase());
 	}
 
 	public static boolean isOrientationRule(String s) {
