@@ -5,13 +5,15 @@ public class PairingTester {
 	
 	public static void test() {
 		testPairingOnTypes();
-//		testOrientationOnComponents();
+		testPairingOnComponents();
+		testEqualsIndices();
 	}
 	
 	private static void testPairingOnTypes() {
 		testThenTypes();
 		testWithTypes();
 		testAlwaysNextToTypes();
+		testEqualsTypes();
 	}
 	
 	private static void testThenTypes() {
@@ -41,5 +43,19 @@ public class PairingTester {
 				"contains Promoter. contains Gene. contains Terminator. contains RBS."+
 				"Promoter ALWAYS_NEXTTO RBS. RBS ALWAYS_NEXTTO Gene. Gene ALWAYS_NEXTTO Terminator.");
 	}
+	
+	private static void testEqualsTypes() {
+		MiniEugeneTester.test("N=2. all_forward. p1 is_a Promoter. p2 is_a Promoter. g1 is_a Gene. g2 is_a Gene. "+
+				"[0] EQUALS Promoter. [1] EQUALS Gene.");
+		MiniEugeneTester.test("N=2. all_forward. p1 is_a Promoter. p2 is_a Promoter. g1 is_a Gene. g2 is_a Gene. "+
+				"[0] EQUALS Promoter \\/ [0] EQUALS Gene. [1] EQUALS Gene \\/ [1] EQUALS Promoter.");
+	}
 
+	private static void testEqualsIndices() {
+		MiniEugeneTester.test("N=4. all_forward. p1 is_a Promoter. p2 is_a Promoter. g1 is_a Gene. g2 is_a Gene. "+
+				"contains Promoter. contains Gene. [0] EQUALS [1]. [1] EQUALS [2].");
+	}
+
+	private static void testPairingOnComponents() {
+	}
 }

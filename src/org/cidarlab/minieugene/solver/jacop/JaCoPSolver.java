@@ -285,6 +285,7 @@ public class JaCoPSolver
 				}
 
 			} catch(Exception e) {
+				e.printStackTrace();
 				throw new MiniEugeneException(e.getMessage());
 			}
 

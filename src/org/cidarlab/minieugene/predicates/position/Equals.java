@@ -82,25 +82,23 @@ public class Equals
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
 		
-		int va = this.getVariableIndex(this.getA());
-		
 		if(-1 == this.j) {
+			int va = this.getVariableIndex(this.getA());			
 			return new XeqC(variables[va][i], this.getA().getOperand().getId());
 		}
 		
-		return new XeqY(variables[va][i], variables[Variables.PART][j]);
+		return new XeqY(variables[Variables.PART][i], variables[Variables.PART][j]);
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
-		int va = this.getVariableIndex(this.getA());
-		
 		if(-1 == this.j) {
+			int va = this.getVariableIndex(this.getA());			
 			return new XeqC(variables[va][i], this.getA().getOperand().getId());
 		}
 		
-		return new XneqY(variables[va][i], variables[Variables.PART][j]);
+		return new XneqY(variables[Variables.PART][i], variables[Variables.PART][j]);
 	}
 
 	@Override
