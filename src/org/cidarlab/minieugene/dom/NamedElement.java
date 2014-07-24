@@ -34,7 +34,7 @@ package org.cidarlab.minieugene.dom;
 
 import java.io.Serializable;
 
-public abstract class NamedElement 
+public abstract class NamedElement
 		implements Serializable {
 
 	private static final long serialVersionUID = 7803721755204206476L;

@@ -34,8 +34,10 @@ package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.UnaryPredicate;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.UnaryConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.Count;
@@ -55,10 +57,10 @@ import JaCoP.core.Store;
  *
  */
 public class Contains
-		extends UnaryPredicate
-		implements CountingPredicate {
+		extends UnaryConstraint
+		implements CountingConstraint {
 
-	public Contains(Component a) {
+	public Contains(ConstraintOperand a) {
 		super(a);
 	}
 	
@@ -78,22 +80,10 @@ public class Contains
 	public PrimitiveConstraint toJaCoP(
 			Store store, IntVar[][] variables) 
 				throws MiniEugeneException {
-		
-		/*
-		 * CONTAINS a
-		 */
-		
-		// a's counter
-		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == counterA) {
-			counterA = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
-		}
-		
-		return new XgtC(counterA, 0);
+
+		return new XgtC(
+				this.createCounter(store, variables, this.getA()), 
+				0);
 		
 	}
 	
@@ -101,19 +91,13 @@ public class Contains
 	public PrimitiveConstraint toJaCoPNot(
 			Store store, IntVar[][] variables) 
 				throws MiniEugeneException {
-		// a's counter
-		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == counterA) {
-			counterA = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-		}
-		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
-		
-		return new XeqC(counterA, 0);
+
+		return new XeqC(
+				this.createCounter(store, variables, this.getA()), 
+				0);
 	}
 
+	
 	@Override
 	public int getMinimumLength() {
 		return 1;

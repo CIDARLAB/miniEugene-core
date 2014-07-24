@@ -33,12 +33,10 @@
 package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.solver.jacop.Variables;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
-import JaCoP.constraints.Count;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XneqC;
@@ -46,10 +44,10 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 public class Exactly
-	extends BinaryPredicate
-	implements CountingPredicate {
+	extends BinaryConstraint
+	implements CountingConstraint {
 
-	public Exactly(Component a, int num) 
+	public Exactly(ConstraintOperand a, int num) 
 			throws MiniEugeneException {				
 		super(a, num);
 
@@ -73,16 +71,9 @@ public class Exactly
 				throws MiniEugeneException {
 
 		// a EXACTLY N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == count) {
-			count = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
-		}
-		
-		return new XeqC(count, this.getNum());
+		return new XeqC(
+				this.createCounter(store, variables, this.getA()), 
+				this.getNum());
 	}
 
 	@Override
@@ -90,18 +81,11 @@ public class Exactly
 			throws MiniEugeneException {
 
 		// a EXACTLY N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == count) {
-			count = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-		}
-		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
-		
-		return new XneqC(count, this.getNum());
+		return new XneqC(
+				this.createCounter(store, variables, this.getA()), 
+				this.getNum());
 	}
-
+	
 	@Override
 	public int getMinimumLength() {
 		return this.getNum();

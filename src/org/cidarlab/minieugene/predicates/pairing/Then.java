@@ -30,57 +30,65 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.predicates;
+package org.cidarlab.minieugene.predicates.pairing;
 
-import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.constants.RuleOperator;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+
+import JaCoP.constraints.IfThen;
+import JaCoP.constraints.Not;
+import JaCoP.constraints.PrimitiveConstraint;
+import JaCoP.constraints.XgtC;
+import JaCoP.core.IntVar;
+import JaCoP.core.Store;
 
 /**
- * Binary predicates have two operands 
- * left-hand-side (LHS) and right-hand-side (RHS) 
+ * a THEN b
  * 
- * Examples of binary predicates are
- * AFTER, BEFORE, NEXTTO, MATCH, WITH, THEN
+ * CONTAINS a => CONTAINS b
  * 
  * @author Ernst Oberortner
+ *
  */
-/* 
- */
-public abstract class BinaryPredicate 
-	extends UnaryPredicate {
-	
-	private Component b;
-	private int num;
-	
-	/**
-	 * 
-	 * @param lhs
-	 * @param rhs
-	 */
-	public BinaryPredicate(Component a, Component b) {
-		super(a);
-		this.b = b;
-		this.num = -1;
+public class Then 
+		extends BinaryConstraint
+		implements PairingPredicate {
+
+	public Then(ConstraintOperand a, ConstraintOperand b) {
+		super(a, b);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getA())
+			.append(" ").append(RuleOperator.THEN).append(" ")
+			.append((this.getB()));
+		return sb.toString();
+	}
+
+	@Override
+	public String getOperator() {
+		return RuleOperator.THEN.toString();
+	}
+
+	@Override
+	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
+				throws MiniEugeneException {		
+		
+		// IF A MORETHAN 0 THEN B MORETHAN 0
+		return new IfThen(
+				new XgtC(this.createCounter(store, variables, this.getA()), 0),
+				new XgtC(this.createCounter(store, variables, this.getB()), 0));
 	}
 	
-	public BinaryPredicate(Component a, int num) {
-		super(a);
-		this.b = null;
-		this.num = num;
+
+	@Override
+	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
+			throws MiniEugeneException {
+		return new Not(this.toJaCoP(store, variables));
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Component getB() {
-		return this.b;
-	}	
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getNum() {
-		return this.num;
-	}
 }

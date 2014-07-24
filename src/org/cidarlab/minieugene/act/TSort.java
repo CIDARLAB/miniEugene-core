@@ -39,7 +39,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.ACTException;
 
 public class TSort {
@@ -79,7 +79,7 @@ public class TSort {
 	 *             contains elements in cycle.
 	 * 
 	 */
-	public static List<Component> tSort(java.util.Map<Component, ArrayList<Component>> g)
+	public static List<Identified> tSort(java.util.Map<Identified, ArrayList<Identified>> g)
 	        throws ACTException
 	/**
 	 * @param L
@@ -94,15 +94,15 @@ public class TSort {
 	 *            Current element.
 	 */
 	{
-	    List<Component> L = new ArrayList<Component>(g.size());
-	    Queue<Component> S = new LinkedBlockingDeque<Component>();
-	    Set<Component> V = new HashSet<Component>(), 
-	    P = new java.util.HashSet<Component>();
+	    List<Identified> L = new ArrayList<Identified>(g.size());
+	    Queue<Identified> S = new LinkedBlockingDeque<Identified>();
+	    Set<Identified> V = new HashSet<Identified>(), 
+	    P = new java.util.HashSet<Identified>();
 	    P.addAll(g.keySet());
-	    Component n;
+	    Identified n;
 
 	    // find the leaf nodes
-	    for (Component t : P) {
+	    for (Identified t : P) {
 	        if (g.get(t) == null || g.get(t).isEmpty()) {
 	            S.add(t); 
 	        }
@@ -115,7 +115,7 @@ public class TSort {
 	        if (V.add(n = S.poll())) {
 	            L.add(n);
 	        }
-	        for (Component t : g.keySet()) {
+	        for (Identified t : g.keySet()) {
 	            if (g.get(t) != null && !g.get(t).isEmpty() && !V.contains(t) && V.containsAll(g.get(t))) {
 	                S.add(t);
 	            }
@@ -131,8 +131,8 @@ public class TSort {
 	    // TODO:
 	    // if there are cycles, then 
 	    // detect what components cause the cycle
-	    List<Component> cycles = new ArrayList<Component>();
-	    for (Component t : P) {
+	    List<Identified> cycles = new ArrayList<Identified>();
+	    for (Identified t : P) {
 	        if (!L.contains(t)) {
 	            cycles.add(t);
 	        }

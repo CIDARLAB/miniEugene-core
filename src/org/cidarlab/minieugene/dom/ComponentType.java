@@ -32,17 +32,50 @@
 
 package org.cidarlab.minieugene.dom;
 
+import org.cidarlab.minieugene.constants.PredefinedTypes;
+import org.cidarlab.minieugene.constants.PredefinedTypes.PartType;
+
 /**
  * 
  * @author Ernst Oberortner
  */
 public class ComponentType 
-		extends NamedElement {
+		extends Identified {
 
 	private static final long serialVersionUID = -8290152785547467536L;
-
+	
+	private PartType pt;
+	
 	public ComponentType(String name) {
 		super(name);
+
+		/*
+		 * here we need to check if the name equals 
+		 * to a predefined name
+		 */
+		if(PredefinedTypes.isPredefined(name)) {
+			this.pt = PredefinedTypes.toPartType(name);
+		} else {
+			this.pt = null;
+		}
+
+	}
+	
+	public ComponentType(PartType pt) {
+		super(pt.toString());
+		this.pt = pt;
+	}
+	
+	public PartType getPartType() {
+		return this.pt;
+	}
+	
+	@Override
+	public int getId() {
+		if(null != this.getPartType()) {
+			return PredefinedTypes.toId(this.getPartType());
+		}
+		return super.getId();
 	}
 	
 	@Override

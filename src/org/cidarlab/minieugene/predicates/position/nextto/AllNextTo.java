@@ -33,10 +33,10 @@
 package org.cidarlab.minieugene.predicates.position.nextto;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.position.PositioningConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -54,19 +54,19 @@ import JaCoP.core.Store;
  * Definition:  
  */
 public class AllNextTo 
-	extends BinaryPredicate 
-	implements PositioningPredicate {
+	extends BinaryConstraint 
+	implements PositioningConstraint {
 
-	public AllNextTo(Component a, Component b) {
+	public AllNextTo(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getName())
+		sb.append(this.getA())
 			.append(" ").append(RuleOperator.ALL_NEXTTO).append(" ")
-			.append(this.getB().getName());
+			.append(this.getB());
 		return sb.toString();
 	}
 
@@ -79,8 +79,12 @@ public class AllNextTo
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws MiniEugeneException {
 		
-		int a = (int)this.getA().getId();
-		int b = (int)this.getB().getId();
+		int a = (int)this.getA().getOperand().getId();
+		int b = (int)this.getB().getOperand().getId();
+		
+		int va = this.getVariableIndex(this.getA());
+		int vb = this.getVariableIndex(this.getB());
+		
 		int N = variables[Variables.PART].length;
 		
 		if(N <= 1) {
@@ -96,7 +100,7 @@ public class AllNextTo
 		 * a NEXTTO b
 		 */
 		PrimitiveConstraint[] pc = 
-				constraintIndices(variables[Variables.PART], idxA, a, b);
+				constraintIndices(variables[va], variables[vb], idxA, a, b);
 
 		return new And(pc);
 	}
@@ -104,8 +108,8 @@ public class AllNextTo
 	/*
 	 * a NEXTTO b
 	 */
-	private static PrimitiveConstraint[] constraintIndices(IntVar[] parts, int[] indices, int a, int b) {
-		int N = parts.length;
+	private static PrimitiveConstraint[] constraintIndices(IntVar[] va, IntVar[] vb, int[] indices, int a, int b) {
+		int N = va.length;
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[indices.length];
 		for(int i=0; i<indices.length; i++) {
 			int idx = indices[i];
@@ -117,10 +121,10 @@ public class AllNextTo
 				 *                     at the position immediately after
 				 */
 				pc[i] = new IfThen(
-							new XeqC(parts[idx], a),
+							new XeqC(va[idx], a),
 							new Or(
-								new XeqC(parts[idx-1], b),
-								new XeqC(parts[idx+1], b)));
+								new XeqC(vb[idx-1], b),
+								new XeqC(vb[idx+1], b)));
 			} else if(idx == 0) {
 				
 				/*
@@ -128,8 +132,8 @@ public class AllNextTo
 				 * then place b at the second position
 				 */
 				pc[i] = new IfThen(
-							new XeqC(parts[idx], a),
-							new XeqC(parts[idx+1], b));
+							new XeqC(va[idx], a),
+							new XeqC(vb[idx+1], b));
 			} else if(idx == N-1) {
 				
 				/*
@@ -137,8 +141,8 @@ public class AllNextTo
 				 * then place b at the second last position
 				 */
 				pc[i] = new IfThen(
-							new XeqC(parts[idx], a),
-							new XeqC(parts[idx-1], b));
+							new XeqC(va[idx], a),
+							new XeqC(vb[idx-1], b));
 			}
 		}
 		

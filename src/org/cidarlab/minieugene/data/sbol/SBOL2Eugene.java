@@ -41,11 +41,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.cidarlab.minieugene.constants.PropertyType;
-import org.cidarlab.minieugene.constants.SBOLConstants;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.dom.NamedElement;
-import org.cidarlab.minieugene.dom.Property;
 import org.cidarlab.minieugene.exception.ImportException;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLRootObject;
@@ -195,7 +193,10 @@ public class SBOL2Eugene {
 		/*
 		 * next, we create the Part object
 		 */		
-		return new Component(sbolDC.getName());
+		return new Component(
+				sbolDC.getDisplayId(), 
+				new ComponentType(sbolDC.getTypes().get(0).toString()));
+		
 //		Part objPart = SparrowBuilder.buildPart(
 //				sbolDC.getDisplayId(), pt, values);
 

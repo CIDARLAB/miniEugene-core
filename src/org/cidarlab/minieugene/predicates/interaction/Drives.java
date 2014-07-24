@@ -32,9 +32,12 @@
 
 package org.cidarlab.minieugene.predicates.interaction;
 
-import org.cidarlab.minieugene.constants.PartTypesTable;
+import org.cidarlab.minieugene.constants.PredefinedTypes;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.orientation.AllForward;
 import org.cidarlab.minieugene.predicates.orientation.AllReverse;
 import org.cidarlab.minieugene.predicates.orientation.AllSameOrientation;
@@ -52,10 +55,11 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
 public class Drives 
-	extends Interaction {
+	extends BinaryConstraint 
+	implements InteractionConstraint {
 	
-	public Drives(Component a, Component b) {		
-		super(a, InteractionType.DRIVES, b);
+	public Drives(ConstraintOperand a, ConstraintOperand b) {		
+		super(a, b);
 	}
 		
 
@@ -99,9 +103,19 @@ public class Drives
 	
 	
 	private PrimitiveConstraint noTerminatorBetween(
-			IntVar[][] variables, Component A, Component B) {
+			IntVar[][] variables, ConstraintOperand A, ConstraintOperand B) {
 		
-		int termId = PartTypesTable.toId(PartTypesTable.toPartType("TERMINATOR"));
+		if(A.getOperand() != null && B.getOperand() != null) {
+			return this.componentDrivesComponent(variables, A, B);
+		}
+		
+		return null;
+	}
+	
+	private PrimitiveConstraint componentDrivesComponent(
+			IntVar[][] variables, ConstraintOperand A, ConstraintOperand B) {
+			
+		int termId = PredefinedTypes.toId(PredefinedTypes.toPartType("TERMINATOR"));
 		
 		int N = variables[Variables.PART].length;
 		
@@ -115,19 +129,44 @@ public class Drives
 					for(int k=i; k<j; k++) {
 						noTerminator[k-i] = new XneqC(variables[Variables.TYPE][k], termId);
 					}
-					downstream[j] = new IfThen(new XeqC(variables[Variables.PART][j], B.getId()), new And(noTerminator));
-				} else if (i==j) {
-					downstream[j] = new XneqC(variables[Variables.PART][j], B.getId());
+					
+					if(B.getOperand() instanceof Component) {					
+						downstream[j] = new IfThen(new XeqC(variables[Variables.PART][j], B.getOperand().getId()), new And(noTerminator));
+					} else if(B.getOperand() instanceof ComponentType) {
+						downstream[j] = new IfThen(new XeqC(variables[Variables.TYPE][j], B.getOperand().getId()), new And(noTerminator));
+					}
+				} else if (i==j) { 
+					if(B.getOperand() instanceof Component) {					
+						downstream[j] = new XneqC(variables[Variables.PART][j], B.getOperand().getId());
+					} else if(B.getOperand() instanceof ComponentType) {
+						downstream[j] = new XneqC(variables[Variables.TYPE][j], B.getOperand().getId());
+					}
 				} else { // i >= j
 					PrimitiveConstraint[] noTerminator = new PrimitiveConstraint[Math.abs(i-j)];
 					for(int k=j; k<i; k++) {
 						noTerminator[k-j] = new XneqC(variables[Variables.TYPE][k], termId);
 					}
-					downstream[j] = new IfThen(new XeqC(variables[Variables.PART][j], B.getId()), new And(noTerminator));
+					if(B.getOperand() instanceof Component) {										
+						downstream[j] = new IfThen(
+								new XeqC(variables[Variables.PART][j], B.getOperand().getId()), 
+								new And(noTerminator));
+					} else if(B.getOperand() instanceof ComponentType) {
+						downstream[j] = new IfThen(
+								new XeqC(variables[Variables.TYPE][j], B.getOperand().getId()), 
+								new And(noTerminator));
+					}
 				}
 			}
 			
-			pc[i] = new IfThen(new XeqC(variables[Variables.PART][i], A.getId()), new And(downstream));
+			if(A.getOperand() instanceof Component) {										
+				pc[i] = new IfThen(
+							new XeqC(variables[Variables.PART][i], A.getOperand().getId()), 
+							new And(downstream));
+			} else if(A.getOperand() instanceof ComponentType) {
+				pc[i] = new IfThen(
+						new XeqC(variables[Variables.TYPE][i], A.getOperand().getId()), 
+						new And(downstream));
+			}
 		}
 		
 		return new And(pc);

@@ -34,8 +34,10 @@ package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.Count;
@@ -56,11 +58,11 @@ import JaCoP.core.Store;
  *
  */
 public class BinaryContains
-		extends BinaryPredicate
-		implements CountingPredicate {
+		extends BinaryConstraint
+		implements CountingConstraint {
 
 	// unary contains
-	public BinaryContains(Component a, Component b) {
+	public BinaryContains(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 	
@@ -72,9 +74,9 @@ public class BinaryContains
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getName()).append(" ")
+		sb.append(this.getA()).append(" ")
 			.append(this.getOperator()).append(" ")
-			.append(this.getB().getName());
+			.append(this.getB());
 		return sb.toString();
 	}
 	
@@ -86,13 +88,7 @@ public class BinaryContains
 		/*
 		 * CONTAINS a
 		 */
-		IntVar counterA = (IntVar)store.findVariable("CONTAINS_"+this.getA().getName()+"-counter");
-		if(null == counterA) {
-			counterA = new IntVar(store, "CONTAINS_"+this.getA().getName()+"-counter", 0, variables[Variables.PART].length);
-		}
-		store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
-		
-		return new XgtC(counterA, 0);
+		return new XgtC(this.createCounter(store, variables, this.getA()), 0);
 		
 	}
 	

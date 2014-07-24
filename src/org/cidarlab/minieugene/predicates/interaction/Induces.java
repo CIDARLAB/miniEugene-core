@@ -32,8 +32,8 @@
 
 package org.cidarlab.minieugene.predicates.interaction;
 
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.interaction.Participation.Role;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -51,11 +51,11 @@ public class Induces
 	/*
 	 * the inducer induces the inducee
 	 */
-	public Induces(Component inducer, Component inducee) {
+	public Induces(ConstraintOperand inducer, ConstraintOperand inducee) {
 		super(inducer, InteractionType.INDUCES, inducee);
 
-		this.getParticipations().add(new Participation(Role.INDUCEE, inducee));
-		this.getParticipations().add(new Participation(Role.INDUCER, inducer));
+		this.getParticipations().add(new Participation(Role.INDUCER, inducer.getOperand()));
+		this.getParticipations().add(new Participation(Role.INDUCEE, inducee.getOperand()));
 	}
 
 	@Override

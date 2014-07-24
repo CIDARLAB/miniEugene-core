@@ -34,11 +34,14 @@ package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.UnaryPredicate;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.UnaryConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
+import JaCoP.constraints.IfThen;
 import JaCoP.constraints.Not;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
@@ -54,10 +57,10 @@ import JaCoP.core.Store;
  * exists a : direction(a) = '-'
  */
 public class SomeForward
-	extends UnaryPredicate
-	implements OrientationPredicate {
+	extends UnaryConstraint
+	implements OrientationConstraint {
 
-	public SomeForward(Component a) {
+	public SomeForward(ConstraintOperand a) {
 		super(a);
 	}
 
@@ -69,10 +72,7 @@ public class SomeForward
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getOperator());
-		if(null != this.getA()) {
-			sb.append(" ").append(this.getA().getName());
-		}
+		sb.append(this.getOperator()).append(" ").append(this.getA());
 		return sb.toString();
 	}
 
@@ -86,17 +86,27 @@ public class SomeForward
 		 * IF contains(a) THEN
 		 *    exists(a) : forward(a) == TRUE
 		 */
-		
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[variables[Variables.ORIENTATION].length];
 		if(this.getA() == null) {
 			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
 				pc[i] = new XeqC(variables[Variables.ORIENTATION][i], 1);
 			}
 		} else {
-			for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
-				pc[i] = new And(
-							new XeqC(variables[Variables.PART][i], this.getA().getId()),
-							new XeqC(variables[Variables.ORIENTATION][i], 1));
+			if(null != this.getA().getOperand()) {
+				for(int i=0; i<variables[Variables.ORIENTATION].length; i++) {
+					if(this.getA().getOperand() instanceof Component) {
+						pc[i] = new IfThen(
+									new XeqC(variables[Variables.PART][i], this.getA().getOperand().getId()),
+									new XeqC(variables[Variables.ORIENTATION][i], 1));
+					} else if(this.getA().getOperand() instanceof ComponentType) {
+						pc[i] = new IfThen(
+									new XeqC(variables[Variables.TYPE][i], this.getA().getOperand().getId()),
+									new XeqC(variables[Variables.ORIENTATION][i], 1));
+					}
+				}
+			} else if((-1) > this.getA().getIndex() &&
+					this.getA().getIndex() < variables[Variables.ORIENTATION].length) {
+				return new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()], 1);
 			}
 		}
 		

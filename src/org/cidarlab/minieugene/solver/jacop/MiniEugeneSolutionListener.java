@@ -35,6 +35,8 @@ package org.cidarlab.minieugene.solver.jacop;
 import java.util.List;
 
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
+import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
 import JaCoP.core.Domain;
@@ -69,7 +71,11 @@ public class MiniEugeneSolutionListener<T extends Var>
 			SelectChoicePoint<T> select) {
 		boolean parent = super.executeAfterSolution(search, select);
 
-		this.processSolution(search.getSolution());
+		try {
+			this.processSolution(search.getSolution());
+		} catch(MiniEugeneException mee) {
+			// we ignore this, for the time being
+		}
 
 		if(this.poolManager.getCurrentNumberOfSolutions() > MAX_NR_OF_SOLUTIONS) {
 			// i.e. we stop searching
@@ -79,7 +85,8 @@ public class MiniEugeneSolutionListener<T extends Var>
 		return parent;
 	}
 	
-	private void processSolution(Domain[] solution) {
+	private void processSolution(Domain[] solution) 
+			throws MiniEugeneException {
 		Component[] sol = this.poolManager.getFreeSpot();
 
 		int si = 0;
@@ -92,8 +99,17 @@ public class MiniEugeneSolutionListener<T extends Var>
 			Domain part = solution[i];
 			ValueEnumeration ve = part.valueEnumeration();
 			while(ve.hasMoreElements()) {
-				int k = ve.nextElement();
-				sol[si] = new Component(this.symbols.get(k).getName());
+				int id = ve.nextElement();
+				Identified idObj = this.symbols.get(id);
+				if(null == idObj) {
+					throw new MiniEugeneException("I cannot find any component with id "+id);
+				}
+				if(idObj instanceof Component) {
+					// we need to create a new Component instance in memory
+					sol[si] = new Component(
+							((Component)idObj).getName(), 
+							((Component)idObj).getType());
+				}
 			}
 			
 			Domain orient = solution[i+2*(solution.length/3)];

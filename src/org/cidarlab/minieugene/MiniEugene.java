@@ -261,7 +261,7 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);
 			this.solve(la, -1);
 		} catch(MiniEugeneException e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 			
@@ -282,6 +282,7 @@ public class MiniEugene
 		try {
 			this.collectFacts(script);
 		} catch(MiniEugeneException me) {
+			me.printStackTrace();
 			throw new MiniEugeneException(me.getMessage());
 		}
 		
@@ -310,11 +311,14 @@ public class MiniEugene
 		try {
 			parser.setCollectFacts(true);
 			parser.miniEugene();
-			parser.printFacts();
+
+//			parser.printFacts();
+			
 			if(parser.hasErrors()) {
 				throw new MiniEugeneException("The script contains invalid characters!");
 			}
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -337,13 +341,12 @@ public class MiniEugene
 		try {
 			parser.setCollectFacts(false);
 			parser.miniEugene();
-			parser.printFacts();
 			
 			if(parser.hasErrors()) {
 				throw new MiniEugeneException("The script contains invalid characters!");
 			}
 		} catch(Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 
@@ -361,7 +364,7 @@ public class MiniEugene
 			throws MiniEugeneException {
 
 		try {
-			Component[] symbols = this.symbols.getSymbols();
+			Component[] symbols = this.symbols.getComponents();
 
 			if(null == symbols || symbols.length==0) {
 				throw new MiniEugeneException("no solutions found!");
@@ -395,6 +398,7 @@ public class MiniEugene
 //			}
 			
 			this.stats.add(MiniEugeneConstants.NUMBER_OF_PARTS, symbols.length);
+			this.stats.add(MiniEugeneConstants.NUMBER_OF_TYPES, this.symbols.getTypesSize());
 			this.stats.add(MiniEugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 			this.stats.add(MiniEugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(MiniEugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
@@ -405,7 +409,7 @@ public class MiniEugene
 			/*
 			 * ACT
 			 */
-			this.symbols.getACT().constructACT(la.getPredicates());
+//			this.symbols.getACT().constructACT(la.getPredicates());
 			
 			/*
 			 * SOLUTION FINDING
@@ -433,7 +437,7 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -486,8 +490,8 @@ public class MiniEugene
 	}
 	
 	public void printFacts() {
-		for(int i=0; i<this.symbols.getSymbols().length; i++) {
-			System.out.println(this.symbols.getSymbols()[i]);
+		for(int i=0; i<this.symbols.getComponents().length; i++) {
+			System.out.println(this.symbols.getComponents()[i]);
 		}
 	}
 

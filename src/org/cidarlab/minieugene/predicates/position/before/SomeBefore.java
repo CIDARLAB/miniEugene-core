@@ -33,10 +33,10 @@
 package org.cidarlab.minieugene.predicates.position.before;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.position.PositioningConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -53,10 +53,10 @@ import JaCoP.core.Store;
  *
  */
 public class SomeBefore 
-	extends BinaryPredicate 
-	implements PositioningPredicate {
+	extends BinaryConstraint 
+	implements PositioningConstraint {
 	
-	public SomeBefore(Component a, Component b) {
+	public SomeBefore(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 	
@@ -81,9 +81,12 @@ public class SomeBefore
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 			throws MiniEugeneException {
 		
-		int a = (int)this.getA().getId();
-		int b = (int)this.getB().getId();
+		int a = this.getA().getOperand().getId();
+		int b = this.getB().getOperand().getId();
 		int N = variables[Variables.PART].length;
+		
+		int va = this.getVariableIndex(this.getA());
+		int vb = this.getVariableIndex(this.getB());
 
 		/*
 		 * a SOME_BEFORE b
@@ -95,7 +98,7 @@ public class SomeBefore
 		PrimitiveConstraint pc[] = new PrimitiveConstraint[N];
 		
 		// a can appear at the first position
-		pc[0] = new XeqC(variables[Variables.PART][0], a);
+		pc[0] = new XeqC(variables[va][0], a);
  
 		for(int i=1; i<N; i++) {
 
@@ -104,20 +107,15 @@ public class SomeBefore
 			
 			PrimitiveConstraint[] pcB = new PrimitiveConstraint[N-i];
 			for(int j=i; j<N; j++) {
-				pcB[j-i] = new XeqC(variables[Variables.PART][j], b);
+				pcB[j-i] = new XeqC(variables[vb][j], b);
 			}
 			
 			pc[i] = new And(
-						new XeqC(variables[Variables.PART][i], a),
+						new XeqC(variables[va][i], a),
 						new Or(pcB));
 		}			
 
 		return new Or(pc);
-
-//		return new And(
-//				new Or(pc),
-//				// a cannot appear at the last position
-//				new XneqC(variables[Variables.PART][N-1], a));
 
 	}
 

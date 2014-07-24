@@ -36,10 +36,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 
 public abstract class TemplatingPredicate 
-	extends Predicate {
+	extends Constraint {
 	
 	private String name;
 	private List<List<Component>> components;

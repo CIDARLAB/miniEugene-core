@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.cidarlab.minieugene.constants.PartTypesTable;
+import org.cidarlab.minieugene.constants.PredefinedTypes;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
@@ -183,7 +183,7 @@ public class Pigeonizer {
 		
 		// first, let's get the Pigeon letter
 		// corresponding to the component's type
-		char letter = PartTypesTable.toPigeonLetter(component.getTypeId());
+		char letter = PredefinedTypes.toPigeonLetter(component.getTypeId());
 
 		// reverse invertase site
 		if(!component.isForward() && letter == '>') {

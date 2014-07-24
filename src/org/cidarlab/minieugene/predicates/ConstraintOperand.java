@@ -35,7 +35,7 @@ package org.cidarlab.minieugene.predicates;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.dom.CompositeComponent;
-import org.cidarlab.minieugene.dom.NamedElement;
+import org.cidarlab.minieugene.dom.Identified;
 
 /**
  * The ConstraintOperand class represents the operands 
@@ -50,10 +50,10 @@ import org.cidarlab.minieugene.dom.NamedElement;
  */
 public class ConstraintOperand {
 
-	private NamedElement operand;
+	private Identified operand;
 	private int index;
 	
-	public ConstraintOperand(NamedElement operand) {
+	public ConstraintOperand(Identified operand) {
 		this.operand = operand;
 		this.index = -1;
 	}
@@ -63,7 +63,7 @@ public class ConstraintOperand {
 		this.operand = null;
 	}
 	
-	public NamedElement getOperand() {
+	public Identified getOperand() {
 		return this.operand;
 	}
 	
@@ -87,5 +87,15 @@ public class ConstraintOperand {
 		return this.getIndex() != -1;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if(null != this.getOperand()) {
+			sb.append(this.getOperand().getName());
+		} else if((-1) != this.getIndex()) {
+			sb.append("[").append(this.getIndex()).append("]");
+		}
+		return sb.toString();
+	}
 	
 }

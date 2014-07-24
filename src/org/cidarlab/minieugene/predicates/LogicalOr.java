@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
+import org.cidarlab.minieugene.predicates.counting.CountingConstraint;
 
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
@@ -47,10 +47,10 @@ public class LogicalOr
 	extends LogicalPredicate {
 
 	public LogicalOr() {
-		super(LogicalOperator.OR, new ArrayList<Predicate>());
+		super(LogicalOperator.OR, new ArrayList<Constraint>());
 	}
 	
-	public LogicalOr(List<Predicate> predicates) {
+	public LogicalOr(List<Constraint> predicates) {
 		super(LogicalOperator.OR, predicates);
 	}
 	
@@ -63,9 +63,9 @@ public class LogicalOr
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<this.getPredicates().size(); i++) {
-			sb.append(this.getPredicates().get(i));
-			if(i < this.getPredicates().size() - 1) {
+		for(int i=0; i<this.getConstraints().size(); i++) {
+			sb.append(this.getConstraints().get(i));
+			if(i < this.getConstraints().size() - 1) {
 				sb.append(" \\/ ");
 			}
 		}
@@ -77,8 +77,8 @@ public class LogicalOr
 			throws MiniEugeneException {
 		
 		int i = 0;
-		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getPredicates().size()];
-		for(Predicate predicate : this.getPredicates()) {
+		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getConstraints().size()];
+		for(Constraint predicate : this.getConstraints()) {
 			pc[i++] = predicate.toJaCoP(store, variables);
 		}
 		
@@ -89,8 +89,8 @@ public class LogicalOr
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
 		int i = 0;
-		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getPredicates().size()];
-		for(Predicate predicate : this.getPredicates()) {
+		PrimitiveConstraint[] pc = new PrimitiveConstraint[this.getConstraints().size()];
+		for(Constraint predicate : this.getConstraints()) {
 			pc[i++] = predicate.toJaCoPNot(store, variables);
 		}
 		
@@ -100,10 +100,10 @@ public class LogicalOr
 	@Override
 	public int getMinimumLength() {
 		int minN = Integer.MAX_VALUE; 
-		for(Predicate p : this.getPredicates()) {
-			if(p instanceof CountingPredicate) {
+		for(Constraint p : this.getConstraints()) {
+			if(p instanceof CountingConstraint) {
 				
-				int pN = ((CountingPredicate)p).getMinimumLength();
+				int pN = ((CountingConstraint)p).getMinimumLength();
 				
 				if (pN < minN) {
 					minN = pN;
@@ -120,7 +120,7 @@ public class LogicalOr
 
 	@Override
 	public int getNumberOfRules() {
-		return this.getPredicates().size();
+		return this.getConstraints().size();
 	}
 
 }

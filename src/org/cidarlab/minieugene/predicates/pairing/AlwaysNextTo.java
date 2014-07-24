@@ -34,8 +34,10 @@ package org.cidarlab.minieugene.predicates.pairing;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -53,10 +55,10 @@ import JaCoP.core.Store;
  *
  */
 public class AlwaysNextTo 
-		extends BinaryPredicate
+		extends BinaryConstraint
 		implements PairingPredicate {
 
-	public AlwaysNextTo(Component a, Component b) {
+	public AlwaysNextTo(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 
@@ -81,26 +83,35 @@ public class AlwaysNextTo
 
 //		System.out.println("imposing "+this.toString());
 		
+		int va = Variables.PART;
+		int vb = Variables.PART;
+		if(this.getA().getOperand() instanceof ComponentType) {
+			va = Variables.TYPE;
+		} 
+		if(this.getB().getOperand() instanceof ComponentType) {
+			vb = Variables.TYPE;
+		}
+		
 		int N = variables[Variables.PART].length;
-		int a = this.getA().getId();
-		int b = this.getB().getId();
+		int a = this.getA().getOperand().getId();
+		int b = this.getB().getOperand().getId();
 		
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[N];
 		pc[0] = new IfThen(
-					new XeqC(variables[Variables.PART][0], a),
-					new XeqC(variables[Variables.PART][1], b));
+					new XeqC(variables[va][0], a),
+					new XeqC(variables[vb][1], b));
 		
 		for(int i=1; i< N-1; i++) {
 			pc[i] = new IfThen(
-						new XeqC(variables[Variables.PART][i], a),
+						new XeqC(variables[va][i], a),
 						new Or(
-							new XeqC(variables[Variables.PART][i-1], b),
-							new XeqC(variables[Variables.PART][i+1], b)));
+							new XeqC(variables[vb][i-1], b),
+							new XeqC(variables[vb][i+1], b)));
 		}
 
 		pc[N-1] = new IfThen(
-					new XeqC(variables[Variables.PART][N-1], a),
-					new XeqC(variables[Variables.PART][N-1], b));
+					new XeqC(variables[va][N-1], a),
+					new XeqC(variables[vb][N-1], b));
 		
 		return new And(pc);
 	}

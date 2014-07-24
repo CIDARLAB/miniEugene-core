@@ -30,12 +30,39 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.predicates.position;
+package org.cidarlab.minieugene.predicates;
+
+import org.cidarlab.minieugene.dom.Component;
+
 
 /**
+ * Unary predicates are rule predicates that MUST have at least one rule operand 
+ * i.e. the right-hand-side (RHS) of the constraint MUST be a given
+ * 
+ * In miniEugene, the following rules, for example, are unary rules:
+ * CONTAINS, STARTSWITH, ENDSWITH
  * 
  * @author Ernst Oberortner
- *
  */
-public interface PositioningPredicate {
+public abstract class UnaryConstraint 
+		extends EugeneConstraint {
+		
+	private ConstraintOperand a;
+	
+	/**
+	 * 
+	 * @param lhs
+	 * @param rhs
+	 */
+	public UnaryConstraint(ConstraintOperand a) {
+		this.a = a;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ConstraintOperand getA() {
+		return this.a;
+	}
 }

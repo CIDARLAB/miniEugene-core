@@ -32,7 +32,8 @@
 
 package org.cidarlab.minieugene.dom;
 
-import org.cidarlab.minieugene.constants.PartTypesTable;
+import org.cidarlab.minieugene.constants.PredefinedTypes;
+import org.cidarlab.minieugene.constants.PredefinedTypes.PartType;
 
 /**
  * A Component represents a rule operand in miniEugene. From a biology perspective, 
@@ -53,24 +54,14 @@ import org.cidarlab.minieugene.constants.PartTypesTable;
  * @author Ernst Oberortner
  */
 public class Component 
-		extends NamedElement {
+		extends Fact {
 
 	private static final long serialVersionUID = 7540207737327161186L;
 
 	/*
-	 * id
-	 */
-	private int id;
-	
-	/*
 	 * orientation
 	 */
 	private boolean forward;
-	
-	/*
-	 * part type
-	 */
-	private PartTypesTable.PartType pt;
 	
 	/*
 	 * type
@@ -80,39 +71,14 @@ public class Component
 	public Component(String name, ComponentType type) {
 		// name
 		super(name);
+
 		// type
-		this.type = type;
+		this.setType(type);
+
 		// orientation
 		this.forward = true;
-		// id
-		this.id = hash(this.getName());
 	}
-	
-	public Component(String name) {
-		super(name);		
-		this.forward = true;
-		this.id = hash(this.getName());
-		this.pt = PartTypesTable.toPartType(this.getName());
-	}
-	
-	public Component(String name, boolean forward) {
-		super(name);
-		this.forward = forward;		
-		this.id = hash(this.getName());
-		this.pt = PartTypesTable.toPartType(this.getName());
-	}
-	
-	// to convert the name to an integer
-	// for the constraint solver.
-	// NEEDS IMPROVEMENT!
-	private int hash(String name) {
-		int hash = name.hashCode();
-		if(hash < 0) {
-			return hash * -1;
-		}
-		return hash;
-	}
-	
+		
 	/**
 	 * isForward/0 returns true if the symbol's orientation is forward, 
 	 * false otherwise. 
@@ -140,28 +106,17 @@ public class Component
 	}
 
 	/**
-	 * getID/0 returns the ID of the symbol
-	 * 
-	 * @return int ... the automatically generated ID of the symbol
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
 	 * getTypeId/0 returns the type's ID of the component. 
 	 * This method is only relevant for the constraint solver.
 	 * 
-	 * 1 ... Promoter
-	 * 2 ... RBS
-	 * 3 ... Gene
-	 * 4 ... Terminator
-	 * 5 ... otherwise
-	 * 
 	 * @return int ... the type's ID
 	 */
-	public int getTypeId() {		
-		return PartTypesTable.toId(this.pt);
+	public int getTypeId() {
+		// first, let's check if the type is a pre-defined one
+		if(null != this.getType().getPartType()) {		
+			return PredefinedTypes.toId(this.getType().getPartType());
+		}
+		return this.getType().getId();
 	}
 	
 	/**
@@ -171,21 +126,12 @@ public class Component
 	 * @return the name of the component's type
 	 */
 	public String getTypeName() {
-		String s = PartTypesTable.toName(this.pt);
-		if(null == s) {
-			return "?";
+		if(null != this.getType()) {
+			return this.getType().getName();
 		}
-		return s;		
-	}
-	
-	/**
-	 * returns the type of the component as a 
-	 * two character long string
-	 * 
-	 * @return
-	 */
-	private PartTypesTable.PartType getPartType() {
-		return this.pt;
+
+		return PredefinedTypes.toName(this.getType().getPartType());
+
 	}
 	
 	/**
@@ -215,7 +161,7 @@ public class Component
 	 * 
 	 * @param type ... the type of the component
 	 */
-	public void setType(ComponentType type) {
+	public void setType(ComponentType type) {	
 		this.type = type;
 	}
 	
@@ -227,10 +173,7 @@ public class Component
 		
 		if(null != this.getType()) {
 			sb.append(this.getType()).append(", ");    	// TYPE
-		} else {
-			sb.append(PartTypesTable.toName(
-					this.getPartType())).append(", ");
-		}
+		} 
 		
 		sb.append(this.getName()).append(", ");         // NAME
 		

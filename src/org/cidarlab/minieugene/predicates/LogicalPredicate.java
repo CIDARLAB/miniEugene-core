@@ -41,20 +41,20 @@ import java.util.List;
  *
  */
 public abstract class LogicalPredicate 
-	extends Predicate {
+	extends Constraint {
 
 	private LogicalOperator op;
-	private List<Predicate> predicates;
+	private List<Constraint> constraints;
 	
 	/**
 	 * 
 	 * @param op
 	 * @param predicate
 	 */
-	public LogicalPredicate(LogicalOperator op, Predicate predicate) {
+	public LogicalPredicate(LogicalOperator op, Constraint predicate) {
 		this.op = op;
-		this.predicates = new ArrayList<Predicate>();
-		this.predicates.add(predicate);
+		this.constraints = new ArrayList<Constraint>();
+		this.constraints.add(predicate);
 	}
 
 	/**
@@ -62,17 +62,17 @@ public abstract class LogicalPredicate
 	 * @param op
 	 * @param predicates
 	 */
-	public LogicalPredicate(LogicalOperator op, List<Predicate> predicates) {
+	public LogicalPredicate(LogicalOperator op, List<Constraint> predicates) {
 		this.op = op;
-		this.predicates = predicates;
+		this.constraints = predicates;
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<Predicate> getPredicates() {
-		return this.predicates;
+	public List<Constraint> getConstraints() {
+		return this.constraints;
 	}
 	
 	/**

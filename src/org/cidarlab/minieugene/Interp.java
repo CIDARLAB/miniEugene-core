@@ -39,10 +39,12 @@ import org.cidarlab.minieugene.builder.PredicateBuilder;
 import org.cidarlab.minieugene.constants.MiniEugeneRules;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.constants.TemplateType;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.LogicalOperator;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 import org.cidarlab.minieugene.predicates.position.Equals;
 import org.cidarlab.minieugene.predicates.templating.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
@@ -93,7 +95,25 @@ public class Interp {
 	 */
 	public void insertFact(String c, String t) 
 			throws MiniEugeneException {
-		this.symbols.put(c, t);
+		
+		if(null != c && null != t) {
+
+			if(c.equals(t)) {
+				throw new MiniEugeneException(c+" is_a "+t+" is TRUE!");
+			}
+			
+			ComponentType ct = this.symbols.getType(t); 
+			if(null == ct) {
+				ct = this.symbols.putType(t);
+			}
+
+			this.symbols.put(c, ct);
+			
+			return;
+		}
+		
+		throw new MiniEugeneException(c+" is_a "+t+" is an invalid specification of facts.");
+		
 	}
 
 	/**
@@ -113,7 +133,7 @@ public class Interp {
 	 * 
 	 * @throws MiniEugeneException
 	 */
-	public Predicate interpreteRule(String[] tokens) 
+	public Constraint interpreteRule(String[] tokens) 
 			throws MiniEugeneException {
 
 		switch(tokens.length) {
@@ -155,54 +175,32 @@ public class Interp {
 		return template.createPredicate(this.symbols, name, ids);
 	}
 	
-	private Predicate createNullaryPredicate(String s) 
+	private Constraint createNullaryPredicate(String s) 
 			throws MiniEugeneException {
 		return this.pb.buildNullaryPredicate(s);
 	}
 	
-	private Predicate createUnaryPredicate(String p, String s) 
+	private Constraint createUnaryPredicate(String p, String s) 
 			throws MiniEugeneException {
 
 		if(LogicalOperator.NOT.toString().equalsIgnoreCase(p)) {
 			
 			return new LogicalNot(this.pb.buildNullaryPredicate(s));
-//			// negated nullary constraint 
-//			if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(s)) {
-//				return new LogicalNot(new AllReverse(null));
-//			} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(s)) {
-//				return new LogicalNot(new AllForward(null));
-//			} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(s)) {
-//				return new LogicalNot(new AlternateOrientation(null));
-//			}
-
 			
 		} else if(MiniEugeneRules.isUnaryRule(p)) {
-			/*
-			 * get the id from the symbol
-			 */
-			int id = -1;
-			if(this.symbols.contains(s)) {
-				id = this.symbols.getId(s);
-			} else {
-				/*
-				 * if the symbol does not exist, 
-				 * then add it to the symbol tables
-				 */
-				id = this.symbols.put(s);
-			}
 
 			/*
 			 * build the predicate (by the predicate builder)
 			 * and store it in the symbol tables
 			 */
-			return this.pb.buildUnary(p, this.symbols.get(id));
+			return this.pb.buildUnary(p, this.symbols.get(s));
 		}
 		
 		throw new MiniEugeneException(p + " is an invalid unary rule operand!");		
 	}
 
 	
-	private Predicate createBinaryPredicate(String a, String X, String b) 
+	private Constraint createBinaryPredicate(String a, String X, String b) 
 			throws MiniEugeneException {
 	
 		if(LogicalOperator.NOT.toString().equalsIgnoreCase(a)) {
@@ -211,57 +209,12 @@ public class Interp {
 			 * e.g. NOT CONTAINS a
 			 */
 			
-			/*
-			 * get the id from the symbol
-			 */
-			int id = -1;
-			if(this.symbols.contains(b)) {
-				id = this.symbols.getId(b);
-			} else {
-				/*
-				 * if the symbol does not exist, 
-				 * then add it to the symbol tables
-				 */
-				id = this.symbols.put(b);
-			}
-			
-			return this.pb.buildNegatedUnary(X, this.symbols.get(id));
+			return this.pb.buildNegatedUnary(X, this.symbols.get(b));
 		} else if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X) ||
 				RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
-				
-			// [i] EQUALS [j]
-			if((a.startsWith("[") && a.endsWith("]") &&
-				b.startsWith("[") && b.endsWith("]"))) {
-				/*
-				 * next, we need to get the index out of the strings a and b
-				 */
-				a = a.substring(1, a.length()-1);
-				b = b.substring(1, b.length()-1);
-				
-				int idxA = this.toIndex(a);
-				int idxB = this.toIndex(b);
-				
-				if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
-					return new Equals(idxA, idxB);
-				} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
-					return new LogicalNot(new Equals(idxA, idxB));
-				}
-				
-			// [i] EQUALS p	
-			} else if(a.startsWith("[") && a.endsWith("]") && 
-					!b.startsWith("[") && !b.endsWith("]")) {
-
-				a = a.substring(1, a.length()-1);
-				int idxA = this.toIndex(a);
-								
-				if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
-					return new Equals(idxA, this.symbols.get(this.symbols.put(b)));
-				} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
-					return new LogicalNot(new Equals(idxA, this.symbols.get(this.symbols.put(b))));
-				}
-			}
 			
-			throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
+			
+			return this.pb.buildBinaryIndexed(a, X, b, this.maxN);
 			
 			
 		} else if(MiniEugeneRules.isInteractionRule(X)) {
@@ -292,22 +245,14 @@ public class Interp {
 				if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X) ||
 					RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X) ||
 					RuleOperator.SAME_COUNT.toString().equalsIgnoreCase(X)) {
-					/*
-					 * get the id from the symbol
-					 */
-					if(this.symbols.contains(b)) {
-						idB = this.symbols.getId(b);
-					} else {
-						/*
-						 * if the symbol does not exist, 
-						 * then add it to the symbol tables
-						 */
-						idB = this.symbols.put(b);
-					}
 
-					return this.pb.buildBinary(this.symbols.get(idA), X, this.symbols.get(idB));
+					return this.pb.buildBinary(
+							this.symbols.get(a), 
+							X, 
+							this.symbols.get(b));
 				}
-				throw new MiniEugeneException("Invalid rule!");
+				
+				throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
 			}
 
 			/*
@@ -321,7 +266,10 @@ public class Interp {
 			}
 			
 			// create the counting rule object
-			return this.pb.buildBinary(this.symbols.get(idA), X, idB);
+			return this.pb.buildBinary(
+					this.symbols.get(a), 
+					X, 
+					idB);
 			
 		} else if(MiniEugeneRules.isPositioningRule(X) || MiniEugeneRules.isPairingRule(X) || 
 				MiniEugeneRules.isOrientationRule(X)) {
@@ -339,23 +287,6 @@ public class Interp {
 		}
 		
 		throw new MiniEugeneException("Invalid rule!");
-	}
-
-	private int toIndex(String a) 
-			throws MiniEugeneException {
-
-		int idx = -1;
-		try {
-			idx = Integer.parseInt(a);
-		} catch(NumberFormatException nfe) {
-			throw new MiniEugeneException("Invalid index!");
-		}
-
-		if(idx < 0 || idx >= this.maxN) {
-			throw new MiniEugeneException("Index "+idx+" is out of range!");
-		}
-		
-		return idx;
 	}
 
 	

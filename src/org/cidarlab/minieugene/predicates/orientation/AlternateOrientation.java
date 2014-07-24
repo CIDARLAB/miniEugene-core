@@ -35,7 +35,8 @@ package org.cidarlab.minieugene.predicates.orientation;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.UnaryPredicate;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.UnaryConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -58,10 +59,10 @@ import JaCoP.core.Store;
  * 
  */
 public class AlternateOrientation 
-	extends UnaryPredicate 
-	implements OrientationPredicate {
+	extends UnaryConstraint 
+	implements OrientationConstraint {
 
-	public AlternateOrientation(Component rhs) {
+	public AlternateOrientation(ConstraintOperand rhs) {
 		super(rhs);
 	}
 
@@ -73,10 +74,7 @@ public class AlternateOrientation
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getOperator());
-		if(null != this.getA()) {
-			sb.append(" ").append(this.getA().getName());
-		}
+		sb.append(this.getOperator()).append(" ").append(this.getA());
 		return sb.toString();
 	}
 

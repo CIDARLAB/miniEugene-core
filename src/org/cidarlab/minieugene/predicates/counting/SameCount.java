@@ -33,15 +33,13 @@
 package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.solver.jacop.Variables;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
-import JaCoP.constraints.Count;
-import JaCoP.constraints.Not;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqY;
+import JaCoP.constraints.XneqY;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -56,10 +54,10 @@ import JaCoP.core.Store;
  *
  */
 public class SameCount
-		extends BinaryPredicate
-		implements CountingPredicate {
+		extends BinaryConstraint
+		implements CountingConstraint {
 
-	public SameCount(Component a, Component b) {
+	public SameCount(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 	
@@ -71,9 +69,12 @@ public class SameCount
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getName()).append(" ")
-			.append(this.getOperator()).append(" ")
-			.append(this.getB().getName());
+		if(null != this.getA() && null != this.getA().getOperand() &&
+				null != this.getB() && null != this.getB().getOperand()) {
+			sb.append(this.getA().getOperand().getName()).append(" ")
+				.append(this.getOperator()).append(" ")
+				.append(this.getB().getOperand().getName());
+		}
 		return sb.toString();
 	}
 	
@@ -85,41 +86,20 @@ public class SameCount
 		/*
 		 * a SAME_COUNT b
 		 */
-		
-		// a's counter
-		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == counterA) {
-			counterA = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
-		}
-
-		// b's counter
-		IntVar counterB = (IntVar)store.findVariable(this.getB().getName()+"-counter");
-		if(null == counterB) {
-			counterB = new IntVar(store, 
-					this.getB().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], counterB, this.getB().getId()));
-		}
-
 		// both counters must be equal
-		return new XeqY(counterA, counterB);
+		return new XeqY(
+				this.createCounter(store, variables, this.getA()), 
+				this.createCounter(store, variables, this.getB()));
 		
 	}
 	
 	@Override
 	public PrimitiveConstraint toJaCoPNot(
 			Store store, IntVar[][] variables) 
-				throws MiniEugeneException {
-		
-		/*
-		 * NOT a SAME_COUNT b
-		 */
-		return new Not(this.toJaCoP(store, variables));
+				throws MiniEugeneException {		
+		return new XneqY(
+				this.createCounter(store, variables, this.getA()), 
+				this.createCounter(store, variables, this.getB()));
 	}
 
 	@Override

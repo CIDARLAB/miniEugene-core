@@ -39,7 +39,7 @@ package org.cidarlab.minieugene.predicates;
  *
  */
 public abstract class EugeneConstraint 
-	extends Predicate {
+	extends Constraint {
 
 
 }

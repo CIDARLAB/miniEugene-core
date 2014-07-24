@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.predicates.templating.Sequence;
 import org.cidarlab.minieugene.predicates.templating.Template;
 import org.cidarlab.minieugene.predicates.templating.TemplatingPredicate;
@@ -52,8 +54,16 @@ public enum TemplateType {
 				
 				List<Component> components = new ArrayList<Component>();
 				for(String id : selection) {
-					components.add(
-							symbols.get(symbols.put(id)));
+					
+					Identified i = symbols.get(id);
+					if(null != i) {
+						if(i instanceof Component) {
+							components.add((Component)i);
+						} else if(i instanceof ComponentType) {
+							components.addAll(
+									symbols.getComponents((ComponentType)i));
+						}
+					}
 				}
 				t.getComponents().add(components);
 			}
@@ -79,9 +89,18 @@ public enum TemplateType {
 				
 				List<Component> components = new ArrayList<Component>();
 				for(String id : selection) {
-					components.add(
-							symbols.get(symbols.put(id)));
+					
+					Identified i = symbols.get(id);
+					if(null != i) {
+						if(i instanceof Component) {
+							components.add((Component)i);
+						} else if(i instanceof ComponentType) {
+							components.addAll(
+									symbols.getComponents((ComponentType)i));
+						}
+					}
 				}
+
 				s.getComponents().add(components);
 			}
 			

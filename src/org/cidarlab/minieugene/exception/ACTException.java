@@ -34,7 +34,7 @@ package org.cidarlab.minieugene.exception;
 
 import java.util.List;
 
-import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 
 /**
  * @author Ernst Oberortner
@@ -43,15 +43,15 @@ public class ACTException extends Exception {
 
 	private static final long serialVersionUID = 1881767055663398555L;
 
-	private List<Component> cycles;
+	private List<Identified> cycles;
 	
-	public ACTException(List<Component> cycles) {
+	public ACTException(List<Identified> cycles) {
 		super("Cyclic Design!");
 		
 		this.cycles = cycles;
 	}
 	
-	public List<Component> getCycles() {
+	public List<Identified> getCycles() {
 		return this.cycles;
 	}
 

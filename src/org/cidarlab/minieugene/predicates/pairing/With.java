@@ -30,20 +30,18 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.predicates.counting;
+package org.cidarlab.minieugene.predicates.pairing;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.predicates.pairing.PairingPredicate;
-import org.cidarlab.minieugene.solver.jacop.Variables;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
 import JaCoP.constraints.And;
-import JaCoP.constraints.Count;
 import JaCoP.constraints.Or;
 import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XeqC;
+import JaCoP.constraints.XgtC;
+import JaCoP.constraints.XlteqC;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 
@@ -53,10 +51,10 @@ import JaCoP.core.Store;
  *
  */
 public class With 
-		extends BinaryPredicate
+		extends BinaryConstraint
 		implements PairingPredicate {
 
-	public With(Component a, Component b) {
+	public With(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 
@@ -81,44 +79,30 @@ public class With
 		
 		/*
 		 * CONTAINS a /\ CONTAINS b
+		 * <=>
+		 * a MORETHAN 0 /\ b MORETHAN 0
 		 */
 		return new And(
-				new Contains(this.getA()).toJaCoP(store, variables), 
-				new Contains(this.getB()).toJaCoP(store, variables));
+				new XgtC(this.createCounter(store, variables, this.getA()), 0), 
+				new XgtC(this.createCounter(store, variables, this.getA()), 0));
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
-		
-		// a's counter
-		IntVar counterA = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == counterA) {
-			counterA = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], counterA, this.getA().getId()));
-		}
-
-		// b's counter
-		IntVar counterB = (IntVar)store.findVariable(this.getB().getName()+"-counter");
-		if(null == counterB) {
-			counterB = new IntVar(store, 
-					this.getB().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], counterB, this.getB().getId()));
-		}
 
 		/*
 		 * NOT (CONTAINS a /\ CONTAINS b)
 		 * <=>
 		 * NOT CONTAINS a \/ NOT CONTAINS b
+		 * <=>
+		 * NOT a MORETHAN 0 \/ NOT b MORETHAN 0
+		 * <=>
+		 * |a| == 0 \/ |b| == 0
 		 */
 		return new Or(
-				new XeqC(counterA, 0), 
-				new XeqC(counterB, 0));
+				new XlteqC(this.createCounter(store, variables, this.getA()), 0), 
+				new XlteqC(this.createCounter(store, variables, this.getA()), 0));
 	}
 
 }

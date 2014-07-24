@@ -35,7 +35,8 @@ package org.cidarlab.minieugene.predicates.position;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -54,8 +55,8 @@ import JaCoP.core.Store;
  *
  */
 public class Equals 
-	extends BinaryPredicate 
-	implements PositioningPredicate {
+	extends BinaryConstraint 
+	implements PositioningConstraint {
 	
 	private int i;
 	private int j;
@@ -66,7 +67,7 @@ public class Equals
 		this.j = j;
 	}
 	
-	public Equals(int i, Component a) {
+	public Equals(int i, ConstraintOperand a) {
 		super(a, null);
 		this.i = i;
 		this.j = -1;		
@@ -81,22 +82,25 @@ public class Equals
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
 		
+		int va = this.getVariableIndex(this.getA());
+		
 		if(-1 == this.j) {
-			return new XeqC(variables[Variables.PART][i], this.getA().getId());
+			return new XeqC(variables[va][i], this.getA().getOperand().getId());
 		}
 		
-		return new XeqY(variables[Variables.PART][i], variables[Variables.PART][j]);
+		return new XeqY(variables[va][i], variables[Variables.PART][j]);
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
+		int va = this.getVariableIndex(this.getA());
 		
 		if(-1 == this.j) {
-			return new XneqC(variables[Variables.PART][i], this.getA().getId());
+			return new XeqC(variables[va][i], this.getA().getOperand().getId());
 		}
 		
-		return new XneqY(variables[Variables.PART][i], variables[Variables.PART][j]);
+		return new XneqY(variables[va][i], variables[Variables.PART][j]);
 	}
 
 	@Override
@@ -105,7 +109,7 @@ public class Equals
 		sb.append("[").append(this.i).append("] ")
 			.append(this.getOperator()).append(" ");
 		if(-1 == this.j) {
-			sb.append(this.getA().getName());			
+			sb.append(this.getA());			
 		} else {
 			sb.append("[").append(this.j).append("]");			
 		}		

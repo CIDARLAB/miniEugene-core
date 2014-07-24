@@ -35,7 +35,8 @@ package org.cidarlab.minieugene.predicates.orientation;
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
 import JaCoP.constraints.And;
 import JaCoP.constraints.Not;
@@ -48,10 +49,10 @@ import JaCoP.core.Store;
  * 
  */
 public class SomeSameOrientation 
-	extends BinaryPredicate 
-	implements OrientationPredicate {
+	extends BinaryConstraint 
+	implements OrientationConstraint {
 
-	public SomeSameOrientation(Component a, Component b) {
+	public SomeSameOrientation(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 
@@ -62,10 +63,8 @@ public class SomeSameOrientation
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();		
-		sb.append(this.getA().getName()).append(" ")
-			.append(this.getOperator()).append(" ")
-			.append(this.getB().getName());
+		StringBuilder sb = new StringBuilder();	
+		sb.append(this.getA()).append(" ").append(this.getOperator()).append(" ").append(this.getB());
 		return sb.toString();
 	}
 

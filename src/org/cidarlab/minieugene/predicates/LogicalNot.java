@@ -49,21 +49,21 @@ public class LogicalNot
 	 * 
 	 * @param predicate
 	 */
-	public LogicalNot(Predicate predicate) {
+	public LogicalNot(Constraint predicate) {
 		super(LogicalOperator.NOT, predicate);
 	}
 	
 	@Override 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("NOT ").append(this.getPredicates()).append("");
+		sb.append("NOT ").append(this.getConstraints()).append("");
 		return sb.toString();
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
-		return this.getPredicates().get(0).toJaCoPNot(store, variables);
+		return this.getConstraints().get(0).toJaCoPNot(store, variables);
 	}
 
 	@Override
@@ -75,21 +75,21 @@ public class LogicalNot
 
 	@Override
 	public int getMinimumLength() {
-		if(this.getPredicates().get(0) instanceof Contains) {
+		if(this.getConstraints().get(0) instanceof Contains) {
 			// NOT CONTAINS -> 0
 			return 0;
-		} else if(this.getPredicates().get(0) instanceof MoreThan) {
+		} else if(this.getConstraints().get(0) instanceof MoreThan) {
 			
-			int n = ((MoreThan)this.getPredicates().get(0)).getMinimumLength();
+			int n = ((MoreThan)this.getConstraints().get(0)).getMinimumLength();
 			// NOT MORETHAN n
 			if(n == 0) {
 				return 0;
 			}
 			return 1;
 			
-		} else if(this.getPredicates().get(0) instanceof Exactly) {
+		} else if(this.getConstraints().get(0) instanceof Exactly) {
 			
-			int n = ((Exactly)this.getPredicates().get(0)).getMinimumLength();
+			int n = ((Exactly)this.getConstraints().get(0)).getMinimumLength();
 
 			if(n == 1) {
 				return 0;

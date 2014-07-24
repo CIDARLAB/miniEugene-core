@@ -32,8 +32,8 @@
 
 package org.cidarlab.minieugene.parser;
 
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 
 public interface IMiniEugeneParser {
-	public Predicate[] parse(String[] input);
+	public Constraint[] parse(String[] input);
 }

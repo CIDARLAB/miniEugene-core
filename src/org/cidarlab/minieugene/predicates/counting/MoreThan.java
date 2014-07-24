@@ -33,12 +33,10 @@
 package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.solver.jacop.Variables;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
-import JaCoP.constraints.Count;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XgtC;
 import JaCoP.constraints.XlteqC;
@@ -50,18 +48,20 @@ import JaCoP.core.Store;
  * @author Ernst Oberortner
  */
 public class MoreThan
-	extends BinaryPredicate
-	implements CountingPredicate {
+	extends BinaryConstraint
+	implements CountingConstraint {
 
-	public MoreThan(Component a, int n) {				
+	public MoreThan(ConstraintOperand a, int n) {				
 		super(a, n);
 	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getId())
-			.append(" ").append(RuleOperator.MORETHAN).append(" ")
-			.append(this.getNum());
+		if(null != this.getA() && null != this.getA().getOperand()) {
+			sb.append(this.getA().getOperand().getName())
+				.append(" ").append(RuleOperator.MORETHAN).append(" ")
+				.append(this.getNum());
+		}
 		return sb.toString();
 	}
 	
@@ -75,34 +75,19 @@ public class MoreThan
 				throws MiniEugeneException {
 		
 		// a MORETHAN N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == count) {
-			count = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-			store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));			
-		}
-
-		return new XgtC(count, this.getNum());
+		return new XgtC(
+				this.createCounter(store, variables, this.getA()), 
+				this.getNum());
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables) 
 				throws MiniEugeneException {
 
-		// a MORETHAN N
-		IntVar count = (IntVar)store.findVariable(this.getA().getName()+"-counter");
-		if(null == count) {
-			count = new IntVar(store, 
-					this.getA().getName()+"-counter", 
-					0, 
-					variables[Variables.PART].length);
-		}
-
-		store.impose(new Count(variables[Variables.PART], count, (int)this.getA().getId()));
-		
-		return new XlteqC(count, this.getNum());
+		// a NOTMORETHAN N
+		return new XlteqC(
+				this.createCounter(store, variables, this.getA()), 
+				this.getNum());
 	}
 
 	@Override

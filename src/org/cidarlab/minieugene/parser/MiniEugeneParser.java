@@ -223,8 +223,8 @@ public class MiniEugeneParser extends Parser {
     // PREDICATES
     private LogicalAnd la = new LogicalAnd();
 
-    private void addPredicate(Predicate p) {
-        this.la.getPredicates().add(p);  
+    private void addPredicate(Constraint p) {
+        this.la.getConstraints().add(p);  
     }
 
     public LogicalAnd getPredicate() {
@@ -478,7 +478,7 @@ public class MiniEugeneParser extends Parser {
     // $ANTLR start "constraint_specification"
     // /Users/ernstl/PostDoc/BU/Eugene/ecosystem/workspace/miniEugene-core/grammar/MiniEugene.g:211:1: constraint_specification : (c= or_constraint | composite_constraint );
     public final void constraint_specification() throws RecognitionException, MiniEugeneException {
-        List<Predicate> c =null;
+        List<Constraint> c =null;
 
 
         try {
@@ -752,17 +752,17 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "or_constraint"
     // /Users/ernstl/PostDoc/BU/Eugene/ecosystem/workspace/miniEugene-core/grammar/MiniEugene.g:248:1: or_constraint returns [List<Predicate> lst] : c= constraint ( ( UC_OR | LC_OR | LOG_OR | BOOL_OR ) o= or_constraint )? ;
-    public final List<Predicate> or_constraint() throws RecognitionException, MiniEugeneException {
-        List<Predicate> lst = null;
+    public final List<Constraint> or_constraint() throws RecognitionException, MiniEugeneException {
+        List<Constraint> lst = null;
 
 
-        Predicate c =null;
+        Constraint c =null;
 
-        List<Predicate> o =null;
+        List<Constraint> o =null;
 
 
 
-        lst = new ArrayList<Predicate>();
+        lst = new ArrayList<Constraint>();
 
         try {
             // /Users/ernstl/PostDoc/BU/Eugene/ecosystem/workspace/miniEugene-core/grammar/MiniEugene.g:254:2: (c= constraint ( ( UC_OR | LC_OR | LOG_OR | BOOL_OR ) o= or_constraint )? )
@@ -838,8 +838,8 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "constraint"
     // /Users/ernstl/PostDoc/BU/Eugene/ecosystem/workspace/miniEugene-core/grammar/MiniEugene.g:265:1: constraint returns [Predicate p] : ( (not= ( UC_NOT | LC_NOT | BOOL_NOT ) )? (lhs= operand )? op= operator (rhs= operand )? |temp= templatingConstraints );
-    public final Predicate constraint() throws RecognitionException, MiniEugeneException {
-        Predicate p = null;
+    public final Constraint constraint() throws RecognitionException, MiniEugeneException {
+        Constraint p = null;
 
 
         Token not=null;
@@ -849,7 +849,7 @@ public class MiniEugeneParser extends Parser {
 
         MiniEugeneParser.operand_return rhs =null;
 
-        Predicate temp =null;
+        Constraint temp =null;
 
 
         try {
@@ -1187,8 +1187,8 @@ public class MiniEugeneParser extends Parser {
 
     // $ANTLR start "templatingConstraints"
     // /Users/ernstl/PostDoc/BU/Eugene/ecosystem/workspace/miniEugene-core/grammar/MiniEugene.g:303:1: templatingConstraints returns [Predicate p] : (tem= templateConstraint |pat= patternConstraint |gr= groupConstraint |seq= sequenceConstraint );
-    public final Predicate templatingConstraints() throws RecognitionException, MiniEugeneException {
-        Predicate p = null;
+    public final Constraint templatingConstraints() throws RecognitionException, MiniEugeneException {
+        Constraint p = null;
 
 
         Template tem =null;

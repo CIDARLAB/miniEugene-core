@@ -34,8 +34,10 @@ package org.cidarlab.minieugene.predicates.position;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.UnaryPredicate;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.UnaryConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -50,10 +52,10 @@ import JaCoP.core.Store;
  * a ... a must appear at the LAST position
  */
 public class EndsWith 
-		extends UnaryPredicate 
-		implements PositioningPredicate {
+		extends UnaryConstraint 
+		implements PositioningConstraint {
 
-	public EndsWith(Component a) {
+	public EndsWith(ConstraintOperand a) {
 		super(a);
 	}
 
@@ -65,7 +67,7 @@ public class EndsWith
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(RuleOperator.ENDSWITH).append(" ").append(this.getA().getName());
+		sb.append(RuleOperator.ENDSWITH).append(" ").append(this.getA());
 		return sb.toString();
 	}
 
@@ -74,25 +76,16 @@ public class EndsWith
 				throws MiniEugeneException {
 		
 		int N = (variables[Variables.PART].length);
-		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
-		if(null == aPosVar) {
-			aPosVar = new IntVar(store, this.getA().getName()+".position", 0, N-1);
-			store.impose(new XeqC(aPosVar, N-1));
-		}
-		
-		return new XeqC(variables[Variables.PART][N-1], this.getA().getId());
+		int va = this.getVariableIndex(this.getA());
+		return new XeqC(variables[va][N-1], this.getA().getOperand().getId());
 	}
 
 	@Override
 	public PrimitiveConstraint toJaCoPNot(Store store, IntVar[][] variables)
 			throws MiniEugeneException {
 		int N = (variables[Variables.PART].length);
-		IntVar aPosVar = (IntVar)store.findVariable(this.getA().getName()+".position");
-		if(null == aPosVar) {
-			aPosVar = new IntVar(store, this.getA().getName()+".position", 0, N-1);
-			store.impose(new XneqC(aPosVar, N-1));
-		}
-		return new XneqC(variables[Variables.PART][N-1], this.getA().getId());
+		int va = this.getVariableIndex(this.getA());
+		return new XneqC(variables[va][N-1], this.getA().getOperand().getId());
 	}
 
 }

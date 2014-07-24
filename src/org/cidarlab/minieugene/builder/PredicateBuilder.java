@@ -34,16 +34,16 @@ package org.cidarlab.minieugene.builder;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.LogicalNot;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
 import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.Exactly;
 import org.cidarlab.minieugene.predicates.counting.MoreThan;
 import org.cidarlab.minieugene.predicates.counting.SameCount;
-import org.cidarlab.minieugene.predicates.counting.Then;
-import org.cidarlab.minieugene.predicates.counting.With;
 import org.cidarlab.minieugene.predicates.interaction.Drives;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
@@ -56,6 +56,8 @@ import org.cidarlab.minieugene.predicates.orientation.SomeForward;
 import org.cidarlab.minieugene.predicates.orientation.SomeReverse;
 import org.cidarlab.minieugene.predicates.orientation.SomeSameOrientation;
 import org.cidarlab.minieugene.predicates.pairing.AlwaysNextTo;
+import org.cidarlab.minieugene.predicates.pairing.Then;
+import org.cidarlab.minieugene.predicates.pairing.With;
 import org.cidarlab.minieugene.predicates.position.EndsWith;
 import org.cidarlab.minieugene.predicates.position.Equals;
 import org.cidarlab.minieugene.predicates.position.StartsWith;
@@ -85,7 +87,7 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildNullaryPredicate(String p) 
+	public Constraint buildNullaryPredicate(String p) 
 			throws MiniEugeneException {
 		if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p)) {
 			return new AllReverse(null);
@@ -110,29 +112,29 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildUnary(String p, Component c) 
+	public Constraint buildUnary(String p, Identified c) 
 			throws MiniEugeneException {
 		
 		if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(p)) {
-			return new Contains(c);
+			return new Contains(new ConstraintOperand(c));
 		} else if(RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(p)) {
-			return new LogicalNot(new Contains(c));
+			return new LogicalNot(new Contains(new ConstraintOperand(c)));
 		} else if(RuleOperator.STARTSWITH.toString().equalsIgnoreCase(p)) {
-			return new StartsWith(c);
+			return new StartsWith(new ConstraintOperand(c));
 		} else if(RuleOperator.ENDSWITH.toString().equalsIgnoreCase(p)) {
-			return new EndsWith(c);
+			return new EndsWith(new ConstraintOperand(c));
 		} else if(RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(p) ||
 				RuleOperator.REVERSE.toString().equalsIgnoreCase(p)) {
-			return new AllReverse(c);
+			return new AllReverse(new ConstraintOperand(c));
 		} else if(RuleOperator.SOME_REVERSE.toString().equalsIgnoreCase(p)) {
-			return new SomeReverse(c);
+			return new SomeReverse(new ConstraintOperand(c));
 		} else if(RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(p) ||
 				RuleOperator.FORWARD.toString().equalsIgnoreCase(p)) {
-			return new AllForward(c);
+			return new AllForward(new ConstraintOperand(c));
 		} else if(RuleOperator.SOME_FORWARD.toString().equalsIgnoreCase(p)) {
-			return new SomeForward(c);
+			return new SomeForward(new ConstraintOperand(c));
 		} else if(RuleOperator.ALTERNATE_ORIENTATION.toString().equalsIgnoreCase(p)) {
-			return new AlternateOrientation(c);
+			return new AlternateOrientation(new ConstraintOperand(c));
 		}
 		
 		throw new MiniEugeneException("Invalid Unary Rule!");
@@ -145,15 +147,15 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildNegatedUnary(String p, Component c) 
+	public Constraint buildNegatedUnary(String p, Identified c) 
 			throws MiniEugeneException {
 		
-		Predicate predicate = this.buildUnary(p, c);
-		if(null != predicate) {
-			return new LogicalNot(predicate);
+		Constraint constraint = this.buildUnary(p, c);
+		if(null != constraint) {
+			return new LogicalNot(constraint);
 		}
 
-		throw new MiniEugeneException("Invalid Negated Unary Rule!");
+		throw new MiniEugeneException("Invalid Negated Unary Constraint!");
 	}
 	
 	/**
@@ -164,49 +166,114 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildBinary(Component lhs, String X, Component rhs) 
+	public Constraint buildBinary(Identified lhs, String X, Identified rhs) 
 			throws MiniEugeneException {
 
 		if(RuleOperator.ALL_BEFORE.toString().equalsIgnoreCase(X) || 
 				RuleOperator.BEFORE.toString().equalsIgnoreCase(X)) {
-			return new AllBefore(lhs, rhs);
+			return new AllBefore(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.SOME_BEFORE.toString().equalsIgnoreCase(X)) {
-			return new SomeBefore(lhs, rhs);
+			return new SomeBefore(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.ALL_AFTER.toString().equalsIgnoreCase(X) || 
 				RuleOperator.AFTER.toString().equalsIgnoreCase(X)) {
-			return new AllAfter(lhs, rhs);
+			return new AllAfter(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.SOME_AFTER.toString().equalsIgnoreCase(X)) {
-			return new SomeAfter(lhs, rhs);
+			return new SomeAfter(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.ALL_NEXTTO.toString().equalsIgnoreCase(X) || 
 				RuleOperator.NEXTTO.toString().equalsIgnoreCase(X)) {
-			return new AllNextTo(lhs, rhs);
+			return new AllNextTo(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.SOME_NEXTTO.toString().equalsIgnoreCase(X)) {
-			return new SomeNextTo(lhs, rhs);
+			return new SomeNextTo(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.WITH.toString().equalsIgnoreCase(X)) {
-			return new With(lhs, rhs);
+			return new With(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.NOTWITH.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new With(lhs, rhs));
+			return new LogicalNot(new With(new ConstraintOperand(lhs), new ConstraintOperand(rhs)));
 		} else if(RuleOperator.THEN.toString().equalsIgnoreCase(X)) {
-			return new Then(lhs, rhs);
+			return new Then(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.NOTTHEN.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new Then(lhs, rhs));
+			return new LogicalNot(new Then(new ConstraintOperand(lhs), new ConstraintOperand(rhs)));
 		} else if(RuleOperator.CONTAINS.toString().equalsIgnoreCase(X)) {
-			return new BinaryContains(lhs, rhs);
+			return new BinaryContains(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.NOTCONTAINS.toString().equalsIgnoreCase(X)) {
-			return new LogicalNot(new BinaryContains(lhs, rhs));
+			return new LogicalNot(new BinaryContains(new ConstraintOperand(lhs), new ConstraintOperand(rhs)));
 		} else if(RuleOperator.SAME_ORIENTATION.toString().equalsIgnoreCase(X) ||
 				RuleOperator.ALL_SAME_ORIENTATION.toString().equalsIgnoreCase(X)) {
-			return new AllSameOrientation(lhs, rhs);
+			return new AllSameOrientation(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.SOME_SAME_ORIENTATION.toString().equalsIgnoreCase(X)) {
-			return new SomeSameOrientation(lhs, rhs);
+			return new SomeSameOrientation(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.SAME_COUNT.toString().equalsIgnoreCase(X)) {
-			return new SameCount(lhs, rhs);
+			return new SameCount(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		} else if(RuleOperator.ALWAYS_NEXTTO.toString().equalsIgnoreCase(X)) {
-			return new AlwaysNextTo(lhs, rhs);
+			return new AlwaysNextTo(new ConstraintOperand(lhs), new ConstraintOperand(rhs));
 		}
 
 		throw new MiniEugeneException("Invalid Binary Rule!");
 	}
+	
+	/**
+	 * 
+	 * @param a
+	 * @param X
+	 * @param b
+	 * @return
+	 * @throws MiniEugeneException
+	 */
+	public Constraint buildBinaryIndexed(String a, String X, String b, int maxN) 
+			throws MiniEugeneException {
+		
+		// [i] EQUALS [j]
+		if((a.startsWith("[") && a.endsWith("]") &&
+			b.startsWith("[") && b.endsWith("]"))) {
+			/*
+			 * next, we need to get the index out of the strings a and b
+			 */
+			a = a.substring(1, a.length()-1);
+			b = b.substring(1, b.length()-1);
+			
+			int idxA = this.toIndex(a, maxN);
+			int idxB = this.toIndex(b, maxN);
+			
+			if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
+				return new Equals(idxA, idxB);
+			} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
+				return new LogicalNot(new Equals(idxA, idxB));
+			}
+			
+		// [i] EQUALS p	
+		} else if(a.startsWith("[") && a.endsWith("]") && 
+				!b.startsWith("[") && !b.endsWith("]")) {
+
+			a = a.substring(1, a.length()-1);
+			int idxA = this.toIndex(a, maxN);
+							
+			if(RuleOperator.EQUALS.toString().equalsIgnoreCase(X)) {
+				return new Equals(idxA, new ConstraintOperand(this.symbols.get(b)));
+			} else if(RuleOperator.NOTEQUALS.toString().equalsIgnoreCase(X)) {
+				return new LogicalNot(new Equals(idxA, new ConstraintOperand(this.symbols.get(b))));
+			}
+		}
+		
+		throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
+	}
+	
+	private int toIndex(String a, int max) 
+			throws MiniEugeneException {
+
+		int idx = -1;
+		try {
+			idx = Integer.parseInt(a);
+		} catch(NumberFormatException nfe) {
+			throw new MiniEugeneException("Invalid index!");
+		}
+
+		if(idx < 0 || idx >= max) {
+			throw new MiniEugeneException("Index "+idx+" is out of range!");
+		}
+		
+		return idx;
+	}
+
+
 	
 	/**
 	 * 
@@ -216,16 +283,16 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildBinary(Component lhs, String p, int num) 
+	public Constraint buildBinary(Identified lhs, String p, int num) 
 			throws MiniEugeneException {
 		if(RuleOperator.EXACTLY.toString().equalsIgnoreCase(p)) {
-			return new Exactly(lhs, num);
+			return new Exactly(new ConstraintOperand(lhs), num);
 		} else if(RuleOperator.NOTEXACTLY.toString().equalsIgnoreCase(p)) {
-			return new LogicalNot(new Exactly(lhs, num));
+			return new LogicalNot(new Exactly(new ConstraintOperand(lhs), num));
 		} else if(RuleOperator.MORETHAN.toString().equalsIgnoreCase(p)) {
-			return new MoreThan(lhs, num);
+			return new MoreThan(new ConstraintOperand(lhs), num);
 		} else if(RuleOperator.NOTMORETHAN.toString().equalsIgnoreCase(p)) {
-			return new LogicalNot(new MoreThan(lhs, num));
+			return new LogicalNot(new MoreThan(new ConstraintOperand(lhs), num));
 		}
 		
 		throw new MiniEugeneException("Invalid Counting Rule!");
@@ -239,7 +306,7 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildIndexedBinary(int i, String p, int j) 
+	public Constraint buildIndexedBinary(int i, String p, int j) 
 			throws MiniEugeneException {
 		if(RuleOperator.EQUALS.toString().equalsIgnoreCase(p)) {
 			return new Equals(i, j);
@@ -258,7 +325,7 @@ public class PredicateBuilder {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public Predicate buildInteraction(String a, String X, String b)
+	public Constraint buildInteraction(String a, String X, String b)
 		throws MiniEugeneException {
 		
 		if(a.startsWith("[") && a.endsWith("]")) {
@@ -282,20 +349,20 @@ public class PredicateBuilder {
 			if(Interaction.InteractionType.INDUCES.toString().equalsIgnoreCase(X)) {
 				
 				return new Induces(
-						new Component(a),
-						this.symbols.get(this.symbols.getId(b)));
+						new ConstraintOperand(new Component(a, null)),
+						new ConstraintOperand(this.symbols.get(b)));
 				
 			} else if(Interaction.InteractionType.REPRESSES.toString().equalsIgnoreCase(X)) {
 				
 				return new Represses(
-						this.symbols.get(this.symbols.getId(a)),
-						this.symbols.get(this.symbols.getId(b)));
+						new ConstraintOperand(this.symbols.get(a)),
+						new ConstraintOperand(this.symbols.get(b)));
 				
 			} else if(Interaction.InteractionType.DRIVES.toString().equalsIgnoreCase(X)) {
 				
 				return new Drives(
-						this.symbols.get(this.symbols.getId(a)),
-						this.symbols.get(this.symbols.getId(b)));
+						new ConstraintOperand(this.symbols.get(a)),
+						new ConstraintOperand(this.symbols.get(b)));
 				
 			}			
 		}

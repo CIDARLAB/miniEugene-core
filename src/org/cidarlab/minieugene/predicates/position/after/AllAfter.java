@@ -33,10 +33,10 @@
 package org.cidarlab.minieugene.predicates.position.after;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.position.PositioningConstraint;
 import org.cidarlab.minieugene.predicates.position.before.AllBefore;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -53,21 +53,21 @@ import JaCoP.core.Store;
  *
  */
 public class AllAfter 
-		extends BinaryPredicate 
-		implements PositioningPredicate {
+		extends BinaryConstraint 
+		implements PositioningConstraint {
 
 	private AllBefore before;
 	
-	public AllAfter(Component a, Component b) {
+	public AllAfter(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 		this.before = new AllBefore(b, a);
 	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getA().getName())
+		sb.append(this.getA())
 			.append(" ").append(RuleOperator.ALL_AFTER).append(" ")
-			.append(this.getB().getName());
+			.append(this.getB());
 
 		return sb.toString();
 	}

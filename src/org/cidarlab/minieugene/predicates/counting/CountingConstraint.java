@@ -30,8 +30,16 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.constants;
+package org.cidarlab.minieugene.predicates.counting;
 
-public enum PropertyType {
-	NUM, TXT, BOOLEAN, TXTLIST, NUMLIST
+
+
+/**
+ * 
+ * @author Ernst Oberortner
+ *
+ */
+public interface CountingConstraint {
+
+	public int getMinimumLength();
 }

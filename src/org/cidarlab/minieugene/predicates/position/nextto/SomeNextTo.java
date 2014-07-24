@@ -33,10 +33,10 @@
 package org.cidarlab.minieugene.predicates.position.nextto;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.BinaryPredicate;
-import org.cidarlab.minieugene.predicates.position.PositioningPredicate;
+import org.cidarlab.minieugene.predicates.BinaryConstraint;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
+import org.cidarlab.minieugene.predicates.position.PositioningConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
 import JaCoP.constraints.And;
@@ -54,10 +54,10 @@ import JaCoP.core.Store;
  * Definition:  
  */
 public class SomeNextTo 
-	extends BinaryPredicate 
-	implements PositioningPredicate {
+	extends BinaryConstraint 
+	implements PositioningConstraint {
 
-	public SomeNextTo(Component a, Component b) {
+	public SomeNextTo(ConstraintOperand a, ConstraintOperand b) {
 		super(a, b);
 	}
 
@@ -81,8 +81,8 @@ public class SomeNextTo
 	public PrimitiveConstraint toJaCoP(Store store, IntVar[][] variables) 
 				throws MiniEugeneException {
 
-		int a = (int)this.getA().getId();
-		int b = (int)this.getB().getId();
+		int a = (int)this.getA().getOperand().getId();
+		int b = (int)this.getB().getOperand().getId();
 		int N = variables[Variables.PART].length;
 		
 		int[] idxA = new int[N];
@@ -91,20 +91,25 @@ public class SomeNextTo
 			idxA[i] = i;
 		}
 
+		int va = this.getVariableIndex(this.getA());
+		int vb = this.getVariableIndex(this.getB());
+		
 		/*
 		 * a NEXTTO b
 		 */
-		PrimitiveConstraint containsA = contains(variables[Variables.PART], idxA, a);
+		PrimitiveConstraint containsA = contains(variables[va], idxA, a);
 //			PrimitiveConstraint containsB = contains(variables, idxB, b);
 		
 					
-		PrimitiveConstraint positionA = constraintIndices(variables[Variables.PART], idxA, a, b);
+		PrimitiveConstraint positionA = constraintIndices(variables[va], variables[vb], idxA, a, b);
 //			PrimitiveConstraint positionB = constraintIndices(variables, idxB, b, a);
 
 		/*
 		 * contains(a) => exists(b): position(a)==position(b-1) V position(a)==position(b+1)
 		 */
-		return new IfThen(containsA, positionA);			
+		return new IfThen(
+				containsA, 
+				positionA);			
 	}
 
 	/*
@@ -118,24 +123,24 @@ public class SomeNextTo
 		return new Or(pc);
 	}
 	
-	private static PrimitiveConstraint constraintIndices(IntVar[] variables, int[] indices, int a, int b) {
-		int N = variables.length;
+	private static PrimitiveConstraint constraintIndices(IntVar[] va, IntVar[] vb,int[] indices, int a, int b) {
+		int N = vb.length;
 		
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[indices.length];
 		for(int i=0; i<indices.length; i++) {
 			int idx = indices[i];
 			if(idx == 0) {
-				pc[0] = new And(new XeqC(variables[0], a), new XeqC(variables[1], b));								
+				pc[0] = new And(new XeqC(va[0], a), new XeqC(vb[1], b));								
 			} else if(idx == N-1) { 
 				pc[i] = new And(
-							new XeqC(variables[N-1], a), 
-							new XeqC(variables[N-2], b));				
+							new XeqC(va[N-1], a), 
+							new XeqC(vb[N-2], b));				
 			} else {
 				pc[i] = new And(
-							new XeqC(variables[idx], a), 
+							new XeqC(va[idx], a), 
 							new Or(
-								new XeqC(variables[idx-1], b),
-								new XeqC(variables[idx+1], b)));
+								new XeqC(vb[idx-1], b),
+								new XeqC(vb[idx+1], b)));
 			}
 		}
 

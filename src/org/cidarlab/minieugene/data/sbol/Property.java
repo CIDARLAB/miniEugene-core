@@ -30,13 +30,47 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.predicates.orientation;
+package org.cidarlab.minieugene.data.sbol;
+
+import org.cidarlab.minieugene.dom.NamedElement;
 
 
-/**
- * 
- * @author Ernst Oberortner
- *
- */
-public interface OrientationPredicate {
+public class Property 
+	extends NamedElement {
+
+	private static final long serialVersionUID = 8579155836433787367L;
+	protected PropertyType type;
+
+	public Property(String name, PropertyType type) {
+		super(name);
+		this.type = type;
+	}
+
+//	public Property(String name) {
+//		super(name);
+//		this.type = null;
+//	}
+//
+//	public void setType(String sType) {
+//		// sType must be one of the following:
+//		// num, num[], txt, txt[], or boolean
+//		if (null != sType
+//				&& ("num".equals(sType) || "num[]".equals(sType)
+//						|| "txt".equals(sType) || "txt[]".equals(sType) || "boolean"
+//							.equals(sType))) {
+//			this.type = sType;
+//		}
+//	}
+
+	public PropertyType getType() {
+		return this.type;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Property ").append(this.getName()).append("(")
+				.append(this.type).append(")");
+		return sb.toString();
+	}
 }

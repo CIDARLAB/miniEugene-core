@@ -40,9 +40,12 @@ import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.act.ACT;
+import org.cidarlab.minieugene.constants.PredefinedTypes;
+import org.cidarlab.minieugene.constants.PredefinedTypes.PartType;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.dom.ComponentType;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.dom.Identified;
+import org.cidarlab.minieugene.predicates.Constraint;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 
 
@@ -53,23 +56,18 @@ import org.cidarlab.minieugene.predicates.interaction.Interaction;
 public class SymbolTables {
 
 	/*
-	 * set of parts
-	 * 
-	 * we offer a predefined set of parts that
-	 * the user can extend on-demand
-	 * 
-	 * predefined_symbols := {p, r, g, t}
-	 * 
-	 * p ... Promoter
-	 * r ... RBS
-	 * g ... Gene
-	 * t ... Terminator
+	 * set of components
 	 */
-	private Map<Integer, Component> symbols;
-	private Set<Predicate> predicates;
-	private Set<Interaction> interactions;
+	private Map<String, Component> components;	
 	private Map<String, ComponentType> types;
 	
+	private Map<ComponentType, Set<Component>> typedComponents;
+	private Map<Integer, Identified> identifiers;
+	
+	private Set<Constraint> constraints;
+	private Set<Interaction> interactions;
+	
+
 	/*
 	 * the Abstract Composition Tree
 	 */
@@ -86,13 +84,33 @@ public class SymbolTables {
 		 * symbols
 		 * the predefined ones are: p, r, g, t
 		 */
-		this.symbols = new HashMap<Integer, Component>();
+		this.components = new HashMap<String, Component>();
 	
-		this.predicates = new HashSet<Predicate>();
-		
-		this.interactions = new HashSet<Interaction>();
-		
+		/*
+		 * 
+		 */
 		this.types = new HashMap<String, ComponentType>();
+		
+		/*
+		 * a helper map for a more efficient search of
+		 * components given a specific type
+		 */
+		this.typedComponents = new HashMap<ComponentType, Set<Component>>();
+		
+		/*
+		 * another helper map for a more efficient search
+		 */
+		this.identifiers = new HashMap<Integer, Identified>();
+		
+		/*
+		 * all specified constraints
+		 */
+		this.constraints = new HashSet<Constraint>();
+		
+		/*
+		 * facts on regulatory interactions
+		 */
+		this.interactions = new HashSet<Interaction>();
 		
 		/*
 		 * Abstract Composition Tree
@@ -101,24 +119,65 @@ public class SymbolTables {
 		
 	}
 	
+	/*---------------------------------------------------
+	 * Methods for component types 
+	 *---------------------------------------------------*/
+	public ComponentType putType(String t) {
+		
+		if(!this.types.containsKey(t)) {
+			this.types.put(t, new ComponentType(t));
+		}
+		
+		if(!this.typedComponents.containsKey(this.getType(t))) {
+			this.typedComponents.put(this.getType(t), new HashSet<Component>());
+		}
+		
+		if(!this.identifiers.containsKey(this.getType(t).getId())) {
+			this.identifiers.put(this.getType(t).getId(), this.getType(t));
+		}
+		
+		return this.getType(t);
+	}
+	
+	public boolean containsType(String t) {
+		return this.types.containsKey(t);
+	}
+	
+	public ComponentType getType(String t) {
+		return this.types.get(t);
+	}
+	
+	public int getTypesSize() {		
+		return this.types.keySet().size();
+	}
+	
+	/*---------------------------------------------------
+	 * Methods for components 
+	 *---------------------------------------------------*/
+	
 	/* 
 	 * put a symbol into the symbol tables
 	 */
-	public int put(String s) {
-		
-		return this.put(
-				new Component(s));
-	}
-	
-	public int put(Component s) {
-		if(!containsId(s.getId())) {
-			symbols.put(s.getId(), s);
+	public Component put(String s) {	
+		if(this.components.containsKey(s)) {
+			return this.components.get(s);
 		}
-		return s.getId();
+
+		/*
+		 * in this case, the user has NOT specified what s is
+		 * i.e. we assume that s is a component and we're trying to figure out its type 
+		 */
+		
+		return this.put(s, this.findTypeOf(s));		
 	}
 	
-	public void put(Predicate p) {
-		this.predicates.add(p);
+	private ComponentType findTypeOf(String s) {
+		
+		if(this.types.containsKey(s)) {
+			return this.types.get(s);
+		}
+		
+		return this.putType(PredefinedTypes.toPartType(s).toString());
 	}
 	
 	/**
@@ -129,22 +188,7 @@ public class SymbolTables {
 	 * @param s
 	 * @param t
 	 */
-	public Component put(String s, String t) {
-		/*
-		 * first, we check if the type exists
-		 */
-		ComponentType ct = null;
-		if(this.types.containsKey(t)) {
-			// if it exists, then 
-			// we get it from the types map
-			ct = this.types.get(ct);
-		} else {
-			// if it does not exist, then
-			// we put it into the types map
-			ct = new ComponentType(t);
-			this.types.put(t, ct);
-		}
-		
+	public Component put(String s, ComponentType ct) {
 		/*
 		 * then, we check if the component exists
 		 */
@@ -152,49 +196,106 @@ public class SymbolTables {
 		if(this.contains(s)) {
 			// if the component exists, then
 			// we need to update its type
-			c = this.get(this.getId(s));
-			c.setType(ct);
+			Identified id = this.get(this.getId(s));
+			if(null == id || !(id instanceof Component)) {
+				c = new Component(s, ct);
+			} else {
+				c = (Component)id;
+				c.setType(ct);
+			}
 		} else {
 			// if the component does not exists,
 			// then we create a new component with 
 			// the specified type
 			c = new Component(s, ct);
 		}
-		
-		// finally, we put the component into the 
+
+		// then, we put the component into the 
 		// symbols map
-		this.symbols.put(c.getId(), c);
+		this.put(c);
+		
+		// we also keep track of the components and their 
+		// types
+		if(!this.typedComponents.containsKey(ct)) {
+			this.typedComponents.put(ct, new HashSet<Component>());
+		}
+		this.typedComponents.get(ct).add(c);
 		
 		// lastly, we return a reference to the 
 		// create Component object
 		return c;
 	}
 		
-	public Set<Predicate> getPredicates() {
-		return this.predicates;
+	private void put(Component c) {
+
+		/*
+		 * first, also need to check if the type of the component
+		 * exists already
+		 */
+		
+		if(!this.types.containsKey(c.getType())) {
+			this.putType(c.getType().getName());
+		}
+		
+		if(!this.components.containsKey(c.getName())) {
+			this.components.put(c.getName(), c);
+		}
+		
+		if(!this.identifiers.containsKey(c.getId())) {
+			this.identifiers.put(c.getId(), c);
+		}
+	}
+	
+
+	public void put(Constraint p) {
+		this.constraints.add(p);
+	}
+	
+	public Set<Constraint> getConstraints() {
+		return this.constraints;
 	}
 	
 	public boolean containsId(int i) {
-		return this.symbols.containsKey(i);
+		return this.components.containsKey(i);
 	}
 	
 	public boolean contains(String s) {
-		return this.symbols.containsKey(new Component(s).getId());
+		return this.components.containsKey(s) || this.types.containsKey(s);
 	}
 	
-	public Component get(int i) {
-		return this.symbols.get(i);
+	public Identified get(int id) {
+		return this.identifiers.get(id);
+	}
+	
+	public Identified get(String s) {
+		if(this.types.containsKey(s)) {
+			return this.types.get(s);
+		} else if(this.components.containsKey(s)) {
+			return this.components.get(s);
+		}
+		
+		/*
+		 * if s is not defined yet, then
+		 * we define it here as a component 
+		 */
+		this.put(s);
+
+		return this.get(s);
 	}
 	
 	public int[] getIds() {
-		Integer[] ids = new Integer[this.symbols.keySet().size()];
-		this.symbols.keySet().toArray(ids);
+		Integer[] ids = new Integer[this.components.keySet().size()];
+		this.components.keySet().toArray(ids);
 		return ArrayUtils.toPrimitive(ids);
 	}
 	
-	public Component[] getSymbols() {
-		Component[] s = new Component[this.symbols.keySet().size()];
-		return this.symbols.values().toArray(s);
+	public Component[] getComponents() {
+		Component[] s = new Component[this.components.keySet().size()];
+		return this.components.values().toArray(s);
+	}
+	
+	public Set<Component> getComponents(ComponentType ct) {
+		return this.typedComponents.get(ct);
 	}
 	
 	public int getId(String s) {
@@ -202,59 +303,56 @@ public class SymbolTables {
 		/*
 		 * get b's id from the symbol
 		 */
-
-		if(this.symbols.containsValue(new Component(s))) {
-			if(this.contains(s)) {
-				for(Integer i : this.symbols.keySet()) {
-					Component symbol = this.symbols.get(i);
-					if(symbol.getName().equalsIgnoreCase(s)) {
-						return i.intValue();
-					}
-				}
-			}
+		if(this.components.containsKey(s)) {
+			return this.components.get(s).getId();
+		} else if(this.types.containsKey(s)) {
+			return this.types.get(s).getId();
 		}
-
-//		System.out.println("NEW SYMBOL -> "+new Symbol(s).toString());
 		
-		/*
-		 * if the symbol does not exist, 
-		 * then add it to the symbol tables
-		 */
-		return this.put(new Component(s));
+		return -1;
 	}
 	
 	public void print() {
-		System.out.println("**** SYMBOLS ****");
-		for(int i : this.symbols.keySet()) {
-			System.out.println(i+" -> "+this.symbols.get(i));
+		
+		for(ComponentType ct : this.typedComponents.keySet()) {
+			System.out.println("Type "+ct+" -> "+this.typedComponents.get(ct));
 		}
+		
+//		System.out.println("**** TYPES ****");
+//		for(String s : this.types.keySet()) {
+//			System.out.println(s+" -> "+this.types.get(s));
+//		}
+//		System.out.println("**** COMPONENTS ****");
+//		for(String s : this.components.keySet()) {
+//			System.out.println(s+" -> "+this.components.get(s));
+//		}
 		System.out.println("**** PREDICATES ****");
-		Iterator<Predicate> it = this.predicates.iterator();
+		Iterator<Constraint> it = this.constraints.iterator();
 		while(it.hasNext()) {
 			System.out.println(it.next());
 		}
 	}
 	
-	/*
-	 * methods to change the directionality of all symbols 
-	 * or of a specific symbol
-	 */
-	public void allReverse() {
-		for(int i : this.symbols.keySet()) {
-			this.symbols.get(i).setForward(false);
-		}
-	}
-	public void reverse(int a) {
-		this.symbols.get(a).setForward(false);
-	}
-	public void allForward() {
-		for(int i : this.symbols.keySet()) {
-			this.symbols.get(i).setForward(true);
-		}
-	}
-	public void forward(int a) {
-		this.symbols.get(a).setForward(true);
-	}
+//	/*
+//	 * methods to change the directionality of all symbols 
+//	 * or of a specific symbol
+//	 */
+//	public void allReverse() {
+//		for(int i : this.symbols.keySet()) {
+//			this.symbols.get(i).setForward(false);
+//		}
+//	}
+//	public void reverse(int a) {
+//		this.symbols.get(a).setForward(false);
+//	}
+//	public void allForward() {
+//		for(int i : this.symbols.keySet()) {
+//			this.symbols.get(i).setForward(true);
+//		}
+//	}
+//	public void forward(int a) {
+//		this.symbols.get(a).setForward(true);
+//	}
 
 	
 	/*
@@ -291,12 +389,12 @@ public class SymbolTables {
 			this.interactions.clear();
 		}
 		
-		if(null != this.predicates) {
-			this.predicates.clear();
+		if(null != this.constraints) {
+			this.constraints.clear();
 		}
 		
-		if(null != this.symbols) {
-			this.symbols.clear();
+		if(null != this.components) {
+			this.components.clear();
 		}
 	}
 }

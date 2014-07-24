@@ -32,12 +32,13 @@
 
 package org.cidarlab.minieugene.constants;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class PartTypesTable {
+public class PredefinedTypes {
 	
 	public enum PartType {
 		cp,   // Constituitive Promoter
@@ -51,7 +52,8 @@ public class PartTypesTable {
 		g,    // Gene
 		t,    // Terminator 
 		is,   // Invertase Site
-		sp    // Spacer
+		sp,   // Spacer
+		unk   // Unknown Type
 	}
 	
 	private static Map<PartType, String> parttypes;
@@ -60,7 +62,7 @@ public class PartTypesTable {
 	 * in the pigeonMap we map the Eugene part types 
 	 * onto the corresponding pigeon letter
 	 */
-	private static Map<PartTypesTable.PartType, Character> pigeonMap;
+	private static Map<PredefinedTypes.PartType, Character> pigeonMap;
 
 	public static void load() {
 		
@@ -87,6 +89,21 @@ public class PartTypesTable {
 		
 		parttypes.put(PartType.is, "Invertase Site");		
 		parttypes.put(PartType.sp, "Spacer");		
+
+		parttypes.put(PartType.unk, "Unknown Type");		
+
+	}
+	
+	public static boolean isPredefined(String t) {
+		if(null == parttypes) {
+			load();
+		}
+		
+		try {
+			return PartType.valueOf(t) != null ? true : false;
+		} catch(Exception e) {
+			return false;
+		}
 	}
 	
 	public static String toName(PartType pt) {
@@ -103,8 +120,9 @@ public class PartTypesTable {
 	}
 
 	public static PartType toPartType(String name) {
+
 		if(name == null || name.length() < 1) {
-			return null;
+			return PartType.unk;
 		}
 
 		if(name.length() > 1) {
@@ -119,7 +137,7 @@ public class PartTypesTable {
 			return PartType.valueOf(first);
 		} catch(java.lang.IllegalArgumentException iae) {}
 		
-		return null;
+		return PartType.unk;
 	}
 	
 	
@@ -162,23 +180,25 @@ public class PartTypesTable {
 		 * key   ... Eugene type
 		 * value ... Pigeon letter 
 		 */
-		pigeonMap = new HashMap<PartTypesTable.PartType, Character>();
+		pigeonMap = new HashMap<PredefinedTypes.PartType, Character>();
 		
-		pigeonMap.put(PartTypesTable.PartType.cp, 'p');
-		pigeonMap.put(PartTypesTable.PartType.ip, 'p');
-		pigeonMap.put(PartTypesTable.PartType.rp, 'p');
-		pigeonMap.put(PartTypesTable.PartType.p, 'p');
+		pigeonMap.put(PredefinedTypes.PartType.cp, 'p');
+		pigeonMap.put(PredefinedTypes.PartType.ip, 'p');
+		pigeonMap.put(PredefinedTypes.PartType.rp, 'p');
+		pigeonMap.put(PredefinedTypes.PartType.p, 'p');
 		
-		pigeonMap.put(PartTypesTable.PartType.r, 'r');
+		pigeonMap.put(PredefinedTypes.PartType.r, 'r');
 		
-		pigeonMap.put(PartTypesTable.PartType.fc, 'c');
-		pigeonMap.put(PartTypesTable.PartType.rc, 'c');
-		pigeonMap.put(PartTypesTable.PartType.c, 'c');
-		pigeonMap.put(PartTypesTable.PartType.g, 'g');
+		pigeonMap.put(PredefinedTypes.PartType.fc, 'c');
+		pigeonMap.put(PredefinedTypes.PartType.rc, 'c');
+		pigeonMap.put(PredefinedTypes.PartType.c, 'c');
+		pigeonMap.put(PredefinedTypes.PartType.g, 'g');
 
-		pigeonMap.put(PartTypesTable.PartType.t, 't');
-		pigeonMap.put(PartTypesTable.PartType.is, '>');
-		pigeonMap.put(PartTypesTable.PartType.sp, 's');
+		pigeonMap.put(PredefinedTypes.PartType.t, 't');
+		pigeonMap.put(PredefinedTypes.PartType.is, '>');
+		pigeonMap.put(PredefinedTypes.PartType.sp, 's');
+		
+		pigeonMap.put(PredefinedTypes.PartType.unk, '?');
 	}
 	
 }

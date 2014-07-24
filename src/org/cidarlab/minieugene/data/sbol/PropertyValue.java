@@ -30,13 +30,13 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.dom;
+package org.cidarlab.minieugene.data.sbol;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.cidarlab.minieugene.constants.PropertyType;
+import org.cidarlab.minieugene.dom.NamedElement;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 
 

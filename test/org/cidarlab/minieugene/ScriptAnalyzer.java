@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cidarlab.minieugene.predicates.LogicalAnd;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 import org.cidarlab.minieugene.util.FileUtil;
 
 public class ScriptAnalyzer {
@@ -104,7 +104,7 @@ public class ScriptAnalyzer {
 	}
 	
 	private void analyze(LogicalAnd la) {
-		for(Predicate p : la.getPredicates()) {
+		for(Constraint p : la.getConstraints()) {
 			incrementCounter(p.getOperator());
 		}
 	}

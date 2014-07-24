@@ -356,7 +356,7 @@ public class SolutionExporter {
 		} catch(Exception e) {
 			throw new MiniEugeneException("Cannot serialize to "+filename+"!");
 		}
-	}
+	 }
 	 
 	 private String toEugeneInteraction(Interaction ia) {
 			StringBuilder sb = new StringBuilder();
@@ -368,39 +368,39 @@ public class SolutionExporter {
 			} 
 			
 			return sb.toString();
-		}
+	}
 		
-		private String toRepresses(Interaction ia) {
-			String repressee = null;
-			String repressor = null;
-			for(Participation p : ia.getParticipations()) {
-				if(p.getRole() == Participation.Role.REPRESSOR ) {
-					repressor = p.getParticipant().getName();
-				} else if(p.getRole() == Participation.Role.REPRESSEE ) {
-					repressee = p.getParticipant().getName();
-				}
+	private String toRepresses(Interaction ia) {
+		String repressee = null;
+		String repressor = null;
+		for(Participation p : ia.getParticipations()) {
+			if(p.getRole() == Participation.Role.REPRESSOR ) {
+				repressor = p.getParticipant().getName();
+			} else if(p.getRole() == Participation.Role.REPRESSEE ) {
+				repressee = p.getParticipant().getName();
 			}
-
-			StringBuilder sb = new StringBuilder();
-			sb.append(repressor).append(" ").append(ia.getType()).append(" ").append(repressee).append(".");
-			return sb.toString();
 		}
 
-		private String toInduces(Interaction ia) {
-			String inducee = null;
-			String inducer = null;
-			for(Participation p : ia.getParticipations()) {
-				if(p.getRole() == Participation.Role.INDUCER ) {
-					inducer = p.getParticipant().getName();
-				} else if(p.getRole() == Participation.Role.INDUCEE ) {
-					inducee = p.getParticipant().getName();
-				}
-			}
+		StringBuilder sb = new StringBuilder();
+		sb.append(repressor).append(" ").append(ia.getType()).append(" ").append(repressee).append(";");
+		return sb.toString();
+	}
 
-			StringBuilder sb = new StringBuilder();
-			sb.append(inducer).append(" ").append(ia.getType()).append(" ").append(inducee).append(".");
-			return sb.toString();
+	private String toInduces(Interaction ia) {
+		String inducee = null;
+		String inducer = null;
+		for(Participation p : ia.getParticipations()) {
+			if(p.getRole() == Participation.Role.INDUCER ) {
+				inducer = p.getParticipant().getName();
+			} else if(p.getRole() == Participation.Role.INDUCEE ) {
+				inducee = p.getParticipant().getName();
+			}
 		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(inducer).append(" ").append(ia.getType()).append(" ").append(inducee).append(";");
+		return sb.toString();
+	}
 
 	 /**
 	  * 

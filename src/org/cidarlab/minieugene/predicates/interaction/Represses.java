@@ -32,8 +32,8 @@
 
 package org.cidarlab.minieugene.predicates.interaction;
 
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
+import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.interaction.Participation.Role;
 
 import JaCoP.constraints.PrimitiveConstraint;
@@ -43,11 +43,11 @@ import JaCoP.core.Store;
 public class Represses 
 	extends Interaction {
 	
-	public Represses(Component repressor, Component repressee) {
+	public Represses(ConstraintOperand repressor, ConstraintOperand repressee) {
 		super(repressor, InteractionType.REPRESSES, repressee);
 
-		this.getParticipations().add(new Participation(Role.REPRESSOR, repressor));
-		this.getParticipations().add(new Participation(Role.REPRESSEE, repressee));
+		this.getParticipations().add(new Participation(Role.REPRESSOR, repressor.getOperand()));
+		this.getParticipations().add(new Participation(Role.REPRESSEE, repressee.getOperand()));
 	}
 		
 

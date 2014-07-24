@@ -38,14 +38,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.ACTException;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.LogicalOr;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 import org.cidarlab.minieugene.predicates.counting.BinaryContains;
 import org.cidarlab.minieugene.predicates.counting.Contains;
-import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
+import org.cidarlab.minieugene.predicates.counting.CountingConstraint;
 
 public class ACT {
 
@@ -55,32 +55,32 @@ public class ACT {
 	 * key   ... node
 	 * value ... edges to the node's successors 
 	 */
-	private Map<Component, ArrayList<Component>> dg;
+	private Map<Identified, ArrayList<Identified>> dg;
 	
 	/**
 	 * cycles contains a list of components 
 	 * that cause a cycle
 	 */
-	private List<Component> cycles;
+	private List<Identified> cycles;
 	
 	public ACT() {
 		//this.root = null;
-		this.dg = new HashMap<Component, ArrayList<Component>>();
+		this.dg = new HashMap<Identified, ArrayList<Identified>>();
 	}
 	
-	public void constructACT(List<Predicate> predicates) 
+	public void constructACT(List<Constraint> predicates) 
 			throws MiniEugeneException {
 		
 		// first, we build a list of all
 		// binary contains constraints
-		List<CountingPredicate> lst = new ArrayList<CountingPredicate>();
-		for(Predicate p : predicates) {
+		List<CountingConstraint> lst = new ArrayList<CountingConstraint>();
+		for(Constraint p : predicates) {
 			if(p instanceof BinaryContains || p instanceof Contains) {
-				lst.add((CountingPredicate)p);
+				lst.add((CountingConstraint)p);
 			} else if(p instanceof LogicalOr) {
-				for(Predicate subp : ((LogicalOr)p).getPredicates()) {
+				for(Constraint subp : ((LogicalOr)p).getConstraints()) {
 					if(subp instanceof BinaryContains || p instanceof Contains) {
-						lst.add((CountingPredicate)subp);
+						lst.add((CountingConstraint)subp);
 					}
 				}
 			}
@@ -104,39 +104,39 @@ public class ACT {
 		
 	}
 	
-	private List<Component> roots;
+	private List<Identified> roots;
 	
-	public List<Component> getRoots() {
+	public List<Identified> getRoots() {
 		return this.roots;
 	}
 	
-	private void buildTree(List<CountingPredicate> lst) 
+	private void buildTree(List<CountingConstraint> lst) 
 			throws MiniEugeneException {
 		
-		this.roots = new ArrayList<Component>();
+		this.roots = new ArrayList<Identified>();
 		
 		/*
 		 * first, we build the DG
 		 * based on the binary and unary CONTAINS predicates
 		 */
-		for(CountingPredicate cp : lst) {
+		for(CountingConstraint cp : lst) {
 			
 			if(cp instanceof BinaryContains) {
 				BinaryContains bc = (BinaryContains)cp;
 
-				ArrayList<Component> childs = new ArrayList<Component>();
+				ArrayList<Identified> childs = new ArrayList<Identified>();
 				if(this.dg.containsKey(bc.getA())) {
-					childs = this.dg.get(bc.getA());
-					childs.add(bc.getB());
+					childs = this.dg.get(bc.getA().getOperand());
+					childs.add(bc.getB().getOperand());
 				} else {
-					childs.add(bc.getB());	
-					roots.add(bc.getA());
+					childs.add(bc.getB().getOperand());	
+					roots.add(bc.getA().getOperand());
 				}
 				
-				this.dg.put(bc.getA(), childs);
+				this.dg.put(bc.getA().getOperand(), childs);
 				
 				if(!this.dg.containsKey(bc.getB())) {
-					this.dg.put(bc.getB(), new ArrayList<Component>());
+					this.dg.put(bc.getB().getOperand(), new ArrayList<Identified>());
 				}
 
 				// B will not be a root anymore
@@ -146,8 +146,8 @@ public class ACT {
 			} else if(cp instanceof Contains) {
 				Contains c = (Contains)cp;
 				if(!this.dg.containsKey(c.getA())) {
-					this.dg.put(c.getA(), new ArrayList<Component>());
-					roots.add(c.getA());
+					this.dg.put(c.getA().getOperand(), new ArrayList<Identified>());
+					roots.add(c.getA().getOperand());
 				} else if(this.roots.contains(c.getA())) {
 					this.roots.remove(c.getA());
 				}
@@ -157,13 +157,13 @@ public class ACT {
 
 	}
 	
-	public List<Component> sortTree() 
+	public List<Identified> sortTree() 
 			throws ACTException {
 		return TSort.tSort(this.dg);
 	}
 	
 	public void printTree() {
-		for(Component c : this.dg.keySet()) {
+		for(Identified c : this.dg.keySet()) {
 			System.out.print(c.getName()+" -> {");
 			for(int i=0; i<this.dg.get(c).size(); i++) {
 				System.out.print(this.dg.get(c).get(i).getName()+", ");
@@ -176,7 +176,7 @@ public class ACT {
 	 * 
 	 * @return
 	 */
-	public Map<Component, ArrayList<Component>> getACT() {
+	public Map<Identified, ArrayList<Identified>> getACT() {
 		return this.dg;
 	}
 	
@@ -201,18 +201,18 @@ public class ACT {
 		// in order to red color the involved nodes
 		if(null != this.cycles) {
 			sb.append("node [color=red];").append(NEWLINE);
-			for(Component c : this.cycles) {
+			for(Identified c : this.cycles) {
 				sb.append(c.getName()).append(";").append(NEWLINE);
 			}
 			sb.append("edge [color=red];").append(NEWLINE);
 					
 		}
 		
-		Iterator<Component> it = this.dg.keySet().iterator();
+		Iterator<Identified> it = this.dg.keySet().iterator();
 		while(it.hasNext()) {
-			Component source = it.next();
+			Identified source = it.next();
 			if(!this.dg.get(source).isEmpty()) {
-				for(Component child : this.dg.get(source)) {
+				for(Identified child : this.dg.get(source)) {
 					sb.append(source.getName()).append(" -> ");
 					sb.append(child.getName()).append(";").append(NEWLINE);
 				}

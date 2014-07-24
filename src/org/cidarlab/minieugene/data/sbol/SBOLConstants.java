@@ -30,46 +30,16 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.dom;
+package org.cidarlab.minieugene.data.sbol;
 
-import org.cidarlab.minieugene.constants.PropertyType;
+public class SBOLConstants {
 
-public class Property 
-	extends NamedElement {
+	public static final String SEQUENCE_PROPERTY = "sequence";
+	public static final String DISPLAY_ID_PROPERTY = "displayId";
+	public static final String URI_PROPERTY = "URI";
+	public static final String NAME_PROPERTY = "name";
+	public static final String DESCRIPTION_PROPERTY = "description";
+	public static final String TYPE_PROPERTY = "type";
 
-	private static final long serialVersionUID = 8579155836433787367L;
-	protected PropertyType type;
-
-	public Property(String name, PropertyType type) {
-		super(name);
-		this.type = type;
-	}
-
-//	public Property(String name) {
-//		super(name);
-//		this.type = null;
-//	}
-//
-//	public void setType(String sType) {
-//		// sType must be one of the following:
-//		// num, num[], txt, txt[], or boolean
-//		if (null != sType
-//				&& ("num".equals(sType) || "num[]".equals(sType)
-//						|| "txt".equals(sType) || "txt[]".equals(sType) || "boolean"
-//							.equals(sType))) {
-//			this.type = sType;
-//		}
-//	}
-
-	public PropertyType getType() {
-		return this.type;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Property ").append(this.getName()).append("(")
-				.append(this.type).append(")");
-		return sb.toString();
-	}
+	public static final String SBOL_PART_TYPE = "SBOLPartType";
 }

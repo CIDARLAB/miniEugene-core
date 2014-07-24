@@ -30,16 +30,56 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.cidarlab.minieugene.constants;
+package org.cidarlab.minieugene.predicates;
 
-public class SBOLConstants {
 
-	public static final String SEQUENCE_PROPERTY = "sequence";
-	public static final String DISPLAY_ID_PROPERTY = "displayId";
-	public static final String URI_PROPERTY = "URI";
-	public static final String NAME_PROPERTY = "name";
-	public static final String DESCRIPTION_PROPERTY = "description";
-	public static final String TYPE_PROPERTY = "type";
-
-	public static final String SBOL_PART_TYPE = "SBOLPartType";
+/**
+ * Binary predicates have two operands 
+ * left-hand-side (LHS) and right-hand-side (RHS) 
+ * 
+ * Examples of binary predicates are
+ * AFTER, BEFORE, NEXTTO, MATCH, WITH, THEN, MORETHAN, EXACTLY
+ * 
+ * @author Ernst Oberortner
+ */
+/* 
+ */
+public abstract class BinaryConstraint 
+	extends UnaryConstraint {
+	
+	private ConstraintOperand b;
+	private int num;
+	
+	/**
+	 * 
+	 * @param lhs
+	 * @param rhs
+	 */
+	public BinaryConstraint(ConstraintOperand a, ConstraintOperand b) {
+		super(a);
+		this.b = b;
+		this.num = -1;
+	}
+	
+	public BinaryConstraint(ConstraintOperand a, int num) {
+		super(a);
+		this.b = null;
+		this.num = num;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ConstraintOperand getB() {
+		return this.b;
+	}	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNum() {
+		return this.num;
+	}
 }

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.counting.CountingPredicate;
+import org.cidarlab.minieugene.predicates.counting.CountingConstraint;
 
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.core.IntVar;
@@ -49,11 +49,11 @@ public class LogicalAnd
 	private int maxN;
 	
 	public LogicalAnd() {
-		super(LogicalOperator.AND, new ArrayList<Predicate>());
+		super(LogicalOperator.AND, new ArrayList<Constraint>());
 		this.setMinN(-1);
 	}
 	
-	public LogicalAnd(List<Predicate> predicates) {
+	public LogicalAnd(List<Constraint> predicates) {
 		super(LogicalOperator.AND, predicates);
 		this.setMinN(-1);
 	}
@@ -87,14 +87,14 @@ public class LogicalAnd
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		int i=0;
-		for(Predicate predicate : this.getPredicates()) {
+		for(Constraint predicate : this.getConstraints()) {
 			if(predicate instanceof LogicalPredicate) {
 				sb.append(" ( ").append(predicate).append(" ) "); 
 			} else {
 				sb.append(predicate);
 			}
 			
-			if((++i) < this.getPredicates().size()) {
+			if((++i) < this.getConstraints().size()) {
 				sb.append(" /\\ ");
 			}
 		}
@@ -118,11 +118,11 @@ public class LogicalAnd
 	@Override
 	public int getMinimumLength() {
 		int minN = 0;
-		for(Predicate p : this.getPredicates()) {
+		for(Constraint p : this.getConstraints()) {
 			if(p instanceof LogicalPredicate) {
 				minN += ((LogicalPredicate)p).getMinimumLength();
-			} else if(p instanceof CountingPredicate) {
-				minN += ((CountingPredicate)p).getMinimumLength();
+			} else if(p instanceof CountingConstraint) {
+				minN += ((CountingConstraint)p).getMinimumLength();
 			}
 		}
 		return minN;
@@ -131,7 +131,7 @@ public class LogicalAnd
 	@Override
 	public int getNumberOfRules() {
 		int n = 0;
-		for(Predicate p : this.getPredicates()) {
+		for(Constraint p : this.getConstraints()) {
 			if(p instanceof LogicalPredicate) {
 				n += ((LogicalPredicate)p).getNumberOfRules();
 			} else {

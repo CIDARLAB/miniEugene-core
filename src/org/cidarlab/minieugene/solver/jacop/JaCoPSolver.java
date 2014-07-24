@@ -39,9 +39,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.ComponentType;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.LogicalAnd;
-import org.cidarlab.minieugene.predicates.Predicate;
+import org.cidarlab.minieugene.predicates.Constraint;
 import org.cidarlab.minieugene.predicates.interaction.Induces;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.interaction.Represses;
@@ -49,7 +51,6 @@ import org.cidarlab.minieugene.predicates.templating.Sequence;
 import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
-import JaCoP.constraints.Alldifferent;
 import JaCoP.constraints.And;
 import JaCoP.constraints.ExtensionalSupportVA;
 import JaCoP.constraints.IfThen;
@@ -61,11 +62,15 @@ import JaCoP.core.IntVar;
 import JaCoP.core.Store;
 import JaCoP.core.ValueEnumeration;
 import JaCoP.search.DepthFirstSearch;
+import JaCoP.search.IndomainMin;
 import JaCoP.search.IndomainSimpleRandom;
 import JaCoP.search.MostConstrainedDynamic;
 import JaCoP.search.Search;
 import JaCoP.search.SelectChoicePoint;
 import JaCoP.search.SimpleMatrixSelect;
+import JaCoP.search.SimpleSelect;
+import JaCoP.search.SmallestDomain;
+import JaCoP.search.SmallestMin;
 
 public class JaCoPSolver 
 		implements Solver {
@@ -138,23 +143,23 @@ public class JaCoPSolver
 	}
 	
 
-	/**
-	 * 
-	 * @param components   ... the components of the design
-	 * @param N            ... the length of the design
-	 * @return	
-	 */
-	private IntVar[] model_positioning(Component[] components, int N) {
-		IntVar[] variables = new IntVar[components.length];
-		for(int i=0; i<components.length; i++) {
-			Component c = components[i];
-			variables[i] = new IntVar(store, c.getName()+".position", 0, N-1);
-		}
-		store.impose(new Alldifferent(variables));
-		return variables;
-	}
+//	/**
+//	 * 
+//	 * @param components   ... the components of the design
+//	 * @param N            ... the length of the design
+//	 * @return	
+//	 */
+//	private IntVar[] model_positioning(Component[] components, int N) {
+//		IntVar[] variables = new IntVar[components.length];
+//		for(int i=0; i<components.length; i++) {
+//			Component c = components[i];
+//			variables[i] = new IntVar(store, c.getName()+".position", 0, N-1);
+//		}
+//		store.impose(new Alldifferent(variables));
+//		return variables;
+//	}
 	
-	private IntVar[][] model(Component[] symbols) 
+	private IntVar[][] model(Component[] components) 
 			throws MiniEugeneException {
 
 		IntVar[][] variables = new IntVar[3][N];
@@ -184,18 +189,55 @@ public class JaCoPSolver
 			variables[Variables.TYPE][i] = new IntVar(store, "T"+i);
 			variables[Variables.ORIENTATION][i] = new IntVar(store, "O"+i);
 			
-			for(int j=0; j<symbols.length; j++) {						
-				variables[Variables.PART][i].addDom(symbols[j].getId(), symbols[j].getId());
-				variables[Variables.TYPE][i].addDom(symbols[j].getTypeId(), symbols[j].getTypeId());
-			
+			/*
+			 *  PART and TYPE IDs 
+			 */
+			Set<Integer> typeIds = new HashSet<Integer>();
+			for(int j=0; j<components.length; j++) {						
+				variables[Variables.PART][i].addDom(components[j].getId(), components[j].getId());
+				variables[Variables.TYPE][i].addDom(components[j].getTypeId(), components[j].getTypeId());
+
+				// here we collect the type ids
+				// to impose constraints on type-component relations later
+				typeIds.add(components[j].getTypeId());
+
 				/*
 				 * we also impose constraints that part and type must match
 				 * so we avoid various permutations were the part and type do not match
+				 * 
+				 * Example:
+				 * IF part == "p1" THEN type = "type_of_p1"
 				 */
 				store.impose(new IfThen(
-								new XeqC(variables[Variables.PART][i], symbols[j].getId()),
-								new XeqC(variables[Variables.TYPE][i], symbols[j].getTypeId())));
+								new XeqC(variables[Variables.PART][i], components[j].getId()),
+								new XeqC(variables[Variables.TYPE][i], components[j].getTypeId())));
 			}
+			
+			/*
+			 * We also need to impose that types imply specific parts
+			 * 
+			 * Example: 
+			 * IF type == "T" THEN part = "instance1_of_T" \/ part = "instance2_of_T" \/ ... \/ part = "instanceK_of_T"
+			 */			
+			for(int j=0; j<components.length; j++) {
+				
+				for(Integer typeId : typeIds) {
+
+					Set<Component> typeComponents = this.symbols.getComponents(
+							(ComponentType)this.symbols.get(typeId));
+					
+					PrimitiveConstraint[] pcTypes = new PrimitiveConstraint[typeComponents.size()];
+					int k = 0;
+					for(Component c : typeComponents) {
+						pcTypes[k++] = new IfThen(
+								new XeqC(variables[Variables.TYPE][i], typeId),
+								new XeqC(variables[Variables.PART][i], c.getId()));
+					}
+					store.impose(new Or(pcTypes));
+				}
+			}
+
+
 			
 			variables[Variables.ORIENTATION][i].addDom(-1, -1);
 			variables[Variables.ORIENTATION][i].addDom( 1,  1);
@@ -212,7 +254,7 @@ public class JaCoPSolver
 	public void imposeConstraints(IntVar[][] variables, LogicalAnd and) 
 			throws MiniEugeneException {
 		
-		for(Predicate predicate : and.getPredicates()) {
+		for(Constraint constraint : and.getConstraints()) {
 
 			try {
 				
@@ -221,25 +263,24 @@ public class JaCoPSolver
 				 * then we store the relation in the symbol tables 
 				 * (for later visualization)
 				 */
-				if(predicate instanceof Represses || 
-						predicate instanceof Induces) {
+				if(constraint instanceof Induces || constraint instanceof Represses) {
 					this.symbols.putInteraction(
-							(Interaction)predicate);
+							(Interaction)constraint);
 				} 
 				
-				PrimitiveConstraint constraint = predicate.toJaCoP(
-						this.store, variables);
+				PrimitiveConstraint pc = 
+						constraint.toJaCoP(this.store, variables);
 
-				if(constraint != null) {
-					if(constraint instanceof And) {
+				if(pc != null) {
+					if(pc instanceof And) {
 
 						// option 1
-						for(PrimitiveConstraint pc : ((And)constraint).listOfC) {
-							store.impose(pc);
+						for(PrimitiveConstraint c : ((And)pc).listOfC) {
+							store.impose(c);
 						}
 
 					} else {
-						store.impose(constraint);
+						store.impose(pc);
 					}
 				}
 
@@ -250,134 +291,6 @@ public class JaCoPSolver
 		}
 	}
 	
-//    private Domain[][] optSearch(IntVar[][] variables, IntVar[] position_variables, int NR_OF_SOLUTIONS) 
-//    		throws EugeneException {
-//    	
-//		boolean result = store.consistency();
-//		if(!result) {
-//			throw new EugeneException("Inconsistent constraints!");
-//		}
-//		
-//		long T1, T2, T;
-//		T1 = System.currentTimeMillis();
-//		
-//		
-//		// first, let's search for the orientations
-//		Search<IntVar> labelOrientation = new DepthFirstSearch<IntVar>();
-//		SelectChoicePoint<IntVar> selectOrientation = 
-//			new SimpleSelect<IntVar>(variables[Variables.ORIENTATION], 
-//					new SmallestMin<IntVar>(), 
-//					new SmallestDomain<IntVar>(),
-//					new IndomainMin<IntVar>());
-//		
-//		labelOrientation.setSelectChoicePoint(selectOrientation);
-//		labelOrientation.setPrintInfo(false);
-//
-////		// then, let's search for the positions
-////		Search<IntVar> labelPositioning = new DepthFirstSearch<IntVar>();
-////		SelectChoicePoint<IntVar> selectPositioning = 
-////			new SimpleSelect<IntVar>(
-////					position_variables, 
-////					new SmallestMin<IntVar>(), 
-////					new SmallestDomain<IntVar>(),
-////					new IndomainMin<IntVar>());
-////		
-////		labelPositioning.setSelectChoicePoint(selectPositioning);
-////		labelPositioning.setPrintInfo(false);
-//
-//		// finally, let's search for the parts
-//		Search<IntVar> labelParts = new DepthFirstSearch<IntVar>();
-//		SelectChoicePoint<IntVar> selectParts = 
-//			new SimpleSelect<IntVar>(
-//					variables[Variables.PART], 
-//					new SmallestMin<IntVar>(), 
-//					new SmallestDomain<IntVar>(),
-//					new IndomainMin<IntVar>());
-//
-//		labelParts.addChildSearch(labelOrientation);
-////		labelParts.addChildSearch(labelPositioning);
-//		
-//        if(NR_OF_SOLUTIONS != (-1)) {
-//        	labelParts.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
-//        } else {
-//        	labelParts.getSolutionListener().searchAll(true);   
-//        }
-//  
-//        labelParts.setPrintInfo(false);
-//        labelParts.getSolutionListener().recordSolutions(true);
-//                
-//		try {
-//			/*
-//			 * search the solutions
-//			 */
-//			result = labelParts.labeling(store, selectParts);
-//
-//		} catch(OutOfMemoryError oome) {
-//			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
-//		} catch(Exception e) {
-//			throw new EugeneException(e.toString());
-//		}
-//
-//		T2 = System.currentTimeMillis();
-//		T = T2 - T1;
-//
-//		String s = String.format("%.2f", (float)T/1000);
-//		System.out.println("\n\t*** Solution Finding Time = "+ s + " s");
-//		
-//		/*
-//		 * return the solutions
-//		 */
-////		System.out.println("*** ORIENTATIONS ***");
-////		labelOrientation.getSolutionListener().printAllSolutions();
-////		System.out.println("*** PARTS ***");
-////		labelParts.getSolutionListener().printAllSolutions();
-//		return labelParts.getSolutionListener().getSolutions();
-//    }
-
-//    private Domain[][] search(IntVar[] variables) 
-//    		throws EugeneException {
-//		
-//		long T1, T2, T;
-//		T1 = System.currentTimeMillis();
-//
-//		Search<IntVar> labelPositions = new DepthFirstSearch<IntVar>();
-//		SelectChoicePoint<IntVar> selectParts = 
-//			new SimpleSelect<IntVar>(
-//					variables, 
-//					new SmallestMin<IntVar>(), 
-//					new SmallestDomain<IntVar>(),
-//					new IndomainMin<IntVar>());
-//
-//		labelPositions.getSolutionListener().searchAll(true);     
-//		labelPositions.setPrintInfo(true);
-//		labelPositions.getSolutionListener().recordSolutions(true);
-//                
-//		try {
-//			/*
-//			 * search the solutions
-//			 */
-//			labelPositions.labeling(store, selectParts);
-//
-//		} catch(OutOfMemoryError oome) {
-//			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
-//		} catch(Exception e) {
-//			throw new EugeneException(e.toString());
-//		}
-//
-//		T2 = System.currentTimeMillis();
-//		T = T2 - T1;
-//
-//		String s = String.format("%.2f", (float)T/1000);
-//		System.out.println("\n\t*** Solution Finding Time = "+ s + " s");
-//		
-//		/*
-//		 * return the solutions
-//		 */
-//		System.out.println("*** POSITIONS ***");
-////		labelPositions.getSolutionListener().printAllSolutions();
-//		return labelPositions.getSolutionListener().getSolutions();
-//    }
-	
 
     private List<Component[]> search(IntVar[][] variables, int NR_OF_SOLUTIONS) 
     		throws MiniEugeneException {
@@ -386,52 +299,82 @@ public class JaCoPSolver
     		throw new MiniEugeneException("Inconsistent rules!");
     	}
     	
-    	Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
+		// first, let's search for the orientations
+		Search<IntVar> labelOrientation = new DepthFirstSearch<IntVar>();
+		SelectChoicePoint<IntVar> selectOrientation = 
+			new SimpleSelect<IntVar>(variables[Variables.ORIENTATION], 
+					new SmallestMin<IntVar>(), 
+					new SmallestDomain<IntVar>(),
+					new IndomainMin<IntVar>());
+		
+		labelOrientation.setSelectChoicePoint(selectOrientation);
+		labelOrientation.setPrintInfo(false);
 
+		// then, let's search for the types
+		Search<IntVar> labelTypes = new DepthFirstSearch<IntVar>();
+		SelectChoicePoint<IntVar> selectTypes = 
+			new SimpleSelect<IntVar>(
+					variables[Variables.TYPE], 
+					new SmallestMin<IntVar>(), 
+					new SmallestDomain<IntVar>(),
+					new IndomainMin<IntVar>());
+		
+		labelTypes.setSelectChoicePoint(selectTypes);
+		labelTypes.setPrintInfo(false);
+
+		// finally, let's search for the parts
+		Search<IntVar> labelParts = new DepthFirstSearch<IntVar>();
         SelectChoicePoint<IntVar> select = new SimpleMatrixSelect<IntVar>(
 				variables, 
 				new MostConstrainedDynamic<IntVar>(), 
 				new IndomainSimpleRandom<IntVar>());  
+        labelParts.addChildSearch(labelOrientation);
+        labelParts.addChildSearch(labelTypes);
         
 //        MiniEugeneSolutionListener<IntVar> listener = new MiniEugeneSolutionListener<IntVar>(this.symbols, this.N);
 //        search.setSolutionListener(listener);
         
         if(NR_OF_SOLUTIONS != (-1)) {
-        	search.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
+        	labelParts.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
         } else {
 //        	search.getSolutionListener().setSolutionLimit(MiniEugeneSolutionListener.MAX_NR_OF_SOLUTIONS);
-            search.getSolutionListener().searchAll(true);   
+        	labelParts.getSolutionListener().searchAll(true);   
         }
 
-        search.setPrintInfo(false);
-        search.getSolutionListener().recordSolutions(true);
+        labelParts.setPrintInfo(false);
+        labelParts.getSolutionListener().recordSolutions(true);
 
 		try {
 			/*
 			 * search the solutions
 			 */
-			search.labeling(store, select);
+			labelParts.labeling(store, select);
 		} catch(OutOfMemoryError oome) {
 			throw new MiniEugeneException("I'm sorry! This problem is currently too big for me to solve!");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 
-//		search.getSolutionListener().printAllSolutions();
+//		labelParts.getSolutionListener().printAllSolutions();
+
 		/*
 		 * return the solutions
 		 */
-
-		if(null == search.getSolutionListener().getSolutions()) {
+		if(null == labelParts.getSolutionListener().getSolutions()) {
 			return null;
 		}
-		return this.processSolutions(search.getSolutionListener().getSolutions());
+		return this.processSolutions(labelParts.getSolutionListener().getSolutions());
 //		return null;
 //		return listener.getMiniEugeneSolutions();
     }
 
 		
-	public List<Component[]> processSolutions(Domain[][] solutions) {
+	public List<Component[]> processSolutions(Domain[][] solutions) 
+			throws MiniEugeneException {
+
+		/*
+		 * here, we also need a cloner
+		 */
 
 		List<Component[]> lst = new ArrayList<Component[]>();
 		for(int i=0; i<solutions.length && solutions[i]!=null; i++) {
@@ -441,7 +384,7 @@ public class JaCoPSolver
 			Component[] sol = new Component[this.N];
 
 			for(int j=0; j<this.N; j++) {
-				Component symbol = null;
+				Component component = null;
 				
 				/*
 				 * PART
@@ -449,9 +392,17 @@ public class JaCoPSolver
 				ValueEnumeration ve = solution[j].valueEnumeration();
 				while(ve.hasMoreElements()) {
 					// interim solution ... no orientation
-//					symbol = this.symbols.get(ve.nextElement());
-					Component old = this.symbols.get(ve.nextElement());
-					symbol = new Component(old.getName());
+					int id = ve.nextElement(); 
+					Identified idObj = this.symbols.get(id);
+					if(null == idObj) {
+						throw new MiniEugeneException("I cannot find any component with id "+id);
+					}
+					if(idObj instanceof Component) {
+						// we need to create a new Component instance in memory
+						component = new Component(
+								((Component)idObj).getName(), 
+								((Component)idObj).getType());
+					}
 				}
 				
 				/*
@@ -460,11 +411,11 @@ public class JaCoPSolver
 				ve = solution[j+(Variables.ORIENTATION * N)].valueEnumeration();
 				while(ve.hasMoreElements()) {
 					if(ve.nextElement() == (-1)) {
-						symbol.setForward(false);
+						component.setForward(false);
 					}
 				}				
 
-				sol[j] = symbol;
+				sol[j] = component;
 			}
 			
 			lst.add(sol);
@@ -480,7 +431,7 @@ public class JaCoPSolver
 			throws MiniEugeneException {
 			
 		List<Sequence> sequences = new ArrayList<Sequence>();
-		for(Predicate predicate : and.getPredicates()) {
+		for(Constraint predicate : and.getConstraints()) {
 			if(predicate instanceof Sequence) {
 				
 				Sequence seq = (Sequence)predicate;
@@ -567,14 +518,143 @@ public class JaCoPSolver
         return listOfLists;
     }
 	
-	private PrimitiveConstraint sequenceStartsAt(IntVar[][] variables, Sequence seq, int idx) {
-		PrimitiveConstraint[] sel = new PrimitiveConstraint[seq.getComponents().get(0).size()];
-		int k=0;
-		for(Component c : seq.getComponents().get(0)) {
-			sel[k++] = new XeqC(variables[Variables.PART][idx], c.getId());
-		}
-		return new Or(sel);
-		
-	}
-	
+//	private PrimitiveConstraint sequenceStartsAt(IntVar[][] variables, Sequence seq, int idx) {
+//		PrimitiveConstraint[] sel = new PrimitiveConstraint[seq.getComponents().get(0).size()];
+//		int k=0;
+//		for(Component c : seq.getComponents().get(0)) {
+//			sel[k++] = new XeqC(variables[Variables.PART][idx], c.getId());
+//		}
+//		return new Or(sel);
+//		
+//	}
+
+//  private Domain[][] optSearch(IntVar[][] variables, IntVar[] position_variables, int NR_OF_SOLUTIONS) 
+//	throws EugeneException {
+//
+//boolean result = store.consistency();
+//if(!result) {
+//	throw new EugeneException("Inconsistent constraints!");
+//}
+//
+//long T1, T2, T;
+//T1 = System.currentTimeMillis();
+//
+//
+//// first, let's search for the orientations
+//Search<IntVar> labelOrientation = new DepthFirstSearch<IntVar>();
+//SelectChoicePoint<IntVar> selectOrientation = 
+//	new SimpleSelect<IntVar>(variables[Variables.ORIENTATION], 
+//			new SmallestMin<IntVar>(), 
+//			new SmallestDomain<IntVar>(),
+//			new IndomainMin<IntVar>());
+//
+//labelOrientation.setSelectChoicePoint(selectOrientation);
+//labelOrientation.setPrintInfo(false);
+//
+////// then, let's search for the positions
+////Search<IntVar> labelPositioning = new DepthFirstSearch<IntVar>();
+////SelectChoicePoint<IntVar> selectPositioning = 
+////	new SimpleSelect<IntVar>(
+////			position_variables, 
+////			new SmallestMin<IntVar>(), 
+////			new SmallestDomain<IntVar>(),
+////			new IndomainMin<IntVar>());
+////
+////labelPositioning.setSelectChoicePoint(selectPositioning);
+////labelPositioning.setPrintInfo(false);
+//
+//// finally, let's search for the parts
+//Search<IntVar> labelParts = new DepthFirstSearch<IntVar>();
+//SelectChoicePoint<IntVar> selectParts = 
+//	new SimpleSelect<IntVar>(
+//			variables[Variables.PART], 
+//			new SmallestMin<IntVar>(), 
+//			new SmallestDomain<IntVar>(),
+//			new IndomainMin<IntVar>());
+//
+//labelParts.addChildSearch(labelOrientation);
+////labelParts.addChildSearch(labelPositioning);
+//
+//if(NR_OF_SOLUTIONS != (-1)) {
+//	labelParts.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
+//} else {
+//	labelParts.getSolutionListener().searchAll(true);   
+//}
+//
+//labelParts.setPrintInfo(false);
+//labelParts.getSolutionListener().recordSolutions(true);
+//        
+//try {
+//	/*
+//	 * search the solutions
+//	 */
+//	result = labelParts.labeling(store, selectParts);
+//
+//} catch(OutOfMemoryError oome) {
+//	throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+//} catch(Exception e) {
+//	throw new EugeneException(e.toString());
+//}
+//
+//T2 = System.currentTimeMillis();
+//T = T2 - T1;
+//
+//String s = String.format("%.2f", (float)T/1000);
+//System.out.println("\n\t*** Solution Finding Time = "+ s + " s");
+//
+///*
+// * return the solutions
+// */
+////System.out.println("*** ORIENTATIONS ***");
+////labelOrientation.getSolutionListener().printAllSolutions();
+////System.out.println("*** PARTS ***");
+////labelParts.getSolutionListener().printAllSolutions();
+//return labelParts.getSolutionListener().getSolutions();
+//}
+
+//private Domain[][] search(IntVar[] variables) 
+//	throws EugeneException {
+//
+//long T1, T2, T;
+//T1 = System.currentTimeMillis();
+//
+//Search<IntVar> labelPositions = new DepthFirstSearch<IntVar>();
+//SelectChoicePoint<IntVar> selectParts = 
+//	new SimpleSelect<IntVar>(
+//			variables, 
+//			new SmallestMin<IntVar>(), 
+//			new SmallestDomain<IntVar>(),
+//			new IndomainMin<IntVar>());
+//
+//labelPositions.getSolutionListener().searchAll(true);     
+//labelPositions.setPrintInfo(true);
+//labelPositions.getSolutionListener().recordSolutions(true);
+//        
+//try {
+//	/*
+//	 * search the solutions
+//	 */
+//	labelPositions.labeling(store, selectParts);
+//
+//} catch(OutOfMemoryError oome) {
+//	throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
+//} catch(Exception e) {
+//	throw new EugeneException(e.toString());
+//}
+//
+//T2 = System.currentTimeMillis();
+//T = T2 - T1;
+//
+//String s = String.format("%.2f", (float)T/1000);
+//System.out.println("\n\t*** Solution Finding Time = "+ s + " s");
+//
+///*
+// * return the solutions
+// */
+//System.out.println("*** POSITIONS ***");
+////labelPositions.getSolutionListener().printAllSolutions();
+//return labelPositions.getSolutionListener().getSolutions();
+//}
+
+
 }

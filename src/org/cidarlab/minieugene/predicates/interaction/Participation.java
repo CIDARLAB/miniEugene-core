@@ -33,11 +33,12 @@
 package org.cidarlab.minieugene.predicates.interaction;
 
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 
 public class Participation {
 
 	private Role role;
-	private Component participant;
+	private Identified participant;
 	
 	public enum Role {
 		REPRESSEE, REPRESSOR, 
@@ -45,7 +46,7 @@ public class Participation {
 		DRIVER, DRIVEE
 	}
 	
-	protected Participation(Role role, Component participant) {
+	protected Participation(Role role, Identified participant) {
 		this.role = role;
 		this.participant = participant;		
 	}
@@ -54,7 +55,7 @@ public class Participation {
 		return this.role;
 	}
 	
-	public Component getParticipant() {
+	public Identified getParticipant() {
 		return this.participant;
 	}
 	
