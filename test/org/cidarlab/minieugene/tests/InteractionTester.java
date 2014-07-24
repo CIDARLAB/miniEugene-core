@@ -4,7 +4,7 @@ package org.cidarlab.minieugene.tests;
 public class InteractionTester {
 	
 	public static void test() {
-//		testInteractionsOnTypes();
+		testInteractionsOnTypes();
 		testInteractionsOnComponents();
 	}
 	
@@ -24,8 +24,8 @@ public class InteractionTester {
 	}
 
 	private static void testInteractionsOnComponents() {
-//		testInducesOnComponents();
-//		testRepressesOnComponents();
+		testInducesOnComponents();
+		testRepressesOnComponents();
 		testDrivesOnComponents();
 	}
 	

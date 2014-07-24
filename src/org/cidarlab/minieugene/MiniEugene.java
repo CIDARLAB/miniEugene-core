@@ -236,7 +236,6 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(MiniEugeneException e) {
-			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -261,7 +260,6 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);
 			this.solve(la, -1);
 		} catch(MiniEugeneException e) {
-			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 			
@@ -282,7 +280,6 @@ public class MiniEugene
 		try {
 			this.collectFacts(script);
 		} catch(MiniEugeneException me) {
-			me.printStackTrace();
 			throw new MiniEugeneException(me.getMessage());
 		}
 		
@@ -318,7 +315,6 @@ public class MiniEugene
 				throw new MiniEugeneException("The script contains invalid characters!");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -346,7 +342,6 @@ public class MiniEugene
 				throw new MiniEugeneException("The script contains invalid characters!");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 
@@ -437,7 +432,6 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
-			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}

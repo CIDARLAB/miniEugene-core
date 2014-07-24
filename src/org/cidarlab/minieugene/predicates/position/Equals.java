@@ -33,7 +33,6 @@
 package org.cidarlab.minieugene.predicates.position;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryConstraint;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
@@ -42,7 +41,6 @@ import org.cidarlab.minieugene.solver.jacop.Variables;
 import JaCoP.constraints.PrimitiveConstraint;
 import JaCoP.constraints.XeqC;
 import JaCoP.constraints.XeqY;
-import JaCoP.constraints.XneqC;
 import JaCoP.constraints.XneqY;
 import JaCoP.core.IntVar;
 import JaCoP.core.Store;

@@ -82,7 +82,7 @@ public class MiniEugeneTester {
 //			WeyekinPoster.launchPage(se.toPigeon());
 			
 			// EUGENE
-			se.toEugene("./test-results/eugene/"+UUID.randomUUID().toString());
+//			se.toEugene("./test-results/eugene/"+UUID.randomUUID().toString());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

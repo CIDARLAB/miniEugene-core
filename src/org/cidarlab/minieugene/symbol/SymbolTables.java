@@ -41,7 +41,6 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.constants.PredefinedTypes;
-import org.cidarlab.minieugene.constants.PredefinedTypes.PartType;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.dom.Identified;

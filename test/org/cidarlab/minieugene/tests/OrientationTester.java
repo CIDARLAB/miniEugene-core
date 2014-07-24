@@ -5,7 +5,7 @@ public class OrientationTester {
 	
 	public static void test() {
 		testOrientationOnTypes();
-//		testOrientationOnComponents();
+		testOrientationOnComponents();
 	}
 	
 	private static void testOrientationOnTypes() {
@@ -38,5 +38,8 @@ public class OrientationTester {
 	}
 	
 	private static void testSomeSameOrientationTypes() {
+	}
+	
+	private static void testOrientationOnComponents() {		
 	}
 }

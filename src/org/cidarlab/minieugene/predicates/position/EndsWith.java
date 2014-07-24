@@ -33,8 +33,6 @@
 package org.cidarlab.minieugene.predicates.position;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.UnaryConstraint;

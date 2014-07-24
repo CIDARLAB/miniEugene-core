@@ -58,6 +58,7 @@ public class MiniEugeneRules {
 					 RuleOperator.SAME_ORIENTATION.toString(),
 					 RuleOperator.ALL_SAME_ORIENTATION.toString(),
 					 RuleOperator.SOME_SAME_ORIENTATION.toString(),
+					 RuleOperator.ALTERNATE_ORIENTATION.toString(),
 					 RuleOperator.FORWARD.toString(),
 					 RuleOperator.REVERSE.toString(),
 					 RuleOperator.ALL_FORWARD.toString(),

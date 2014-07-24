@@ -4,7 +4,7 @@ package org.cidarlab.minieugene.tests;
 public class CountingTester {
 	
 	public static void test() {
-//		testCountingOnTypes();
+		testCountingOnTypes();
 		testCountingOnComponents();
 	}
 	

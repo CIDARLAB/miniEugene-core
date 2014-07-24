@@ -285,7 +285,6 @@ public class JaCoPSolver
 				}
 
 			} catch(Exception e) {
-				e.printStackTrace();
 				throw new MiniEugeneException(e.getMessage());
 			}
 
@@ -352,8 +351,6 @@ public class JaCoPSolver
 			labelParts.labeling(store, select);
 		} catch(OutOfMemoryError oome) {
 			throw new MiniEugeneException("I'm sorry! This problem is currently too big for me to solve!");
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
 
 //		labelParts.getSolutionListener().printAllSolutions();

@@ -41,11 +41,9 @@ import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.constants.TemplateType;
 import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
-import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.LogicalNot;
 import org.cidarlab.minieugene.predicates.LogicalOperator;
 import org.cidarlab.minieugene.predicates.Constraint;
-import org.cidarlab.minieugene.predicates.position.Equals;
 import org.cidarlab.minieugene.predicates.templating.*;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
@@ -223,11 +221,6 @@ public class Interp {
 		}
 		
 		
-		/*
-		 * get a's id from the symbol
-		 */
-		int idA = this.symbols.getId(a);
-		
 		int idB = -1;
 		if(MiniEugeneRules.isCountingRule(X)) {
 
@@ -262,7 +255,7 @@ public class Interp {
 			// => because of OR
 			// e.g. p exactly 2 \/ p exactly 4
 			if(idB < 0 /* || idB > this.maxN */) {
-				throw new MiniEugeneException("Invalid rule!");
+				throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
 			}
 			
 			// create the counting rule object
@@ -274,19 +267,11 @@ public class Interp {
 		} else if(MiniEugeneRules.isPositioningRule(X) || MiniEugeneRules.isPairingRule(X) || 
 				MiniEugeneRules.isOrientationRule(X)) {
 			
-			idB = this.symbols.getId(b);
-
+			return this.pb.buildBinary(this.symbols.get(a), X, this.symbols.get(b));
 		}
 
-		/*
-		 * build the predicate (by the predicate builder)
-		 * and store it in the symbol tables
-		 */
-		if( idB != (-1)) {
-			return this.pb.buildBinary(this.symbols.get(idA), X, this.symbols.get(idB));
-		}
 		
-		throw new MiniEugeneException("Invalid rule!");
+		throw new MiniEugeneException(a+" "+X+" "+b+" is an invalid rule!");
 	}
 
 	
