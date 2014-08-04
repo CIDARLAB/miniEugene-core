@@ -33,19 +33,14 @@
 package org.cidarlab.minieugene.predicates.counting;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
-import org.cidarlab.minieugene.dom.Component;
-import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.UnaryConstraint;
-import org.cidarlab.minieugene.solver.jacop.Variables;
-
-import JaCoP.constraints.Count;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XeqC;
-import JaCoP.constraints.XgtC;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.XeqC;
+import org.jacop.constraints.XgtC;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 /**
  * 

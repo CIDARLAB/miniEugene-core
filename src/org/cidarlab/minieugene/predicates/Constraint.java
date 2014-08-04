@@ -37,10 +37,10 @@ import org.cidarlab.minieugene.dom.ComponentType;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Count;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.Count;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 /**
  *

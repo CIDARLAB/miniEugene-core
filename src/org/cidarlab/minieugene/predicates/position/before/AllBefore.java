@@ -40,14 +40,14 @@ import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.position.PositioningConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.And;
-import JaCoP.constraints.IfThen;
-import JaCoP.constraints.Not;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XeqC;
-import JaCoP.constraints.XneqC;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.And;
+import org.jacop.constraints.IfThen;
+import org.jacop.constraints.Not;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.XeqC;
+import org.jacop.constraints.XneqC;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 
 /**

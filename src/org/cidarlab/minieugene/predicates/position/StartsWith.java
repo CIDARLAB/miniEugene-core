@@ -37,11 +37,11 @@ import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.UnaryConstraint;
 
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XeqC;
-import JaCoP.constraints.XneqC;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.XeqC;
+import org.jacop.constraints.XneqC;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 
 /*

@@ -40,10 +40,10 @@ import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.Not;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.Not;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 public class Group 
 	extends TemplatingPredicate {

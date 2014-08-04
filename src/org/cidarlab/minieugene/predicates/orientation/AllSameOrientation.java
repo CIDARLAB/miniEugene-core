@@ -37,12 +37,12 @@ import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryConstraint;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
-import JaCoP.constraints.Or;
-import JaCoP.constraints.And;
-import JaCoP.constraints.Not;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
+import org.jacop.constraints.Or;
+import org.jacop.constraints.And;
+import org.jacop.constraints.Not;
 
 /*
  * a SAME_ORIENTATION b

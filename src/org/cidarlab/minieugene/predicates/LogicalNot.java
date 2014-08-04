@@ -37,9 +37,9 @@ import org.cidarlab.minieugene.predicates.counting.Contains;
 import org.cidarlab.minieugene.predicates.counting.Exactly;
 import org.cidarlab.minieugene.predicates.counting.MoreThan;
 
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 
 public class LogicalNot 

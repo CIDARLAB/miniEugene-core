@@ -236,6 +236,7 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(MiniEugeneException e) {
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -342,6 +343,7 @@ public class MiniEugene
 				throw new MiniEugeneException("The script contains invalid characters!");
 			}
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 
@@ -359,12 +361,13 @@ public class MiniEugene
 			throws MiniEugeneException {
 
 		try {
-			Component[] symbols = this.symbols.getComponents();
+			Component[] components = this.symbols.getComponents();
 
-			if(null == symbols || symbols.length==0) {
+			if(null == components || components.length==0) {
 				throw new MiniEugeneException("no solutions found!");
 			}
 
+			
 //			int minN = la.getMinN();
 			int maxN = la.getMaxN();
 			
@@ -383,7 +386,7 @@ public class MiniEugene
 //			}
 			
 			// calculate the number of possible solutions...
-			int numberOfParts = symbols.length;
+			int numberOfParts = components.length;
 			
 			// future work:
 //			long possibleSolutions = 0;
@@ -392,7 +395,7 @@ public class MiniEugene
 //						Math.pow(numberOfParts, i) * Math.pow(2, i);
 //			}
 			
-			this.stats.add(MiniEugeneConstants.NUMBER_OF_PARTS, symbols.length);
+			this.stats.add(MiniEugeneConstants.NUMBER_OF_PARTS, numberOfParts);
 			this.stats.add(MiniEugeneConstants.NUMBER_OF_TYPES, this.symbols.getTypesSize());
 			this.stats.add(MiniEugeneConstants.MAXIMUM_LENGTH_OF_DESIGN, la.getMaxN());
 			this.stats.add(MiniEugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
@@ -410,7 +413,7 @@ public class MiniEugene
 			 * SOLUTION FINDING
 			 */
 			long T1 = System.nanoTime();
-			this.solutions = new JaCoPSolver(this.symbols).solve(symbols, la, NR_OF_SOLUTIONS);
+			this.solutions = new JaCoPSolver(this.symbols).solve(components, la, NR_OF_SOLUTIONS);
 			long T2 = System.nanoTime();
 
 			if(null != solutions) {
@@ -432,6 +435,7 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}

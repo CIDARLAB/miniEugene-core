@@ -60,7 +60,7 @@ public class SymbolTables {
 	private Map<String, Component> components;	
 	private Map<String, ComponentType> types;
 	
-	private Map<ComponentType, Set<Component>> typedComponents;
+	private Map<String, Set<Component>> typedComponents;
 	private Map<Integer, Identified> identifiers;
 	
 	private Set<Constraint> constraints;
@@ -94,7 +94,7 @@ public class SymbolTables {
 		 * a helper map for a more efficient search of
 		 * components given a specific type
 		 */
-		this.typedComponents = new HashMap<ComponentType, Set<Component>>();
+		this.typedComponents = new HashMap<String, Set<Component>>();
 		
 		/*
 		 * another helper map for a more efficient search
@@ -127,8 +127,8 @@ public class SymbolTables {
 			this.types.put(t, new ComponentType(t));
 		}
 		
-		if(!this.typedComponents.containsKey(this.getType(t))) {
-			this.typedComponents.put(this.getType(t), new HashSet<Component>());
+		if(!this.typedComponents.containsKey(this.getType(t).toString())) {
+			this.typedComponents.put(this.getType(t).toString(), new HashSet<Component>());
 		}
 		
 		if(!this.identifiers.containsKey(this.getType(t).getId())) {
@@ -157,7 +157,7 @@ public class SymbolTables {
 	/* 
 	 * put a symbol into the symbol tables
 	 */
-	public Component put(String s) {	
+	public Component put(String s) {
 		if(this.components.containsKey(s)) {
 			return this.components.get(s);
 		}
@@ -179,6 +179,10 @@ public class SymbolTables {
 		return this.putType(PredefinedTypes.toPartType(s).toString());
 	}
 	
+	private boolean containsComponent(String s) {
+		return this.components.containsKey(s);
+	}
+	
 	/**
 	 * The put/2 method takes as input 
 	 * - the name of the component
@@ -192,7 +196,8 @@ public class SymbolTables {
 		 * then, we check if the component exists
 		 */
 		Component c = null;
-		if(this.contains(s)) {
+		if(this.containsComponent(s)) {
+//		if(this.contains(s)) {
 			// if the component exists, then
 			// we need to update its type
 			Identified id = this.get(this.getId(s));
@@ -215,10 +220,10 @@ public class SymbolTables {
 		
 		// we also keep track of the components and their 
 		// types
-		if(!this.typedComponents.containsKey(ct)) {
-			this.typedComponents.put(ct, new HashSet<Component>());
+		if(!this.typedComponents.containsKey(ct.toString())) {
+			this.typedComponents.put(ct.toString(), new HashSet<Component>());
 		}
-		this.typedComponents.get(ct).add(c);
+		this.typedComponents.get(ct.toString()).add(c);
 		
 		// lastly, we return a reference to the 
 		// create Component object
@@ -226,7 +231,7 @@ public class SymbolTables {
 	}
 		
 	private void put(Component c) {
-
+		
 		/*
 		 * first, also need to check if the type of the component
 		 * exists already
@@ -294,7 +299,7 @@ public class SymbolTables {
 	}
 	
 	public Set<Component> getComponents(ComponentType ct) {
-		return this.typedComponents.get(ct);
+		return this.typedComponents.get(ct.toString());
 	}
 	
 	public int getId(String s) {
@@ -313,18 +318,18 @@ public class SymbolTables {
 	
 	public void print() {
 		
-		for(ComponentType ct : this.typedComponents.keySet()) {
+		for(String ct : this.typedComponents.keySet()) {
 			System.out.println("Type "+ct+" -> "+this.typedComponents.get(ct));
 		}
 		
-//		System.out.println("**** TYPES ****");
-//		for(String s : this.types.keySet()) {
-//			System.out.println(s+" -> "+this.types.get(s));
-//		}
-//		System.out.println("**** COMPONENTS ****");
-//		for(String s : this.components.keySet()) {
-//			System.out.println(s+" -> "+this.components.get(s));
-//		}
+		System.out.println("**** TYPES ****");
+		for(String s : this.types.keySet()) {
+			System.out.println(s+" -> "+this.types.get(s));
+		}
+		System.out.println("**** COMPONENTS ****");
+		for(String s : this.components.keySet()) {
+			System.out.println(s+" -> "+this.components.get(s));
+		}
 		System.out.println("**** PREDICATES ****");
 		Iterator<Constraint> it = this.constraints.iterator();
 		while(it.hasNext()) {
@@ -394,6 +399,14 @@ public class SymbolTables {
 		
 		if(null != this.components) {
 			this.components.clear();
+		}
+		
+		if(null != this.typedComponents) {
+			this.typedComponents.clear();
+		}
+		
+		if(null != this.types) {
+			this.types.clear();
 		}
 	}
 }

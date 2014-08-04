@@ -41,15 +41,15 @@ import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.solver.jacop.Variables;
 
-import JaCoP.constraints.And;
-import JaCoP.constraints.Constraint;
-import JaCoP.constraints.ExtensionalSupportVA;
-import JaCoP.constraints.Not;
-import JaCoP.constraints.Or;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XeqC;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.And;
+import org.jacop.constraints.Constraint;
+import org.jacop.constraints.ExtensionalSupportVA;
+import org.jacop.constraints.Not;
+import org.jacop.constraints.Or;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.XeqC;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 public class Template 
 	extends TemplatingPredicate {

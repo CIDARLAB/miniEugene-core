@@ -51,26 +51,26 @@ import org.cidarlab.minieugene.predicates.templating.Sequence;
 import org.cidarlab.minieugene.solver.Solver;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
-import JaCoP.constraints.And;
-import JaCoP.constraints.ExtensionalSupportVA;
-import JaCoP.constraints.IfThen;
-import JaCoP.constraints.Or;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XeqC;
-import JaCoP.core.Domain;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
-import JaCoP.core.ValueEnumeration;
-import JaCoP.search.DepthFirstSearch;
-import JaCoP.search.IndomainMin;
-import JaCoP.search.IndomainSimpleRandom;
-import JaCoP.search.MostConstrainedDynamic;
-import JaCoP.search.Search;
-import JaCoP.search.SelectChoicePoint;
-import JaCoP.search.SimpleMatrixSelect;
-import JaCoP.search.SimpleSelect;
-import JaCoP.search.SmallestDomain;
-import JaCoP.search.SmallestMin;
+import org.jacop.constraints.And;
+import org.jacop.constraints.ExtensionalSupportVA;
+import org.jacop.constraints.IfThen;
+import org.jacop.constraints.Or;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.XeqC;
+import org.jacop.core.Domain;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
+import org.jacop.core.ValueEnumeration;
+import org.jacop.search.DepthFirstSearch;
+import org.jacop.search.IndomainMin;
+import org.jacop.search.IndomainSimpleRandom;
+import org.jacop.search.MostConstrainedDynamic;
+import org.jacop.search.Search;
+import org.jacop.search.SelectChoicePoint;
+import org.jacop.search.SimpleMatrixSelect;
+import org.jacop.search.SimpleSelect;
+import org.jacop.search.SmallestDomain;
+import org.jacop.search.SmallestMin;
 
 public class JaCoPSolver 
 		implements Solver {

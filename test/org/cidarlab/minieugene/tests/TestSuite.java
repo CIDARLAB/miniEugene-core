@@ -57,13 +57,13 @@ public class TestSuite {
 		/*
 		 * specification of facts
 		 */
-//		testFactSpecification();
+		testFactSpecification();
 		
 		CountingTester.test();
 		OrientationTester.test();
-		PairingTester.test();
-		InteractionTester.test();
-		TemplateTester.test();
+//		PairingTester.test();
+//		InteractionTester.test();
+//		TemplateTester.test();
 		
 		MiniEugeneTester.test("N=4. contains p. p is_a Promoter. "+
 				"contains r. r is_a RBS. "+

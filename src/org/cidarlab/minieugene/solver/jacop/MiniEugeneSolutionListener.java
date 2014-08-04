@@ -39,13 +39,13 @@ import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.symbol.SymbolTables;
 
-import JaCoP.core.Domain;
-import JaCoP.core.ValueEnumeration;
-import JaCoP.core.Var;
-import JaCoP.search.Search;
-import JaCoP.search.SelectChoicePoint;
-import JaCoP.search.SimpleSolutionListener;
-import JaCoP.search.SolutionListener;
+import org.jacop.core.Domain;
+import org.jacop.core.ValueEnumeration;
+import org.jacop.core.Var;
+import org.jacop.search.Search;
+import org.jacop.search.SelectChoicePoint;
+import org.jacop.search.SimpleSolutionListener;
+import org.jacop.search.SolutionListener;
 
 public class MiniEugeneSolutionListener<T extends Var> 
 	extends SimpleSolutionListener<T> 

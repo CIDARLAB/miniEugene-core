@@ -37,13 +37,13 @@ import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.BinaryConstraint;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 
-import JaCoP.constraints.And;
-import JaCoP.constraints.Or;
-import JaCoP.constraints.PrimitiveConstraint;
-import JaCoP.constraints.XgtC;
-import JaCoP.constraints.XlteqC;
-import JaCoP.core.IntVar;
-import JaCoP.core.Store;
+import org.jacop.constraints.And;
+import org.jacop.constraints.Or;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.XgtC;
+import org.jacop.constraints.XlteqC;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
 
 /**
  * 
