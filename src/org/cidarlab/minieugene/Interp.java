@@ -187,11 +187,26 @@ public class Interp {
 			
 		} else if(MiniEugeneRules.isUnaryRule(p)) {
 
-			/*
-			 * build the predicate (by the predicate builder)
-			 * and store it in the symbol tables
-			 */
-			return this.pb.buildUnary(p, this.symbols.get(s));
+			if(s.startsWith("[") && s.endsWith("]")) {
+				
+				try {
+					int idx = Integer.parseInt(s.substring(1, s.length() - 1));
+					if(idx >= this.maxN) {
+						throw new MiniEugeneException("The index "+idx+" is out of range ("+idx+" >= "+maxN+")");
+					}
+					// INDEX
+					return this.pb.buildUnaryIndexed(p, idx);					
+				} catch(Exception e) {
+					throw new MiniEugeneException(e.toString());
+				}
+			} else {
+			
+				/*
+				 * build the predicate (by the predicate builder)
+				 * and store it in the symbol tables
+				 */
+				return this.pb.buildUnary(p, this.symbols.get(s));
+			}
 		}
 		
 		throw new MiniEugeneException(p + " is an invalid unary rule operand!");		

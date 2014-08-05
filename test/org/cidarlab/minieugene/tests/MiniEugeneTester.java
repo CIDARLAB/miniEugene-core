@@ -63,7 +63,7 @@ public class MiniEugeneTester {
 
 			tProcessing = System.nanoTime() - t1;
 		} catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return;
 		}
 

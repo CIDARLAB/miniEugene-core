@@ -272,10 +272,18 @@ public class SymbolTables {
 	}
 	
 	public Identified get(String s) {
-		if(this.types.containsKey(s)) {
-			return this.types.get(s);
-		} else if(this.components.containsKey(s)) {
+		/*
+		 * first, we check if s is a component
+		 */
+		if(this.components.containsKey(s)) {
 			return this.components.get(s);
+			
+		/*
+		 * if s is not a component, then we 
+		 * check if it is a type	
+		 */
+		} else if(this.types.containsKey(s)) {
+			return this.types.get(s);
 		}
 		
 		/*

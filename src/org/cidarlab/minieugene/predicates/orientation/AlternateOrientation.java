@@ -34,11 +34,11 @@ package org.cidarlab.minieugene.predicates.orientation;
 
 import org.cidarlab.minieugene.constants.RuleOperator;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.minieugene.dom.Identified;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.UnaryConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-
 import org.jacop.constraints.And;
 import org.jacop.constraints.IfThen;
 import org.jacop.constraints.Not;
@@ -83,8 +83,7 @@ public class AlternateOrientation
 				throws MiniEugeneException {
 		
 		if(null != this.getA()) {
-			throw new UnsupportedOperationException("The constraint 'ALTERNATE a' is not fully supported yet!");
-			//TODO: return alternate(store, variables, this.getA());
+			return alternate(store, variables, this.getA().getOperand());
 		} else {
 			return alternate(store, variables);
 		}
@@ -99,7 +98,17 @@ public class AlternateOrientation
 	 * @param c
 	 * @return
 	 */
-	private PrimitiveConstraint alternate(Store store, IntVar[][] variables, Component c) {
+	private PrimitiveConstraint alternate(Store store, IntVar[][] variables, Identified id) {
+		
+		/*
+		 * here, we need memory of the orientation of c's last occurrence
+		 */
+		IntVar iVar = null;
+		if(null == (iVar = (IntVar)store.findVariable(id.getName()+"-is-forward"))) {
+			iVar = new IntVar(store, id.getName()+"-is-forward");
+			iVar.addDom(0, 1);
+		}
+		
 		
 		int N = variables[Variables.ORIENTATION].length;
 		
@@ -109,31 +118,32 @@ public class AlternateOrientation
 		PrimitiveConstraint[] pc = new PrimitiveConstraint[N];
 		for(int i=0; i<N; i++) {
 			
-			isC[i] = new BooleanVar(store, "is"+c.getName());
-			isForward[i] = new BooleanVar(store, c.getName()+".isForward");
+			isC[i] = new BooleanVar(store, "is"+id.getName());
+			isForward[i] = new BooleanVar(store, id.getName()+".isForward");
 			
 			/*
 			 * IF c(i) /\ forward(i) THEN
-			 * 		c.isForward(i) = TRUE
+			 * 		id.isForward(i) = TRUE
 			 * ELSE
-			 * 		c.isForward(i) = FALSE
+			 * 		id.isForward(i) = FALSE
 			 */
-			store.impose(
-					new Reified(
-							new XeqC(variables[Variables.PART][i], c.getId()), 
-							isC[i]));
-			store.impose(
-					new Reified(
-							new XeqC(variables[Variables.ORIENTATION][i], 1), 
-							isForward[i]));
 			
-			pc[i] = new IfThen(
-						new XeqC(variables[Variables.PART][i], c.getId()), 
-						new XeqC(variables[Variables.ORIENTATION][i], 1)); 
+			pc[i] = new Or(
+						new IfThen(
+								new XeqC(iVar, 0),
+								new And( 
+										new And(new XeqC(variables[Variables.PART][i], id.getId()), new  XeqC(variables[Variables.ORIENTATION][i], 1)),
+										new XeqC(iVar, 1))),
+						new IfThen(
+								new XeqC(iVar, 1),
+								new And( 
+										new And(new XeqC(variables[Variables.PART][i], id.getId()), new  XeqC(variables[Variables.ORIENTATION][i], -1) ),
+										new XeqC(iVar, 0)))
+						);
 		}
 		
 		
-		return new Or(pc);
+		return new And(pc);
 	}
 	
 	/**

@@ -103,9 +103,11 @@ public class SomeForward
 									new XeqC(variables[Variables.ORIENTATION][i], 1));
 					}
 				}
-			} else if((-1) > this.getA().getIndex() &&
+			} else if((-1) < this.getA().getIndex() &&
 					this.getA().getIndex() < variables[Variables.ORIENTATION].length) {
-				return new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()], 1);
+				return new Or( 
+						new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()], 1),
+						new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()],-1));
 			}
 		}
 		

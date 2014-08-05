@@ -155,8 +155,28 @@ public class PredicateBuilder {
 			return new LogicalNot(constraint);
 		}
 
-		throw new MiniEugeneException("Invalid Negated Unary Constraint!");
+		throw new MiniEugeneException(p +" "+c.getName()+" is an invalid negated unary constraint!");
 	}
+	
+	public Constraint buildUnaryIndexed(String X, int i) 
+			throws MiniEugeneException {
+		
+		if(RuleOperator.FORWARD.toString().equalsIgnoreCase(X) ||
+				RuleOperator.ALL_FORWARD.toString().equalsIgnoreCase(X)) {
+			return new AllForward(new ConstraintOperand(i));
+		} else if(RuleOperator.REVERSE.toString().equalsIgnoreCase(X) ||
+				RuleOperator.ALL_REVERSE.toString().equalsIgnoreCase(X)) {
+			return new AllReverse(new ConstraintOperand(i));
+		} else if(RuleOperator.SOME_FORWARD.toString().equalsIgnoreCase(X)) {
+			return new SomeForward(new ConstraintOperand(i));
+		} else if(RuleOperator.SOME_REVERSE.toString().equalsIgnoreCase(X)) {
+			return new SomeReverse(new ConstraintOperand(i));
+		}
+		
+		throw new MiniEugeneException(X + " ["+i+"] is an invalid constraint!");
+		
+	}
+	
 	
 	/**
 	 * 

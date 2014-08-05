@@ -57,41 +57,41 @@ public class TestSuite {
 		/*
 		 * specification of facts
 		 */
-		testFactSpecification();
+//		testFactSpecification();
 		
-		CountingTester.test();
-		OrientationTester.test();
+//		CountingTester.test();
+//		OrientationTester.test();
 //		PairingTester.test();
 //		InteractionTester.test();
 //		TemplateTester.test();
 		
-		MiniEugeneTester.test("N=4. contains p. p is_a Promoter. "+
-				"contains r. r is_a RBS. "+
-				"contains g. g is_a Gene. "+
-				"contains t. t is_a Terminator.");
+//		MiniEugeneTester.test("N=4. contains p. p is_a Promoter. "+
+//				"contains r. r is_a RBS. "+
+//				"contains g. g is_a Gene. "+
+//				"contains t. t is_a Terminator.");
 		
 		// first run -> p, r, g, t
 		// second run -> p, r, g, t, p1, r1, g1, t1
-		MiniEugeneTester.test("N=4. contains p1. p is_a Promoter. "+
-				"contains r1. r is_a RBS. "+
-				"contains g1. g is_a Gene. "+
-				"contains t1. t is_a Terminator.");
+//		MiniEugeneTester.test("N=4. contains p1. p is_a Promoter. "+
+//				"contains r1. r is_a RBS. "+
+//				"contains g1. g is_a Gene. "+
+//				"contains t1. t is_a Terminator.");
 
-		MiniEugeneTester.test("N=4. Promoter before RBS. RBS before Gene. Gene before Terminator."+
-				"p1 is_a Promoter. p2 is_a Promoter. p3 is_a Promoter." + 
-				"r1 is_a RBS. r2 is_a RBS. r3 is_a RBS." +
-				"g1 is_a Gene. g2 is_a Gene. g3 is_a Gene." +
-				"t1 is_a Terminator. t2 is_a Terminator. t3 is_a Terminator.");
+//		MiniEugeneTester.test("N=4. Promoter before RBS. RBS before Gene. Gene before Terminator."+
+//				"p1 is_a Promoter. p2 is_a Promoter. p3 is_a Promoter." + 
+//				"r1 is_a RBS. r2 is_a RBS. r3 is_a RBS." +
+//				"g1 is_a Gene. g2 is_a Gene. g3 is_a Gene." +
+//				"t1 is_a Terminator. t2 is_a Terminator. t3 is_a Terminator.");
 		
 
 		// consistency
-		MiniEugeneTester.test("N=2. contains a. contains b. a before b.");
-		MiniEugeneTester.test("N=2. contains a. contains b. a before b. b before a.");
-		MiniEugeneTester.test("N=2. contains a. notcontains a.");
-		MiniEugeneTester.test("N=2. contains a. contains a.");
-		MiniEugeneTester.test("N=2. contains a. contains b. a nextto b.");
-		MiniEugeneTester.test("N=2. contains a. contains b. a nextto b. not a nextto b.");
-		MiniEugeneTester.test("N=2. contains a. contains b. a nextto b. b nextto a.");
+//		MiniEugeneTester.test("N=2. contains a. contains b. a before b.");
+//		MiniEugeneTester.test("N=2. contains a. contains b. a before b. b before a.");
+//		MiniEugeneTester.test("N=2. contains a. notcontains a.");
+//		MiniEugeneTester.test("N=2. contains a. contains a.");
+//		MiniEugeneTester.test("N=2. contains a. contains b. a nextto b.");
+//		MiniEugeneTester.test("N=2. contains a. contains b. a nextto b. not a nextto b.");
+//		MiniEugeneTester.test("N=2. contains a. contains b. a nextto b. b nextto a.");
 
 		/*
 		 * COUNTING RULES
@@ -100,14 +100,14 @@ public class TestSuite {
 //		MiniEugeneTester.test("N=4.CONTAINS p.CONTAINS c.");
 		
 		// SAME_COUNT
-		MiniEugeneTester.testFile(new File("./tests/counting/same_count01"));
-		MiniEugeneTester.testFile(new File("./tests/counting/same_count02"));
-		MiniEugeneTester.testFile(new File("./tests/counting/same_count03"));
+//		MiniEugeneTester.testFile(new File("./tests/counting/same_count01"));
+//		MiniEugeneTester.testFile(new File("./tests/counting/same_count02"));
+//		MiniEugeneTester.testFile(new File("./tests/counting/same_count03"));
 
 		// EXACTLY
-		MiniEugeneTester.test("N=1. r1 exactly 1.");		
-		MiniEugeneTester.test("N=10.CONTAINS p.contains c.contains t.p drives c.p same_orientation t.[0] equals p.[1] equals c.");
-		MiniEugeneTester.test("N=8.CONTAINS c.STARTSWITH p OR STARTSWITH t.ENDSWITH p OR ENDSWITH t.c NEXTTO r. r BEFORE c.p SOME_BEFORE r.r SOME_BEFORE p.t SOME_AFTER c. t SOME_BEFORE p.");
+//		MiniEugeneTester.test("N=1. r1 exactly 1.");		
+//		MiniEugeneTester.test("N=10.CONTAINS p.contains c.contains t.p drives c.p same_orientation t.[0] equals p.[1] equals c.");
+//		MiniEugeneTester.test("N=8.CONTAINS c.STARTSWITH p OR STARTSWITH t.ENDSWITH p OR ENDSWITH t.c NEXTTO r. r BEFORE c.p SOME_BEFORE r.r SOME_BEFORE p.t SOME_AFTER c. t SOME_BEFORE p.");
 //		MiniEugeneTester.test("N=16."+
 //				"P1 EXACTLY 1.r1 EXACTLY 1.c1 EXACTLY 1.T1 EXACTLY 1.ALL_FORWARD.STARTSWITH P1."+
 //				"r1 NEXTTO c1.c1 NEXTTO T1.P1 NEXTTO r1.P2 EXACTLY 1.r2 EXACTLY 1.c2 EXACTLY 1.T2 EXACTLY 1.ALL_FORWARD."+
@@ -134,6 +134,10 @@ public class TestSuite {
 //		MiniEugeneTester.testFile(new File("./tests/then/then03"));
 //		MiniEugeneTester.testFile(new File("./tests/swati/test01"));
 
+		/*
+		 * WITH
+		 */
+		MiniEugeneTester.test("N=4.TEMPLATE [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator].p0 IS_A Promoter.rbs0 IS_A RBS.g0 IS_A Gene.t0 IS_A Terminator.Promoter with RBS.RBS with Gene.Gene with Terminator.all_reverse.Promoter after RBS.RBS after Gene.Gene after Terminator.");
 
 		/*
 		 * POSITIONING
@@ -177,32 +181,53 @@ public class TestSuite {
 		/*
 		 * ORIENTATION RULES
 		 */		
-		MiniEugeneTester.test("N=2.contains a.all_forward \\/ all_reverse.");
+//		MiniEugeneTester.test("N=2.contains a.all_forward \\/ all_reverse.");
 		
 		// SOME_FORWARD
-		MiniEugeneTester.testFile(new File("./tests/orientation/forward/some01"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/forward/some02"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/forward/some03"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/forward/some01"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/forward/some02"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/forward/some03"));
 		
 		// SOME_REVERSE
-		MiniEugeneTester.testFile(new File("./tests/orientation/reverse/some01"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/reverse/some02"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/reverse/some03"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/reverse/some01"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/reverse/some02"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/reverse/some03"));
+//		MiniEugeneTester.test("N=2. some_forward [0]. contains p.");
+//		MiniEugeneTester.testFile(new File("./tests/orientation/alternate/alternate02"));
 
 		// ALTERNATE 
-		MiniEugeneTester.testFile(new File("./tests/orientation/alternate/alternate01"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/alternate/alternate02"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/alternate/alternate01"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/alternate/alternate02"));
+		
+		
 		
 		// SAME_ORIENTATION
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same01"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same02"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same03"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same04"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same05"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same01"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same02"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same03"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same04"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/same05"));
 
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/some_same01"));
-		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/some_same02"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/some_same01"));
+//		MiniEugeneTester.testFile(new File("./tests/orientation/same_orientation/some_same02"));
 
+		
+		// ORIENTATION RULES WITH INDICES
+//		MiniEugeneTester.test("N=2. contains p. forward [0]. forward [1].");
+//		MiniEugeneTester.test("N=2. contains p. forward [0].");
+//		MiniEugeneTester.test("N=2. contains p. forward [1].");
+//		MiniEugeneTester.test("N=2. contains p. reverse [0]. reverse [1].");
+//		MiniEugeneTester.test("N=2. contains p. reverse [0].");
+//		MiniEugeneTester.test("N=2. contains p. reverse [1].");
+//		MiniEugeneTester.test("N=4. contains p. contains r. contains c. contains t. forward [0]. reverse [1]. forward [2]. reverse [3].");
+
+		// faulty ones
+//		MiniEugeneTester.test("N=2. contains p. reverse [2].");   // index too high
+//		MiniEugeneTester.test("N=2. contains p. reverse [-1].");  // index too low
+//		MiniEugeneTester.test("N=1. contains p. some_forward [0].");
+//		MiniEugeneTester.test("N=1. contains p. some_reverse [0].");
+
+		
 		/*
 		 * INTERACTION RULES
 		 */
@@ -263,68 +288,68 @@ public class TestSuite {
 		 */
 		
 		// TEMPLATES
-		MiniEugeneTester.test("N=1.all_forward.template a.");
-		MiniEugeneTester.test("N=100.all_forward.template a.");
-		MiniEugeneTester.test("N=4.all_forward.template Promoter, RBS, CDS, Terminator.");
-		MiniEugeneTester.test("N=400.all_forward.template Promoter, RBS, CDS, Terminator.");
-		MiniEugeneTester.test("N=4.all_forward.template a, b.");
-		MiniEugeneTester.test("N=20.alternate_orientation.template a, b.");
-		MiniEugeneTester.test("N=20.template a, b.");
-		MiniEugeneTester.test("N=200.all_forward \\/ all_reverse.template a, b.");
+//		MiniEugeneTester.test("N=1.all_forward.template a.");
+//		MiniEugeneTester.test("N=100.all_forward.template a.");
+//		MiniEugeneTester.test("N=4.all_forward.template Promoter, RBS, CDS, Terminator.");
+//		MiniEugeneTester.test("N=400.all_forward.template Promoter, RBS, CDS, Terminator.");
+//		MiniEugeneTester.test("N=4.all_forward.template a, b.");
+//		MiniEugeneTester.test("N=20.alternate_orientation.template a, b.");
+//		MiniEugeneTester.test("N=20.template a, b.");
+//		MiniEugeneTester.test("N=200.all_forward \\/ all_reverse.template a, b.");
 		
 		// negated templates
-		MiniEugeneTester.test("N=4.all_forward.not template promoter, rbs, cds, terminator.");
+//		MiniEugeneTester.test("N=4.all_forward.not template promoter, rbs, cds, terminator.");
 
 		// templates with selections
-		MiniEugeneTester.test("N=4.all_forward.template [p1], [r1], [c1], [t1].");
-		MiniEugeneTester.test("N=4.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
-		MiniEugeneTester.test("N=4.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
-		MiniEugeneTester.test("N=8.all_forward.template [p1], [r1], [c1], [t1].");
-		MiniEugeneTester.test("N=8.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
-		MiniEugeneTester.test("N=8.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
-		MiniEugeneTester.test("N=12.all_forward.template [p1], [r1], [c1], [t1].");
-		MiniEugeneTester.test("N=12.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
-		MiniEugeneTester.test("N=12.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+//		MiniEugeneTester.test("N=4.all_forward.template [p1], [r1], [c1], [t1].");
+//		MiniEugeneTester.test("N=4.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
+//		MiniEugeneTester.test("N=4.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+//		MiniEugeneTester.test("N=8.all_forward.template [p1], [r1], [c1], [t1].");
+//		MiniEugeneTester.test("N=8.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
+//		MiniEugeneTester.test("N=8.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+//		MiniEugeneTester.test("N=12.all_forward.template [p1], [r1], [c1], [t1].");
+//		MiniEugeneTester.test("N=12.all_forward.template [p1|p2], [r1|r2], [c1|c2], [t1|t2].");
+//		MiniEugeneTester.test("N=12.all_forward.template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
 		
 		
 		// DISJUNCTION OF TEMPLATES
-		MiniEugeneTester.test("N=4. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
-		MiniEugeneTester.test("N=8. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");		
-		MiniEugeneTester.test("N=12. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
+//		MiniEugeneTester.test("N=4. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
+//		MiniEugeneTester.test("N=8. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");		
+//		MiniEugeneTester.test("N=12. p1 same_orientation r1. p1 same_orientation c1. p1 same_orientation t1. not forward p1 \\/ template [p1], [r1], [c1], [t1]. not reverse p1 \\/ template [t1], [c1], [r1], [p1].");
 		
 		// SEQUENCES
-		MiniEugeneTester.test("N=2.sequence p, c.");
-		MiniEugeneTester.test("N=3.contains X. all_forward. sequence p, c.");
-		MiniEugeneTester.test("N=3.contains X. all_forward. sequence [p1|p2], [c1|c2].");
-		MiniEugeneTester.test("N=50.X exactly 48. all_forward. sequence [p1|p2], [c1|c2].");
-		MiniEugeneTester.test("N=4. sequence [p1|p2|p3|c1|c2|c3]. p1 with c1 \\/ p2 with c2 \\/ p3 with c3. p1 same_orientation c1. p2 same_orientation c2. p3 same_orientation c3. not forward p1 \\/ p1 before c1. not forward p2 \\/ p2 before c2. not forward p3 \\/ p3 before c3. not reverse p1 \\/ p1 after c1. not reverse p2 \\/ p2 after c2. not reverse p3 \\/ p3 after c3.");
-		MiniEugeneTester.test("N=5.all_forward. sequence [p1|p2], [c1|c2]. p1 then c1. p2 then c2.");
-		MiniEugeneTester.test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
-		MiniEugeneTester.test("N=40. all_forward. template [p1|p2],[r1|r2],[c1|c2],[t1|t2].");
+//		MiniEugeneTester.test("N=2.sequence p, c.");
+//		MiniEugeneTester.test("N=3.contains X. all_forward. sequence p, c.");
+//		MiniEugeneTester.test("N=3.contains X. all_forward. sequence [p1|p2], [c1|c2].");
+//		MiniEugeneTester.test("N=50.X exactly 48. all_forward. sequence [p1|p2], [c1|c2].");
+//		MiniEugeneTester.test("N=4. sequence [p1|p2|p3|c1|c2|c3]. p1 with c1 \\/ p2 with c2 \\/ p3 with c3. p1 same_orientation c1. p2 same_orientation c2. p3 same_orientation c3. not forward p1 \\/ p1 before c1. not forward p2 \\/ p2 before c2. not forward p3 \\/ p3 before c3. not reverse p1 \\/ p1 after c1. not reverse p2 \\/ p2 after c2. not reverse p3 \\/ p3 after c3.");
+//		MiniEugeneTester.test("N=5.all_forward. sequence [p1|p2], [c1|c2]. p1 then c1. p2 then c2.");
+//		MiniEugeneTester.test("N=30.p exactly 1.p same_count c.p same_orientation c.not forward p \\/ sequence p, c.not reverse p \\/ sequence c, p.contains t. p same_orientation t.");
+//		MiniEugeneTester.test("N=40. all_forward. template [p1|p2],[r1|r2],[c1|c2],[t1|t2].");
 		
 		// INVALID SEQUENCS/TEMPLATES
 		
 		// Extensional Support
-		MiniEugeneTester.test("N=1. all_forward. template p.");
-		MiniEugeneTester.test("N=1. all_forward. template [p1|p2].");
-		MiniEugeneTester.test("N=1. all_forward. template [p1|p2|p3].");
-		MiniEugeneTester.test("N=1. all_forward. template [p1|p2|p3|p4].");
-		MiniEugeneTester.test("N=2. all_forward. template p.");
-		MiniEugeneTester.test("N=2. all_forward. template [p1|p2].");
-		MiniEugeneTester.test("N=2. all_forward. template [p1|p2|p3].");
-		MiniEugeneTester.test("N=2. all_forward. template [p1|p2|p3|p4].");
-		MiniEugeneTester.test("N=3. all_forward. template p.");
-		MiniEugeneTester.test("N=3. all_forward. template [p1|p2].");
-		MiniEugeneTester.test("N=3. all_forward. template [p1|p2|p3].");
-		MiniEugeneTester.test("N=3. all_forward. template [p1|p2|p3|p4].");
-		MiniEugeneTester.test("N=2. all_forward. template [p1|p2], [c1|c2].");
-		MiniEugeneTester.test("N=4. all_forward. template [p1|p2], [r1|r2].");
-		MiniEugeneTester.test("N=6. all_forward. template [p1|p2], [c1|c2].");
-		MiniEugeneTester.test("N=8. all_forward. template [p1|p2], [r1|r2].");
-		MiniEugeneTester.test("N=3. template [p1|p2], [p2|p3], [p4|p5].");
-		MiniEugeneTester.test("N=3. all_forward. template [p1|p2|p3], [r1|r2|r3], [p1|p2|p3].");		
-		MiniEugeneTester.test("N=12. template p, r, c, t.");
-		MiniEugeneTester.test("N=12. all_forward. template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
+//		MiniEugeneTester.test("N=1. all_forward. template p.");
+//		MiniEugeneTester.test("N=1. all_forward. template [p1|p2].");
+//		MiniEugeneTester.test("N=1. all_forward. template [p1|p2|p3].");
+//		MiniEugeneTester.test("N=1. all_forward. template [p1|p2|p3|p4].");
+//		MiniEugeneTester.test("N=2. all_forward. template p.");
+//		MiniEugeneTester.test("N=2. all_forward. template [p1|p2].");
+//		MiniEugeneTester.test("N=2. all_forward. template [p1|p2|p3].");
+//		MiniEugeneTester.test("N=2. all_forward. template [p1|p2|p3|p4].");
+//		MiniEugeneTester.test("N=3. all_forward. template p.");
+//		MiniEugeneTester.test("N=3. all_forward. template [p1|p2].");
+//		MiniEugeneTester.test("N=3. all_forward. template [p1|p2|p3].");
+//		MiniEugeneTester.test("N=3. all_forward. template [p1|p2|p3|p4].");
+//		MiniEugeneTester.test("N=2. all_forward. template [p1|p2], [c1|c2].");
+//		MiniEugeneTester.test("N=4. all_forward. template [p1|p2], [r1|r2].");
+//		MiniEugeneTester.test("N=6. all_forward. template [p1|p2], [c1|c2].");
+//		MiniEugeneTester.test("N=8. all_forward. template [p1|p2], [r1|r2].");
+//		MiniEugeneTester.test("N=3. template [p1|p2], [p2|p3], [p4|p5].");
+//		MiniEugeneTester.test("N=3. all_forward. template [p1|p2|p3], [r1|r2|r3], [p1|p2|p3].");		
+//		MiniEugeneTester.test("N=12. template p, r, c, t.");
+//		MiniEugeneTester.test("N=12. all_forward. template [p1|p2|p3], [r1|r2|r3], [c1|c2|c3], [t1|t2|t3].");
 
 		/*
 		 * ACT
@@ -360,10 +385,10 @@ public class TestSuite {
 //				"r before c. c before t. all_forward.");
 		
 		// the published toggle-switch design
-		MiniEugeneTester.test("N=10. template T1T2_1, cLacI, rRBS1, P1, Ptrc2, rbsE, cR1, rbsB, cGFPmut3, T1T2_1."+
-				"reverse T1T2_1. reverse cLacI. reverse rRBS1. reverse P1."+
-				"forward Ptrc2. forward rbsE. forward cR1. forward rbsB. forward cGFPmut3. forward T1T2_2."+
-				"cR1 represses P1. cLacI represses Ptrc2.");
+//		MiniEugeneTester.test("N=10. template T1T2_1, cLacI, rRBS1, P1, Ptrc2, rbsE, cR1, rbsB, cGFPmut3, T1T2_1."+
+//				"reverse T1T2_1. reverse cLacI. reverse rRBS1. reverse P1."+
+//				"forward Ptrc2. forward rbsE. forward cR1. forward rbsB. forward cGFPmut3. forward T1T2_2."+
+//				"cR1 represses P1. cLacI represses Ptrc2.");
 		/*
 		 * LATTICE 
 		 */
@@ -422,37 +447,36 @@ public class TestSuite {
 		 * ACM JETC
 		 */
 		// TODO NEXT
-		MiniEugeneTester.testFile(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration1/dark-blue"));
-		MiniEugeneTester.testFile(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration2/out0"));
-		MiniEugeneTester.testFile(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration2/out1"));
+//		MiniEugeneTester.testFile(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration1/dark-blue"));
+//		MiniEugeneTester.testFile(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration2/out0"));
+//		MiniEugeneTester.testFile(new File("./designs/priority-encoder/acm-jetc/rule-based/iteration2/out1"));
 
 		/*
 		 * NOR GATE EXAMPLE
 		 */
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/repressing-cassette.eug"));
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/reporting-cassette.eug"));
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/nor-gate.eug"));
-		MiniEugeneTester.testFile(new File("./designs/nor-orientations"));
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/templates/nor-templates"));
-		System.exit(1);
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/repressing-cassette.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/reporting-cassette.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/nor-gate.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-orientations"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/templates/nor-templates"));
 
 		/*
 		 * Swati's Inverters
 		 */
-		MiniEugeneTester.testFile(new File("./designs/templating/inverter"));
-		MiniEugeneTester.testFile(new File("./designs/templating/inverter_rev1"));
+//		MiniEugeneTester.testFile(new File("./designs/templating/inverter"));
+//		MiniEugeneTester.testFile(new File("./designs/templating/inverter_rev1"));
 
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/rev1/repressing-cassette.eug"));
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/rev1/reporting-cassette.eug"));
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/rev1/nor-gate.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/rev1/repressing-cassette.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/rev1/reporting-cassette.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/rev1/nor-gate.eug"));
 
-		MiniEugeneTester.testFile(new File("./designs/nor-gate/nor-gate.eug"));
-		MiniEugeneTester.testFile(new File("./examples/transcriptional-unit.eug"));
+//		MiniEugeneTester.testFile(new File("./designs/nor-gate/nor-gate.eug"));
+//		MiniEugeneTester.testFile(new File("./examples/transcriptional-unit.eug"));
 		
 		/*
 		 * SB2 examples
 		 */
-		MiniEugeneTester.test("N=1. template [p1|r1|c1|t1].");
+//		MiniEugeneTester.test("N=1. template [p1|r1|c1|t1].");
 		
 	}
 

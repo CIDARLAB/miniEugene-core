@@ -84,7 +84,7 @@ public class With
 		 */
 		return new And(
 				new XgtC(this.createCounter(store, variables, this.getA()), 0), 
-				new XgtC(this.createCounter(store, variables, this.getA()), 0));
+				new XgtC(this.createCounter(store, variables, this.getB()), 0));
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class With
 		 */
 		return new Or(
 				new XlteqC(this.createCounter(store, variables, this.getA()), 0), 
-				new XlteqC(this.createCounter(store, variables, this.getA()), 0));
+				new XlteqC(this.createCounter(store, variables, this.getB()), 0));
 	}
 
 }

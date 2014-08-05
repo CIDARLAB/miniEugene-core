@@ -39,7 +39,6 @@ import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.ConstraintOperand;
 import org.cidarlab.minieugene.predicates.UnaryConstraint;
 import org.cidarlab.minieugene.solver.jacop.Variables;
-
 import org.jacop.constraints.IfThen;
 import org.jacop.constraints.Not;
 import org.jacop.constraints.Or;
@@ -102,9 +101,12 @@ public class SomeReverse
 									new XeqC(variables[Variables.ORIENTATION][i], -1));
 					}
 				}
-			} else if((-1) > this.getA().getIndex() &&
+			} else if((-1) < this.getA().getIndex() &&
 					this.getA().getIndex() < variables[Variables.ORIENTATION].length) {
-				return new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()], -1);
+				
+				return new Or( 
+						new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()], 1),
+						new XeqC(variables[Variables.ORIENTATION][this.getA().getIndex()],-1));
 			}
 		}
 
