@@ -6,3 +6,6 @@
 /scripts
 /images
 /target
+/.settings
+/.classpath
+/.project
