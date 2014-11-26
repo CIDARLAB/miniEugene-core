@@ -473,7 +473,7 @@ public class TestSuite {
 //		MiniEugeneTester.testFile(new File("./designs/nor-gate/nor-gate.eug"));
 //		MiniEugeneTester.testFile(new File("./examples/transcriptional-unit.eug"));
 		
-		MiniEugeneTester.testFile(new File("./designs/cidar/bryan/operons"));
+//		MiniEugeneTester.testFile(new File("./designs/cidar/bryan/operons"));
 		
 		/*
 		 * SB2 examples
