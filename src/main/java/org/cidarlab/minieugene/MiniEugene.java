@@ -259,6 +259,8 @@ public class MiniEugene
 		 */
 		try {
 			LogicalAnd la = this.parse(script);
+			
+			System.out.println("[MiniEugene.solve] -> " + script + " -> " + la);
 			this.solve(la, -1);
 		} catch(MiniEugeneException e) {
 			throw new MiniEugeneException(e.getMessage());

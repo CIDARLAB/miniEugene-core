@@ -137,7 +137,7 @@ public class TestSuite {
 		/*
 		 * WITH
 		 */
-		MiniEugeneTester.test("N=4.TEMPLATE [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator].p0 IS_A Promoter.rbs0 IS_A RBS.g0 IS_A Gene.t0 IS_A Terminator.Promoter with RBS.RBS with Gene.Gene with Terminator.all_reverse.Promoter after RBS.RBS after Gene.Gene after Terminator.");
+		//MiniEugeneTester.test("N=4.TEMPLATE [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator], [Promoter|RBS|Gene|Terminator].p0 IS_A Promoter.rbs0 IS_A RBS.g0 IS_A Gene.t0 IS_A Terminator.Promoter with RBS.RBS with Gene.Gene with Terminator.all_reverse.Promoter after RBS.RBS after Gene.Gene after Terminator.");
 
 		/*
 		 * POSITIONING
@@ -473,10 +473,13 @@ public class TestSuite {
 //		MiniEugeneTester.testFile(new File("./designs/nor-gate/nor-gate.eug"));
 //		MiniEugeneTester.testFile(new File("./examples/transcriptional-unit.eug"));
 		
+		MiniEugeneTester.testFile(new File("./designs/cidar/bryan/operons"));
+		
 		/*
 		 * SB2 examples
 		 */
 //		MiniEugeneTester.test("N=1. template [p1|r1|c1|t1].");
+		
 		
 	}
 

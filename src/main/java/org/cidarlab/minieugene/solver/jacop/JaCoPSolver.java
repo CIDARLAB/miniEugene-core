@@ -129,35 +129,7 @@ public class JaCoPSolver
     	return this.search(variables, NR_OF_SOLUTIONS);
     	
     	
-    	/*
-    	 * finally, we process and return the solutions
-    	 */
-//    	if(null != solutions) {
-//    		try {
-//    			return this.processSolutions(solutions);
-//    		} catch(java.lang.OutOfMemoryError e) {
-//    			throw new EugeneException("I'm sorry! This problem is currently too big for me to solve!");
-//    			
-//    		}
-//    	} 
 	}
-	
-
-//	/**
-//	 * 
-//	 * @param components   ... the components of the design
-//	 * @param N            ... the length of the design
-//	 * @return	
-//	 */
-//	private IntVar[] model_positioning(Component[] components, int N) {
-//		IntVar[] variables = new IntVar[components.length];
-//		for(int i=0; i<components.length; i++) {
-//			Component c = components[i];
-//			variables[i] = new IntVar(store, c.getName()+".position", 0, N-1);
-//		}
-//		store.impose(new Alldifferent(variables));
-//		return variables;
-//	}
 	
 	private IntVar[][] model(Component[] components) 
 			throws MiniEugeneException {
@@ -285,7 +257,6 @@ public class JaCoPSolver
 				}
 
 			} catch(Exception e) {
-				e.printStackTrace();
 				throw new MiniEugeneException(e.getMessage());
 			}
 
@@ -335,6 +306,8 @@ public class JaCoPSolver
 //        MiniEugeneSolutionListener<IntVar> listener = new MiniEugeneSolutionListener<IntVar>(this.symbols, this.N);
 //        search.setSolutionListener(listener);
         
+//    	labelParts.getSolutionListener().setSolutionLimit(100);
+
         if(NR_OF_SOLUTIONS != (-1)) {
         	labelParts.getSolutionListener().setSolutionLimit(NR_OF_SOLUTIONS);
         } else {

@@ -33,7 +33,6 @@
 package org.cidarlab.minieugene.dom;
 
 import org.cidarlab.minieugene.constants.PredefinedTypes;
-import org.cidarlab.minieugene.constants.PredefinedTypes.PartType;
 
 /**
  * A Component represents a rule operand in miniEugene. From a biology perspective, 
