@@ -259,8 +259,6 @@ public class MiniEugene
 		 */
 		try {
 			LogicalAnd la = this.parse(script);
-			
-			System.out.println("[MiniEugene.solve] -> " + script + " -> " + la);
 			this.solve(la, -1);
 		} catch(MiniEugeneException e) {
 			throw new MiniEugeneException(e.getMessage());
@@ -321,7 +319,18 @@ public class MiniEugene
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * The interpretConstraints/1 method compiles a given miniEugene script 
+	 * into a logical conjunction (Conjunctive NormalForm) 
+	 * of the specified constraints.
+	 * 
+	 * @param script  ... the miniEugene script
+	 * @return ... a LogicalAnd object that represents the logical 
+	 *             conjunction of the specified constraints
+	 *             
+	 * @throws MiniEugeneException
+	 */
 	private LogicalAnd interpretConstraints(String script) 
 			throws MiniEugeneException {
 
@@ -351,7 +360,7 @@ public class MiniEugene
 
 		// finally, we return the create
 		// Predicate objects
-		return parser.getPredicate();
+		return parser.getConstraint();
 	}
 	
 	/**

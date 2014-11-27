@@ -113,7 +113,7 @@ public class Interp {
 		throw new MiniEugeneException(c+" is_a "+t+" is an invalid specification of facts.");
 		
 	}
-
+	
 	/**
 	 * The interpreteRule/1 method takes as input an array of Strings, 
 	 * which represents a miniEugene constraint.

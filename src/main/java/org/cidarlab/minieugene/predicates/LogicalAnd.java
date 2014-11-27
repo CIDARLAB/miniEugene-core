@@ -53,8 +53,8 @@ public class LogicalAnd
 		this.setMinN(-1);
 	}
 	
-	public LogicalAnd(List<Constraint> predicates) {
-		super(LogicalOperator.AND, predicates);
+	public LogicalAnd(List<Constraint> constraints) {
+		super(LogicalOperator.AND, constraints);
 		this.setMinN(-1);
 	}
 	

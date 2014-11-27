@@ -11,6 +11,7 @@ tokens {
 	DOT = '.';
 	COMMA = ',';
 	PIPE = '|';
+	COLON = ':';
 	
 	UC_AND = 'AND';
 	LC_AND = 'and';
@@ -141,14 +142,14 @@ private int minN = -1;
 // MAXIMUM LENGTH OF DESIGN
 private int maxN = -1;
 
-// PREDICATES
+// LOGICAL CONJUNCTION of all specified Constraints
 private LogicalAnd la = new LogicalAnd();
 
-private void addPredicate(Predicate p) {
-    this.la.getPredicates().add(p);  
+private void addConstraint(Constraint c) {
+    this.la.getConstraints().add(c);  
 }
 
-public LogicalAnd getPredicate() {
+public LogicalAnd getConstraint() {
     this.la.setMinN(this.minN);
     this.la.setMaxN(this.maxN);
     return this.la;
@@ -183,7 +184,7 @@ public void setCollectFacts(boolean b) {
 }
 
 public void printFacts() {
-    this.interp.printFacts();
+    this.symbols.printFacts();
 }
 }
 
@@ -213,10 +214,10 @@ constraint_specification
 	:	c=or_constraint {
 if(!bCollectFacts) {		
     if($c.lst.size() == 1) 	{
-        // ``store'' the predicate
-        this.addPredicate($c.lst.get(0));   
+        // ``store'' the constraint
+        this.addConstraint($c.lst.get(0));   
     } else {
-        this.addPredicate(new LogicalOr($c.lst));   
+        this.addConstraint(new LogicalOr($c.lst));   
     }	
 }
 	}	
@@ -246,14 +247,14 @@ composite_constraint_block
 	;	
 	
 or_constraint 
-        returns [List<Predicate> lst]
+        returns [List<Constraint> lst]
 	throws MiniEugeneException
 @init{
-$lst = new ArrayList<Predicate>();
+$lst = new ArrayList<Constraint>();
 }	
-	:	c=constraint {
+	:	con=constraint {
 if(!bCollectFacts) {		
-    $lst.add($c.p);
+    $lst.add($con.c);
 }
 	}	((UC_OR|LC_OR|LOG_OR|BOOL_OR) o=or_constraint {
 if(!bCollectFacts) {		
@@ -263,7 +264,7 @@ if(!bCollectFacts) {
 	;
 	
 constraint
-        returns [Predicate p]
+        returns [Constraint c]
 	throws MiniEugeneException
 	:	(not=(UC_NOT|LC_NOT|BOOL_NOT) {
 if(!bCollectFacts) {		
@@ -283,8 +284,8 @@ if(!bCollectFacts) {
 }
 	})? {
 if(!bCollectFacts) {		
-    // turn the tokens into a miniEugene predicate	
-    $p = this.interp.interpreteRule(this.tokens);
+    // turn the tokens into a miniEugene constraint	
+    $c = this.interp.interpreteRule(this.tokens);
 
     // reset the global token array
     this.tokens = null;
@@ -292,7 +293,7 @@ if(!bCollectFacts) {
 	}
 	|	temp=templatingConstraints {
 if(!bCollectFacts) {		
-    $p = $temp.p;	
+    $c = $temp.c;	
 }
 	}
 	;
@@ -301,90 +302,50 @@ throw new MiniEugeneException(e.getMessage());
 	}
 
 templatingConstraints
-	returns [Predicate p]
+	returns [Constraint c]
 	throws MiniEugeneException
 	:	tem=templateConstraint {
 if(!bCollectFacts) {		
-    $p = $tem.p;	
-}
-	}
-	|	pat=patternConstraint {
-if(!bCollectFacts) {		
-    $p = $pat.p;	
-}
-	}
-	|	gr=groupConstraint {
-if(!bCollectFacts) {		
-    $p = $gr.p;	
+    $c = $tem.t;	
 }
 	}
 	|	seq=sequenceConstraint {
 if(!bCollectFacts) {		
-    $p = $seq.p;	
+    $c = $seq.s;	
 }
 	}
 	;
 	
 templateConstraint	
-	returns [Template p]
-	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_TEMPLATE|LC_TEMPLATE) ids=list_of_ids {
+	returns [Template t]
+	:	(name=ID COLON)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_TEMPLATE|LC_TEMPLATE) ids=list_of_ids {
 if(!bCollectFacts) {		
-    $p = (Template)this.interp.createTemplatingConstraint(
+    $t = (Template)this.interp.createTemplatingConstraint(
         TemplateType.TEMPLATE, 
         $name.text, 
         $ids.lst);
     if(null != not) {
-        $p.setNegated();
+        $t.setNegated();
     }
 }	
 	}
 	;
 
-patternConstraint	
-	returns [Pattern p]
-	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_PATTERN|LC_PATTERN) ids=list_of_ids {
-if(!bCollectFacts) {		
-    $p = (Pattern)this.interp.createTemplatingConstraint(
-        TemplateType.PATTERN, 
-        $name.text, 
-        $ids.lst);
-    if(null != not) {
-        $p.setNegated();
-    }
-}
-	}
-	;
-
 sequenceConstraint	
-	returns [Sequence p]
-	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_SEQUENCE|LC_SEQUENCE) ids=list_of_ids {
+	returns [Sequence s]
+	:	(name=ID COLON)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_SEQUENCE|LC_SEQUENCE) ids=list_of_ids {
 if(!bCollectFacts) {		
-    $p = (Sequence)this.interp.createTemplatingConstraint(
+    $s = (Sequence)this.interp.createTemplatingConstraint(
         TemplateType.SEQUENCE, 
         $name.text, 
         $ids.lst);
     if(null != not) {
-        $p.setNegated();
+        $s.setNegated();
     }
 }
 	}
 	;
 	
-groupConstraint	
-	returns [Group p]
-	:	(name=ID)? not=(UC_NOT|LC_NOT|BOOL_NOT)? (UC_GROUP|LC_GROUP) ids=list_of_ids {
-if(!bCollectFacts) {		
-    $p = (Group)this.interp.createTemplatingConstraint(
-        TemplateType.GROUP, 
-        $name.text, 
-        $ids.lst);
-    if(null != not) {
-        $p.setNegated();
-    }
-}
-	}
-	;
-
 list_of_ids
         returns [List<List<String>> lst]
 @init{

@@ -170,6 +170,18 @@ public class SymbolTables {
 		return this.put(s, this.findTypeOf(s));		
 	}
 	
+	/**
+	 * The printFacts/0 method outputs all specified facts 
+	 * in the console (System.out).
+	 */
+	public void printFacts() {
+		if(null!=this.components && !this.components.isEmpty()) {
+			for(String s: this.components.keySet()) {
+				System.out.println(this.components.get(s));
+			}
+		}
+	}
+	
 	private ComponentType findTypeOf(String s) {
 		
 		if(this.types.containsKey(s)) {
