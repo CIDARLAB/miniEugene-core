@@ -69,7 +69,7 @@ public class SequenceTest {
 
 	@Test
 	public void testNamedSequenceN() {
-		int N = 10;
+		int N = 3;
 		
 		int NR_SOLUTIONS = 1;
 		
@@ -100,7 +100,7 @@ public class SequenceTest {
 
 	@Test
 	public void testNamedSequenceN_selection() {
-		int N = 10;
+		int N = 3;
 		int M = 2;
 		
 		int NR_SOLUTIONS = 1;
@@ -141,7 +141,7 @@ public class SequenceTest {
 
 	@Test
 	public void testNamedSequenceN_selection_forward() {
-		int N = 10;
+		int N = 2;
 		int M = 3;
 		
 		int NR_SOLUTIONS = 1;
@@ -191,9 +191,9 @@ public class SequenceTest {
 			me.solve(script);
 			List<Component[]> los = me.getSolutions();
 			
-			for(int i=0; i<los.size(); i++) {
-				System.out.println(ArrayUtils.toString(los.get(i)));
-			}
+//			for(int i=0; i<los.size(); i++) {
+//				System.out.println(ArrayUtils.toString(los.get(i)));
+//			}
 			assertTrue(los.size() == NR_SOLUTIONS);
 		} catch(Exception e) {
 			e.printStackTrace();
