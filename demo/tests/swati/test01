@@ -1,6 +1,0 @@
-N=4.
-ALL_FORWARD.
-STARTSWITH pConst.
-CONTAINS r.
-t EXACTLY 1.
-r THEN c.

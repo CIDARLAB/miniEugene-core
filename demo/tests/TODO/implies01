@@ -1,2 +1,0 @@
-all_forward => p before c
-all_reverse => c before p 

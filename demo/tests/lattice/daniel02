@@ -1,6 +1,0 @@
-N=3.
-
-CONTAINS p.  // include a P
-CONTAINS c. // include a C
-CONTAINS t. // include a t
-p DRIVES c. // same orientation, no terminator in between

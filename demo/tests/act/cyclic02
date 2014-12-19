@@ -1,8 +1,0 @@
-N=1.
-a contains b.
-b contains c.
-c contains d.
-d contains c.
-c contains b.
-b contains a.
-contains x.

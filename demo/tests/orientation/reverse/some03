@@ -1,7 +1,0 @@
-N=3.
-contains a.
-contains b.
-contains c.
-
-// no forward oriented a allowed
-some_reverse a.

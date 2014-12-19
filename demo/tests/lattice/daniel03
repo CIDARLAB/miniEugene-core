@@ -1,6 +1,0 @@
-N=3.
-all_forward.
-CONTAINS a.
-CONTAINS b.
-a before b.
-a NEXTTO b.

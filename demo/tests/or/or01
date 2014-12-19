@@ -1,7 +1,0 @@
-N=3.
-//contains r.
-//contains t.
-contains p \/ contains c.
-//p notmorethan 2.
-p exactly 1.
-c exactly 2.
