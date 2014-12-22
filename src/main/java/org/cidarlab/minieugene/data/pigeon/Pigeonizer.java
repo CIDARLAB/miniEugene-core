@@ -145,7 +145,7 @@ public class Pigeonizer {
 		 * COMPILATION into a Pigeon script
 		 */
 		StringBuilder sb = new StringBuilder();
-		sb.append("fontsize 3.0\r\n");
+		sb.append("fontsize 2.0\r\n");
 		for(Component symbol : solution) {
 			sb.append(toPigeon(symbol)).append("\r\n");
 		}
