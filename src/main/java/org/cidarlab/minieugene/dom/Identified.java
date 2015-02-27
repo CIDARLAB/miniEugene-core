@@ -34,8 +34,16 @@ public abstract class Identified
 
 	// to convert the name to an integer
 	// for the constraint solver.
-	// NEEDS IMPROVEMENT!
 	private int hash(String name) {
+		
+//		// the hash is the sum of the name's ASCII character codes
+//		int h = 0;
+//		for(int i=0; i<name.length(); i++) {
+//			h += name.charAt(i);
+//		}
+//		return h;
+		
+		
 		int hash = name.hashCode();
 		if(hash < 0) {
 			return hash * -1;
