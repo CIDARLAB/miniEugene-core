@@ -36,19 +36,13 @@ public abstract class Identified
 	// for the constraint solver.
 	private int hash(String name) {
 		
-//		// the hash is the sum of the name's ASCII character codes
-//		int h = 0;
-//		for(int i=0; i<name.length(); i++) {
-//			h += name.charAt(i);
-//		}
-//		return h;
-		
-		
 		int hash = name.hashCode();
 		if(hash < 0) {
-			return hash * -1;
+			hash = hash * -1;
 		}
-		return hash;
+		// we need to do this since the domain values of 
+		// the JaCoP solver must be <= Integer.MAX_VALUE 
+		return (hash%65535)+1;
 	}
 	
 }
