@@ -236,6 +236,7 @@ public class MiniEugene
 			LogicalAnd la = this.parse(script);
 			this.solve(la, NR_OF_SOLUTIONS);
 		} catch(MiniEugeneException e) {
+//			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
@@ -411,9 +412,6 @@ public class MiniEugene
 			this.stats.add(MiniEugeneConstants.DESIGN_SPACE, (Math.pow(numberOfParts, maxN) * Math.pow(2, maxN)));
 			this.stats.add(MiniEugeneConstants.NUMBER_OF_RULES, la.getNumberOfRules());
 
-			// TODO
-//			this.stats.add(EugeneConstants.MINIMUM_LENGTH_OF_DESIGN, la.getMinN());
-			
 			/*
 			 * ACT
 			 */
@@ -445,6 +443,7 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}

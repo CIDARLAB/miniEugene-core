@@ -209,7 +209,7 @@ public class SymbolTables {
 		 */
 		Component c = null;
 		if(this.containsComponent(s)) {
-//		if(this.contains(s)) {
+
 			// if the component exists, then
 			// we need to update its type
 			Identified id = this.get(this.getId(s));
@@ -219,11 +219,14 @@ public class SymbolTables {
 				c = (Component)id;
 				c.setType(ct);
 			}
+			
 		} else {
+			
 			// if the component does not exists,
 			// then we create a new component with 
 			// the specified type
 			c = new Component(s, ct);
+			
 		}
 
 		// then, we put the component into the 
