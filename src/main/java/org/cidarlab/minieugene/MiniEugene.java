@@ -443,7 +443,7 @@ public class MiniEugene
 			}
 
 		} catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new MiniEugeneException(e.getMessage());
 		}
 	}
