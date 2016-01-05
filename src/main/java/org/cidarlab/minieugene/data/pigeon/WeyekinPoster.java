@@ -71,6 +71,7 @@ public class WeyekinPoster {
     private static String mPigeonImageIdentifier = "Weyekin output image";
     private static URI mPigeonURI;
 //    private static String mPigeonPath = "http://128.197.164.27/";
+//    private static String mPigeonPath = "http://synbiotools.bu.edu:5801/";
     private static String mPigeonPath = "http://synbiotools.bu.edu:5801/";
     private static String mPigeonText = "| foo \n | bar";
     private static String mPigeonBackgroundColorHexString="";
@@ -125,7 +126,7 @@ public class WeyekinPoster {
                         mGraphVizString = EntityUtils.toString(entity2);
                         entity2.writeTo(System.out);
                         // do something useful with the response body
-                        System.out.println();
+
                         // and ensure it is fully consumed
                         EntityUtils.consume(entity2);
                     } finally {
@@ -152,7 +153,8 @@ public class WeyekinPoster {
     public static URI getMyBirdsURL() {
         DefaultHttpClient httpclient = new DefaultHttpClient();
 //      HttpPost httpPost = new HttpPost("http://128.197.164.27/pigeon1.php");
-      HttpPost httpPost = new HttpPost(PIGEON_URL);
+      HttpPost httpPost = new HttpPost(mPigeonPath + "pigeon1.php");
+//        HttpPost httpPost = new HttpPost(PIGEON_URL);
       List<NameValuePair> nvps = new ArrayList<NameValuePair>();
       nvps.add(new BasicNameValuePair("desc", mPigeonText));
       if (!mPigeonBackgroundColorHexString.isEmpty()) {
@@ -223,6 +225,7 @@ public class WeyekinPoster {
     private static URI getPigeonURI() {
         String[] split = mPigeonString.split("\n");
         for (String s : split) {
+
             if (s.contains(mPigeonImageIdentifier)) {
                 try {
                     String path = mPigeonPath + s.substring(s.indexOf("img src =")+9, s.indexOf("alt =")-2);

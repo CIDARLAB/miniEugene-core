@@ -38,7 +38,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -148,12 +150,13 @@ public class SolutionExporter {
 	        	}
 	        	
 	        	for(Component[] solution : sols) {
-	        		uris.add(pigeon.pigeonizeSingle(solution, this.interactions));
+	        		uris.add(
+	        			pigeon.pigeonizeSingle(solution, this.interactions));
 	        	}
 	        	
 	        	// finally, we merge all pigeon images 
 	        	// into one big image
-	        	return toMergedImage(uris, filename);
+	        	return this.toMergedImage(uris, filename);
 	        	
 	        } catch(Exception e) {
 	            throw new MiniEugeneException(e.getMessage());

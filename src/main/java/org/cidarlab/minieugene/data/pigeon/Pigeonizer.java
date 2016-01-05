@@ -102,15 +102,9 @@ public class Pigeonizer {
 		
 		// SOLUTIONS
 		StringBuilder sb = new StringBuilder();
-		for(int k=0; k<solutions.size(); k++) {			
-			Component[] solution = solutions.get(k);
-			for(Component symbol : solution) {
-				sb.append(toPigeon(symbol)).append("\r\n");
-			}			
-			if(k < solutions.size() - 1) {
-				sb.append("\r\n");
-			}
-		}
+		
+		// components of every solution
+		sb.append(this.pigeonizeSolutions(solutions));
 
 		// INTERACTIONS
 		sb.append(this.toPigeon(interactions));
@@ -124,6 +118,23 @@ public class Pigeonizer {
 		 * return the resulting URL
 		 */
 		return WeyekinPoster.getMyBirdsURL();		
+	}
+	
+	public StringBuilder pigeonizeSolutions(List<Component[]> solutions) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for(int k=0; k<solutions.size(); k++) {			
+			Component[] solution = solutions.get(k);
+			for(Component symbol : solution) {
+				sb.append(toPigeon(symbol)).append("\r\n");
+			}			
+			if(k < solutions.size() - 1) {
+				sb.append("\r\n");
+			}
+		}
+		
+		return sb;
 	}
 	
 	/**
