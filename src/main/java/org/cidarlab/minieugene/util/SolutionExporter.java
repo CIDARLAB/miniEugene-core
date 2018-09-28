@@ -36,11 +36,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -53,13 +50,10 @@ import javax.swing.JLabel;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cidarlab.minieugene.data.pigeon.Pigeonizer;
-import org.cidarlab.minieugene.data.sbol.SBOLExporter;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.predicates.interaction.Interaction;
 import org.cidarlab.minieugene.predicates.interaction.Participation;
-import org.sbolstandard.core.SBOLDocument;
-import org.sbolstandard.core.SBOLFactory;
 
 /**
  * The SolutionExporter class provides methods to export 
@@ -216,61 +210,6 @@ public class SolutionExporter {
         JLabel label = new JLabel(new ImageIcon(img));
         frame.add(label);
         frame.setVisible(true);
-	}
-
-	/**
-	 * toSBOL takes as input the name of the SBOL file into 
-	 * which the solutions will be serialized following 
-	 * the SBOL standard. 
-	 * toSBOL utilizes the libSBOLj library 
-	 * (www.sbolstandard.org -> libSBOL -> Software) 
-	 *  
-	 * @param filename  ... the path+filename of the SBOL file
-	 * 
-	 * @throws MiniEugeneException
-	 */
-	public void toSBOL(String filename) 
-			throws MiniEugeneException {
-		
-		/*
-		 * create the SBOLDocument
-		 */
-		SBOLDocument doc = this.sbolExport();
-		
-		/*
-		 * write the document to the given filename
-		 */
-		try {
-			FileOutputStream fos = new FileOutputStream(
-				new File(filename));
-			SBOLFactory.write(doc, fos);
-		} catch(Exception e) {
-			throw new MiniEugeneException(e.toString());
-		}
-	}
-	
-	private SBOLDocument sbolExport()  
-			throws MiniEugeneException {
-		if(null != this.solutions) {
-			try {
-				
-	            /* 
-	             * we SBOL up to 100 designs 
-	             */
-				if(this.solutions.size() > NR_OF_SBOL) {
-					return new SBOLExporter().toSBOLDocument(this.getRandomSolutions(NR_OF_SBOL));
-				} 
-				return new SBOLExporter().toSBOLDocument(this.solutions);
-				
-			} catch(MiniEugeneException ee) {
-				throw new MiniEugeneException(ee.getMessage());
-			}
-		}
-		/*
-		 * we return an empty document if there 
-		 * are no solutions
-		 */
-		return SBOLFactory.createDocument();
 	}
 	
 	private List<Component[]> getRandomSolutions(int N) {
