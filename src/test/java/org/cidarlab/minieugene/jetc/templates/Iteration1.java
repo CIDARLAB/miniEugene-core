@@ -3,7 +3,6 @@ package org.cidarlab.minieugene.jetc.templates;
 import java.net.URI;
 
 import org.cidarlab.minieugene.MiniEugene;
-import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.util.SolutionExporter;
 
 /*
@@ -49,8 +48,8 @@ public class Iteration1 {
 					me.getSolutions(), 
 					me.getInteractions());
 			
-			URI pig = se.toPigeon();
-			WeyekinPoster.launchPage(pig);
+//			URI pig = se.toPigeon();
+			//WeyekinPoster.launchPage(pig);
 
 		} catch(Exception e) {
 			e.printStackTrace();

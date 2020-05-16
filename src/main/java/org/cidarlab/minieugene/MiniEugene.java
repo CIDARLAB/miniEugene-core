@@ -40,7 +40,6 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.cidarlab.minieugene.act.ACT;
 import org.cidarlab.minieugene.constants.MiniEugeneConstants;
-import org.cidarlab.minieugene.data.pigeon.WeyekinPoster;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.parser.MiniEugeneLexer;
@@ -477,11 +476,11 @@ public class MiniEugene
 	public URI visualizeACT() 
 			throws MiniEugeneException {
 		ACT act = this.symbols.getACT();
-		if(null != act) {
-			String gv = act.toGraphViz();
-			WeyekinPoster.setDotText(gv);
-			return WeyekinPoster.postMyVision();
-		}
+//		if(null != act) {
+//			String gv = act.toGraphViz();
+//			WeyekinPoster.setDotText(gv);
+//			return WeyekinPoster.postMyVision();
+//		}
 		return null;
 	}
 	

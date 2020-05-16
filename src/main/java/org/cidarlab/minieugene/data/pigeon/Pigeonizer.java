@@ -41,6 +41,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.io.File;
 import java.io.FileWriter;
 
 import org.cidarlab.minieugene.constants.PredefinedTypes;
@@ -126,60 +127,99 @@ public class Pigeonizer {
         
         //new pigeon
         
-        public URI pigeonize(List<Component[]> solutions, Set<Interaction> interactions){
+        public String pigeonImage(Component[] solutions, Set<Interaction> interactions, String name){
             
-            //Soltions
-            StringBuilder input = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
+            for(Component symbol : solutions) {
+			sb.append(toPigeon(symbol)).append("\r\n");
+		}
             
-            //components of every solution
-            input.append(this.pigeonizeSolutions(solutions));
+            sb.append(this.toPigeon(interactions));
+            String text = "./pigeonCmd.txt";
+            String textName = text4pigeon(sb, text);
+//            String test = sb.toString();
+            return this.getImage(textName, name);
             
-            //Interactions
-            input.append(this.toPigeon(interactions));
-            
-            String pigeonTextName = "pigeon.txt";
-            
-            //Create pigeon text file
-            text4pigeon(input, pigeonTextName);
-            
-            //Create the pigeon png image
-            
-            String foo = getImage(pigeonTextName);
-            URI var = URI.create(foo);
-            
-            return var;
+//            File f = new File("./dist");
+//            String[] pathnames = f.list();
+//            String path = "files: ";
+//            for (String n : pathnames){
+//                path += n + ", ";
+//            }
         }
         
-        public static void text4pigeon(StringBuilder input, String text){
+//        public URI pigeonize(List<Component[]> solutions, Set<Interaction> interactions){
+//            
+//           
+//            //Soltions
+//            StringBuilder input = new StringBuilder();
+//            
+//            //components of every solution
+//            input.append(this.pigeonizeSolutions(solutions));
+//            
+//            //Interactions
+//            input.append(this.toPigeon(interactions));
+//            
+//            String pigeonTextName = "pigeon.txt";
+//            
+//            //Create pigeon text file
+//            text4pigeon(input, pigeonTextName);
+//            
+//            //Create the pigeon png image
+//            
+//            String foo = getImage(pigeonTextName);
+//            URI var = URI.create(foo);
+//            
+//            return var;
+//        }
+        
+        public static String text4pigeon(StringBuilder input, String text){
              try {
                  FileWriter pigeonText = new FileWriter(text);
                  pigeonText.write(input.toString());
                  pigeonText.close();
-             }
-             catch (Exception e){
+                 
+                 return text;
+             } catch (Exception e){
                  e.getStackTrace();
              }
+             return text;
         }
         
-        public static String getImage(String st){
+        public String getImage(String st, String name){
             try {
-                String[] cmdArray = new String[6];
-                cmdArray[0] = "./cmdline";
+                String[] cmdArray = new String[8];
+                cmdArray[0] = "./dist/cmdline";
                 cmdArray[1] = "-location";
-                cmdArray[2] = "./";
+                cmdArray[2] = "./webapps/ROOT/data/pigeon/";
                 cmdArray[3] = "-format";
                 cmdArray[4] = "png";
-                cmdArray[5] = st;
+                cmdArray[5] = "-name";
+                cmdArray[6] = name;
+                cmdArray[7] = st;
                 
-                Runtime.getRuntime().exec(cmdArray);
-                String picName = "./pigeon_design.png";
-                System.out.println("success");
-                return picName;
+                Process proc = Runtime.getRuntime().exec(cmdArray);
+                
+                File test = new File("./webapps/ROOT/data/pigeon/" + name + ".png");
+                while(isRunning(proc)){}
+//                String picName = "pigeon_design.png";
+                System.out.println("image output success");
+                return name;
             } catch (Exception e) {
                 
                 e.getStackTrace();
             }
+            
             return null;
+        }
+        
+        private boolean isRunning(Process process) {
+            try {
+                process.exitValue();
+                return false;
+            } catch (Exception e) {
+                return true;
+            }
         }
         
         /*public static void display(){
@@ -221,32 +261,44 @@ public class Pigeonizer {
 	 * @return
 	 * @throws MiniEugeneException
 	 */
-	public URI pigeonizeSingle(Component[] solution, Set<Interaction> interactions) 
-			throws MiniEugeneException {
-
-		/*
-		 * COMPILATION into a Pigeon script
-		 */
-		StringBuilder sb = new StringBuilder();
-		sb.append("fontsize 2.0\r\n");
-		for(Component symbol : solution) {
-			sb.append(toPigeon(symbol)).append("\r\n");
-		}
-
-		// INTERACTIONS
-		sb.append(this.toPigeon(interactions));
-
-		
-		/*
-		 * sending the Pigeon script to the Pigeon server
-		 */
-		WeyekinPoster.setPigeonText(sb.toString());	//can ignore
-		
-		/*
-		 * returning the URL of the Pigeon image 
-		 */
-		return WeyekinPoster.getMyBirdsURL();		//can ignore
-	}
+//	public URI pigeonizeSingle(Component[] solution, Set<Interaction> interactions) 
+//			throws MiniEugeneException {
+//
+//		/*
+//		 * COMPILATION into a Pigeon script
+//		 */
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("fontsize 2.0\r\n");
+//		for(Component symbol : solution) {
+//			sb.append(toPigeon(symbol)).append("\r\n");
+//		}
+//
+//		// INTERACTIONS
+//		sb.append(this.toPigeon(interactions));
+//
+//		
+//		/*
+//		 * sending the Pigeon script to the Pigeon server
+//		 */
+//		//WeyekinPoster.setPigeonText(sb.toString());	//can ignore
+//                
+//		
+//		/*
+//		 * returning the URL of the Pigeon image 
+//		 */
+//                
+//		String pigeonTextName = "pigeon.txt";
+//            
+//                //Create pigeon text file
+//                text4pigeon(sb, pigeonTextName);
+//
+//                //Create the pigeon png image
+//
+//                String foo = getImage(pigeonTextName);
+//                URI var = URI.create(foo);
+//
+//                return var;		//can ignore
+//	}
 
 	/**
 	 * The toPigeon/1 method compiles a miniEugene Component 

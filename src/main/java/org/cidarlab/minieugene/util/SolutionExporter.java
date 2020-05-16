@@ -102,34 +102,64 @@ public class SolutionExporter {
 	 * @return an URI referring to the generated Pigeon image
 	 * @throws MiniEugeneException
 	 */
-	public URI toPigeon() 
-			throws MiniEugeneException {
-
-		if(null != solutions) {
-			
-			try {
-	        	Pigeonizer pigeon = new Pigeonizer();
-	            
-	            /* 
-	             * we visualize up to NR_OF_PIGEON designs 
-	             */
-	        	if(this.solutions.size() > NR_OF_PIGEON) {
-	            	return pigeon.pigeonize(
-	            			this.getRandomSolutions(NR_OF_PIGEON), 
-	            			this.interactions);
+//	public URI toPigeon() 
+//			throws MiniEugeneException {
+//
+//		if(null != solutions) {
+//			
+//			try {
+//	        	Pigeonizer pigeon = new Pigeonizer();
+//	            
+//	            /* 
+//	             * we visualize up to NR_OF_PIGEON designs 
+//	             */
+//	        	if(this.solutions.size() > NR_OF_PIGEON) {
+//	            	return pigeon.pigeonize(
+//	            			this.getRandomSolutions(NR_OF_PIGEON), 
+//	            			this.interactions);
+//	        	}
+//	        	
+//	        	return pigeon.pigeonize(
+//	        			this.solutions, 
+//	        			this.interactions);
+//	        	
+//	        } catch(Exception e) {
+//	            throw new MiniEugeneException(e.getMessage());
+//	        }
+//		}
+//		
+//		return URI.create("");
+//	}
+        
+        
+        public String genPigeonImage(int N, String name)  throws MiniEugeneException {
+           try{
+//                String hi = "hi";
+            Pigeonizer pig = new Pigeonizer();
+//            
+                List<Component[]> sols = this.solutions;
+                
+                	if(N != -1 && this.solutions.size() > N) {
+	        		sols = this.getRandomSolutions(N); 
 	        	}
-	        	
-	        	return pigeon.pigeonize(
-	        			this.solutions, 
-	        			this.interactions);
-	        	
-	        } catch(Exception e) {
-	            throw new MiniEugeneException(e.getMessage());
-	        }
-		}
-		
-		return URI.create("");
-	}
+                //String name = "pigeon_design.png";
+//                for(Component[] solution : sols){
+//                    name = pig.workingDir(solution, this.interactions);
+//                }
+//                
+                File f = new File("./webapps/ROOT/data/pigeon/");
+            String[] pathnames = f.list();
+            String path = "files: ";
+            for (String n : pathnames){
+                path += n + ", ";
+            }
+            return pig.pigeonImage(sols.get(0), this.interactions, name);
+//            throw new MiniEugeneException(path);
+            }catch (Exception e){
+            throw new MiniEugeneException("cmdline not working");
+            }
+            
+        }
 
 	public Image pigeonize(String filename, Map<String, Integer> colors, boolean label, int N) 
 			throws MiniEugeneException {
@@ -137,26 +167,56 @@ public class SolutionExporter {
 		if(null != solutions) {
 			
 			try {
-	        	Pigeonizer pigeon = new Pigeonizer(colors, label);
-	            
-	        	List<URI> uris = new ArrayList<URI>();
-	            /* 
-	             * we visualize up to NR_OF_PIGEON designs 
-	             */
-	        	List<Component[]> sols = this.solutions;
-	        	
-	        	if(N != -1 && this.solutions.size() > N) {
-	        		sols = this.getRandomSolutions(N); 
-	        	}
-	        	
-	        	for(Component[] solution : sols) {
-	        		uris.add(
-	        			pigeon.pigeonizeSingle(solution, this.interactions));
-	        	}
+//	        	Pigeonizer pigeon = new Pigeonizer(colors, label);
+//	            
+//	        	List<URI> uris = new ArrayList<URI>();
+//	            /* 
+//	             * we visualize up to NR_OF_PIGEON designs 
+//	             */
+//	        	List<Component[]> sols = this.solutions;
+//	        	
+//	        	if(N != -1 && this.solutions.size() > N) {
+//	        		sols = this.getRandomSolutions(N); 
+//	        	}
+//	        	
+//	        	for(Component[] solution : sols) {
+//	        		uris.add(
+//	        			pigeon.pigeonizeSingle(solution, this.interactions));
+//	        	}
+                File f = new File("./test_design.png"); 
+                int w = 0;
+                int h = 0;
+                
+                BufferedImage image = ImageIO.read(f);
+                
+                if(w < image.getWidth()) {
+					w = image.getWidth();
+				}
+				
+				h += image.getHeight();
+                
+                
+                BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                combined = image;
+                
+                String pigeonname = "newPigeonImage";
+                File pic = new File(pigeonname);
+                ImageIO.write(combined, "PNG", new File(pigeonname));
+
+//                ImageIO.write(image, "png", new File("./pigeon_design.png"));
+                
+//                if (pic.exists()){
+//                    throw new MiniEugeneException("file exists");
+//                }
+//                else if (!f.exists()){
+//                    throw new MiniEugeneException("file not exists: current directory is " + System.getProperty("user.dir"));
+//                }
+
+                return ImageIO.read(pic);
 	        	
 	        	// finally, we merge all pigeon images 
 	        	// into one big image
-	        	return this.toMergedImage(uris, filename);
+	        	//return this.toMergedImage(uris, filename);
 	        	
 	        } catch(Exception e) {
 	            throw new MiniEugeneException(e.getMessage());
