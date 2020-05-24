@@ -127,7 +127,7 @@ public class Pigeonizer {
         
         //new pigeon
         
-        public String pigeonImage(Component[] solutions, Set<Interaction> interactions, String name){
+        public String pigeonImage(Component[] solutions, Set<Interaction> interactions, String name, String loc){
             
             StringBuilder sb = new StringBuilder();
             for(Component symbol : solutions) {
@@ -137,15 +137,8 @@ public class Pigeonizer {
             sb.append(this.toPigeon(interactions));
             String text = "./pigeonCmd.txt";
             String textName = text4pigeon(sb, text);
-//            String test = sb.toString();
-            return this.getImage(textName, name);
             
-//            File f = new File("./dist");
-//            String[] pathnames = f.list();
-//            String path = "files: ";
-//            for (String n : pathnames){
-//                path += n + ", ";
-//            }
+            return this.getImage(textName, name, loc);
         }
         
 //        public URI pigeonize(List<Component[]> solutions, Set<Interaction> interactions){
@@ -186,12 +179,12 @@ public class Pigeonizer {
              return text;
         }
         
-        public String getImage(String st, String name){
+        public String getImage(String st, String name, String loc){
             try {
                 String[] cmdArray = new String[8];
                 cmdArray[0] = "./dist/cmdline";
                 cmdArray[1] = "-location";
-                cmdArray[2] = "./webapps/ROOT/data/pigeon/";
+                cmdArray[2] = loc;
                 cmdArray[3] = "-format";
                 cmdArray[4] = "png";
                 cmdArray[5] = "-name";
@@ -200,9 +193,7 @@ public class Pigeonizer {
                 
                 Process proc = Runtime.getRuntime().exec(cmdArray);
                 
-                File test = new File("./webapps/ROOT/data/pigeon/" + name + ".png");
                 while(isRunning(proc)){}
-//                String picName = "pigeon_design.png";
                 System.out.println("image output success");
                 return name;
             } catch (Exception e) {

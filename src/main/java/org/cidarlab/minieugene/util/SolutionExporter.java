@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -132,34 +133,47 @@ public class SolutionExporter {
 //	}
         
         
-        public String genPigeonImage(int N, String name)  throws MiniEugeneException {
+        public Image genPigeonImage(int N, String name, String loc)  throws MiniEugeneException {
            try{
-//                String hi = "hi";
-            Pigeonizer pig = new Pigeonizer();
-//            
+               MrCron(loc);
+            Pigeonizer pig = new Pigeonizer();          
                 List<Component[]> sols = this.solutions;
                 
                 	if(N != -1 && this.solutions.size() > N) {
 	        		sols = this.getRandomSolutions(N); 
 	        	}
-                //String name = "pigeon_design.png";
-//                for(Component[] solution : sols){
-//                    name = pig.workingDir(solution, this.interactions);
-//                }
-//                
-                File f = new File("./webapps/ROOT/data/pigeon/");
-            String[] pathnames = f.list();
-            String path = "files: ";
-            for (String n : pathnames){
-                path += n + ", ";
-            }
-            return pig.pigeonImage(sols.get(0), this.interactions, name);
-//            throw new MiniEugeneException(path);
-            }catch (Exception e){
-            throw new MiniEugeneException("cmdline not working");
-            }
             
+                List<String> temp = new ArrayList<String>();
+                int count = 0;
+                for (Component[] solution : sols){
+                    String tempName = "temp" + count;
+                    temp.add(tempName);
+                    pig.pigeonImage(solution, interactions, tempName, loc);
+                    count++;
+                }
+
+
+                return this.toMergedImage(temp, name);
+            }catch (Exception e){
+                throw new MiniEugeneException("cmdline not working");
+            }
+//            
         }
+        
+        private void MrCron(String loc){
+            File dir = new File(loc);
+            long time = new Date().getTime();
+               for(File file: dir.listFiles()) {
+                   long diff = time - file.lastModified();
+                   System.out.println(file + ", " + diff);
+                   if (diff > 5 * 60 * 1000){
+                    if (!file.isDirectory()) 
+                        System.out.println(file.toString() + " deleted");
+                        file.delete();
+                   }
+               }
+        }
+        
 
 	public Image pigeonize(String filename, Map<String, Integer> colors, boolean label, int N) 
 			throws MiniEugeneException {
@@ -203,15 +217,6 @@ public class SolutionExporter {
                 File pic = new File(pigeonname);
                 ImageIO.write(combined, "PNG", new File(pigeonname));
 
-//                ImageIO.write(image, "png", new File("./pigeon_design.png"));
-                
-//                if (pic.exists()){
-//                    throw new MiniEugeneException("file exists");
-//                }
-//                else if (!f.exists()){
-//                    throw new MiniEugeneException("file not exists: current directory is " + System.getProperty("user.dir"));
-//                }
-
                 return ImageIO.read(pic);
 	        	
 	        	// finally, we merge all pigeon images 
@@ -226,7 +231,7 @@ public class SolutionExporter {
         throw new MiniEugeneException("nothing to visualize!");
 	}
 	
-	private Image toMergedImage(List<URI> uris, String filename) 
+	private Image toMergedImage(List<String> imagePath, String filename) 
 			throws MiniEugeneException {
 
 		try {
@@ -236,9 +241,10 @@ public class SolutionExporter {
 			List<BufferedImage> images = new ArrayList<BufferedImage>();
 			
 			int idx = 0;
-			for(URI uri : uris) {
-
-				images.add(ImageIO.read(uri.toURL()));
+			for(String path : imagePath) {
+                                
+                                File imageFile = new File("./webapps/ROOT/data/pigeon/" + path + ".png");
+				images.add(ImageIO.read(imageFile));
 				
 				// create the new image, canvas size is the max. of both image sizes
 				if(w < images.get(idx).getWidth()) {
@@ -259,8 +265,8 @@ public class SolutionExporter {
 				ch += img.getHeight();
 			}
 
-			File pic = new File(filename);
-			ImageIO.write(combined, "PNG", new File(filename));
+			File pic = new File("./webapps/ROOT/data/pigeon/" + filename + ".png");
+			ImageIO.write(combined, "PNG", new File("./webapps/ROOT/data/pigeon/" + filename + ".png"));
 			
 			return ImageIO.read(pic);
 		} catch(Exception e) {
